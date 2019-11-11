@@ -1,0 +1,1 @@
+Napravite nove grane i kako ko napravi svoj deo modela merguje sa granom models. A drugi mogu onda da puluju i dalje merguju svoje grane sa granom models.
