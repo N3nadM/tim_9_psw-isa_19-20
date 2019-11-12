@@ -12,7 +12,8 @@ public class Klinika {
     private String opis;
     //dodati listu slobodnih termina
     //dodati listu lekara
-    //dodati listu sala
+    @OneToMany(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER, mappedBy = "klinika", orphanRemoval = true)
+    private List<Sala> sale = new ArrayList<>();
     //dodati cenovnik
     private List<AdminKlinike> adminiKlinike;
 
@@ -41,6 +42,5 @@ public class Klinika {
         this.opis = opis;
     }
 
-    @OneToMany(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER, mappedBy = "klinika", orphanRemoval = true)
-    private List<Sala> sale = new ArrayList<>();
+
 }

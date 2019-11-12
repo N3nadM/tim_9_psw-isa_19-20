@@ -1,20 +1,44 @@
 package com.isapsw.Projekat.domain;
 
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@Entity
 public class AdminKlinCentra {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     private String ime;
+    
     private String prezime;
+
+    @Column(unique = true)
     private String username;
+
+    @Column(unique = true)
     private String email;
+
     private String password;
+
+    @OneToMany(mappedBy = "adminKlinCentra", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private Dijagnoza dijagnoze;
+
+    @OneToMany(mappedBy = "adminKlinCentra", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private Lek lekovi;
+
+    @OneToMany(mappedBy = "adminKlinCentra", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<Klinika> klinike = new ArrayList<>();
+
+    @OneToMany(mappedBy = "adminKlinCentra", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<AdminKlinike> administratori = new ArrayList<>();
+
+    @OneToMany(mappedBy = "adminKlinCentra", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<Pacijent> zahteviPacijenata = new ArrayList<>();
-    private Dijagnoze dijagnoze;
-    private Lekovi lekovi;
+
+
 
     public AdminKlinCentra(){
         this.klinike = new ArrayList<>();
@@ -22,16 +46,18 @@ public class AdminKlinCentra {
         this.zahteviPacijenata = new ArrayList<>();
     }
 
-    public AdminKlinCentra(String ime, String prezime, String username, String password, Dijagnoze dijagnoze, Lekovi lekovi) {
+    public AdminKlinCentra(String ime, String prezime, String username, String email, String password, Dijagnoza dijagnoze, Lek lekovi, List<Klinika> klinike, List<AdminKlinike> administratori, List<Pacijent> zahteviPacijenata) {
         this.ime = ime;
         this.prezime = prezime;
         this.username = username;
+        this.email = email;
         this.password = password;
+        this.dijagnoze = dijagnoze;
+        this.lekovi = lekovi;
         this.klinike = new ArrayList<>();
         this.administratori = new ArrayList<>();
         this.zahteviPacijenata = new ArrayList<>();
-        this.dijagnoze = dijagnoze;
-        this.lekovi = lekovi;
+
     }
 
     public String getIme() {
@@ -86,21 +112,13 @@ public class AdminKlinCentra {
         this.administratori = administratori;
     }
 
-    public Dijagnoze getDijagnoze() {
-        return dijagnoze;
-    }
+    public Dijagnoza getDijagnoze() { return dijagnoze; }
 
-    public void setDijagnoze(Dijagnoze dijagnoze) {
-        this.dijagnoze = dijagnoze;
-    }
+    public void setDijagnoze(Dijagnoza dijagnoze) { this.dijagnoze = dijagnoze; }
 
-    public Lekovi getLekovi() {
-        return lekovi;
-    }
+    public Lek getLekovi() { return lekovi; }
 
-    public void setLekovi(Lekovi lekovi) {
-        this.lekovi = lekovi;
-    }
+    public void setLekovi(Lek lekovi) { this.lekovi = lekovi; }
 
     public List<Pacijent> getZahteviPacijenata() { return zahteviPacijenata; }
 
