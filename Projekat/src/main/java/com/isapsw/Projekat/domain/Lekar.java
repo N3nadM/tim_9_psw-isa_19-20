@@ -1,7 +1,5 @@
 package com.isapsw.Projekat.domain;
 
-import com.isapsw.Projekat.domain.MedicinskoOsoblje;
-
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
