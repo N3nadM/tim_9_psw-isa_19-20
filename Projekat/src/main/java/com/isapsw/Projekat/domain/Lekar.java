@@ -2,13 +2,16 @@ package com.isapsw.Projekat.domain;
 
 import com.isapsw.Projekat.domain.MedicinskoOsoblje;
 
-import javax.persistence.CascadeType;
-import javax.persistence.FetchType;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
+@Entity
 public class Lekar extends MedicinskoOsoblje {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     private List<Pregled_Operacija> pregledi_operacije = new ArrayList<>();
 
@@ -26,4 +29,7 @@ public class Lekar extends MedicinskoOsoblje {
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "lekar")
     private List<Pregled> pregledi = new ArrayList<>();
+
+    @ManyToMany(mappedBy = "lekari")
+    private List<Operacija> operacije = new ArrayList<>();
 }

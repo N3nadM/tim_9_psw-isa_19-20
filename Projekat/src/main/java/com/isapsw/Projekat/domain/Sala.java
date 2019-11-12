@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.*;
 import java.util.Date;
 
+@Entity
 public class Sala {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
