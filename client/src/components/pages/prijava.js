@@ -8,7 +8,8 @@ import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
-import logo from "../images/pharmacy.png";
+import logo from "../../images/pharmacy.png";
+import { Link as Link1 } from "react-router-dom";
 
 const useStyles = makeStyles(theme => ({
   "@global": {
@@ -41,10 +42,11 @@ export default function SignIn() {
     <Container component="main" maxWidth="xs">
       <CssBaseline />
       <div className={classes.paper}>
-        <Avatar className={classes.avatar} src={logo}></Avatar>
-        <Typography component="h1" variant="h5">
+        <Typography component="h1" variant="h3">
           Logovanje
         </Typography>
+        <Avatar className={classes.avatar} src={logo}></Avatar>
+
         <form className={classes.form} noValidate>
           <TextField
             variant="outlined"
@@ -79,8 +81,10 @@ export default function SignIn() {
           </Button>
           <Grid container>
             <Grid item>
-              <Link href="#" variant="body2">
-                {"Nemate nalog? Registrujte se"}
+              <Link>
+                <Link1 to="/signUp" variant="body2">
+                  {"Nemate nalog? Registrujte se..."}
+                </Link1>
               </Link>
             </Grid>
           </Grid>
