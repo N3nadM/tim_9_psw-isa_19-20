@@ -2,6 +2,9 @@ package com.isapsw.Projekat.domain;
 
 import com.isapsw.Projekat.domain.MedicinskoOsoblje;
 
+import javax.persistence.CascadeType;
+import javax.persistence.FetchType;
+import javax.persistence.OneToMany;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,4 +23,7 @@ public class Lekar extends MedicinskoOsoblje {
     public void setPregledi_operacije(List<Pregled_Operacija> pregledi_operacije) {
         this.pregledi_operacije = pregledi_operacije;
     }
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "lekar")
+    private List<Pregled> pregledi = new ArrayList<>();
 }

@@ -1,5 +1,11 @@
 package com.isapsw.Projekat.domain;
 
+import javax.persistence.CascadeType;
+import javax.persistence.FetchType;
+import javax.persistence.OneToMany;
+import java.util.ArrayList;
+import java.util.List;
+
 public class Klinika {
     private String naziv;
     private String adresa;
@@ -33,4 +39,7 @@ public class Klinika {
     public void setOpis(String opis) {
         this.opis = opis;
     }
+
+    @OneToMany(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER, mappedBy = "klinika", orphanRemoval = true)
+    private List<Sala> sale = new ArrayList<>();
 }
