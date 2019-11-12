@@ -8,19 +8,28 @@ public class AdminKlinCentra {
     private String ime;
     private String prezime;
     private String username;
+    private String email;
     private String password;
     private List<Klinika> klinike = new ArrayList<>();
     private List<AdminKlinike> administratori = new ArrayList<>();
+    private List<Pacijent> zahteviPacijenata = new ArrayList<>();
     private Dijagnoze dijagnoze;
     private Lekovi lekovi;
 
-    public AdminKlinCentra(String ime, String prezime, String username, String password, List<Klinika> klinike, List<AdminKlinike> administratori, Dijagnoze dijagnoze, Lekovi lekovi) {
+    public AdminKlinCentra(){
+        this.klinike = new ArrayList<>();
+        this.administratori = new ArrayList<>();
+        this.zahteviPacijenata = new ArrayList<>();
+    }
+
+    public AdminKlinCentra(String ime, String prezime, String username, String password, Dijagnoze dijagnoze, Lekovi lekovi) {
         this.ime = ime;
         this.prezime = prezime;
         this.username = username;
         this.password = password;
-        this.klinike = klinike;
-        this.administratori = administratori;
+        this.klinike = new ArrayList<>();
+        this.administratori = new ArrayList<>();
+        this.zahteviPacijenata = new ArrayList<>();
         this.dijagnoze = dijagnoze;
         this.lekovi = lekovi;
     }
@@ -48,6 +57,10 @@ public class AdminKlinCentra {
     public void setUsername(String username) {
         this.username = username;
     }
+
+    public String getEmail() { return email; }
+
+    public void setEmail(String email) { this.email = email; }
 
     public String getPassword() {
         return password;
@@ -88,4 +101,8 @@ public class AdminKlinCentra {
     public void setLekovi(Lekovi lekovi) {
         this.lekovi = lekovi;
     }
+
+    public List<Pacijent> getZahteviPacijenata() { return zahteviPacijenata; }
+
+    public void setZahteviPacijenata(List<Pacijent> zahteviPacijenata) { this.zahteviPacijenata = zahteviPacijenata; }
 }
