@@ -33,12 +33,6 @@ public class Pregled_Operacija {
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "pregled")
     private Sala sala;
 
-    //Mislim da ovaj deo moze i preko pacijenta jer je pacijent povezan sa pregledom u istoj vezi ManyToOne, zelim da stavim istoriju pregleda u zdrKarton (Nisam generisao geter i seter)
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name="zdrKarton_id", updatable = false, nullable = false)
-    @JsonIgnore
-    private ZdrKarton zdrKarton;
-
     public Pregled_Operacija() {
     }
 
