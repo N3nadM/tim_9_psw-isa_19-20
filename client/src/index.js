@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
-import Prijava from "./components/prijava";
+import Prijava from "./components/pages/registracija";
 
 ReactDOM.render(<Prijava />, document.getElementById("root"));
 

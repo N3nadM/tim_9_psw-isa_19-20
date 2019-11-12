@@ -6,7 +6,7 @@ import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
-import logo from "./pharmacy.png";
+import logo from "../images/pharmacy.png";
 
 const useStyles = makeStyles(theme => ({
   "@global": {
