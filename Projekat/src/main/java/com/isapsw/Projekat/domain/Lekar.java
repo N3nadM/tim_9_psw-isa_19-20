@@ -13,23 +13,35 @@ public class Lekar extends MedicinskoOsoblje {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private List<Pregled_Operacija> pregledi_operacije = new ArrayList<>();
-
-    public Lekar(List<Pregled_Operacija> pregledi_operacije) {
-        this.pregledi_operacije = pregledi_operacije;
-    }
-
-    public List<Pregled_Operacija> getPregledi_operacije() {
-        return pregledi_operacije;
-    }
-
-    public void setPregledi_operacije(List<Pregled_Operacija> pregledi_operacije) {
-        this.pregledi_operacije = pregledi_operacije;
-    }
-
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "lekar")
     private List<Pregled> pregledi = new ArrayList<>();
 
     @ManyToMany(mappedBy = "lekari")
     private List<Operacija> operacije = new ArrayList<>();
+
+    public Lekar(){
+        this.pregledi = new ArrayList<>();
+        this.operacije = new ArrayList<>();
+    }
+
+    public Lekar(List<Pregled> pregledi, List<Operacija> operacije) {
+        this.pregledi = pregledi;
+        this.operacije = operacije;
+    }
+
+    public List<Pregled> getPregledi() {
+        return pregledi;
+    }
+
+    public void setPregledi(List<Pregled> pregledi) {
+        this.pregledi = pregledi;
+    }
+
+    public List<Operacija> getOperacije() {
+        return operacije;
+    }
+
+    public void setOperacije(List<Operacija> operacije) {
+        this.operacije = operacije;
+    }
 }
