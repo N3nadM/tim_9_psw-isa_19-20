@@ -19,18 +19,6 @@ public class MedicinskoOsoblje {
     @Size(min=2)
     private String prezime;
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "medicinskiRadnik")
-    private RadniKalendar radniKalendar;
-
-
-    public RadniKalendar getRadniKalendar() {
-        return radniKalendar;
-    }
-
-    public void setRadniKalendar(RadniKalendar radniKalendar) {
-        this.radniKalendar = radniKalendar;
-    }
-
     public String getIme() {
         return ime;
     }
@@ -61,7 +49,6 @@ public class MedicinskoOsoblje {
                 "id=" + id +
                 ", ime='" + ime + '\'' +
                 ", prezime='" + prezime + '\'' +
-                ", radniKalendar=" + radniKalendar +
                 '}';
     }
 }
