@@ -14,6 +14,7 @@ public class Klinika {
     //dodati listu lekara
     //dodati listu sala
     //dodati cenovnik
+    private List<AdminKlinike> adminiKlinike;
 
 
     public String getNaziv() {
