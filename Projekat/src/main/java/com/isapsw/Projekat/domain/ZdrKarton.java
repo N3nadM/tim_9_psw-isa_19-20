@@ -22,8 +22,6 @@ public class ZdrKarton {
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "zdrKarton")
     private List<Lek> alergijaNaLek = new ArrayList<>();
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "zdrKarton")
-    private List<Pregled> listaPregleda = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "zdrKarton")
     private List<Dijagnoza> istorijaBolesti = new ArrayList<>();
