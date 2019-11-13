@@ -1,6 +1,7 @@
 package com.isapsw.Projekat.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -60,6 +61,11 @@ public class Pacijent {
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "pacijent")
     private List<Operacija> operacije = new ArrayList<>();
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name="adminKlinCentra_id", updatable = false, nullable = false)
+    @JsonIgnore
+    private AdminKlinCentra adminKlinCentra;
 
     public Pacijent() {
     }

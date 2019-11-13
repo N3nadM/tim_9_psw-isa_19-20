@@ -1,9 +1,12 @@
 package com.isapsw.Projekat.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
+@Entity
 public class AdminKlinike {
 
     @Id
@@ -30,8 +33,16 @@ public class AdminKlinike {
     @Column(updatable = false, unique = true)
     private String email;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name="klinika_id", updatable = false, nullable = false)
+    @JsonIgnore
     private Klinika klinika;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name="adminKlinCentra_id", updatable = false, nullable = false)
+    @JsonIgnore
+    private AdminKlinCentra adminKlinCentra;
+
 
     public AdminKlinike(@NotBlank(message = "Neophodno je uneti ime.") @Size(min = 2) String ime, @NotBlank(message = "Neophodno je uneti prezime.") @Size(min = 2) String prezime, @NotBlank(message = "Neophodno je uneti korisnicko ime.") String username, @NotBlank(message = "Neophodno je uneti password.") @Size(min = 5) String password, @NotBlank(message = "Neophodno je uneti email.") String email) {
         this.ime = ime;

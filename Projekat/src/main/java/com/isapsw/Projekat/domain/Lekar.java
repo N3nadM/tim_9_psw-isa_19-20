@@ -1,5 +1,7 @@
 package com.isapsw.Projekat.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +18,11 @@ public class Lekar extends MedicinskoOsoblje {
 
     @ManyToMany(mappedBy = "lekari")
     private List<Operacija> operacije = new ArrayList<>();
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name="klinika_id", updatable = false, nullable = false)
+    @JsonIgnore
+    private Klinika klinika;
 
     public Lekar(){
         this.pregledi = new ArrayList<>();
@@ -41,5 +48,23 @@ public class Lekar extends MedicinskoOsoblje {
 
     public void setOperacije(List<Operacija> operacije) {
         this.operacije = operacije;
+    }
+
+    @Override
+    public Long getId() {
+        return id;
+    }
+
+    @Override
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Klinika getKlinika() {
+        return klinika;
+    }
+
+    public void setKlinika(Klinika klinika) {
+        this.klinika = klinika;
     }
 }

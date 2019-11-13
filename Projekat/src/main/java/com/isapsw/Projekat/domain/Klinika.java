@@ -1,22 +1,63 @@
 package com.isapsw.Projekat.domain;
 
-import javax.persistence.CascadeType;
-import javax.persistence.FetchType;
-import javax.persistence.OneToMany;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.util.ArrayList;
 import java.util.List;
 
+@Entity
 public class Klinika {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @NotBlank(message = "Neophodno je uneti naziv klinike.")
     private String naziv;
+
+    @NotBlank(message = "Neophodno je uneti adresu klinike.")
     private String adresa;
+
     private String opis;
     //dodati listu slobodnih termina
-    //dodati listu lekara
+
     @OneToMany(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER, mappedBy = "klinika", orphanRemoval = true)
     private List<Sala> sale = new ArrayList<>();
     //dodati cenovnik
-    private List<AdminKlinike> adminiKlinike;
 
+    @OneToMany(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER, mappedBy = "klinika")
+    private List<AdminKlinike> adminiKlinike = new ArrayList<>();
+
+    @OneToMany(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER, mappedBy = "klinika")
+    private List<MedicinskaSestra> medicinskeSestre = new ArrayList<>();
+
+    @OneToMany(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER, mappedBy = "klinika")
+    private List<Lekar> lekari = new ArrayList<>();
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name="adminKlinCentra_id", updatable = false, nullable = false)
+    @JsonIgnore
+    private AdminKlinCentra adminKlinCentra;
+
+    public Klinika() {
+        this.adminiKlinike = new ArrayList<>();
+        this.sale = new ArrayList<>();
+        this.medicinskeSestre = new ArrayList<>();
+        this.lekari = new ArrayList<>();
+    }
+
+    public Klinika(String naziv, String adresa, String opis, List<Sala> sale, List<AdminKlinike> adminiKlinike, AdminKlinCentra adminKlinCentra) {
+        this.naziv = naziv;
+        this.adresa = adresa;
+        this.opis = opis;
+        this.sale = sale;
+        this.adminiKlinike = adminiKlinike;
+        this.adminKlinCentra = adminKlinCentra;
+        this.medicinskeSestre = new ArrayList<>();
+        this.lekari = new ArrayList<>();
+    }
 
     public String getNaziv() {
         return naziv;
@@ -42,5 +83,51 @@ public class Klinika {
         this.opis = opis;
     }
 
+    public List<Sala> getSale() {
+        return sale;
+    }
 
+    public void setSale(List<Sala> sale) {
+        this.sale = sale;
+    }
+
+    public List<AdminKlinike> getAdminiKlinike() {
+        return adminiKlinike;
+    }
+
+    public void setAdminiKlinike(List<AdminKlinike> adminiKlinike) {
+        this.adminiKlinike = adminiKlinike;
+    }
+
+    public AdminKlinCentra getAdminKlinCentra() {
+        return adminKlinCentra;
+    }
+
+    public void setAdminKlinCentra(AdminKlinCentra adminKlinCentra) {
+        this.adminKlinCentra = adminKlinCentra;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public List<MedicinskaSestra> getMedicinskeSestre() {
+        return medicinskeSestre;
+    }
+
+    public void setMedicinskeSestre(List<MedicinskaSestra> medicinskeSestre) {
+        this.medicinskeSestre = medicinskeSestre;
+    }
+
+    public List<Lekar> getLekari() {
+        return lekari;
+    }
+
+    public void setLekari(List<Lekar> lekari) {
+        this.lekari = lekari;
+    }
 }

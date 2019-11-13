@@ -1,6 +1,8 @@
 package com.isapsw.Projekat.domain;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,23 +13,29 @@ public class AdminKlinCentra {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank(message = "Neophodno je uneti ime.")
     private String ime;
-    
+
+    @NotBlank(message = "Neophodno je uneti prezime.")
     private String prezime;
 
+    @NotBlank(message = "Neophodno je uneti korisnicko ime.")
     @Column(unique = true)
     private String username;
 
+    @NotBlank(message = "Neophodno je uneti email.")
     @Column(unique = true)
     private String email;
 
+    @NotBlank(message = "Neophodno je uneti password.")
+    @Size(min = 5)
     private String password;
 
     @OneToMany(mappedBy = "adminKlinCentra", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private Dijagnoza dijagnoze;
+    private List<Dijagnoza> dijagnoze = new ArrayList<>();
 
     @OneToMany(mappedBy = "adminKlinCentra", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private Lek lekovi;
+    private List<Lek> lekovi = new ArrayList<>();
 
     @OneToMany(mappedBy = "adminKlinCentra", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<Klinika> klinike = new ArrayList<>();
@@ -38,9 +46,9 @@ public class AdminKlinCentra {
     @OneToMany(mappedBy = "adminKlinCentra", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<Pacijent> zahteviPacijenata = new ArrayList<>();
 
-
-
     public AdminKlinCentra(){
+        this.lekovi =  new ArrayList<>();
+        this.dijagnoze =  new ArrayList<>();
         this.klinike = new ArrayList<>();
         this.administratori = new ArrayList<>();
         this.zahteviPacijenata = new ArrayList<>();
@@ -52,8 +60,8 @@ public class AdminKlinCentra {
         this.username = username;
         this.email = email;
         this.password = password;
-        this.dijagnoze = dijagnoze;
-        this.lekovi = lekovi;
+        this.dijagnoze =  new ArrayList<>();
+        this.lekovi =  new ArrayList<>();
         this.klinike = new ArrayList<>();
         this.administratori = new ArrayList<>();
         this.zahteviPacijenata = new ArrayList<>();
@@ -116,13 +124,21 @@ public class AdminKlinCentra {
         this.administratori = administratori;
     }
 
-    public Dijagnoza getDijagnoze() { return dijagnoze; }
+    public List<Dijagnoza> getDijagnoze() {
+        return dijagnoze;
+    }
 
-    public void setDijagnoze(Dijagnoza dijagnoze) { this.dijagnoze = dijagnoze; }
+    public void setDijagnoze(List<Dijagnoza> dijagnoze) {
+        this.dijagnoze = dijagnoze;
+    }
 
-    public Lek getLekovi() { return lekovi; }
+    public List<Lek> getLekovi() {
+        return lekovi;
+    }
 
-    public void setLekovi(Lek lekovi) { this.lekovi = lekovi; }
+    public void setLekovi(List<Lek> lekovi) {
+        this.lekovi = lekovi;
+    }
 
     public List<Pacijent> getZahteviPacijenata() { return zahteviPacijenata; }
 

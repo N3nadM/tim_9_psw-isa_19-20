@@ -25,14 +25,6 @@ public class Pregled_Operacija {
     @Column(updatable = false)
     private Date datumKreiranja;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name="pacijent_id", updatable = false, nullable = false)
-    @JsonIgnore
-    private Pacijent pacijent;
-
-    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "pregled")
-    private Sala sala;
-
     public Pregled_Operacija() {
     }
 
@@ -76,19 +68,4 @@ public class Pregled_Operacija {
         this.datumKreiranja = datumKreiranja;
     }
 
-    public Pacijent getPacijent() {
-        return pacijent;
-    }
-
-    public void setPacijent(Pacijent pacijent) {
-        this.pacijent = pacijent;
-    }
-
-    public Sala getSala() {
-        return sala;
-    }
-
-    public void setSala(Sala sala) {
-        this.sala = sala;
-    }
 }

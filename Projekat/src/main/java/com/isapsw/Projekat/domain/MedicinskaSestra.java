@@ -1,5 +1,6 @@
 package com.isapsw.Projekat.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.isapsw.Projekat.domain.MedicinskoOsoblje;
 
 import javax.persistence.*;
@@ -15,6 +16,11 @@ public class MedicinskaSestra extends MedicinskoOsoblje {
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "medicinskaSestra")
     private List<Recept> recepti = new ArrayList<>();
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name="klinika_id", updatable = false, nullable = false)
+    @JsonIgnore
+    private Klinika klinika;
 
     public MedicinskaSestra(){
         super();
@@ -33,4 +39,12 @@ public class MedicinskaSestra extends MedicinskoOsoblje {
     public List<Recept> getRecepti() { return recepti; }
 
     public void setRecepti(List<Recept> recepti) { this.recepti = recepti; }
+
+    public Klinika getKlinika() {
+        return klinika;
+    }
+
+    public void setKlinika(Klinika klinika) {
+        this.klinika = klinika;
+    }
 }

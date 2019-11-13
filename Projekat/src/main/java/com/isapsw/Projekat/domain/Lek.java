@@ -15,13 +15,13 @@ public class Lek {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank
+    @NotBlank(message = "Neophodno je uneti naziv leka.")
     private String naziv;
 
-    @NotBlank
+    @NotBlank(message = "Neophodno je uneti sadrzaj leka.")
     private String sadrzaj;
 
-    @NotBlank
+    @NotBlank(message = "Neophodno je uneti sifru leka.")
     @Size(min=3)
     private String sifra;
 
@@ -35,7 +35,9 @@ public class Lek {
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="recept_id",nullable = false)
     @JsonIgnore
-    private Pacijent pacijent;
+    private Recept recept;
+
+    private AdminKlinCentra adminKlinCentra;
 
     public Lek() {
     }
@@ -80,11 +82,19 @@ public class Lek {
         this.dijagnoze = dijagnoze;
     }
 
-    public Pacijent getPacijent() {
-        return pacijent;
+    public Recept getRecept() {
+        return recept;
     }
 
-    public void setPacijent(Pacijent pacijent) {
-        this.pacijent = pacijent;
+    public void setRecept(Recept recept) {
+        this.recept = recept;
+    }
+
+    public AdminKlinCentra getAdminKlinCentra() {
+        return adminKlinCentra;
+    }
+
+    public void setAdminKlinCentra(AdminKlinCentra adminKlinCentra) {
+        this.adminKlinCentra = adminKlinCentra;
     }
 }

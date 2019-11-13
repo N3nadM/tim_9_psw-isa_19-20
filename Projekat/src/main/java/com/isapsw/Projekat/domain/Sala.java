@@ -4,7 +4,9 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 public class Sala {
@@ -16,10 +18,8 @@ public class Sala {
     @Column(unique = true, nullable = false)
     private String salaIdentifier;
 
-    @OneToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name="pregled_id",nullable = false)
-    @JsonIgnore
-    private Pregled pregled;
+    @OneToMany(mappedBy = "sala", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private List<Pregled> pregled = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="klinika_id", updatable = false, nullable = false)
@@ -49,11 +49,11 @@ public class Sala {
         this.salaIdentifier = salaIdentifier;
     }
 
-    public Pregled getPregled() {
+    public List<Pregled> getPregled() {
         return pregled;
     }
 
-    public void setPregled(Pregled pregled) {
+    public void setPregled(List<Pregled> pregled) {
         this.pregled = pregled;
     }
 
