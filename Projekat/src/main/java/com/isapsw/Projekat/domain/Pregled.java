@@ -14,7 +14,12 @@ public class Pregled extends Pregled_Operacija{
 
     private Integer popust;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="pacijent_id", updatable = false, nullable = false)
+    @JsonIgnore
+    private Pacijent pacijent;
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="lekar_id", updatable = false, nullable = false)
     @JsonIgnore
     private Lekar lekar;
@@ -38,6 +43,10 @@ public class Pregled extends Pregled_Operacija{
     public void setPopust(Integer popust) {
         this.popust = popust;
     }
+    
+    public Pacijent getPacijent() { return pacijent; }
+
+    public void setPacijent(Pacijent pacijent) { this.pacijent = pacijent; }
 
     public Lekar getLekar() {
         return lekar;
