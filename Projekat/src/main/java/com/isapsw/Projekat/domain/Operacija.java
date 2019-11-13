@@ -31,6 +31,7 @@ public class Operacija extends Pregled_Operacija {
     private Pacijent pacijent;
 
     public Operacija() {
+        super();
     }
 
     public String getTipOperacije() {
