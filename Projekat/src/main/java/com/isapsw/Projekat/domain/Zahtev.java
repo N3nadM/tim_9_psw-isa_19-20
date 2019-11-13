@@ -7,6 +7,7 @@ public class Zahtev extends Pacijent_Zahtev{
     private boolean verified = false;
 
     public Zahtev() {
+        super();
     }
 
     public boolean isVerified() {
