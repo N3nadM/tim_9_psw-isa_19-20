@@ -16,10 +16,11 @@ public class Sala {
     @Column(unique = true, nullable = false)
     private String salaIdentifier;
 
-    @OneToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name="pregled_id",nullable = false)
-    @JsonIgnore
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "sala")
     private Pregled pregled;
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "sala")
+    private Operacija operacija;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="klinika_id", updatable = false, nullable = false)

@@ -30,7 +30,9 @@ public class Pregled_Operacija {
     @JsonIgnore
     private Pacijent pacijent;
 
-    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "pregled")
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name="sala_id", updatable = false, nullable = false)
+    @JsonIgnore
     private Sala sala;
 
     public Pregled_Operacija() {
