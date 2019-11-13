@@ -21,6 +21,9 @@ public class Sala {
     @OneToMany(mappedBy = "sala", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<Pregled> pregled = new ArrayList<>();
 
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "sala")
+    private List<Operacija> operacija = new ArrayList<>();
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="klinika_id", updatable = false, nullable = false)
     @JsonIgnore
@@ -31,6 +34,14 @@ public class Sala {
     private Date datumKreiranja;
 
     public Sala() {
+    }
+
+    public List<Operacija> getOperacija() {
+        return operacija;
+    }
+
+    public void setOperacija(List<Operacija> operacija) {
+        this.operacija = operacija;
     }
 
     public Long getId() {

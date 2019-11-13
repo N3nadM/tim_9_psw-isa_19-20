@@ -19,9 +19,6 @@ public class Recept {
     @Value("${some.key:false}")
     private boolean overen;
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "recept")
-    private Lek lek;
-
     @JsonFormat(pattern = "yyyy-mm-dd")
     @Column(updatable = false)
     private Date datumIzdavanja;
@@ -41,6 +38,11 @@ public class Recept {
     @JoinColumn(name="medicinskaSestra_id", updatable = false, nullable = false)
     @JsonIgnore
     private MedicinskaSestra medicinskaSestra;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name="lek_id", updatable = false, nullable = false)
+    @JsonIgnore
+    private Lek lek;
 
     @PrePersist
     protected void onCreate(){

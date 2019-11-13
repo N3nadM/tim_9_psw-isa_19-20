@@ -25,7 +25,20 @@ public class Pregled_Operacija {
     @Column(updatable = false)
     private Date datumKreiranja;
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name="sala_id", updatable = false, nullable = false)
+    @JsonIgnore
+    private Sala sala;
+
     public Pregled_Operacija() {
+    }
+
+    public Sala getSala() {
+        return sala;
+    }
+
+    public void setSala(Sala sala) {
+        this.sala = sala;
     }
 
     public Long getId() {
