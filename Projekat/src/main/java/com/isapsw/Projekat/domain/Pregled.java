@@ -15,17 +15,17 @@ public class Pregled extends Pregled_Operacija{
 
     private Integer popust;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="lekar_id", updatable = false, nullable = false)
     @JsonIgnore
     private Lekar lekar;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="sala_id", updatable = false, nullable = false)
     @JsonIgnore
     private Sala sala;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="pacijent_id", updatable = false, nullable = false)
     @JsonIgnore
     private Pacijent pacijent;

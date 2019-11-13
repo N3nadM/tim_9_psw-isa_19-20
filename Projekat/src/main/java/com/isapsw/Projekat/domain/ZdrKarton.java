@@ -12,21 +12,21 @@ public class ZdrKarton {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne(fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="pacijent_id",nullable = false)
     @JsonIgnore
     private Pacijent pacijent;
 
     private Float dioptrija;
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "zdrKarton")
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "zdrKarton")
     private List<Lek> alergijaNaLek = new ArrayList<>();
 
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "zdrKarton")
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "zdrKarton")
     private List<Dijagnoza> istorijaBolesti = new ArrayList<>();
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "zdrKarton")
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "zdrKarton")
     private List<Recept> izdatiRecepti = new ArrayList<>();
 
     private Integer visina;

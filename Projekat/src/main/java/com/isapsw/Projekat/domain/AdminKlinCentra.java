@@ -31,19 +31,19 @@ public class AdminKlinCentra {
     @Size(min = 5)
     private String password;
 
-    @OneToMany(mappedBy = "adminKlinCentra", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "adminKlinCentra", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Dijagnoza> dijagnoze = new ArrayList<>();
 
-    @OneToMany(mappedBy = "adminKlinCentra", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "adminKlinCentra", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Lek> lekovi = new ArrayList<>();
 
-    @OneToMany(mappedBy = "adminKlinCentra", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "adminKlinCentra", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Klinika> klinike = new ArrayList<>();
 
-    @OneToMany(mappedBy = "adminKlinCentra", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "adminKlinCentra", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<AdminKlinike> administratori = new ArrayList<>();
 
-    @OneToMany(mappedBy = "adminKlinCentra", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "adminKlinCentra", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Pacijent> zahteviPacijenata = new ArrayList<>();
 
     public AdminKlinCentra(){

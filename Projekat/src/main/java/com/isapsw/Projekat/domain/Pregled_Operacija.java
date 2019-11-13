@@ -25,7 +25,7 @@ public class Pregled_Operacija {
     @Column(updatable = false)
     private Date datumKreiranja;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="sala_id", updatable = false, nullable = false)
     @JsonIgnore
     private Sala sala;

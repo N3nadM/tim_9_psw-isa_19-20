@@ -23,10 +23,10 @@ public class Dijagnoza {
     @Size(min=3)
     private String sifra;
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "dijagnoze")
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "dijagnoze")
     private List<Lek> terapija = new ArrayList<>();
 
-    @ManyToMany(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     @JoinTable(
             name = "dijagnoze_pacijenata",
             joinColumns = @JoinColumn(name = "dijagnoza_id"),
@@ -37,7 +37,7 @@ public class Dijagnoza {
     @Column(updatable = false)
     private Date datumKreiranja;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="adminKlinCentra_id", updatable = false, nullable = false)
     @JsonIgnore
     private AdminKlinCentra adminKlinCentra;

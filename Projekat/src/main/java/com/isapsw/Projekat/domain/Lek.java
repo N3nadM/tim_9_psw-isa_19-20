@@ -25,23 +25,26 @@ public class Lek {
     @Size(min=3)
     private String sifra;
 
-    @ManyToMany(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     @JoinTable(
             name = "lek_za_dijagnozu",
             joinColumns = @JoinColumn(name = "lek_id"),
             inverseJoinColumns = @JoinColumn(name = "dijagnoza_id"))
     private List<Dijagnoza> dijagnoze = new ArrayList<>();
 
-    @ManyToMany(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     @JoinTable(
             name = "alergije_pacijenata",
             joinColumns = @JoinColumn(name = "lek_id"),
             inverseJoinColumns = @JoinColumn(name = "zdrKarton_id"))
     private List<ZdrKarton> zdrKarton = new ArrayList<>();
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "lek")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "lek")
     private List<Recept> recept = new ArrayList<>();
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="adminKlinCentra_id", updatable = false, nullable = false)
+    @JsonIgnore
     private AdminKlinCentra adminKlinCentra;
 
     public Lek() {

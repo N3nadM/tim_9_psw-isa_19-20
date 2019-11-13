@@ -14,10 +14,10 @@ public class MedicinskaSestra extends MedicinskoOsoblje {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "medicinskaSestra")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "medicinskaSestra")
     private List<Recept> recepti = new ArrayList<>();
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="klinika_id", updatable = false, nullable = false)
     @JsonIgnore
     private Klinika klinika;

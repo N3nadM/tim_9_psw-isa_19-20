@@ -13,19 +13,19 @@ public class Operacija extends Pregled_Operacija {
     @NotBlank
     private String tipOperacije;
 
-    @ManyToMany(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     @JoinTable(
             name = "prisutni_lekari",
             joinColumns = @JoinColumn(name = "operacija_id"),
             inverseJoinColumns = @JoinColumn(name = "lekar_id"))
     List<Lekar> lekari = new ArrayList<>();
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="sala_id", updatable = false, nullable = false)
     @JsonIgnore
     private Sala sala;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="pacijent_id", updatable = false, nullable = false)
     @JsonIgnore
     private Pacijent pacijent;

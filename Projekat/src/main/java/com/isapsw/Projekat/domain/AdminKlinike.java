@@ -33,12 +33,12 @@ public class AdminKlinike {
     @Column(updatable = false, unique = true)
     private String email;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="klinika_id", updatable = false, nullable = false)
     @JsonIgnore
     private Klinika klinika;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="adminKlinCentra_id", updatable = false, nullable = false)
     @JsonIgnore
     private AdminKlinCentra adminKlinCentra;
