@@ -16,8 +16,7 @@ public class Recept {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Value("${some.key:false}")
-    private boolean overen;
+    private boolean overen = false;
 
     @JsonFormat(pattern = "yyyy-mm-dd")
     @Column(updatable = false)
