@@ -1,6 +1,7 @@
 package com.isapsw.Projekat.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.beans.factory.annotation.Value;
 
 import javax.persistence.*;
@@ -18,9 +19,6 @@ public class Recept {
     @Value("${some.key:false}")
     private boolean overen;
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "recept")
-    private Lek lek;
-
     @JsonFormat(pattern = "yyyy-mm-dd")
     @Column(updatable = false)
     private Date datumIzdavanja;
@@ -35,6 +33,11 @@ public class Recept {
             joinColumns = @JoinColumn(name = "recept_id"),
             inverseJoinColumns = @JoinColumn(name = "zdrKarton_id"))
     private List<ZdrKarton> zdrKarton = new ArrayList<>();
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name="lek_id", updatable = false, nullable = false)
+    @JsonIgnore
+    private Lek lek;
 
     @PrePersist
     protected void onCreate(){

@@ -32,12 +32,25 @@ public class Lek {
             inverseJoinColumns = @JoinColumn(name = "dijagnoza_id"))
     private List<Dijagnoza> dijagnoze = new ArrayList<>();
 
-    @OneToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name="recept_id",nullable = false)
-    @JsonIgnore
-    private Pacijent pacijent;
+    @ManyToMany(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "alergije_pacijenata",
+            joinColumns = @JoinColumn(name = "lek_id"),
+            inverseJoinColumns = @JoinColumn(name = "zdrKarton_id"))
+    private List<ZdrKarton> zdrKarton = new ArrayList<>();
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "lek")
+    private List<Recept> recept = new ArrayList<>();
 
     public Lek() {
+    }
+
+    public List<ZdrKarton> getZdrKarton() {
+        return zdrKarton;
+    }
+
+    public void setZdrKarton(List<ZdrKarton> zdrKarton) {
+        this.zdrKarton = zdrKarton;
     }
 
     public Long getId() {
@@ -78,13 +91,5 @@ public class Lek {
 
     public void setDijagnoze(List<Dijagnoza> dijagnoze) {
         this.dijagnoze = dijagnoze;
-    }
-
-    public Pacijent getPacijent() {
-        return pacijent;
-    }
-
-    public void setPacijent(Pacijent pacijent) {
-        this.pacijent = pacijent;
     }
 }
