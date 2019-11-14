@@ -25,7 +25,6 @@ public class UserController {
 
     @PostMapping("/createRequest")
     public ResponseEntity<?> registerUser(@Valid @RequestBody Zahtev zahtev, BindingResult result) {
-
         ResponseEntity<?> error = validationErrorService.validationService(result);
         if(error != null) {
             return error;

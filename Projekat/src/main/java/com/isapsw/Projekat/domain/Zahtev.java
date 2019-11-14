@@ -32,6 +32,10 @@ public class Zahtev{
     @Size(min=5)
     private String password;
 
+    @NotBlank(message = "Neophodno je uneti jedinstveni broj zdravstvenog osiguranika.")
+    @Column(updatable = false, unique = true)
+    private String jbzo;
+
     @Transient
     private String confirmPassword;
 
@@ -48,6 +52,14 @@ public class Zahtev{
         this.email = email;
         this.password = password;
         this.verified = verified;
+    }
+
+    public String getJbzo() {
+        return jbzo;
+    }
+
+    public void setJbzo(String jbzo) {
+        this.jbzo = jbzo;
     }
 
     public boolean isVerified() {
