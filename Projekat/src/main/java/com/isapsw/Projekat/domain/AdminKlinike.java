@@ -7,31 +7,15 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 @Entity
-public class AdminKlinike {
+public class AdminKlinike{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "Neophodno je uneti ime.")
-    @Size(min=2)
-    private String ime;
-
-    @NotBlank(message = "Neophodno je uneti prezime.")
-    @Size(min=2)
-    private String prezime;
-
-    @NotBlank(message = "Neophodno je uneti korisnicko ime.")
-    @Column(unique = true)
-    private String username;
-
-    @NotBlank(message = "Neophodno je uneti password.")
-    @Size(min=5)
-    private String password;
-
-    @NotBlank(message = "Neophodno je uneti email.")
-    @Column(updatable = false, unique = true)
-    private String email;
+    @ManyToOne
+    @JoinColumn
+    private Korisnik korisnik;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="klinika_id", updatable = false, nullable = false)
@@ -43,13 +27,25 @@ public class AdminKlinike {
     @JsonIgnore
     private AdminKlinCentra adminKlinCentra;
 
+    public AdminKlinike() {
+        super();
+    }
 
-    public AdminKlinike(@NotBlank(message = "Neophodno je uneti ime.") @Size(min = 2) String ime, @NotBlank(message = "Neophodno je uneti prezime.") @Size(min = 2) String prezime, @NotBlank(message = "Neophodno je uneti korisnicko ime.") String username, @NotBlank(message = "Neophodno je uneti password.") @Size(min = 5) String password, @NotBlank(message = "Neophodno je uneti email.") String email) {
-        this.ime = ime;
-        this.prezime = prezime;
-        this.username = username;
-        this.password = password;
-        this.email = email;
+
+
+    public AdminKlinike(Korisnik korisnik, Klinika klinika, AdminKlinCentra adminKlinCentra) {
+        super();
+        this.korisnik = korisnik;
+        this.klinika = klinika;
+        this.adminKlinCentra = adminKlinCentra;
+    }
+
+    public AdminKlinCentra getAdminKlinCentra() {
+        return adminKlinCentra;
+    }
+
+    public void setAdminKlinCentra(AdminKlinCentra adminKlinCentra) {
+        this.adminKlinCentra = adminKlinCentra;
     }
 
     public Klinika getKlinika() {
@@ -68,55 +64,18 @@ public class AdminKlinike {
         this.id = id;
     }
 
-    public String getIme() {
-        return ime;
+    public Korisnik getKorisnik() {
+        return korisnik;
     }
 
-    public String getPrezime() {
-        return prezime;
-    }
-
-    public void setIme(String ime) {
-        this.ime = ime;
-    }
-
-    public void setPrezime(String prezime) {
-        this.prezime = prezime;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
+    public void setKorisnik(Korisnik korisnik) {
+        this.korisnik = korisnik;
     }
 
     @Override
     public String toString() {
         return "AdminKlinike{" +
                 "id=" + id +
-                ", ime='" + ime + '\'' +
-                ", prezime='" + prezime + '\'' +
-                ", username='" + username + '\'' +
-                ", password='" + password + '\'' +
-                ", email='" + email + '\'' +
                 ", klinika=" + klinika +
                 '}';
     }
