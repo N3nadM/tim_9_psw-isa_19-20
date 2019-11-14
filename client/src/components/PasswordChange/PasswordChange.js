@@ -1,15 +1,10 @@
 import React from "react";
-import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import TextField from "@material-ui/core/TextField";
-import Link from "@material-ui/core/Link";
-import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
-import logo from "../../images/pharmacy.png";
-import { Link as Link1 } from "react-router-dom";
 
 const useStyles = makeStyles(theme => ({
   "@global": {
@@ -41,7 +36,7 @@ export default function PasswordChange() {
             name="password"
             label="Stara lozinka"
             type="staraLozinka"
-            id="password"
+            id="staraLozinka"
             autoComplete="current-password"
           />
           <TextField
@@ -66,7 +61,6 @@ export default function PasswordChange() {
           />
           <Button
             type="submit"
-            fullWidth
             variant="contained"
             color="primary"
             className={classes.submit}

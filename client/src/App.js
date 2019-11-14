@@ -13,9 +13,9 @@ function App() {
         <ScrollToTop>
           <AppBar />
           <Switch>
-            {/*<Route exact path="/" component={SignIn} />
-            <Route exact path="/signUp" component={SignUp} />*/}
-            <Route exact="/" component={Profil} />
+            <Route exact path="/" component={SignIn} />
+            <Route exact path="/signUp" component={SignUp} />
+            {/*<Route exact path="/" component={Profil} />*/}
           </Switch>
         </ScrollToTop>
       </Router>
