@@ -1,5 +1,7 @@
 package com.isapsw.Projekat.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
@@ -22,10 +24,6 @@ public class Zahtev{
     @NotBlank(message = "Neophodno je uneti adresu prebivalista.")
     private String adresa;
 
-    @NotBlank(message = "Neophodno je uneti korisnicko ime.")
-    @Column(unique = true)
-    private String username;
-
     @NotBlank(message = "Neophodno je uneti email.")
     @Column(updatable = false, unique = true)
     private String email;
@@ -33,6 +31,9 @@ public class Zahtev{
     @NotBlank(message = "Neophodno je uneti password.")
     @Size(min=5)
     private String password;
+
+    @Transient
+    private String confirmPassword;
 
     private boolean verified = false;
 
@@ -44,7 +45,6 @@ public class Zahtev{
         this.ime = ime;
         this.prezime = prezime;
         this.adresa = adresa;
-        this.username = username;
         this.email = email;
         this.password = password;
         this.verified = verified;
@@ -52,6 +52,14 @@ public class Zahtev{
 
     public boolean isVerified() {
         return verified;
+    }
+
+    public String getConfirmPassword() {
+        return confirmPassword;
+    }
+
+    public void setConfirmPassword(String confirmPassword) {
+        this.confirmPassword = confirmPassword;
     }
 
     public void setVerified(boolean verified) {
@@ -88,14 +96,6 @@ public class Zahtev{
 
     public void setAdresa(String adresa) {
         this.adresa = adresa;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
     }
 
     public String getEmail() {

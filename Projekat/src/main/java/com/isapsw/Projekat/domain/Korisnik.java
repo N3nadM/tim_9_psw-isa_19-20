@@ -20,10 +20,6 @@ public class Korisnik {
     @Size(min=2)
     protected String prezime;
 
-    @NotBlank(message = "Neophodno je uneti korisnicko ime.")
-    @Column(unique = true)
-    protected String username;
-
     @NotBlank(message = "Neophodno je uneti password.")
     @Size(min=5)
     protected String password;
@@ -68,14 +64,6 @@ public class Korisnik {
 
     public void setPrezime(String prezime) {
         this.prezime = prezime;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
     }
 
     public String getPassword() {

@@ -29,7 +29,6 @@ public class Pacijent{
     @Column(updatable = false)
     private Date datum_kreiranja;
 
-
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "pacijent")
     private ZdrKarton zdrKarton;
 
