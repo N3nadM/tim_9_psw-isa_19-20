@@ -18,6 +18,7 @@ import MenuIcon from "@material-ui/icons/Menu";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
+import PasswordChange from "../PasswordChange/PasswordChange";
 
 import Box from "@material-ui/core/Box";
 
@@ -26,7 +27,7 @@ import Tab from "@material-ui/core/Tab";
 
 const drawerWidth = 240;
 
-function TabPanel(props: ({TabPanelProps})) {
+function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
   return (
@@ -77,7 +78,7 @@ const useStyles = makeStyles(theme => ({
     borderRight: `1px solid ${theme.palette.divider}`
   }
 }));
-function a11yProps(index: any) {
+function a11yProps(index) {
   return {
     id: `simple-tab-${index}`,
     "aria-controls": `simple-tabpanel-${index}`
@@ -86,7 +87,7 @@ function a11yProps(index: any) {
 
 function ResponsiveDrawer(props) {
   const [value, setValue] = React.useState(0);
-  const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
+  const handleChange = (event, newValue) => {
     setValue(newValue);
   };
   const { container } = props;
@@ -174,13 +175,13 @@ function ResponsiveDrawer(props) {
       <main className={classes.content}>
         <div className={classes.toolbar} />
         <TabPanel value={value} index={0}>
-          Item One
+          Inbox
         </TabPanel>
         <TabPanel value={value} index={1}>
           Item Two
         </TabPanel>
         <TabPanel value={value} index={2}>
-          Item Three
+          <PasswordChange />
         </TabPanel>
       </main>
     </div>

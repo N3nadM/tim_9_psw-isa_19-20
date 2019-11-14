@@ -40,7 +40,7 @@ const MyAppBar = ({ location }) => {
           </Typography>
           {location.pathname === "/signUp" && (
             <Link to="/">
-              <Button color="inherit">Uloguj se</Button>
+              <Button color="inherit">Uloguj se</Button>z
             </Link>
           )}
           {location.pathname === "/" && (
