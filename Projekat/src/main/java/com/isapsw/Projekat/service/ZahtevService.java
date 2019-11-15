@@ -3,7 +3,7 @@ package com.isapsw.Projekat.service;
 import com.isapsw.Projekat.domain.Korisnik;
 import com.isapsw.Projekat.domain.Pacijent;
 import com.isapsw.Projekat.domain.Zahtev;
-import com.isapsw.Projekat.exceptions.UserAlreadyExistsException;
+import com.isapsw.Projekat.exceptions.UserException;
 import com.isapsw.Projekat.repository.KorisnikRepository;
 import com.isapsw.Projekat.repository.PacijentRepository;
 import com.isapsw.Projekat.repository.ZahtevRepository;
@@ -54,16 +54,16 @@ public class ZahtevService {
         } catch(Exception e) {
             Zahtev zahtev = zahtevRepository.getZahtevByJbzo(newZahtev.getJbzo());
             if(zahtev != null) {
-                throw new UserAlreadyExistsException("Zahtev sa jedinstvenim zdravstvenim brojem '" + newZahtev.getJbzo() + "' vec postoji.");
+                throw new UserException("Zahtev sa jedinstvenim zdravstvenim brojem '" + newZahtev.getJbzo() + "' vec postoji.");
             }
 
             zahtev = zahtevRepository.getZahtevByEmail(newZahtev.getEmail());
 
             if(zahtev != null) {
-                throw new UserAlreadyExistsException("Zahtev sa emailom '" + newZahtev.getJbzo() + "' vec postoji.");
+                throw new UserException("Zahtev sa emailom '" + newZahtev.getJbzo() + "' vec postoji.");
             }
 
-            throw new UserAlreadyExistsException(e.getMessage());
+            throw new UserException(e.getMessage());
         }
     }
 
@@ -82,7 +82,7 @@ public class ZahtevService {
             korisnikRepository.save(korisnik);
             pacijentRepository.save(pacijent);
         } catch (Exception e) {
-            throw new UserAlreadyExistsException("Zahtev ne postoji");
+            throw new UserException("Zahtev ne postoji");
         }
     }
 
@@ -93,7 +93,7 @@ public class ZahtevService {
 
 
         } catch (Exception e) {
-            throw new UserAlreadyExistsException("Zahtev ne postoji");
+            throw new UserException("Zahtev ne postoji");
         }
     }
 }

@@ -1,9 +1,9 @@
 package com.isapsw.Projekat.exceptions;
 
-public class UserAlreadyExistsResponse {
+public class UserExceptionResponse {
     private String message;
 
-    public UserAlreadyExistsResponse(String message) {
+    public UserExceptionResponse(String message) {
         this.message = message;
     }
 
