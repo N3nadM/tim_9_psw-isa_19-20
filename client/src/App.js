@@ -16,7 +16,7 @@ function App() {
           <Switch>
             <Route exact path="/" component={SignIn} />
             <Route exact path="/signUp" component={SignUp} />
-            {/* <Route exact path="/" component={Profil} /> */}
+            <Route exact path="/adminKprofil" component={Profil} />
             <Route exact path="/adminKC" component={AdminKC} />
           </Switch>
         </ScrollToTop>

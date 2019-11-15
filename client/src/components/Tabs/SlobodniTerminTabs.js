@@ -77,7 +77,6 @@ export default function FullWidthTabs() {
         onChange={handleChange}
         indicatorColor="primary"
         textColor="primary"
-        centered
       >
         <Tab label="Unos novog termina pregleda" {...a11yProps(0)} />
         <Tab label="Slobodni termini pregleda" {...a11yProps(1)} />

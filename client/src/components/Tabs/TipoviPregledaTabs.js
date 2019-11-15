@@ -69,7 +69,6 @@ export default function FullWidthTabs() {
         onChange={handleChange}
         indicatorColor="primary"
         textColor="primary"
-        centered
       >
         <Tab label="Unos novog tipa pregleda" {...a11yProps(0)} />
         <Tab label="Pretraga tipova pregleda" {...a11yProps(1)} />

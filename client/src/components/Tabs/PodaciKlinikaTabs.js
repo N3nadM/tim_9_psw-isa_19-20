@@ -70,7 +70,6 @@ export default function FullWidthTabs() {
         onChange={handleChange}
         indicatorColor="primary"
         textColor="primary"
-        centered
       >
         <Tab label="Podaci o klinici" {...a11yProps(0)} />
         <Tab label="Izmena podataka o klinici" {...a11yProps(1)} />

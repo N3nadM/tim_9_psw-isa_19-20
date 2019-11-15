@@ -69,7 +69,6 @@ export default function FullWidthTabs() {
         onChange={handleChange}
         indicatorColor="primary"
         textColor="primary"
-        centered
       >
         <Tab label="Unos nove sale" {...a11yProps(0)} />
         <Tab label="Pretraga sale" {...a11yProps(1)} />
