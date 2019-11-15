@@ -15,4 +15,10 @@ public interface ZahtevRepository extends JpaRepository<Zahtev, Long> {
     void deleteById(Long id);
 
     Zahtev getZahtevByJbzo(String jbzo);
+
+    Zahtev findZahtevByEmail(String email);
+
+    void deleteByEmail(String email);
+
+    Zahtev getZahtevByEmail(String email);
 }

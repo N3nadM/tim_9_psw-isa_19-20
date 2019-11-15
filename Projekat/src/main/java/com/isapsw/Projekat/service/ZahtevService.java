@@ -1,13 +1,16 @@
 package com.isapsw.Projekat.service;
 
+import com.isapsw.Projekat.domain.Korisnik;
 import com.isapsw.Projekat.domain.Pacijent;
 import com.isapsw.Projekat.domain.Zahtev;
 import com.isapsw.Projekat.exceptions.UserAlreadyExistsException;
+import com.isapsw.Projekat.repository.KorisnikRepository;
 import com.isapsw.Projekat.repository.PacijentRepository;
 import com.isapsw.Projekat.repository.ZahtevRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -23,6 +26,9 @@ public class ZahtevService {
     @Autowired
     private PacijentRepository pacijentRepository;
 
+    @Autowired
+    private KorisnikRepository korisnikRepository;
+
     public List<Zahtev> findAll(){
         return zahtevRepository.findAll();
     }
@@ -35,19 +41,59 @@ public class ZahtevService {
         try {
             newZahtev.setPassword(bCryptPasswordEncoder.encode(newZahtev.getPassword()));
 
+            Pacijent pacijent = pacijentRepository.getPacijentByJbzo(newZahtev.getJbzo());
+            if(pacijent != null) {
+                throw new Exception("Korisnik sa jedinstvenim zdravstvenim brojem '" + newZahtev.getJbzo() + "' vec postoji.");
+            }
+            Korisnik korisnik = korisnikRepository.getKorisnikByEmail(newZahtev.getEmail());
+            if(korisnik != null) {
+                throw new Exception("Korisnik sa emailom '" + newZahtev.getEmail() + "' vec postoji.");
+            }
+
             return zahtevRepository.save(newZahtev);
         } catch(Exception e) {
             Zahtev zahtev = zahtevRepository.getZahtevByJbzo(newZahtev.getJbzo());
             if(zahtev != null) {
-                throw new UserAlreadyExistsException("Korisnik sa jedinstvenim zdravstvenim brojem '" + newZahtev.getJbzo() + "' vec postoji.");
+                throw new UserAlreadyExistsException("Zahtev sa jedinstvenim zdravstvenim brojem '" + newZahtev.getJbzo() + "' vec postoji.");
             }
 
-            Pacijent pacijent = pacijentRepository.getPacijentByJbzo(newZahtev.getJbzo());
-            if(pacijent != null) {
-                throw new UserAlreadyExistsException("Korisnik sa jedinstvenim zdravstvenim brojem '" + newZahtev.getJbzo() + "' vec postoji.");
+            zahtev = zahtevRepository.getZahtevByEmail(newZahtev.getEmail());
+
+            if(zahtev != null) {
+                throw new UserAlreadyExistsException("Zahtev sa emailom '" + newZahtev.getJbzo() + "' vec postoji.");
             }
 
-            throw new UserAlreadyExistsException("Korisnik sa emailom '" + newZahtev.getEmail() + "' vec postoji.");
+            throw new UserAlreadyExistsException(e.getMessage());
+        }
+    }
+
+    @Transactional
+    public void createKorisnikFromZahtev(String email) {
+        try {
+            Zahtev zahtev = zahtevRepository.findZahtevByEmail(email);
+
+            Korisnik korisnik = new Korisnik(zahtev);
+
+            Pacijent pacijent = new Pacijent(zahtev);
+            pacijent.setKorisnik(korisnik);
+
+            zahtevRepository.deleteByEmail(email);
+
+            korisnikRepository.save(korisnik);
+            pacijentRepository.save(pacijent);
+        } catch (Exception e) {
+            throw new UserAlreadyExistsException("Zahtev ne postoji");
+        }
+    }
+
+    @Transactional
+    public void denieZahtev(String email, String message) {
+        try {
+            zahtevRepository.deleteByEmail(email);
+
+
+        } catch (Exception e) {
+            throw new UserAlreadyExistsException("Zahtev ne postoji");
         }
     }
 }

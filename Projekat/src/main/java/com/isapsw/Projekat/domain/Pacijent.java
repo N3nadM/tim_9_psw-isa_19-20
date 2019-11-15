@@ -29,7 +29,6 @@ public class Pacijent{
     @Column(updatable = false)
     private Date datum_kreiranja;
 
-
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "pacijent")
     private ZdrKarton zdrKarton;
 
@@ -45,7 +44,10 @@ public class Pacijent{
     private AdminKlinCentra adminKlinCentra;
 
     public Pacijent() {
-        super();
+    }
+
+    public Pacijent(Zahtev zahtev) {
+        this.jbzo = zahtev.getJbzo();
     }
 
     public Pacijent(Korisnik korisnik, @NotBlank(message = "Neophodno je uneti jedinstveni broj zdravstvenog osiguranika.") String jbzo, Date datum_kreiranja, ZdrKarton zdrKarton, AdminKlinCentra adminKlinCentra) {

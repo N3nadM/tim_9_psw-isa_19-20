@@ -38,6 +38,14 @@ public class Korisnik implements UserDetails {
     public Korisnik() {
     }
 
+    public Korisnik(Zahtev zahtev) {
+        this.ime = zahtev.getIme();
+        this.prezime = zahtev.getPrezime();
+        this.password = zahtev.getPassword();
+        this.email = zahtev.getEmail();
+        this.adresa = zahtev.getAdresa();
+    }
+
     public String getAdresa() {
         return adresa;
     }
