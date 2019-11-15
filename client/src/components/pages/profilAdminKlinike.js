@@ -1,6 +1,4 @@
 import React from "react";
-import Avatar from "@material-ui/core/Avatar";
-import Button from "@material-ui/core/Button";
 import PropTypes from "prop-types";
 import AppBar from "@material-ui/core/AppBar";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -8,16 +6,20 @@ import Divider from "@material-ui/core/Divider";
 import Drawer from "@material-ui/core/Drawer";
 import Hidden from "@material-ui/core/Hidden";
 import IconButton from "@material-ui/core/IconButton";
-import InboxIcon from "@material-ui/icons/MoveToInbox";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
-import ListItemText from "@material-ui/core/ListItemText";
-import MailIcon from "@material-ui/icons/Mail";
 import MenuIcon from "@material-ui/icons/Menu";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
+import PasswordChange from "../PasswordChange/PasswordChange";
+import LekariTabs from "../Tabs/LekariTabs";
+import SaleTabs from "../Tabs/SaleTabs";
+import TipoviPregledaTabs from "../Tabs/TipoviPregledaTabs";
+import SlobodniTerminiTabs from "../Tabs/SlobodniTerminTabs";
+import LicniPodaciTabs from "../Tabs/LicniPodaciTabs";
+import PodaciKlinikaTabs from "../Tabs/PodaciKlinikaTabs";
+
+import Paper from "@material-ui/core/Paper";
+import Grid from "@material-ui/core/Grid";
 
 import Box from "@material-ui/core/Box";
 
@@ -26,7 +28,7 @@ import Tab from "@material-ui/core/Tab";
 
 const drawerWidth = 240;
 
-function TabPanel(props: ({TabPanelProps})) {
+function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
   return (
@@ -59,25 +61,28 @@ const useStyles = makeStyles(theme => ({
       marginLeft: drawerWidth
     }
   },
+  paper: {
+    padding: theme.spacing(30),
+    textAlign: "center",
+    color: theme.palette.text.primary
+  },
+  content: {
+    width: `1000 px`
+  },
   menuButton: {
     marginRight: theme.spacing(2),
     [theme.breakpoints.up("sm")]: {
       display: "none"
     }
   },
-  toolbar: theme.mixins.toolbar,
   drawerPaper: {
     width: drawerWidth
-  },
-  content: {
-    flexGrow: 1,
-    padding: theme.spacing(3)
   },
   tabs: {
     borderRight: `1px solid ${theme.palette.divider}`
   }
 }));
-function a11yProps(index: any) {
+function a11yProps(index) {
   return {
     id: `simple-tab-${index}`,
     "aria-controls": `simple-tabpanel-${index}`
@@ -86,7 +91,7 @@ function a11yProps(index: any) {
 
 function ResponsiveDrawer(props) {
   const [value, setValue] = React.useState(0);
-  const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
+  const handleChange = (event, newValue) => {
     setValue(newValue);
   };
   const { container } = props;
@@ -109,14 +114,15 @@ function ResponsiveDrawer(props) {
         variant="scrollable"
         aria-label="simple tabs example"
       >
-        <Tab label="Inbox" {...a11yProps(0)} />
-        <Tab label="Lični podaci" {...a11yProps(1)} />
-        <Tab label="Promena lozinke" {...a11yProps(2)} />
-        <Tab label="Podaci o klinici" {...a11yProps(3)} />
+        <Tab label="Podaci o klinici" {...a11yProps(0)} />
+        <Tab label="Inbox" {...a11yProps(1)} />
+        <Tab label="Lični podaci" {...a11yProps(2)} />
+        <Tab label="Promena lozinke" {...a11yProps(3)} />
         <Tab label="Slobodni termini pregleda" {...a11yProps(4)} />
         <Tab label="Lekari" {...a11yProps(5)} />
         <Tab label="Sale" {...a11yProps(6)} />
         <Tab label="Tipovi pregleda" {...a11yProps(7)} />
+        <Tab label="Izveštaj o poslovanju klinike" {...a11yProps(8)} />
       </Tabs>
     </div>
   );
@@ -174,13 +180,46 @@ function ResponsiveDrawer(props) {
       <main className={classes.content}>
         <div className={classes.toolbar} />
         <TabPanel value={value} index={0}>
-          Item One
+          <PodaciKlinikaTabs />
         </TabPanel>
         <TabPanel value={value} index={1}>
-          Item Two
+          Inbox
         </TabPanel>
         <TabPanel value={value} index={2}>
-          Item Three
+          <LicniPodaciTabs />
+        </TabPanel>
+        <TabPanel value={value} index={3}>
+          <PasswordChange />
+        </TabPanel>
+        <TabPanel value={value} index={4}>
+          <SlobodniTerminiTabs />
+        </TabPanel>
+        <TabPanel value={value} index={5}>
+          <LekariTabs />
+        </TabPanel>
+        <TabPanel value={value} index={6}>
+          <SaleTabs />
+        </TabPanel>
+        <TabPanel value={value} index={7}>
+          <TipoviPregledaTabs />
+        </TabPanel>
+        <TabPanel value={value} index={8}>
+          <Grid container spacing={3}>
+            <Grid item xs>
+              <Paper className={classes.paper}>
+                Prosecna ocena klinike i ocene lekara
+              </Paper>
+            </Grid>
+            <Grid item xs>
+              <Paper className={classes.paper}>Grafik prihoda klinike</Paper>
+            </Grid>
+            <Grid item xs>
+              <Paper className={classes.paper}>
+                Grafici odrzanih pregleda na nedeljnom, mesecnom i godisnjem
+                nivou
+              </Paper>
+            </Grid>
+          </Grid>
         </TabPanel>
       </main>
     </div>
