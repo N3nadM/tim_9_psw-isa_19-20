@@ -8,10 +8,15 @@ import java.util.List;
 import java.util.Set;
 
 @Entity
-public class Lekar extends MedicinskoOsoblje {
+public class Lekar{
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @ManyToOne
+    @JoinColumn
+    private Korisnik korisnik;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "lekar")
     private List<Pregled> pregledi = new ArrayList<>();
@@ -25,13 +30,17 @@ public class Lekar extends MedicinskoOsoblje {
     private Klinika klinika;
 
     public Lekar(){
+        super();
         this.pregledi = new ArrayList<>();
         this.operacije = new ArrayList<>();
     }
 
-    public Lekar(List<Pregled> pregledi, List<Operacija> operacije) {
+    public Lekar(Korisnik korisnik, List<Pregled> pregledi, List<Operacija> operacije, Klinika klinika) {
+        super();
+        this.korisnik = korisnik;
         this.pregledi = pregledi;
         this.operacije = operacije;
+        this.klinika = klinika;
     }
 
     public List<Pregled> getPregledi() {
@@ -50,14 +59,20 @@ public class Lekar extends MedicinskoOsoblje {
         this.operacije = operacije;
     }
 
-    @Override
     public Long getId() {
         return id;
     }
 
-    @Override
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Korisnik getKorisnik() {
+        return korisnik;
+    }
+
+    public void setKorisnik(Korisnik korisnik) {
+        this.korisnik = korisnik;
     }
 
     public Klinika getKlinika() {

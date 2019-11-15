@@ -11,7 +11,24 @@ import java.util.Date;
 import java.util.List;
 
 @Entity
-public class Pacijent extends Pacijent_Zahtev{
+public class Pacijent{
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @ManyToOne
+    @JoinColumn
+    private Korisnik korisnik;
+
+    @NotBlank(message = "Neophodno je uneti jedinstveni broj zdravstvenog osiguranika.")
+    @Column(updatable = false, unique = true)
+    private String jbzo;
+
+    @JsonFormat(pattern = "yyyy-mm-dd")
+    @Column(updatable = false)
+    private Date datum_kreiranja;
+
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "pacijent")
     private ZdrKarton zdrKarton;
 
@@ -22,13 +39,28 @@ public class Pacijent extends Pacijent_Zahtev{
     private List<Operacija> operacije = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="adminKlinCentra_id", updatable = false, nullable = false)
+    @JoinColumn(name="adminKlinCentra_id", updatable = false, nullable = true)
     @JsonIgnore
     private AdminKlinCentra adminKlinCentra;
 
     public Pacijent() {
-        super();
     }
+
+    public Pacijent(Zahtev zahtev) {
+        this.jbzo = zahtev.getJbzo();
+    }
+
+    public Pacijent(Korisnik korisnik, @NotBlank(message = "Neophodno je uneti jedinstveni broj zdravstvenog osiguranika.") String jbzo, Date datum_kreiranja, ZdrKarton zdrKarton, AdminKlinCentra adminKlinCentra) {
+        super();
+        this.korisnik = korisnik;
+        this.jbzo = jbzo;
+        this.datum_kreiranja = datum_kreiranja;
+        this.zdrKarton = zdrKarton;
+        this.pregledi = new ArrayList<>();
+        this.operacije = new ArrayList<>();
+        this.adminKlinCentra = adminKlinCentra;
+    }
+
 
     public ZdrKarton getZdrKarton() {
         return zdrKarton;
@@ -53,5 +85,51 @@ public class Pacijent extends Pacijent_Zahtev{
     public void setOperacije(List<Operacija> operacije) {
         this.operacije = operacije;
     }
+
+    public String getJbzo() {
+        return jbzo;
+    }
+
+    public void setJbzo(String jbzo) {
+        this.jbzo = jbzo;
+    }
+
+    public Date getDatum_kreiranja() {
+        return datum_kreiranja;
+    }
+
+    public void setDatum_kreiranja(Date datum_kreiranja) {
+        this.datum_kreiranja = datum_kreiranja;
+    }
+
+    public AdminKlinCentra getAdminKlinCentra() {
+        return adminKlinCentra;
+    }
+
+    public void setAdminKlinCentra(AdminKlinCentra adminKlinCentra) {
+        this.adminKlinCentra = adminKlinCentra;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Korisnik getKorisnik() {
+        return korisnik;
+    }
+
+    public void setKorisnik(Korisnik korisnik) {
+        this.korisnik = korisnik;
+    }
+
+    @PrePersist
+    protected void onCreate(){
+        this.datum_kreiranja = new Date();
+    }
+
 
 }

@@ -1,18 +1,21 @@
 package com.isapsw.Projekat.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.isapsw.Projekat.domain.MedicinskoOsoblje;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-public class MedicinskaSestra extends MedicinskoOsoblje {
+public class MedicinskaSestra{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @ManyToOne
+    @JoinColumn
+    private Korisnik korisnik;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "medicinskaSestra")
     private List<Recept> recepti = new ArrayList<>();
@@ -27,9 +30,11 @@ public class MedicinskaSestra extends MedicinskoOsoblje {
         this.recepti = new ArrayList<>();
     }
 
-    public MedicinskaSestra(List<Recept> recepti) {
+    public MedicinskaSestra(Korisnik korisnik, List<Recept> recepti, Klinika klinika) {
         super();
+        this.korisnik = korisnik;
         this.recepti = recepti;
+        this.klinika = klinika;
     }
 
     public Long getId() { return id; }
@@ -46,5 +51,13 @@ public class MedicinskaSestra extends MedicinskoOsoblje {
 
     public void setKlinika(Klinika klinika) {
         this.klinika = klinika;
+    }
+
+    public Korisnik getKorisnik() {
+        return korisnik;
+    }
+
+    public void setKorisnik(Korisnik korisnik) {
+        this.korisnik = korisnik;
     }
 }
