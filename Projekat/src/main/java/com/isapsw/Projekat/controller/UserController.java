@@ -21,6 +21,7 @@ import javax.validation.Valid;
 
 import static com.isapsw.Projekat.security.Konstante.TOKEN_BEARER_PREFIX;
 
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
 @RequestMapping(value = "/api/users")
 public class UserController {
@@ -73,6 +74,7 @@ public class UserController {
 
     @PostMapping("/register/{email}")
     public ResponseEntity<?> registerUser(@PathVariable String email) {
+        System.out.println("Tu samm");
         try {
             emailService.sendConfirmationAsync(email);
         } catch (Exception e) {
@@ -89,7 +91,7 @@ public class UserController {
         return new ResponseEntity<String>("Korisnik kreiran", HttpStatus.OK);
     }
 
-    @GetMapping("/denie/{email}")
+    @PostMapping("/denie/{email}")
     public ResponseEntity<String> denieAccount(@PathVariable String email, @RequestBody String message) {
 
         zahtevService.denieZahtev(email, message);
