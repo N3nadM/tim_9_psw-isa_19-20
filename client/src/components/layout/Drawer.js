@@ -19,6 +19,10 @@ import InboxIcon from "@material-ui/icons/MoveToInbox";
 import MailIcon from "@material-ui/icons/Mail";
 import { Link, withRouter } from "react-router-dom";
 import Button from "@material-ui/core/Button";
+import AccountCircle from "@material-ui/icons/AccountCircle";
+
+import MenuItem from "@material-ui/core/MenuItem";
+import Menu from "@material-ui/core/Menu";
 
 const drawerWidth = 240;
 
@@ -94,6 +98,20 @@ const PersistentDrawer = ({ location }) => {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
 
+  const [anchorEl, setAnchorEl] = React.useState(null);
+
+  const isMenuOpen = Boolean(anchorEl);
+
+  const menuId = "primary-search-account-menu";
+
+  const handleProfileMenuOpen = event => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+  };
+
   const handleDrawerOpen = () => {
     setOpen(true);
   };
@@ -101,6 +119,21 @@ const PersistentDrawer = ({ location }) => {
   const handleDrawerClose = () => {
     setOpen(false);
   };
+
+  const renderMenu = (
+    <Menu
+      anchorEl={anchorEl}
+      anchorOrigin={{ vertical: "top", horizontal: "right" }}
+      id={menuId}
+      keepMounted
+      transformOrigin={{ vertical: "top", horizontal: "right" }}
+      open={isMenuOpen}
+      onClose={handleMenuClose}
+    >
+      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
+      <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+    </Menu>
+  );
 
   return (
     <div className={classes.root}>
@@ -127,17 +160,30 @@ const PersistentDrawer = ({ location }) => {
             Klinički centar KING
           </Typography>
           {location.pathname === "/signUp" && (
-            <Link to="/">
+            <Link to="/login">
               <Button color="inherit">Uloguj se</Button>
             </Link>
           )}
-          {location.pathname === "/" && (
+          {location.pathname === "/login" && (
             <Link to="/signUp">
               <Button color="inherit">Registruj se</Button>
             </Link>
           )}
+          <div>
+            <IconButton
+              edge="end"
+              aria-label="account of current user"
+              aria-controls={menuId}
+              aria-haspopup="true"
+              onClick={handleProfileMenuOpen}
+              color="inherit"
+            >
+              <AccountCircle />
+            </IconButton>
+          </div>
         </Toolbar>
       </AppBar>
+      {renderMenu}
       <Drawer
         variant="permanent"
         className={clsx(classes.drawer, {
@@ -163,6 +209,12 @@ const PersistentDrawer = ({ location }) => {
         </div>
         <Divider />
         <List>
+          <ListItem button>
+            <ListItemIcon>
+              <MailIcon />
+            </ListItemIcon>
+            <ListItemText primary={"Zahtevi za registraciju"} />
+          </ListItem>
           {["Inbox", "Starred", "Send email", "Drafts"].map((text, index) => (
             <ListItem button key={text}>
               <ListItemIcon>

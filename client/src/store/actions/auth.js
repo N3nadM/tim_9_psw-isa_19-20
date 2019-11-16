@@ -26,6 +26,7 @@ export const authUser = userData => async dispatch => {
       withCredentials: true
     });
     const pureJwt = jwt.data.slice(7);
+    localStorage.setItem("jwtToken", pureJwt);
     setAuthorizationToken(pureJwt);
     const decodedToken = jwtDecode(pureJwt);
     dispatch(setCurrentUser(decodedToken));

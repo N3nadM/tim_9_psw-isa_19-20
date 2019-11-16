@@ -8,10 +8,12 @@ import SignUp from "./components/pages/Registracija";
 import AppBar from "./components/layout/AppBar/AppBar";
 import jwtDecode from "jwt-decode";
 import ScrollToTop from "./components/ScrollToTop/ScrollToTop";
-import Profil from "./components/pages/ProfilAdminKlinike";
-import AdminKC from "./components/pages/ProfilAKC";
+
 import Drawer from "./components/layout/Drawer";
 import { setAuthorizationToken, setCurrentUser } from "./store/actions/auth";
+import PrivateRoute from "./routing/PrivateRoute";
+
+import Home from "./components/pages/Home";
 
 const store = configureStore();
 
@@ -32,10 +34,9 @@ function App() {
         <ScrollToTop>
           <Drawer />
           <Switch>
-            <Route exact path="/" component={SignIn} />
+            <Route exact path="/login" component={SignIn} />
             <Route exact path="/signUp" component={SignUp} />
-            <Route exact path="/adminKprofil" component={Profil} />
-            <Route exact path="/adminKC" component={AdminKC} />
+            <PrivateRoute exact path="/" component={Home} />
           </Switch>
         </ScrollToTop>
       </Router>
