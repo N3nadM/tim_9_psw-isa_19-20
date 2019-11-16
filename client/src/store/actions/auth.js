@@ -20,6 +20,14 @@ export const setAuthorizationToken = token => {
   }
 };
 
+export function logout() {
+  return dispatch => {
+    localStorage.clear();
+    setAuthorizationToken(false);
+    dispatch(setCurrentUser({}));
+  };
+}
+
 export const authUser = userData => async dispatch => {
   try {
     const jwt = await axios.post("/api/users/login", userData, {

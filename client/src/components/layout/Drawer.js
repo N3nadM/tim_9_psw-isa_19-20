@@ -21,6 +21,10 @@ import { Link, withRouter } from "react-router-dom";
 import Button from "@material-ui/core/Button";
 import AccountCircle from "@material-ui/icons/AccountCircle";
 
+import { connect } from "react-redux";
+
+import { logout } from "../../store/actions/auth";
+
 import MenuItem from "@material-ui/core/MenuItem";
 import Menu from "@material-ui/core/Menu";
 
@@ -93,7 +97,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const PersistentDrawer = ({ location }) => {
+const PersistentDrawer = ({ location, logout, currentUser }) => {
   const classes = useStyles();
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
@@ -131,7 +135,14 @@ const PersistentDrawer = ({ location }) => {
       onClose={handleMenuClose}
     >
       <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-      <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+      <MenuItem
+        onClick={() => {
+          handleMenuClose();
+          logout();
+        }}
+      >
+        Izloguj se
+      </MenuItem>
     </Menu>
   );
 
@@ -159,31 +170,35 @@ const PersistentDrawer = ({ location }) => {
           <Typography variant="h6" className={classes.title}>
             Klinički centar KING
           </Typography>
-          {location.pathname === "/signUp" && (
-            <Link to="/login">
-              <Button color="inherit">Uloguj se</Button>
-            </Link>
+          {!Object.keys(currentUser.user).length &&
+            location.pathname === "/signUp" && (
+              <Link to="/login">
+                <Button color="inherit">Uloguj se</Button>
+              </Link>
+            )}
+          {!Object.keys(currentUser.user).length &&
+            location.pathname === "/login" && (
+              <Link to="/signUp">
+                <Button color="inherit">Registruj se</Button>
+              </Link>
+            )}
+          {!!Object.keys(currentUser.user).length && (
+            <div>
+              <IconButton
+                edge="end"
+                aria-label="account of current user"
+                aria-controls={menuId}
+                aria-haspopup="true"
+                onClick={handleProfileMenuOpen}
+                color="inherit"
+              >
+                <AccountCircle />
+              </IconButton>
+            </div>
           )}
-          {location.pathname === "/login" && (
-            <Link to="/signUp">
-              <Button color="inherit">Registruj se</Button>
-            </Link>
-          )}
-          <div>
-            <IconButton
-              edge="end"
-              aria-label="account of current user"
-              aria-controls={menuId}
-              aria-haspopup="true"
-              onClick={handleProfileMenuOpen}
-              color="inherit"
-            >
-              <AccountCircle />
-            </IconButton>
-          </div>
         </Toolbar>
       </AppBar>
-      {renderMenu}
+      {!!Object.keys(currentUser.user).length && renderMenu}
       <Drawer
         variant="permanent"
         className={clsx(classes.drawer, {
@@ -240,4 +255,12 @@ const PersistentDrawer = ({ location }) => {
   );
 };
 
-export default withRouter(PersistentDrawer);
+function mapStateToProps(state) {
+  return {
+    currentUser: state.currentUser
+  };
+}
+
+export default withRouter(
+  connect(mapStateToProps, { logout })(PersistentDrawer)
+);
