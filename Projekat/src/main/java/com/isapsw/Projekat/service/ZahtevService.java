@@ -2,8 +2,10 @@ package com.isapsw.Projekat.service;
 
 import com.isapsw.Projekat.domain.Korisnik;
 import com.isapsw.Projekat.domain.Pacijent;
+import com.isapsw.Projekat.domain.Authority;
 import com.isapsw.Projekat.domain.Zahtev;
 import com.isapsw.Projekat.exceptions.UserException;
+import com.isapsw.Projekat.repository.AuthorityRepository;
 import com.isapsw.Projekat.repository.KorisnikRepository;
 import com.isapsw.Projekat.repository.PacijentRepository;
 import com.isapsw.Projekat.repository.ZahtevRepository;
@@ -29,12 +31,11 @@ public class ZahtevService {
     @Autowired
     private KorisnikRepository korisnikRepository;
 
+    @Autowired
+    private AuthorityRepository authorityRepository;
+
     public List<Zahtev> findAll(){
         return zahtevRepository.findAll();
-    }
-
-    public void deleteById(Long id){
-        zahtevRepository.deleteById(id);
     }
 
     public Zahtev saveZahtev(Zahtev newZahtev) {
@@ -72,6 +73,10 @@ public class ZahtevService {
         try {
             Zahtev zahtev = zahtevRepository.findZahtevByEmail(email);
 
+            if(!zahtev.isVerified()) {
+                throw new Exception("Zahtev nije verifikovan od strane Administratora klinickog centra");
+            }
+
             Korisnik korisnik = new Korisnik(zahtev);
 
             Pacijent pacijent = new Pacijent(zahtev);
@@ -82,7 +87,7 @@ public class ZahtevService {
             korisnikRepository.save(korisnik);
             pacijentRepository.save(pacijent);
         } catch (Exception e) {
-            throw new UserException("Zahtev ne postoji");
+            throw new UserException(e.getMessage());
         }
     }
 

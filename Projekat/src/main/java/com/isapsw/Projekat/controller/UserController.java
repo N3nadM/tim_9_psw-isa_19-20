@@ -77,7 +77,10 @@ public class UserController {
         System.out.println("Tu samm");
         try {
             emailService.sendConfirmationAsync(email);
-        } catch (Exception e) {
+        } catch(NullPointerException e) {
+            System.out.println("Zahtev ne postoji");
+        }
+        catch (Exception e) {
             System.out.println("Email nije poslat");
         }
         return new ResponseEntity<>(HttpStatus.OK);

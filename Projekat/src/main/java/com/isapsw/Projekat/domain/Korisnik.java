@@ -1,13 +1,16 @@
 package com.isapsw.Projekat.domain;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 @Entity
 public class Korisnik implements UserDetails {
@@ -35,6 +38,12 @@ public class Korisnik implements UserDetails {
     @NotBlank(message = "Neophodno je uneti adresu.")
     private String adresa;
 
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinTable(name = "user_authority",
+            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "authority_id", referencedColumnName = "id"))
+    private List<Authority> authorities = new ArrayList<>();
+
     public Korisnik() {
     }
 
@@ -44,6 +53,10 @@ public class Korisnik implements UserDetails {
         this.password = zahtev.getPassword();
         this.email = zahtev.getEmail();
         this.adresa = zahtev.getAdresa();
+    }
+
+    public void setAuthorities(List<Authority> authorities) {
+        this.authorities = authorities;
     }
 
     public String getAdresa() {
@@ -96,7 +109,7 @@ public class Korisnik implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        return this.authorities;
     }
 
     @Override
