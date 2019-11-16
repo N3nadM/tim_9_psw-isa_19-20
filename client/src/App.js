@@ -1,18 +1,36 @@
 import React from "react";
+import { Provider } from "react-redux";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import SignIn from "./components/pages/prijava";
-import SignUp from "./components/pages/registracija";
-import AppBar from "./components/AppBar/AppBar";
+import { configureStore } from "./store/index";
+
+import SignIn from "./components/pages/Prijava";
+import SignUp from "./components/pages/Registracija";
+import AppBar from "./components/layout/AppBar/AppBar";
+import jwtDecode from "jwt-decode";
 import ScrollToTop from "./components/ScrollToTop/ScrollToTop";
-import Profil from "./components/pages/profilAdminKlinike";
-import AdminKC from "./components/pages/profilAKC";
+import Profil from "./components/pages/ProfilAdminKlinike";
+import AdminKC from "./components/pages/ProfilAKC";
+import Drawer from "./components/layout/Drawer";
+import { setAuthorizationToken, setCurrentUser } from "./store/actions/auth";
+
+const store = configureStore();
+
+if (localStorage.jwtToken) {
+  setAuthorizationToken(localStorage.jwtToken);
+
+  try {
+    store.dispatch(setCurrentUser(jwtDecode(localStorage.jwtToken)));
+  } catch (err) {
+    store.dispatch(setCurrentUser({}));
+  }
+}
 
 function App() {
   return (
-    <>
+    <Provider store={store}>
       <Router>
         <ScrollToTop>
-          <AppBar />
+          <Drawer />
           <Switch>
             <Route exact path="/" component={SignIn} />
             <Route exact path="/signUp" component={SignUp} />
@@ -21,7 +39,7 @@ function App() {
           </Switch>
         </ScrollToTop>
       </Router>
-    </>
+    </Provider>
   );
 }
 

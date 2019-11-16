@@ -1,15 +1,16 @@
-import React from "react";
+import React, { useState } from "react";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import TextField from "@material-ui/core/TextField";
-import Link from "@material-ui/core/Link";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import logo from "../../images/pharmacy.png";
 import { Link as Link1 } from "react-router-dom";
+import { connect } from "react-redux";
+import { authUser } from "../../store/actions/auth";
 
 const useStyles = makeStyles(theme => ({
   "@global": {
@@ -35,8 +36,25 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default function SignIn() {
+const SignIn = ({ authUser, currentUser: { error } }) => {
   const classes = useStyles();
+  const [state, setState] = useState({
+    email: "",
+    password: ""
+  });
+
+  const handleChange = e => {
+    const { name, value } = e.target;
+    setState(prevState => ({
+      ...prevState,
+      [name]: value
+    }));
+  };
+
+  const handleSubmit = e => {
+    e.preventDefault();
+    authUser({ username: state.email, password: state.password });
+  };
 
   return (
     <Container component="main" maxWidth="xs">
@@ -47,8 +65,12 @@ export default function SignIn() {
         </Typography>
         <Avatar className={classes.avatar} src={logo}></Avatar>
 
-        <form className={classes.form} noValidate>
+        <form className={classes.form} noValidate onSubmit={handleSubmit}>
           <TextField
+            error={!!error}
+            value={state.email}
+            onChange={handleChange}
+            helperText={!!error && "Pogrešan email"}
             variant="outlined"
             margin="normal"
             required
@@ -60,6 +82,10 @@ export default function SignIn() {
             autoFocus
           />
           <TextField
+            error={!!error}
+            value={state.password}
+            onChange={handleChange}
+            helperText={!!error && "Pogrešna lozinka"}
             variant="outlined"
             margin="normal"
             required
@@ -81,15 +107,19 @@ export default function SignIn() {
           </Button>
           <Grid container>
             <Grid item>
-              <Link>
-                <Link1 to="/signUp" variant="body2">
-                  {"Nemate nalog? Registrujte se..."}
-                </Link1>
-              </Link>
+              <Link1 to="/signUp">{"Nemate nalog? Registrujte se..."}</Link1>
             </Grid>
           </Grid>
         </form>
       </div>
     </Container>
   );
+};
+
+function mapStateToProps(state) {
+  return {
+    currentUser: state.currentUser
+  };
 }
+
+export default connect(mapStateToProps, { authUser })(SignIn);

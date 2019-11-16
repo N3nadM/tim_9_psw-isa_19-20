@@ -187,7 +187,7 @@ export default function SignUp() {
       <div>
         <div
           style={{
-            marginTop: 100,
+            marginTop: 64,
             display: "flex",
             flexDirection: "column",
             alignItems: "center"
