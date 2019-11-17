@@ -3,8 +3,8 @@ import { Provider } from "react-redux";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { configureStore } from "./store/index";
 
-import SignIn from "./components/pages/Prijava";
-import SignUp from "./components/pages/Registracija";
+import SignIn from "./components/pages/prijava";
+import SignUp from "./components/pages/registracija";
 import AppBar from "./components/layout/AppBar";
 import jwtDecode from "jwt-decode";
 import ScrollToTop from "./components/ScrollToTop/ScrollToTop";
