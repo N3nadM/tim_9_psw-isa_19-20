@@ -8,7 +8,8 @@ import IconButton from "@material-ui/core/IconButton";
 import AccountCircle from "@material-ui/icons/AccountCircle";
 import { connect } from "react-redux";
 import { logout } from "../../store/actions/auth";
-import MiniMenu from "./MimiMenu";
+import MenuItem from "@material-ui/core/MenuItem";
+import Menu from "@material-ui/core/Menu";
 
 const drawerWidth = 240;
 
@@ -31,11 +32,16 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const AppBarLogedIn = ({ logout }) => {
+const AppBarLogedIn = ({ logout, setTab, handleChange }) => {
   const classes = useStyles();
   const theme = useTheme();
 
   const [anchorEl, setAnchorEl] = React.useState(null);
+
+  const isMenuOpen = Boolean(anchorEl);
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+  };
 
   const menuId = "primary-search-account-menu";
 
@@ -67,12 +73,29 @@ const AppBarLogedIn = ({ logout }) => {
         </Toolbar>
       </AppBar>
 
-      <MiniMenu
+      <Menu
         anchorEl={anchorEl}
-        menuId={menuId}
-        logout={logout}
-        setAnchorEl={setAnchorEl}
-      />
+        anchorOrigin={{ vertical: "top", horizontal: "right" }}
+        id={menuId}
+        keepMounted
+        onClick={() => {
+          handleChange(0);
+          setTab(0);
+        }}
+        transformOrigin={{ vertical: "top", horizontal: "right" }}
+        open={isMenuOpen}
+        onClose={handleMenuClose}
+      >
+        <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
+        <MenuItem
+          onClick={() => {
+            handleMenuClose();
+            logout();
+          }}
+        >
+          Izloguj se
+        </MenuItem>
+      </Menu>
     </div>
   );
 };

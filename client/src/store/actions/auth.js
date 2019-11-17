@@ -43,6 +43,7 @@ export const authUser = userData => async dispatch => {
 
 export const registerUser = userData => async dispatch => {
   try {
+    dispatch(setError(null));
     await axios.post("/api/users/createRequest", userData);
   } catch (err) {
     dispatch(setError(err));
