@@ -18,12 +18,22 @@ import Home from "./components/pages/Home";
 const store = configureStore();
 
 if (localStorage.jwtToken) {
-  setAuthorizationToken(localStorage.jwtToken);
-
-  try {
-    store.dispatch(setCurrentUser(jwtDecode(localStorage.jwtToken)));
-  } catch (err) {
-    store.dispatch(setCurrentUser({}));
+  const decodedToken = jwtDecode(localStorage.jwtToken);
+  const now = new Date();
+  if (now.getMilliseconds() > decodedToken.exp) {
+    try {
+      setAuthorizationToken(false);
+      store.dispatch(setCurrentUser({}));
+    } catch (err) {
+      console.log(err);
+    }
+  } else {
+    try {
+      setAuthorizationToken(localStorage.jwtToken);
+      store.dispatch(setCurrentUser(decodedToken));
+    } catch (err) {
+      store.dispatch(setCurrentUser({}));
+    }
   }
 }
 
@@ -32,7 +42,6 @@ function App() {
     <Provider store={store}>
       <Router>
         <ScrollToTop>
-          <Drawer />
           <Switch>
             <Route
               exact

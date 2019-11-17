@@ -16,7 +16,7 @@ import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import Divider from "@material-ui/core/Divider";
-import Box from "@material-ui/core/Box";
+import AppBar from "../layout/AppBar";
 
 function getSteps() {
   return ["Korisnički podaci", "Lični podaci", "Registracija"];
@@ -252,129 +252,132 @@ const SignUp = ({ registerUser, currentUser: { error } }) => {
   };
 
   return (
-    <Container component="main" maxWidth="md">
-      <CssBaseline />
-      {!registrated ? (
-        <div>
-          <div
-            style={{
-              marginTop: 64,
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center"
-            }}
-          >
-            <Typography component="h1" variant="h3">
-              Registracija
-            </Typography>
-            <Avatar className={classes.avatar} src={logo}></Avatar>
-          </div>
-          <Stepper activeStep={activeStep}>
-            {steps.map((label, index) => {
-              return (
-                <Step key={label}>
-                  <StepLabel>{label}</StepLabel>
-                </Step>
-              );
-            })}
-          </Stepper>
-          <form className={classes.form} noValidate onSubmit={handleSubmit}>
-            <div className={classes.instructions}>
-              {getStepContent(activeStep, state, handleChange)}
-            </div>
-            <Button
-              disabled={activeStep === 0}
-              onClick={handleBack}
-              className={classes.button}
+    <>
+      <AppBar />
+      <Container component="main" maxWidth="md">
+        <CssBaseline />
+        {!registrated ? (
+          <div>
+            <div
+              style={{
+                marginTop: 64,
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center"
+              }}
             >
-              Nazad
-            </Button>
-
-            {activeStep !== steps.length - 1 ? (
+              <Typography component="h1" variant="h3">
+                Registracija
+              </Typography>
+              <Avatar className={classes.avatar} src={logo}></Avatar>
+            </div>
+            <Stepper activeStep={activeStep}>
+              {steps.map((label, index) => {
+                return (
+                  <Step key={label}>
+                    <StepLabel>{label}</StepLabel>
+                  </Step>
+                );
+              })}
+            </Stepper>
+            <form className={classes.form} noValidate onSubmit={handleSubmit}>
+              <div className={classes.instructions}>
+                {getStepContent(activeStep, state, handleChange)}
+              </div>
               <Button
-                variant="contained"
-                color="primary"
-                onClick={handleNext}
+                disabled={activeStep === 0}
+                onClick={handleBack}
                 className={classes.button}
               >
-                Dalje
+                Nazad
               </Button>
-            ) : (
-              <Button
-                variant="contained"
-                color="primary"
-                className={classes.submit}
-                onClick={handleSubmit}
-              >
-                Registrujte se
-              </Button>
-            )}
-          </form>
-        </div>
-      ) : (
-        <div
-          style={{
-            marginTop: 64
-          }}
-        >
-          <Typography variant="h5" gutterBottom>
-            Zahtev
-          </Typography>
-          <Divider />
-          <List disablePadding>
-            <ListItem className={classes.listItem}>
-              <ListItemText primary="Ime" />
-              <Typography variant="subtitle1" className={classes.total}>
-                {state.ime}
-              </Typography>
-            </ListItem>
-            <ListItem className={classes.listItem}>
-              <ListItemText primary="Prezime" />
-              <Typography variant="subtitle1" className={classes.total}>
-                {state.prezime}
-              </Typography>
-            </ListItem>
+
+              {activeStep !== steps.length - 1 ? (
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={handleNext}
+                  className={classes.button}
+                >
+                  Dalje
+                </Button>
+              ) : (
+                <Button
+                  variant="contained"
+                  color="primary"
+                  className={classes.submit}
+                  onClick={handleSubmit}
+                >
+                  Registrujte se
+                </Button>
+              )}
+            </form>
+          </div>
+        ) : (
+          <div
+            style={{
+              marginTop: 64
+            }}
+          >
+            <Typography variant="h5" gutterBottom>
+              Zahtev
+            </Typography>
             <Divider />
-            <ListItem className={classes.listItem}>
-              <ListItemText primary="Adresa" />
-              <Typography variant="subtitle1" className={classes.total}>
-                {state.adresa}
-              </Typography>
-            </ListItem>
-            <ListItem className={classes.listItem}>
-              <ListItemText primary="Grad" />
-              <Typography variant="subtitle1" className={classes.total}>
-                {state.grad}
-              </Typography>
-            </ListItem>
-            <ListItem className={classes.listItem}>
-              <ListItemText primary="Drzava" />
-              <Typography variant="subtitle1" className={classes.total}>
-                {state.drzava}
-              </Typography>
-            </ListItem>
-            <Divider />
-            <ListItem className={classes.listItem}>
-              <ListItemText primary="Broj osiguranika" />
-              <Typography variant="subtitle1" className={classes.total}>
-                {state.jbzo}
-              </Typography>
-            </ListItem>
-            <ListItem className={classes.listItem}>
-              <ListItemText primary="Email" />
-              <Typography variant="subtitle1" className={classes.total}>
-                {state.email}
-              </Typography>
-            </ListItem>
-            <Divider />
-          </List>
-          <Typography style={{ marginTop: 40 }} variant="h6">
-            Zahtev je formiran i poslat administratoru klinickog centra na
-            revidiranje. Bicete obavesteni o aktivaciji putem email-a.
-          </Typography>
-        </div>
-      )}
-    </Container>
+            <List disablePadding>
+              <ListItem className={classes.listItem}>
+                <ListItemText primary="Ime" />
+                <Typography variant="subtitle1" className={classes.total}>
+                  {state.ime}
+                </Typography>
+              </ListItem>
+              <ListItem className={classes.listItem}>
+                <ListItemText primary="Prezime" />
+                <Typography variant="subtitle1" className={classes.total}>
+                  {state.prezime}
+                </Typography>
+              </ListItem>
+              <Divider />
+              <ListItem className={classes.listItem}>
+                <ListItemText primary="Adresa" />
+                <Typography variant="subtitle1" className={classes.total}>
+                  {state.adresa}
+                </Typography>
+              </ListItem>
+              <ListItem className={classes.listItem}>
+                <ListItemText primary="Grad" />
+                <Typography variant="subtitle1" className={classes.total}>
+                  {state.grad}
+                </Typography>
+              </ListItem>
+              <ListItem className={classes.listItem}>
+                <ListItemText primary="Drzava" />
+                <Typography variant="subtitle1" className={classes.total}>
+                  {state.drzava}
+                </Typography>
+              </ListItem>
+              <Divider />
+              <ListItem className={classes.listItem}>
+                <ListItemText primary="Broj osiguranika" />
+                <Typography variant="subtitle1" className={classes.total}>
+                  {state.jbzo}
+                </Typography>
+              </ListItem>
+              <ListItem className={classes.listItem}>
+                <ListItemText primary="Email" />
+                <Typography variant="subtitle1" className={classes.total}>
+                  {state.email}
+                </Typography>
+              </ListItem>
+              <Divider />
+            </List>
+            <Typography style={{ marginTop: 40 }} variant="h6">
+              Zahtev je formiran i poslat administratoru klinickog centra na
+              revidiranje. Bicete obavesteni o aktivaciji putem email-a.
+            </Typography>
+          </div>
+        )}
+      </Container>
+    </>
   );
 };
 

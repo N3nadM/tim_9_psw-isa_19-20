@@ -5,23 +5,28 @@ import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
-import Axios from "axios";
+import { connect } from "react-redux";
+import {
+  getZahtevi,
+  confirmZahtev,
+  denieZahtev
+} from "../../store/actions/zahtev";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
-const Tabela = () => {
-  const [zahtevi, setZahtevi] = useState([]);
-
+const Tabela = ({
+  zahtevi,
+  loading,
+  getZahtevi,
+  confirmZahtev,
+  denieZahtev
+}) => {
   useEffect(() => {
-    (async () => {
-      const response = await Axios.get(
-        "http://localhost:8080/api/adminkc/zahtevi"
-      );
-
-      setZahtevi([...response.data]);
-    })();
+    getZahtevi();
   }, []);
 
   return (
     <div className="Tabela">
+      {console.log(zahtevi)}
       <Table aria-label="simple table">
         <TableHead>
           <TableRow>
@@ -48,48 +53,57 @@ const Tabela = () => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {zahtevi.map((zahtev, i) => (
-            <TableRow key={zahtev.id}>
-              <TableCell>{zahtev.ime}</TableCell>
-              <TableCell>{zahtev.prezime}</TableCell>
-              <TableCell>{zahtev.username}</TableCell>
-              <TableCell>{zahtev.email}</TableCell>
-              <TableCell>{zahtev.adresa}</TableCell>
-              <TableCell>{zahtev.jbzo}</TableCell>
-              <TableCell>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  onClick={async () => {
-                    await Axios.post(
-                      `http://localhost:8080/api/users/register/${zahtev.email}`
-                    );
-                    setZahtevi(zahtevi.filter(z => z.email !== zahtev.email));
-                  }}
-                >
-                  Prihvati
-                </Button>
-              </TableCell>
-              <TableCell>
-                <Button
-                  variant="contained"
-                  color="secundary"
-                  onClick={async () =>
-                    await Axios.post(
-                      `http://localhost:8080/api/users/denie/${zahtev.email}`,
-                      { message: "denied request" }
-                    )
-                  }
-                >
-                  Odbij
-                </Button>
-              </TableCell>
-            </TableRow>
-          ))}
+          {zahtevi &&
+            !!zahtevi.length &&
+            zahtevi.map((zahtev, i) => (
+              <TableRow key={zahtev.id}>
+                <TableCell>{zahtev.ime}</TableCell>
+                <TableCell>{zahtev.prezime}</TableCell>
+                <TableCell>{zahtev.username}</TableCell>
+                <TableCell>{zahtev.email}</TableCell>
+                <TableCell>{zahtev.adresa}</TableCell>
+                <TableCell>{zahtev.jbzo}</TableCell>
+                <TableCell>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={() => confirmZahtev(zahtev.id, zahtev.email)}
+                  >
+                    Prihvati
+                  </Button>
+                </TableCell>
+                <TableCell>
+                  <Button
+                    variant="contained"
+                    onClick={() =>
+                      denieZahtev(
+                        zahtev.id,
+                        zahtev.email,
+                        "Koju posluku porati"
+                      )
+                    }
+                  >
+                    Odbij
+                  </Button>
+                </TableCell>
+              </TableRow>
+            ))}
         </TableBody>
       </Table>
+      {loading && <CircularProgress />}
     </div>
   );
 };
 
-export default Tabela;
+function mapStateToProps(state) {
+  return {
+    zahtevi: state.zahtev.zahtevi,
+    loading: state.zahtev.loading
+  };
+}
+
+export default connect(mapStateToProps, {
+  getZahtevi,
+  confirmZahtev,
+  denieZahtev
+})(Tabela);

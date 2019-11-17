@@ -8,7 +8,6 @@ import PacijentProfil from "./homeSubpages/ProjfilPacijent";
 const Home = ({ currentUser }) => {
   return (
     <main>
-      <p>asdasd</p>
       {currentUser.user.role[0].name === "ROLE_AK" && <AdminKlinikeProfil />}
       {currentUser.user.role[0].name === "ROLE_AKC" && (
         <AdminKlinickogCentraProfil />

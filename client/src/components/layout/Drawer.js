@@ -25,8 +25,7 @@ import { connect } from "react-redux";
 
 import { logout } from "../../store/actions/auth";
 
-import MenuItem from "@material-ui/core/MenuItem";
-import Menu from "@material-ui/core/Menu";
+import MiniMenu from "./MimiMenu";
 
 const drawerWidth = 240;
 
@@ -100,20 +99,17 @@ const useStyles = makeStyles(theme => ({
 const PersistentDrawer = ({ location, logout, currentUser }) => {
   const classes = useStyles();
   const theme = useTheme();
+
+  const isLoggedIn = !!Object.keys(currentUser.user).length;
+
   const [open, setOpen] = React.useState(false);
 
   const [anchorEl, setAnchorEl] = React.useState(null);
-
-  const isMenuOpen = Boolean(anchorEl);
 
   const menuId = "primary-search-account-menu";
 
   const handleProfileMenuOpen = event => {
     setAnchorEl(event.currentTarget);
-  };
-
-  const handleMenuClose = () => {
-    setAnchorEl(null);
   };
 
   const handleDrawerOpen = () => {
@@ -123,28 +119,6 @@ const PersistentDrawer = ({ location, logout, currentUser }) => {
   const handleDrawerClose = () => {
     setOpen(false);
   };
-
-  const renderMenu = (
-    <Menu
-      anchorEl={anchorEl}
-      anchorOrigin={{ vertical: "top", horizontal: "right" }}
-      id={menuId}
-      keepMounted
-      transformOrigin={{ vertical: "top", horizontal: "right" }}
-      open={isMenuOpen}
-      onClose={handleMenuClose}
-    >
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-      <MenuItem
-        onClick={() => {
-          handleMenuClose();
-          logout();
-        }}
-      >
-        Izloguj se
-      </MenuItem>
-    </Menu>
-  );
 
   return (
     <div className={classes.root}>
@@ -156,7 +130,7 @@ const PersistentDrawer = ({ location, logout, currentUser }) => {
         })}
       >
         <Toolbar>
-          {!!Object.keys(currentUser.user).length && (
+          {isLoggedIn && (
             <IconButton
               color="inherit"
               aria-label="open drawer"
@@ -184,7 +158,7 @@ const PersistentDrawer = ({ location, logout, currentUser }) => {
                 <Button color="inherit">Registruj se</Button>
               </Link>
             )}
-          {!!Object.keys(currentUser.user).length && (
+          {isLoggedIn && (
             <div>
               <IconButton
                 edge="end"
@@ -200,8 +174,15 @@ const PersistentDrawer = ({ location, logout, currentUser }) => {
           )}
         </Toolbar>
       </AppBar>
-      {!!Object.keys(currentUser.user).length && renderMenu}
-      {!!Object.keys(currentUser.user).length && (
+      {isLoggedIn && (
+        <MiniMenu
+          anchorEl={anchorEl}
+          menuId={menuId}
+          logout={logout}
+          setAnchorEl={setAnchorEl}
+        />
+      )}
+      {isLoggedIn && (
         <Drawer
           variant="permanent"
           className={clsx(classes.drawer, {

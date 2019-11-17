@@ -11,6 +11,7 @@ import logo from "../../images/pharmacy.png";
 import { Link as Link1 } from "react-router-dom";
 import { connect } from "react-redux";
 import { authUser } from "../../store/actions/auth";
+import AppBar from "../layout/AppBar";
 
 const useStyles = makeStyles(theme => ({
   "@global": {
@@ -62,62 +63,65 @@ const SignIn = ({
   };
 
   return (
-    <Container component="main" maxWidth="xs">
-      <CssBaseline />
-      <div className={classes.paper}>
-        <Typography component="h1" variant="h3">
-          Logovanje
-        </Typography>
-        <Avatar className={classes.avatar} src={logo}></Avatar>
+    <>
+      <AppBar />
+      <Container component="main" maxWidth="xs">
+        <CssBaseline />
+        <div className={classes.paper}>
+          <Typography component="h1" variant="h3">
+            Logovanje
+          </Typography>
+          <Avatar className={classes.avatar} src={logo}></Avatar>
 
-        <form className={classes.form} noValidate onSubmit={handleSubmit}>
-          <TextField
-            error={!!error}
-            value={state.email}
-            onChange={handleChange}
-            helperText={!!error && "Pogrešan email"}
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            id="email"
-            label="Email adresa"
-            name="email"
-            autoComplete="email"
-            autoFocus
-          />
-          <TextField
-            error={!!error}
-            value={state.password}
-            onChange={handleChange}
-            helperText={!!error && "Pogrešna lozinka"}
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            name="password"
-            label="Lozinka"
-            type="password"
-            id="password"
-            autoComplete="current-password"
-          />
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            color="primary"
-            className={classes.submit}
-          >
-            Ulogujte se
-          </Button>
-          <Grid container>
-            <Grid item>
-              <Link1 to="/signUp">{"Nemate nalog? Registrujte se..."}</Link1>
+          <form className={classes.form} noValidate onSubmit={handleSubmit}>
+            <TextField
+              error={!!error}
+              value={state.email}
+              onChange={handleChange}
+              helperText={!!error && "Pogrešan email"}
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              id="email"
+              label="Email adresa"
+              name="email"
+              autoComplete="email"
+              autoFocus
+            />
+            <TextField
+              error={!!error}
+              value={state.password}
+              onChange={handleChange}
+              helperText={!!error && "Pogrešna lozinka"}
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              name="password"
+              label="Lozinka"
+              type="password"
+              id="password"
+              autoComplete="current-password"
+            />
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              color="primary"
+              className={classes.submit}
+            >
+              Ulogujte se
+            </Button>
+            <Grid container>
+              <Grid item>
+                <Link1 to="/signUp">{"Nemate nalog? Registrujte se..."}</Link1>
+              </Grid>
             </Grid>
-          </Grid>
-        </form>
-      </div>
-    </Container>
+          </form>
+        </div>
+      </Container>
+    </>
   );
 };
 

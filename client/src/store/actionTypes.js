@@ -1,3 +1,7 @@
 export const SET_CURRENT_USER = "SET_CURRENT_USER";
 export const SET_ERROR = "SET_ERROR";
-export const SET_ZAHTEV = "SET_ZAHTEV";
+
+export const SET_ZAHTEV_LOADING = "SET_ZAHTEV_LOADING";
+export const SET_ALL_ZAHTEV = "GET_ALL_ZAHTEV";
+
+export const DELETE_ZAHTEV = "DELETE_ZAHTEV";
