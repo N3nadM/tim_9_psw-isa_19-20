@@ -5,7 +5,7 @@ import { configureStore } from "./store/index";
 
 import SignIn from "./components/pages/Prijava";
 import SignUp from "./components/pages/Registracija";
-import AppBar from "./components/layout/AppBar/AppBar";
+import AppBar from "./components/layout/AppBar";
 import jwtDecode from "jwt-decode";
 import ScrollToTop from "./components/ScrollToTop/ScrollToTop";
 
@@ -34,7 +34,11 @@ function App() {
         <ScrollToTop>
           <Drawer />
           <Switch>
-            <Route exact path="/login" component={SignIn} />
+            <Route
+              exact
+              path="/login"
+              render={props => <SignIn {...props} />}
+            />
             <Route exact path="/signUp" component={SignUp} />
             <PrivateRoute exact path="/" component={Home} />
           </Switch>

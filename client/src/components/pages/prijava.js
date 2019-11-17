@@ -36,7 +36,11 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const SignIn = ({ authUser, currentUser: { error } }) => {
+const SignIn = ({
+  authUser,
+  currentUser: { error, isAuthenticated },
+  history
+}) => {
   const classes = useStyles();
   const [state, setState] = useState({
     email: "",
@@ -51,9 +55,10 @@ const SignIn = ({ authUser, currentUser: { error } }) => {
     }));
   };
 
-  const handleSubmit = e => {
+  const handleSubmit = async e => {
     e.preventDefault();
-    authUser({ username: state.email, password: state.password });
+    await authUser({ username: state.email, password: state.password });
+    history.push("/");
   };
 
   return (

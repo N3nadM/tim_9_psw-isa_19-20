@@ -3,15 +3,17 @@ import { connect } from "react-redux";
 
 import AdminKlinikeProfil from "./homeSubpages/ProfilAdminKlinike";
 import AdminKlinickogCentraProfil from "./homeSubpages/ProfilAKC";
+import PacijentProfil from "./homeSubpages/ProjfilPacijent";
 
 const Home = ({ currentUser }) => {
   return (
     <main>
-      {console.log(currentUser.user)}
+      <p>asdasd</p>
       {currentUser.user.role[0].name === "ROLE_AK" && <AdminKlinikeProfil />}
       {currentUser.user.role[0].name === "ROLE_AKC" && (
         <AdminKlinickogCentraProfil />
       )}
+      {currentUser.user.role[0].name === "ROLE_PACIJENT" && <PacijentProfil />}
     </main>
   );
 };

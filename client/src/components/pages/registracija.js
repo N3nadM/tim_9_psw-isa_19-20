@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -10,17 +10,26 @@ import logo from "../../images/pharmacy.png";
 import Stepper from "@material-ui/core/Stepper";
 import Step from "@material-ui/core/Step";
 import StepLabel from "@material-ui/core/StepLabel";
+import { connect } from "react-redux";
+import { registerUser } from "../../store/actions/auth";
+import List from "@material-ui/core/List";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemText from "@material-ui/core/ListItemText";
+import Divider from "@material-ui/core/Divider";
+import Box from "@material-ui/core/Box";
 
 function getSteps() {
   return ["Korisnički podaci", "Lični podaci", "Registracija"];
 }
 
-function getStepContent(step) {
+function getStepContent(step, state, handleChange) {
   switch (step) {
     case 0:
       return (
         <>
           <TextField
+            value={state.email}
+            onChange={handleChange}
             variant="outlined"
             margin="normal"
             required
@@ -28,9 +37,11 @@ function getStepContent(step) {
             id="email"
             label="Email adresa"
             name="email"
-            autoComplete="email"
+            autoComplete="off"
           />
           <TextField
+            value={state.ime}
+            onChange={handleChange}
             variant="outlined"
             margin="normal"
             required
@@ -38,9 +49,11 @@ function getStepContent(step) {
             id="ime"
             label="Ime"
             name="ime"
-            autoComplete="ime"
+            autoComplete="off"
           />
           <TextField
+            value={state.prezime}
+            onChange={handleChange}
             variant="outlined"
             margin="normal"
             required
@@ -48,7 +61,7 @@ function getStepContent(step) {
             id="Prezime"
             label="Prezime"
             name="prezime"
-            autoComplete="prezime"
+            autoComplete="off"
           />
         </>
       );
@@ -56,6 +69,8 @@ function getStepContent(step) {
       return (
         <>
           <TextField
+            value={state.adresa}
+            onChange={handleChange}
             variant="outlined"
             margin="normal"
             required
@@ -63,9 +78,11 @@ function getStepContent(step) {
             id="adresa"
             label="Adresa"
             name="adresa"
-            autoComplete="adresa"
+            autoComplete="off"
           />
           <TextField
+            value={state.drzava}
+            onChange={handleChange}
             variant="outlined"
             margin="normal"
             required
@@ -73,9 +90,11 @@ function getStepContent(step) {
             id="drzava"
             label="Država"
             name="drzava"
-            autoComplete="drzava"
+            autoComplete="off"
           />
           <TextField
+            value={state.grad}
+            onChange={handleChange}
             variant="outlined"
             margin="normal"
             required
@@ -83,9 +102,17 @@ function getStepContent(step) {
             id="grad"
             label="Grad"
             name="grad"
-            autoComplete="grad"
+            autoComplete="off"
           />
           <TextField
+            error={state.telefon.length > 0 && !/^[0-9]*$/.test(state.telefon)}
+            value={state.telefon}
+            helperText={
+              state.telefon.length > 0 &&
+              !/^[0-9]*$/.test(state.telefon) &&
+              "Unesite samo brojeve"
+            }
+            onChange={handleChange}
             variant="outlined"
             margin="normal"
             required
@@ -93,7 +120,7 @@ function getStepContent(step) {
             id="telefon"
             label="Broj telefona"
             name="telefon"
-            autoComplete="telefon"
+            autoComplete="off"
           />
         </>
       );
@@ -101,16 +128,26 @@ function getStepContent(step) {
       return (
         <>
           <TextField
+            value={state.jbzo}
+            onChange={handleChange}
+            error={state.telefon.length > 0 && !/^[0-9]*$/.test(state.telefon)}
+            helperText={
+              state.telefon.length > 0 &&
+              !/^[0-9]*$/.test(state.telefon) &&
+              "Unesite samo brojeve"
+            }
             variant="outlined"
             margin="normal"
             required
             fullWidth
-            id="brojOsiguranika"
+            id="jbzo"
             label="Broj osiguranika"
-            name="brojOsiguranika"
-            autoComplete="brojOsiguranika"
+            name="jbzo"
+            autoComplete="off"
           />
           <TextField
+            value={state.password}
+            onChange={handleChange}
             variant="outlined"
             margin="normal"
             required
@@ -119,18 +156,20 @@ function getStepContent(step) {
             label="Lozinka"
             type="password"
             id="password"
-            autoComplete="current-password"
+            autoComplete="off"
           />
           <TextField
+            value={state.confirmedPassword}
+            onChange={handleChange}
             variant="outlined"
             margin="normal"
             required
             fullWidth
-            id="ponovljenaLozinka"
+            id="confirmedPassword"
             label="Potvrdite lozinku"
             type="password"
-            name="ponovljenaLozinka"
-            autoComplete="ponovljenaLozinka"
+            name="confirmedPassword"
+            autoComplete="off"
           />
         </>
       );
@@ -167,10 +206,42 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default function SignUp() {
+const SignUp = ({ registerUser, currentUser: { error } }) => {
   const classes = useStyles();
-  const [activeStep, setActiveStep] = React.useState(0);
+  const [activeStep, setActiveStep] = useState(0);
   const steps = getSteps();
+
+  const [registrated, setRegistrated] = useState(false);
+
+  const [state, setState] = useState({
+    email: "",
+    password: "",
+    confirmedPassword: "",
+    telefon: "",
+    jbzo: "",
+    ime: "",
+    prezime: "",
+    adresa: "",
+    drzava: "",
+    grad: ""
+  });
+
+  const handleChange = e => {
+    const { name, value } = e.target;
+    setState(prevState => ({
+      ...prevState,
+      [name]: value
+    }));
+  };
+
+  const handleSubmit = async e => {
+    e.preventDefault();
+    await registerUser(state);
+
+    if (!error) {
+      setRegistrated(true);
+    }
+  };
 
   const handleNext = () => {
     setActiveStep(prevActiveStep => prevActiveStep + 1);
@@ -183,62 +254,134 @@ export default function SignUp() {
   return (
     <Container component="main" maxWidth="md">
       <CssBaseline />
-
-      <div>
-        <div
-          style={{
-            marginTop: 64,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center"
-          }}
-        >
-          <Typography component="h1" variant="h3">
-            Registracija
-          </Typography>
-          <Avatar className={classes.avatar} src={logo}></Avatar>
-        </div>
-        <Stepper activeStep={activeStep}>
-          {steps.map((label, index) => {
-            return (
-              <Step key={label}>
-                <StepLabel>{label}</StepLabel>
-              </Step>
-            );
-          })}
-        </Stepper>
-        <form className={classes.form} noValidate>
-          <div className={classes.instructions}>
-            {getStepContent(activeStep)}
-          </div>
-          <Button
-            disabled={activeStep === 0}
-            onClick={handleBack}
-            className={classes.button}
+      {!registrated ? (
+        <div>
+          <div
+            style={{
+              marginTop: 64,
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center"
+            }}
           >
-            Nazad
-          </Button>
-
-          {activeStep !== steps.length - 1 ? (
+            <Typography component="h1" variant="h3">
+              Registracija
+            </Typography>
+            <Avatar className={classes.avatar} src={logo}></Avatar>
+          </div>
+          <Stepper activeStep={activeStep}>
+            {steps.map((label, index) => {
+              return (
+                <Step key={label}>
+                  <StepLabel>{label}</StepLabel>
+                </Step>
+              );
+            })}
+          </Stepper>
+          <form className={classes.form} noValidate onSubmit={handleSubmit}>
+            <div className={classes.instructions}>
+              {getStepContent(activeStep, state, handleChange)}
+            </div>
             <Button
-              variant="contained"
-              color="primary"
-              onClick={handleNext}
+              disabled={activeStep === 0}
+              onClick={handleBack}
               className={classes.button}
             >
-              Dalje
+              Nazad
             </Button>
-          ) : (
-            <Button
-              variant="contained"
-              color="primary"
-              className={classes.submit}
-            >
-              Registrujte se
-            </Button>
-          )}
-        </form>
-      </div>
+
+            {activeStep !== steps.length - 1 ? (
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={handleNext}
+                className={classes.button}
+              >
+                Dalje
+              </Button>
+            ) : (
+              <Button
+                variant="contained"
+                color="primary"
+                className={classes.submit}
+                onClick={handleSubmit}
+              >
+                Registrujte se
+              </Button>
+            )}
+          </form>
+        </div>
+      ) : (
+        <div
+          style={{
+            marginTop: 64
+          }}
+        >
+          <Typography variant="h5" gutterBottom>
+            Zahtev
+          </Typography>
+          <Divider />
+          <List disablePadding>
+            <ListItem className={classes.listItem}>
+              <ListItemText primary="Ime" />
+              <Typography variant="subtitle1" className={classes.total}>
+                {state.ime}
+              </Typography>
+            </ListItem>
+            <ListItem className={classes.listItem}>
+              <ListItemText primary="Prezime" />
+              <Typography variant="subtitle1" className={classes.total}>
+                {state.prezime}
+              </Typography>
+            </ListItem>
+            <Divider />
+            <ListItem className={classes.listItem}>
+              <ListItemText primary="Adresa" />
+              <Typography variant="subtitle1" className={classes.total}>
+                {state.adresa}
+              </Typography>
+            </ListItem>
+            <ListItem className={classes.listItem}>
+              <ListItemText primary="Grad" />
+              <Typography variant="subtitle1" className={classes.total}>
+                {state.grad}
+              </Typography>
+            </ListItem>
+            <ListItem className={classes.listItem}>
+              <ListItemText primary="Drzava" />
+              <Typography variant="subtitle1" className={classes.total}>
+                {state.drzava}
+              </Typography>
+            </ListItem>
+            <Divider />
+            <ListItem className={classes.listItem}>
+              <ListItemText primary="Broj osiguranika" />
+              <Typography variant="subtitle1" className={classes.total}>
+                {state.jbzo}
+              </Typography>
+            </ListItem>
+            <ListItem className={classes.listItem}>
+              <ListItemText primary="Email" />
+              <Typography variant="subtitle1" className={classes.total}>
+                {state.email}
+              </Typography>
+            </ListItem>
+            <Divider />
+          </List>
+          <Typography style={{ marginTop: 40 }} variant="h6">
+            Zahtev je formiran i poslat administratoru klinickog centra na
+            revidiranje. Bicete obavesteni o aktivaciji putem email-a.
+          </Typography>
+        </div>
+      )}
     </Container>
   );
+};
+
+function mapStateToProps(state) {
+  return {
+    currentUser: state.currentUser
+  };
 }
+
+export default connect(mapStateToProps, { registerUser })(SignUp);
