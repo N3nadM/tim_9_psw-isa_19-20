@@ -60,7 +60,7 @@ export default function ProfilAKC() {
 
   return (
     <>
-      <AppBar />
+      <AppBar setTab={setValue} handleChange={handleChange} />
       <div className={classes.root}>
         <nav className={classes.drawer} aria-label="mailbox folders">
           <Drawer
