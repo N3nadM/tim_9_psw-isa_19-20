@@ -25,6 +25,15 @@ public class Pacijent{
     @Column(updatable = false, unique = true)
     private String jbzo;
 
+    @NotBlank(message = "Neophodno je uneti grad.")
+    private String grad;
+
+    @NotBlank(message = "Neophodno je uneti drzavu.")
+    private String drzava;
+
+    @NotBlank(message = "Neophodno je uneti telefon.")
+    private String telefon;
+
     @JsonFormat(pattern = "yyyy-mm-dd")
     @Column(updatable = false)
     private Date datum_kreiranja;
@@ -48,19 +57,34 @@ public class Pacijent{
 
     public Pacijent(Zahtev zahtev) {
         this.jbzo = zahtev.getJbzo();
+        this.drzava = zahtev.getDrzava();
+        this.grad = zahtev.getGrad();
+        this.telefon = zahtev.getTelefon();
     }
 
-    public Pacijent(Korisnik korisnik, @NotBlank(message = "Neophodno je uneti jedinstveni broj zdravstvenog osiguranika.") String jbzo, Date datum_kreiranja, ZdrKarton zdrKarton, AdminKlinCentra adminKlinCentra) {
-        super();
-        this.korisnik = korisnik;
-        this.jbzo = jbzo;
-        this.datum_kreiranja = datum_kreiranja;
-        this.zdrKarton = zdrKarton;
-        this.pregledi = new ArrayList<>();
-        this.operacije = new ArrayList<>();
-        this.adminKlinCentra = adminKlinCentra;
+    public String getGrad() {
+        return grad;
     }
 
+    public void setGrad(String grad) {
+        this.grad = grad;
+    }
+
+    public String getDrzava() {
+        return drzava;
+    }
+
+    public void setDrzava(String drzava) {
+        this.drzava = drzava;
+    }
+
+    public String getTelefon() {
+        return telefon;
+    }
+
+    public void setTelefon(String telefon) {
+        this.telefon = telefon;
+    }
 
     public ZdrKarton getZdrKarton() {
         return zdrKarton;

@@ -86,7 +86,7 @@ function ResponsiveDrawer(props) {
 
   return (
     <>
-      <AppBar />
+      <AppBar setTab={setValue} handleChange={handleChange} />
       <div className={classes.root}>
         <nav className={classes.drawer} aria-label="mailbox folders">
           {/* The implementation can be swapped with js to avoid SEO duplication of links. */}

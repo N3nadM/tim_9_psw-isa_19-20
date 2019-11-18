@@ -1,10 +1,15 @@
-import { SET_CURRENT_USER, SET_ERROR } from "../actionTypes";
+import { SET_CURRENT_USER, SET_ERROR, SET_REAL_KORISNIK } from "../actionTypes";
 import axios from "axios";
 import jwtDecode from "jwt-decode";
 
 export const setCurrentUser = user => ({
   type: SET_CURRENT_USER,
   user
+});
+
+export const setRealKorisnik = korisnik => ({
+  type: SET_REAL_KORISNIK,
+  korisnik
 });
 
 export const setError = error => ({
@@ -43,6 +48,7 @@ export const authUser = userData => async dispatch => {
 
 export const registerUser = userData => async dispatch => {
   try {
+    dispatch(setError(null));
     await axios.post("/api/users/createRequest", userData);
   } catch (err) {
     dispatch(setError(err));

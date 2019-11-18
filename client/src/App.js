@@ -5,11 +5,9 @@ import { configureStore } from "./store/index";
 
 import SignIn from "./components/pages/prijava";
 import SignUp from "./components/pages/registracija";
-import AppBar from "./components/layout/AppBar";
 import jwtDecode from "jwt-decode";
 import ScrollToTop from "./components/ScrollToTop/ScrollToTop";
 
-import Drawer from "./components/layout/Drawer";
 import { setAuthorizationToken, setCurrentUser } from "./store/actions/auth";
 import PrivateRoute from "./routing/PrivateRoute";
 
@@ -20,7 +18,7 @@ const store = configureStore();
 if (localStorage.jwtToken) {
   const decodedToken = jwtDecode(localStorage.jwtToken);
   const now = new Date();
-  if (now.getMilliseconds() > decodedToken.exp) {
+  if (Date.parse(now) / 1000 >= decodedToken.exp) {
     try {
       setAuthorizationToken(false);
       store.dispatch(setCurrentUser({}));

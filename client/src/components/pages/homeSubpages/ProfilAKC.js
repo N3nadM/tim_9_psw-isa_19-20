@@ -35,7 +35,7 @@ function a11yProps(index) {
   };
 }
 
-export default function ClippedDrawer() {
+export default function ProfilAKC() {
   const [value, setValue] = React.useState(0);
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -60,7 +60,7 @@ export default function ClippedDrawer() {
 
   return (
     <>
-      <AppBar />
+      <AppBar setTab={setValue} handleChange={handleChange} />
       <div className={classes.root}>
         <nav className={classes.drawer} aria-label="mailbox folders">
           <Drawer

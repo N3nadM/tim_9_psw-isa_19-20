@@ -8,4 +8,6 @@ import org.springframework.stereotype.Repository;
 public interface PacijentRepository extends JpaRepository<Pacijent, Long> {
 
     Pacijent getPacijentByJbzo(String jbzo);
+
+    Pacijent findPacijentByKorisnikId(Long id);
 }
