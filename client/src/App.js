@@ -9,7 +9,7 @@ import jwtDecode from "jwt-decode";
 import ScrollToTop from "./components/ScrollToTop/ScrollToTop";
 
 import { setAuthorizationToken, setCurrentUser } from "./store/actions/auth";
-import PrivateRoute from "./routing/PrivateRoute";
+import PrivateRoute from "./routing/PrivateRoute"; 
 
 import Home from "./components/pages/Home";
 
