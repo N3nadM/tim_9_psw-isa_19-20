@@ -109,7 +109,7 @@ function ResponsiveDrawer(props) {
             Radni kalendar
           </TabPanel>
           <TabPanel value={value} index={3}>
-            godišnji odmor
+            Godišnji odmor
           </TabPanel>
           <TabPanel value={value} index={4}>
             <LicniPodaciTabs />
