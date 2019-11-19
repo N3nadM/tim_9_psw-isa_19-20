@@ -54,6 +54,7 @@ export default function ProfilAKC() {
         aria-label="simple tabs example"
       >
         <Tab label="Zahtevi" {...a11yProps(0)} />
+        <Tab label="Dodaj kliniku" {...a11yProps(1)} />
       </Tabs>
     </div>
   );
@@ -76,6 +77,9 @@ export default function ProfilAKC() {
         <main className={classes.content}>
           <TabPanel value={value} index={0}>
             <Tabela />
+          </TabPanel>
+          <TabPanel value={value} index={1}>
+            Dodaj kliniku
           </TabPanel>
         </main>
       </div>
