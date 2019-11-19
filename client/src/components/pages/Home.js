@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import AdminKlinikeProfil from "./homeSubpages/ProfilAdminKlinike";
 import AdminKlinickogCentraProfil from "./homeSubpages/ProfilAKC";
 import PacijentProfil from "./homeSubpages/ProjfilPacijent";
+import MedSestraProfil from "./homeSubpages/ProfilMedSestra";
 
 const Home = ({ currentUser }) => {
   return (
@@ -13,6 +14,7 @@ const Home = ({ currentUser }) => {
         <AdminKlinickogCentraProfil />
       )}
       {currentUser.user.role[0].name === "ROLE_PACIJENT" && <PacijentProfil />}
+      {currentUser.user.role[0].name === "ROLE_MED_SESTRA" && <MedSestraProfil />}
     </main>
   );
 };
