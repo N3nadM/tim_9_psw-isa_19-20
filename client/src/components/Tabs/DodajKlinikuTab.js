@@ -54,7 +54,6 @@ export default function DodajKlinikuTab() {
             type="submit"
             variant="contained"
             color="primary"
-            className={classes.submit}
             >
             Dodaj
             </Button>
