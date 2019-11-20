@@ -10,7 +10,7 @@ INSERT INTO USER_AUTHORITY VALUES ('1', '4');
 INSERT INTO KORISNIK (id, adresa, email, ime, password, prezime, drzava, grad, telefon) VALUES ('2', 'adresa admina', 'adminKlinike@gmail.com', 'Admin', '$2a$10$feiotRqclqYZ7aJnytCDSedhWmzztzhuwyujbVfVucV4nbmMRNnwa', 'Adminic', 'drzava1', 'grad1', 'telefon1');
 INSERT INTO ADMIN_KLIN_CENTRA VALUES ('1', '1');
 INSERT INTO USER_AUTHORITY VALUES ('2', '3');
-INSERT INTO KLINIKA VALUES ('1', 'adresa klinike', 'Naziv klinike', 'opis klinike', '1');
+INSERT INTO KLINIKA VALUES ('1', 'adresa klinike', 'Naziv klinike', 'opis klinike');
 INSERT INTO ADMIN_KLINIKE VALUES ('1', '1', '1', '2');
 INSERT INTO KORISNIK (id, adresa, email, ime, password, prezime, drzava, grad, telefon) VALUES ('3', 'adresa lekara', 'lekar@gmail.com', 'Lekar', '$2a$10$feiotRqclqYZ7aJnytCDSedhWmzztzhuwyujbVfVucV4nbmMRNnwa', 'Lekaric',  'drzava', 'grad', 'telefon');
 INSERT INTO USER_AUTHORITY VALUES ('3', '2');

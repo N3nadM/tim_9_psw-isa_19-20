@@ -43,7 +43,7 @@ public class Klinika {
         this.lekari = new ArrayList<>();
     }
 
-    public Klinika(String naziv, String adresa, String opis, List<Sala> sale, List<AdminKlinike> adminiKlinike, AdminKlinCentra adminKlinCentra) {
+    public Klinika(String naziv, String adresa, String opis, List<Sala> sale, List<AdminKlinike> adminiKlinike) {
         this.naziv = naziv;
         this.adresa = adresa;
         this.opis = opis;
