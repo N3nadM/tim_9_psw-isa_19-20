@@ -36,7 +36,7 @@ function a11yProps(index) {
   };
 }
 
-export default function ProfilAKC() {
+export default function ProfilPacijent() {
   const [value, setValue] = React.useState(0);
   const handleChange = (event, newValue) => {
     setValue(newValue);

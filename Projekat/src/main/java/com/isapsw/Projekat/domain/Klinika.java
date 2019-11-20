@@ -36,11 +36,6 @@ public class Klinika {
     @OneToMany(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY, mappedBy = "klinika")
     private List<Lekar> lekari = new ArrayList<>();
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="adminKlinCentra_id", updatable = false, nullable = false)
-    @JsonIgnore
-    private AdminKlinCentra adminKlinCentra;
-
     public Klinika() {
         this.adminiKlinike = new ArrayList<>();
         this.sale = new ArrayList<>();
@@ -54,7 +49,6 @@ public class Klinika {
         this.opis = opis;
         this.sale = sale;
         this.adminiKlinike = adminiKlinike;
-        this.adminKlinCentra = adminKlinCentra;
         this.medicinskeSestre = new ArrayList<>();
         this.lekari = new ArrayList<>();
     }
@@ -97,14 +91,6 @@ public class Klinika {
 
     public void setAdminiKlinike(List<AdminKlinike> adminiKlinike) {
         this.adminiKlinike = adminiKlinike;
-    }
-
-    public AdminKlinCentra getAdminKlinCentra() {
-        return adminKlinCentra;
-    }
-
-    public void setAdminKlinCentra(AdminKlinCentra adminKlinCentra) {
-        this.adminKlinCentra = adminKlinCentra;
     }
 
     public Long getId() {

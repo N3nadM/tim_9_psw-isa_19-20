@@ -29,8 +29,6 @@ public class AdminKlinCentra{
     @OneToMany(mappedBy = "adminKlinCentra", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<AdminKlinike> administratori = new ArrayList<>();
 
-    @OneToMany(mappedBy = "adminKlinCentra", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<Pacijent> zahteviPacijenata = new ArrayList<>();
 
     public AdminKlinCentra(){
         super();
@@ -38,7 +36,6 @@ public class AdminKlinCentra{
         this.dijagnoze =  new ArrayList<>();
         this.klinike = new ArrayList<>();
         this.administratori = new ArrayList<>();
-        this.zahteviPacijenata = new ArrayList<>();
     }
 
     public AdminKlinCentra( Korisnik korisnik, Dijagnoza dijagnoze, Lek lekovi, List<Klinika> klinike, List<AdminKlinike> administratori, List<Pacijent> zahteviPacijenata) {
@@ -48,7 +45,6 @@ public class AdminKlinCentra{
         this.lekovi =  new ArrayList<>();
         this.klinike = new ArrayList<>();
         this.administratori = new ArrayList<>();
-        this.zahteviPacijenata = new ArrayList<>();
 
     }
 
@@ -99,8 +95,4 @@ public class AdminKlinCentra{
     public void setLekovi(List<Lek> lekovi) {
         this.lekovi = lekovi;
     }
-
-    public List<Pacijent> getZahteviPacijenata() { return zahteviPacijenata; }
-
-    public void setZahteviPacijenata(List<Pacijent> zahteviPacijenata) { this.zahteviPacijenata = zahteviPacijenata; }
 }
