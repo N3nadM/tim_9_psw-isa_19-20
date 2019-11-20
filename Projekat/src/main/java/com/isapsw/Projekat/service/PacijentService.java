@@ -11,6 +11,10 @@ public class PacijentService {
     @Autowired
     private PacijentRepository pacijentRepository;
 
+    public Pacijent savePacijent(Pacijent pacijent) {
+        return pacijentRepository.save(pacijent);
+    }
+
     public Pacijent findPacijent(String id) {
         return pacijentRepository.findPacijentByKorisnikId(Long.parseLong(id));
     }
