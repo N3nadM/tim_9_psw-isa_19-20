@@ -38,6 +38,15 @@ public class Korisnik implements UserDetails {
     @NotBlank(message = "Neophodno je uneti adresu.")
     private String adresa;
 
+    @NotBlank(message = "Neophodno je uneti grad.")
+    private String grad;
+
+    @NotBlank(message = "Neophodno je uneti drzavu.")
+    private String drzava;
+
+    @NotBlank(message = "Neophodno je uneti telefon.")
+    private String telefon;
+
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(name = "user_authority",
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
@@ -53,10 +62,37 @@ public class Korisnik implements UserDetails {
         this.password = zahtev.getPassword();
         this.email = zahtev.getEmail();
         this.adresa = zahtev.getAdresa();
+        this.grad = zahtev.getGrad();
+        this.drzava = zahtev.getDrzava();
+        this.telefon = zahtev.getTelefon();
     }
 
     public void setAuthorities(List<Authority> authorities) {
         this.authorities = authorities;
+    }
+
+    public String getGrad() {
+        return grad;
+    }
+
+    public void setGrad(String grad) {
+        this.grad = grad;
+    }
+
+    public String getDrzava() {
+        return drzava;
+    }
+
+    public void setDrzava(String drzava) {
+        this.drzava = drzava;
+    }
+
+    public String getTelefon() {
+        return telefon;
+    }
+
+    public void setTelefon(String telefon) {
+        this.telefon = telefon;
     }
 
     public String getAdresa() {

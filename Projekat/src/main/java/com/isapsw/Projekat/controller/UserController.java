@@ -2,9 +2,11 @@ package com.isapsw.Projekat.controller;
 
 import com.isapsw.Projekat.domain.Korisnik;
 import com.isapsw.Projekat.domain.Zahtev;
+import com.isapsw.Projekat.dto.KorisnikDTO;
 import com.isapsw.Projekat.payload.LoginRequest;
 import com.isapsw.Projekat.security.JWTTokenProvider;
 import com.isapsw.Projekat.service.EmailService;
+import com.isapsw.Projekat.service.KorisnikService;
 import com.isapsw.Projekat.service.ValidationErrorService;
 import com.isapsw.Projekat.service.ZahtevService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +43,9 @@ public class UserController {
 
     @Autowired
     private AuthenticationManager authenticationManager;
+
+    @Autowired
+    private KorisnikService korisnikService;
 
     @PostMapping("/login")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest, BindingResult result){
@@ -106,5 +111,14 @@ public class UserController {
         }
 
         return new ResponseEntity<String>("Korisnik Odbijen", HttpStatus.OK);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Korisnik> editAccount(@RequestBody KorisnikDTO korisnik) {
+        Korisnik k = korisnikService.editKorisnik(korisnik);
+        if(k == null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<Korisnik>(k, HttpStatus.OK);
     }
 }
