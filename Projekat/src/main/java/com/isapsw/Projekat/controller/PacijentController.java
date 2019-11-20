@@ -1,11 +1,15 @@
 package com.isapsw.Projekat.controller;
 
+import com.isapsw.Projekat.domain.Korisnik;
 import com.isapsw.Projekat.domain.Pacijent;
+import com.isapsw.Projekat.domain.Zahtev;
 import com.isapsw.Projekat.service.PacijentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
