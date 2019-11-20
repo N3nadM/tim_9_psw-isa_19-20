@@ -58,14 +58,6 @@ const LekarProfilTab = ({
               <Typography variant="subtitle1">{korisnik.adresa}</Typography>
             </ListItem>
             <ListItem>
-              <ListItemText primary="Grad" />
-              <Typography variant="subtitle1">{korisnik.grad}</Typography>
-            </ListItem>
-            <ListItem>
-              <ListItemText primary="Drzava" />
-              <Typography variant="subtitle1">{korisnik.drzava}</Typography>
-            </ListItem>
-            <ListItem>
               <ListItemText primary="Email" />
               <Typography variant="subtitle1">{korisnik.email}</Typography>
             </ListItem>
@@ -89,7 +81,7 @@ const LekarProfilTab = ({
 
 function mapStateToProps(state) {
   return {
-    pacijent: state.pacijent,
+    lekar: state.lekar,
     korisnik: state.currentUser.korisnik,
     korisnikId: state.currentUser.user.id
   };

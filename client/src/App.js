@@ -51,7 +51,6 @@ function App() {
             <Route exact path="/signUp" component={SignUp} />
             <PrivateRoute exact path="/" component={Home} />
             <Route exact path="/ms" component={MedSestra} />
-            <Route exact path="/lekar" component={Lekar} />
           </Switch>
         </ScrollToTop>
       </Router>

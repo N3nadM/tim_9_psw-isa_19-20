@@ -7,7 +7,7 @@ export const setProfile = lekar => ({
   lekar
 });
 
-export const setNewPacijentKorisnik = korisnik => ({
+export const setNewLekarKorisnik = korisnik => ({
   type: SET_EDIT_LEKAR,
   korisnik
 });
@@ -25,7 +25,7 @@ export const getLekar = id => async (dispatch, getState) => {
 export const editLekar = korisnik => async dispatch => {
   try {
     const k = await axios.put(`/api/users/${korisnik.id}`, korisnik);
-    dispatch(setNewPacijentKorisnik(k.data));
+    dispatch(setNewLekarKorisnik(k.data));
     dispatch(setRealKorisnik(k.data));
   } catch (err) {
     console.log(err);

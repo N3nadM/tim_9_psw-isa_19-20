@@ -13,6 +13,7 @@ import SlobodniTerminiTabs from "../../Tabs/SlobodniTerminTabs";
 import LicniPodaciTabs from "../../Tabs/LicniPodaciTabs";
 import PodaciKlinikaTabs from "../../Tabs/PodaciKlinikaTabs";
 import AppBar from "../../layout/AppBarLogedIn";
+import GodisnjiOdmorTab from "../../Tabs/GodisnjiOdmorTab";
 
 import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
@@ -109,7 +110,7 @@ function ResponsiveDrawer(props) {
             Radni kalendar
           </TabPanel>
           <TabPanel value={value} index={3}>
-            Godišnji odmor
+            <GodisnjiOdmorTab />
           </TabPanel>
           <TabPanel value={value} index={4}>
             <LicniPodaciTabs />

@@ -5,10 +5,7 @@ import com.isapsw.Projekat.service.LekarService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
@@ -18,8 +15,10 @@ public class LekarController {
     @Autowired
     private LekarService lekarService;
 
+    @GetMapping("/{id}")
     public ResponseEntity<Lekar> confirmAcount(@PathVariable String id){
         Lekar lekar = lekarService.findLekar(id);
+        System.out.println(lekar.getId());
         return  new ResponseEntity<Lekar>(lekar, HttpStatus.OK);
     }
 
