@@ -2,10 +2,8 @@ import React from "react";
 import TextField from "@material-ui/core/TextField";
 import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
-import classes from "*.module.css";
 
 export default function DodajKlinikuTab() {
-
   const handleChange = e => {
     const { name, value } = e.target;
   };
@@ -48,19 +46,13 @@ export default function DodajKlinikuTab() {
             id="opis"
           />
         </Grid>
-        
-        <Grid container spacing={1}>
-            <Button
-            type="submit"
-            variant="contained"
-            color="primary"
-            >
-            Dodaj
-            </Button>
-        </Grid>
 
+        <Grid container spacing={1}>
+          <Button type="submit" variant="contained" color="primary">
+            Dodaj
+          </Button>
+        </Grid>
       </Grid>
-      
     </form>
   );
 }
