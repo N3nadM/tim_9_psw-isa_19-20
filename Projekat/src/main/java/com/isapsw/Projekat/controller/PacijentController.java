@@ -18,7 +18,6 @@ public class PacijentController {
     public ResponseEntity<Pacijent> confirmAccount(@PathVariable String id) {
 
         Pacijent pacijent = pacijentService.findPacijent(id);
-
         return new ResponseEntity<Pacijent>(pacijent, HttpStatus.OK);
     }
 }

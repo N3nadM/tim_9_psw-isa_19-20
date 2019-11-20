@@ -9,11 +9,12 @@ import PasswordChange from "../../PasswordChange/PasswordChange";
 import LekariTabs from "../../Tabs/LekariTabs";
 import SaleTabs from "../../Tabs/SaleTabs";
 import TipoviPregledaTabs from "../../Tabs/TipoviPregledaTabs";
-import SlobodniTerminiTabs from "../../Tabs/SlobodniTerminTabs";
+import ZakazivanjePregledaTabs from "../../Tabs/ZakazivanjePregledaTabs";
 import LicniPodaciTabs from "../../Tabs/LicniPodaciTabs";
 import PodaciKlinikaTabs from "../../Tabs/PodaciKlinikaTabs";
 import AppBar from "../../layout/AppBarLogedIn";
 import GodisnjiOdmorTab from "../../Tabs/GodisnjiOdmorTab";
+import IzvestajPregledTab from "../../Tabs/IzvestajPregledTab";
 
 import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
@@ -21,6 +22,7 @@ import TabPanel from "../../Tabs/TabPanel";
 
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
+import LekarProfilTab from "../../Tabs/LekarProfilTab";
 
 const drawerWidth = 240;
 
@@ -77,7 +79,8 @@ function ResponsiveDrawer(props) {
         <Tab label="Radni kalendar" {...a11yProps(2)} />
         <Tab label="Godišnji odmor ili odsustvo" {...a11yProps(3)} />
         <Tab label="Lični podaci" {...a11yProps(4)} />
-        <Tab label="Recepti za overu" {...a11yProps(5)} />
+        <Tab label="Zakazivanje pregleda" {...a11yProps(5)} />
+        <Tab label="Izveštaj o pregledu" {...a11yProps(6)} />
       </Tabs>
     </div>
   );
@@ -113,10 +116,13 @@ function ResponsiveDrawer(props) {
             <GodisnjiOdmorTab />
           </TabPanel>
           <TabPanel value={value} index={4}>
-            <LicniPodaciTabs />
+            <LekarProfilTab />
           </TabPanel>
           <TabPanel value={value} index={5}>
-            Recepti za overu
+            <ZakazivanjePregledaTabs />
+          </TabPanel>
+          <TabPanel value={value} index={6}>
+            <IzvestajPregledTab />
           </TabPanel>
         </main>
       </div>

@@ -10,6 +10,8 @@ import ScrollToTop from "./components/ScrollToTop/ScrollToTop";
 
 import { setAuthorizationToken, setCurrentUser } from "./store/actions/auth";
 import PrivateRoute from "./routing/PrivateRoute";
+import MedSestra from "./components/pages/homeSubpages/ProfilMedSestra";
+import Lekar from "./components/pages/homeSubpages/ProfilLekar";
 
 import Home from "./components/pages/Home";
 
@@ -48,6 +50,7 @@ function App() {
             />
             <Route exact path="/signUp" component={SignUp} />
             <PrivateRoute exact path="/" component={Home} />
+            <Route exact path="/ms" component={MedSestra} />
           </Switch>
         </ScrollToTop>
       </Router>

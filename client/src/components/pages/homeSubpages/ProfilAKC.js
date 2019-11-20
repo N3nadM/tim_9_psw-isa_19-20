@@ -1,6 +1,7 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Tabela from "../../TabelaAKC/Tabela";
+import DodajKliniku from "../../Tabs/DodajKlinikuTab"
 import Divider from "@material-ui/core/Divider";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
@@ -79,7 +80,7 @@ export default function ProfilAKC() {
             <Tabela />
           </TabPanel>
           <TabPanel value={value} index={1}>
-            Dodaj kliniku
+            <DodajKliniku />
           </TabPanel>
         </main>
       </div>
