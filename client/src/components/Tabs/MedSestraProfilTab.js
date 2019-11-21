@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
-import { getLekar } from "../../store/actions/lekar";
+import { getMedSestra } from "../../store/actions/medSestra";
 import Button from "@material-ui/core/Button";
-import { editLekar } from "../../store/actions/lekar";
+import { editMedSestra } from "../../store/actions/medSestra";
 
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
@@ -11,15 +11,15 @@ import Divider from "@material-ui/core/Divider";
 import Typography from "@material-ui/core/Typography";
 import EditTab from "./EditTab";
 
-const LekarProfilTab = ({
-  lekar: { lekar },
+const MedSestraProfilTab = ({
+  medsestra: { medsestra },
   korisnikId,
   korisnik,
-  getLekar,
-  editLekar
+  getMedSestra,
+  editMedSestra
 }) => {
   useEffect(() => {
-    getLekar(korisnikId);
+    getMedSestra(korisnikId);
   }, []);
 
   const [isEdit, setIsEdit] = React.useState(false);
@@ -37,11 +37,11 @@ const LekarProfilTab = ({
       {isEdit && (
         <EditTab
           korisnik={korisnik}
-          editKorisnik={editLekar}
+          editKorisnik={editMedSestra}
           setIsEdit={setIsEdit}
         />
       )}
-      {!isEdit && lekar && (
+      {!isEdit && medsestra && (
         <>
           <List disablePadding>
             <ListItem>
@@ -89,12 +89,12 @@ const LekarProfilTab = ({
 
 function mapStateToProps(state) {
   return {
-    lekar: state.lekar,
+    medsestra: state.medsestra,
     korisnik: state.currentUser.korisnik,
     korisnikId: state.currentUser.user.id
   };
 }
 
-export default connect(mapStateToProps, { getLekar, editLekar })(
-  LekarProfilTab
+export default connect(mapStateToProps, { getMedSestra, editMedSestra })(
+  MedSestraProfilTab
 );
