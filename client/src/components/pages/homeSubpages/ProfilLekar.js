@@ -15,7 +15,6 @@ import PodaciKlinikaTabs from "../../Tabs/PodaciKlinikaTabs";
 import AppBar from "../../layout/AppBarLogedIn";
 import GodisnjiOdmorTab from "../../Tabs/GodisnjiOdmorTab";
 import IzvestajPregledTab from "../../Tabs/IzvestajPregledTab";
-
 import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
 import TabPanel from "../../Tabs/TabPanel";
@@ -31,21 +30,15 @@ const useStyles = makeStyles(theme => ({
     display: "flex"
   },
   drawer: {
-    [theme.breakpoints.up("sm")]: {
-      width: drawerWidth,
-      flexShrink: 0
-    }
-  },
-  paper: {
-    padding: theme.spacing(30),
-    textAlign: "center",
-    color: theme.palette.text.primary
+    width: drawerWidth,
+    flexShrink: 0
   },
   drawerPaper: {
     width: drawerWidth
   },
-  tabs: {
-    borderRight: `1px solid ${theme.palette.divider}`
+  content: {
+    flexGrow: 1,
+    padding: theme.spacing(3)
   },
   toolbar: theme.mixins.toolbar
 }));
@@ -81,6 +74,7 @@ function ResponsiveDrawer(props) {
         <Tab label="Lični podaci" {...a11yProps(4)} />
         <Tab label="Zakazivanje pregleda" {...a11yProps(5)} />
         <Tab label="Izveštaj o pregledu" {...a11yProps(6)} />
+        <Tab label="Izmena lozinke" {...a11yProps(7)} />
       </Tabs>
     </div>
   );
@@ -123,6 +117,9 @@ function ResponsiveDrawer(props) {
           </TabPanel>
           <TabPanel value={value} index={6}>
             <IzvestajPregledTab />
+          </TabPanel>
+          <TabPanel value={value} index={7}>
+            <PasswordChange />
           </TabPanel>
         </main>
       </div>
