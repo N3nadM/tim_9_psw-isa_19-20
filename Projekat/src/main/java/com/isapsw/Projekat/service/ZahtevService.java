@@ -1,14 +1,8 @@
 package com.isapsw.Projekat.service;
 
-import com.isapsw.Projekat.domain.Korisnik;
-import com.isapsw.Projekat.domain.Pacijent;
-import com.isapsw.Projekat.domain.Authority;
-import com.isapsw.Projekat.domain.Zahtev;
+import com.isapsw.Projekat.domain.*;
 import com.isapsw.Projekat.exceptions.UserException;
-import com.isapsw.Projekat.repository.AuthorityRepository;
-import com.isapsw.Projekat.repository.KorisnikRepository;
-import com.isapsw.Projekat.repository.PacijentRepository;
-import com.isapsw.Projekat.repository.ZahtevRepository;
+import com.isapsw.Projekat.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -33,6 +27,9 @@ public class ZahtevService {
 
     @Autowired
     private AuthorityRepository authorityRepository;
+
+    @Autowired
+    private ZdrKartonRepository zdrKartonRepository;
 
     public List<Zahtev> findAll(){
         return zahtevRepository.findAll();
@@ -77,15 +74,22 @@ public class ZahtevService {
                 throw new Exception("Zahtev nije verifikovan od strane Administratora klinickog centra");
             }
 
+            Authority authority = authorityRepository.findAuthorityByName("ROLE_PACIJENT");
+
             Korisnik korisnik = new Korisnik(zahtev);
+            korisnik.getAuthorityList().add(authority);
 
             Pacijent pacijent = new Pacijent(zahtev);
             pacijent.setKorisnik(korisnik);
 
-            zahtevRepository.deleteByEmail(email);
-
             korisnikRepository.save(korisnik);
             pacijentRepository.save(pacijent);
+
+            ZdrKarton zdrKarton = new ZdrKarton();
+            zdrKarton.setPacijent(pacijent);
+
+            zdrKartonRepository.save(zdrKarton);
+            zahtevRepository.deleteByEmail(email);
         } catch (Exception e) {
             throw new UserException(e.getMessage());
         }

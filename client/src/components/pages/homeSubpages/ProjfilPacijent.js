@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import Tabela from "../../TabelaAKC/Tabela";
+
 import Divider from "@material-ui/core/Divider";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
@@ -8,6 +8,8 @@ import Drawer from "@material-ui/core/Drawer";
 import TabPanel from "../../Tabs/TabPanel";
 import AppBar from "../../layout/AppBarLogedIn";
 import PacijentProfilTab from "../../Tabs/PacijentProfilTab";
+import ZakaziPregled from "../../Tabs/ZakaziPregled";
+import ZdrKarton from "../../Tabs/ZdrKarton";
 
 const drawerWidth = 240;
 
@@ -36,7 +38,7 @@ function a11yProps(index) {
   };
 }
 
-export default function ProfilAKC() {
+export default function ProfilPacijent() {
   const [value, setValue] = React.useState(0);
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -58,7 +60,7 @@ export default function ProfilAKC() {
         <Tab label="Moji pregledi" {...a11yProps(1)} />
         <Tab label="Moje operacije" {...a11yProps(2)} />
         <Tab label="Zdravstveni karton" {...a11yProps(3)} />
-        <Tab label="Zakazi pregled ili operaciju" {...a11yProps(4)} />
+        <Tab label="Zakazi pregled" {...a11yProps(4)} />
       </Tabs>
     </div>
   );
@@ -89,10 +91,10 @@ export default function ProfilAKC() {
             operacije
           </TabPanel>
           <TabPanel value={value} index={3}>
-            zdr karton
+            {value === 3 && <ZdrKarton />}
           </TabPanel>
           <TabPanel value={value} index={4}>
-            zakazi
+            <ZakaziPregled />
           </TabPanel>
         </main>
       </div>

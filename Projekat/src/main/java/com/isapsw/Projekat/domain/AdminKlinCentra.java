@@ -24,32 +24,21 @@ public class AdminKlinCentra{
     private List<Lek> lekovi = new ArrayList<>();
 
     @OneToMany(mappedBy = "adminKlinCentra", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<Klinika> klinike = new ArrayList<>();
-
-    @OneToMany(mappedBy = "adminKlinCentra", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<AdminKlinike> administratori = new ArrayList<>();
-
-    @OneToMany(mappedBy = "adminKlinCentra", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<Pacijent> zahteviPacijenata = new ArrayList<>();
 
     public AdminKlinCentra(){
         super();
         this.lekovi =  new ArrayList<>();
         this.dijagnoze =  new ArrayList<>();
-        this.klinike = new ArrayList<>();
         this.administratori = new ArrayList<>();
-        this.zahteviPacijenata = new ArrayList<>();
     }
 
-    public AdminKlinCentra( Korisnik korisnik, Dijagnoza dijagnoze, Lek lekovi, List<Klinika> klinike, List<AdminKlinike> administratori, List<Pacijent> zahteviPacijenata) {
+    public AdminKlinCentra( Korisnik korisnik, Dijagnoza dijagnoze, Lek lekovi,  List<AdminKlinike> administratori, List<Pacijent> zahteviPacijenata) {
         super();
         this.korisnik = korisnik;
         this.dijagnoze =  new ArrayList<>();
         this.lekovi =  new ArrayList<>();
-        this.klinike = new ArrayList<>();
         this.administratori = new ArrayList<>();
-        this.zahteviPacijenata = new ArrayList<>();
-
     }
 
     public Long getId() {
@@ -68,13 +57,6 @@ public class AdminKlinCentra{
         this.korisnik = korisnik;
     }
 
-    public List<Klinika> getKlinike() {
-        return klinike;
-    }
-
-    public void setKlinike(List<Klinika> klinike) {
-        this.klinike = klinike;
-    }
 
     public List<AdminKlinike> getAdministratori() {
         return administratori;
@@ -99,8 +81,4 @@ public class AdminKlinCentra{
     public void setLekovi(List<Lek> lekovi) {
         this.lekovi = lekovi;
     }
-
-    public List<Pacijent> getZahteviPacijenata() { return zahteviPacijenata; }
-
-    public void setZahteviPacijenata(List<Pacijent> zahteviPacijenata) { this.zahteviPacijenata = zahteviPacijenata; }
 }
