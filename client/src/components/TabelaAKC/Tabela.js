@@ -5,6 +5,12 @@ import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
+import TextField from "@material-ui/core/TextField";
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import DialogTitle from "@material-ui/core/DialogTitle";
 import { connect } from "react-redux";
 import {
   getZahtevi,
@@ -20,6 +26,28 @@ const Tabela = ({
   confirmZahtev,
   denieZahtev
 }) => {
+  const [open, setOpen] = React.useState(false);
+  const [text, setText] = React.useState("");
+  const [denieInfo, setDenieInfo] = React.useState({ id: "", email: "" });
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleChange = e => {
+    setText(e.target.value);
+  };
+
+  const handleSendDenie = () => {
+    denieZahtev(denieInfo.id, denieInfo.email, text);
+    setDenieInfo({ id: "", email: "" });
+    handleClose();
+  };
+
   useEffect(() => {
     getZahtevi();
   }, []);
@@ -37,10 +65,17 @@ const Tabela = ({
               <b>Prezime</b>
             </TableCell>
             <TableCell>
-              <b>Username</b>
+              <b>E-mail</b>
+            </TableCell>
+
+            <TableCell>
+              <b>Telefon</b>
             </TableCell>
             <TableCell>
-              <b>E-mail</b>
+              <b>Grad</b>
+            </TableCell>
+            <TableCell>
+              <b>Drzava</b>
             </TableCell>
             <TableCell>
               <b>Adresa</b>
@@ -59,9 +94,12 @@ const Tabela = ({
               <TableRow key={zahtev.id}>
                 <TableCell>{zahtev.ime}</TableCell>
                 <TableCell>{zahtev.prezime}</TableCell>
-                <TableCell>{zahtev.username}</TableCell>
+
                 <TableCell>{zahtev.email}</TableCell>
+                <TableCell>{zahtev.telefon}</TableCell>
                 <TableCell>{zahtev.adresa}</TableCell>
+                <TableCell>{zahtev.grad}</TableCell>
+                <TableCell>{zahtev.drzava}</TableCell>
                 <TableCell>{zahtev.jbzo}</TableCell>
                 <TableCell>
                   <Button
@@ -75,13 +113,10 @@ const Tabela = ({
                 <TableCell>
                   <Button
                     variant="contained"
-                    onClick={() =>
-                      denieZahtev(
-                        zahtev.id,
-                        zahtev.email,
-                        "Koju posluku porati"
-                      )
-                    }
+                    onClick={() => {
+                      handleClickOpen();
+                      setDenieInfo({ id: zahtev.id, email: zahtev.email });
+                    }}
                   >
                     Odbij
                   </Button>
@@ -90,6 +125,38 @@ const Tabela = ({
             ))}
         </TableBody>
       </Table>
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="form-dialog-title"
+      >
+        <DialogTitle id="form-dialog-title">Subscribe</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Ispisite poruku koja ce biti poslata podnosiocu zahteva za kreiranje
+            korisnickog naloga kojeg odbijate ovim putem.
+          </DialogContentText>
+          <TextField
+            autoFocus
+            margin="dense"
+            id="text"
+            label="Poruka"
+            type="text"
+            onChange={handleChange}
+            fullWidth
+            multiline
+            rows={5}
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose} color="primary">
+            Nazad
+          </Button>
+          <Button onClick={handleSendDenie} color="primary">
+            Pošalji
+          </Button>
+        </DialogActions>
+      </Dialog>
       {loading && <CircularProgress />}
     </div>
   );

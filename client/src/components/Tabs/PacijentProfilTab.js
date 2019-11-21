@@ -10,6 +10,8 @@ import ListItemText from "@material-ui/core/ListItemText";
 import Divider from "@material-ui/core/Divider";
 import Typography from "@material-ui/core/Typography";
 import EditTab from "./EditTab";
+import { Paper } from "@material-ui/core";
+import Skeleton from "@material-ui/lab/Skeleton";
 
 const PacijentProfilTab = ({
   pacijent: { pacijent },
@@ -25,7 +27,7 @@ const PacijentProfilTab = ({
   const [isEdit, setIsEdit] = React.useState(false);
 
   return (
-    <div>
+    <Paper style={{ padding: 50, paddingBottom: 75 }}>
       <Typography
         variant="h4"
         component="h2"
@@ -33,7 +35,7 @@ const PacijentProfilTab = ({
       >
         Korisnički profil
       </Typography>
-
+      {!pacijent && <Skeleton height={350} />}
       {isEdit && (
         <EditTab
           korisnik={korisnik}
@@ -75,20 +77,18 @@ const PacijentProfilTab = ({
               <Typography variant="subtitle1">{korisnik.email}</Typography>
             </ListItem>
             <Divider />
-
-            <Divider />
           </List>
           <Button
             variant="contained"
             color="primary"
-            style={{ float: "right", marginTop: 20 }}
+            style={{ float: "right", marginTop: 19 }}
             onClick={() => setIsEdit(true)}
           >
             Izmeni
           </Button>
         </>
       )}
-    </div>
+    </Paper>
   );
 };
 
