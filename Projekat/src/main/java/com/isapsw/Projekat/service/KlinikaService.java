@@ -16,4 +16,8 @@ public class KlinikaService {
     public List<Klinika> getAllKlinike() {
         return klinikaRepository.findAll();
     }
+
+    public Klinika addKlinika(Klinika klinika) {
+        return klinikaRepository.save(klinika);
+    }
 }
