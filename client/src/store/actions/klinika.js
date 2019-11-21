@@ -1,10 +1,15 @@
-import { SET_ALL_KLINIKE } from "../actionTypes";
+import { SET_ALL_KLINIKE, SET_ADDED_KLINIKA } from "../actionTypes";
 import axios from "axios";
 
 export const setKlinike = klinike => ({
   type: SET_ALL_KLINIKE,
   klinike
 });
+
+export const setNewKlinika = newKlinika => ({
+  type: SET_ADDED_KLINIKA,
+  newKlinika
+})
 
 export const getAllKlinike = (sum, rpp) => async dispatch => {
   try {
@@ -14,3 +19,12 @@ export const getAllKlinike = (sum, rpp) => async dispatch => {
     console.log(err);
   }
 };
+
+export const addNewKlinika = (data) => async dispatch => {
+  try {
+    const klinika = await axios.post('/api/klinika', data);
+    dispatch(setNewKlinika(klinika.data));
+  } catch (err) {
+    console.log(err);
+  }
+}

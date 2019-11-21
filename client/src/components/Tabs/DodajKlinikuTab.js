@@ -2,14 +2,19 @@ import React from "react";
 import TextField from "@material-ui/core/TextField";
 import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
+import {connect} from "react-redux";
+import {addNewKlinika} from "../../store/actions/klinika"
 
-export default function DodajKlinikuTab() {
+const DodajKlinikuTab = ({klinika,addNewKlinika}) => {
+  const [state,setState] = React.useState({naziv: "", opis: "", adresa: ""})
+
   const handleChange = e => {
-    const { name, value } = e.target;
+    setState({...state, [e.target.name]:e.target.value})
   };
 
   const handleSubmit = e => {
     e.preventDefault();
+    addNewKlinika(state);
   };
 
   return (
@@ -17,6 +22,7 @@ export default function DodajKlinikuTab() {
       <Grid container spacing={3}>
         <Grid item sm={6}>
           <TextField
+          value={state.naziv}
             onChange={handleChange}
             margin="normal"
             required
@@ -27,6 +33,8 @@ export default function DodajKlinikuTab() {
             id="naziv"
           />
           <TextField
+          
+          value={state.adresa}
             onChange={handleChange}
             margin="normal"
             required
@@ -37,6 +45,8 @@ export default function DodajKlinikuTab() {
             id="adresa"
           />
           <TextField
+          
+          value={state.opis}
             onChange={handleChange}
             margin="normal"
             fullWidth
@@ -56,3 +66,9 @@ export default function DodajKlinikuTab() {
     </form>
   );
 }
+
+const mapStateToProps = state => ({
+  klinika: state.klinika
+})
+
+export default connect(mapStateToProps,{addNewKlinika})(DodajKlinikuTab)
