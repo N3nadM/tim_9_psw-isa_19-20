@@ -53,7 +53,7 @@ public class EmailService {
         MimeMessage message = javaMailSender.createMimeMessage();
         MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(message, true);
 
-        message.setContent(msg, "text/html");
+        message.setContent("<p>" + msg + "</p>", "text/html");
         mimeMessageHelper.setTo(email);
         mimeMessageHelper.setSubject("Odbijanje aktivacije korisnickog naloga");
         mimeMessageHelper.setFrom("vesna.svrkota997@gmail.com");

@@ -21,6 +21,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
+import java.util.Map;
+
 import static com.isapsw.Projekat.security.Konstante.TOKEN_BEARER_PREFIX;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
@@ -100,12 +102,12 @@ public class UserController {
     }
 
     @PostMapping("/denie/{email}")
-    public ResponseEntity<String> denieAccount(@PathVariable String email, @RequestBody String message) {
+    public ResponseEntity<String> denieAccount(@PathVariable String email, @RequestBody Map<String,Object> body ) {
 
-        zahtevService.denieZahtev(email, message);
+        zahtevService.denieZahtev(email, body.get("message").toString());
 
         try {
-            emailService.sendDeniedAsync(email, message);
+            emailService.sendDeniedAsync(email, body.get("message").toString());
         } catch (Exception e) {
             System.out.println("Email nije poslat");
         }
