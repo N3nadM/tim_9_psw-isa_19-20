@@ -77,7 +77,10 @@ public class ZahtevService {
                 throw new Exception("Zahtev nije verifikovan od strane Administratora klinickog centra");
             }
 
+            Authority authority = authorityRepository.findAuthorityByName("ROLE_PACIJENT");
+
             Korisnik korisnik = new Korisnik(zahtev);
+            korisnik.getAuthorityList().add(authority);
 
             Pacijent pacijent = new Pacijent(zahtev);
             pacijent.setKorisnik(korisnik);

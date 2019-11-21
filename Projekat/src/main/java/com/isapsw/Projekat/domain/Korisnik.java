@@ -143,6 +143,10 @@ public class Korisnik implements UserDetails {
         this.email = email;
     }
 
+    public List<Authority> getAuthorityList() {
+        return this.authorities;
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return this.authorities;
