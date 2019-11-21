@@ -14,3 +14,5 @@ export const SET_LEKAR_PROFILE = "SET_LEKAR_PROFILE";
 export const SET_EDIT_LEKAR = "SET_EDIT_LEKAR";
 
 export const SET_ALL_KLINIKE = "SET_ALL_KLINIKE";
+
+export const SET_ZDRKARTON = "SET_ZDRKARTON";

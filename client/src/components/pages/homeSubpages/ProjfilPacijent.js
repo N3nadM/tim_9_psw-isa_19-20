@@ -9,6 +9,7 @@ import TabPanel from "../../Tabs/TabPanel";
 import AppBar from "../../layout/AppBarLogedIn";
 import PacijentProfilTab from "../../Tabs/PacijentProfilTab";
 import ZakaziPregled from "../../Tabs/ZakaziPregled";
+import ZdrKarton from "../../Tabs/ZdrKarton";
 
 const drawerWidth = 240;
 
@@ -90,7 +91,7 @@ export default function ProfilPacijent() {
             operacije
           </TabPanel>
           <TabPanel value={value} index={3}>
-            zdr karton
+            {value === 3 && <ZdrKarton />}
           </TabPanel>
           <TabPanel value={value} index={4}>
             <ZakaziPregled />
