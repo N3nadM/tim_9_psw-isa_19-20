@@ -6,7 +6,6 @@ import Drawer from "@material-ui/core/Drawer";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import PasswordChange from "../../PasswordChange/PasswordChange";
-import LekariTabs from "../../Tabs/LekariTabs";
 import SaleTabs from "../../Tabs/SaleTabs";
 import TipoviPregledaTabs from "../../Tabs/TipoviPregledaTabs";
 import SlobodniTerminiTabs from "../../Tabs/SlobodniTerminTabs";
@@ -14,7 +13,7 @@ import LicniPodaciTabs from "../../Tabs/LicniPodaciTabs";
 import PodaciKlinikaTabs from "../../Tabs/PodaciKlinikaTabs";
 import AppBar from "../../layout/AppBarLogedIn";
 import GodisnjiOdmorTab from "../../Tabs/GodisnjiOdmorTab";
-
+import MedSestraProfilTab from "../../Tabs/MedSestraProfilTab";
 import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
 import TabPanel from "../../Tabs/TabPanel";
@@ -29,21 +28,15 @@ const useStyles = makeStyles(theme => ({
     display: "flex"
   },
   drawer: {
-    [theme.breakpoints.up("sm")]: {
-      width: drawerWidth,
-      flexShrink: 0
-    }
-  },
-  paper: {
-    padding: theme.spacing(30),
-    textAlign: "center",
-    color: theme.palette.text.primary
+    width: drawerWidth,
+    flexShrink: 0
   },
   drawerPaper: {
     width: drawerWidth
   },
-  tabs: {
-    borderRight: `1px solid ${theme.palette.divider}`
+  content: {
+    flexGrow: 1,
+    padding: theme.spacing(3)
   },
   toolbar: theme.mixins.toolbar
 }));
@@ -78,6 +71,7 @@ function ResponsiveDrawer(props) {
         <Tab label="Godišnji odmor ili odsustvo" {...a11yProps(3)} />
         <Tab label="Lični podaci" {...a11yProps(4)} />
         <Tab label="Recepti za overu" {...a11yProps(5)} />
+        <Tab label="Izmena lozinke" {...a11yProps(6)} />
       </Tabs>
     </div>
   );
@@ -113,10 +107,13 @@ function ResponsiveDrawer(props) {
             <GodisnjiOdmorTab />
           </TabPanel>
           <TabPanel value={value} index={4}>
-            <LicniPodaciTabs />
+            <MedSestraProfilTab />
           </TabPanel>
           <TabPanel value={value} index={5}>
             Recepti za overu
+          </TabPanel>
+          <TabPanel value={value} index={6}>
+            <PasswordChange />
           </TabPanel>
         </main>
       </div>
