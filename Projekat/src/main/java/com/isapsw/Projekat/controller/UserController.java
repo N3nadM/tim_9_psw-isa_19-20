@@ -119,7 +119,7 @@ public class UserController {
     public ResponseEntity<Korisnik> editAccount(@RequestBody KorisnikDTO korisnik) {
         Korisnik k = korisnikService.editKorisnik(korisnik);
         if(k == null) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<Korisnik>(k, HttpStatus.OK);
     }

@@ -23,7 +23,7 @@ public class AdminKlinike{
     private Klinika klinika;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="adminKlinCentra_id", updatable = false, nullable = false)
+    @JoinColumn(name="adminKlinCentra_id", updatable = false)
     @JsonIgnore
     private AdminKlinCentra adminKlinCentra;
 
