@@ -22,7 +22,7 @@ export const getAllAdmins = (sum, rpp) => async dispatch => {
 
 export const addNewAdmin = data => async dispatch => {
   try {
-    const admin = await axios.post("/api/adminK", data);
+    const admin = await axios.post(`/api/adminK`, data);
     dispatch(setNewAdmin(admin.data));
   } catch (err) {
     console.log(err);

@@ -35,4 +35,6 @@ public class KorisnikService {
         return korisnikRepository.save(k);
     }
 
+    public Korisnik findKoriskikId(Long id) { return korisnikRepository.findKorisnikById(id); }
+
 }

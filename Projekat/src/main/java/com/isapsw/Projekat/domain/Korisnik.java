@@ -2,6 +2,7 @@ package com.isapsw.Projekat.domain;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.isapsw.Projekat.dto.KorisnikDTO;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -54,6 +55,7 @@ public class Korisnik implements UserDetails {
     private List<Authority> authorities = new ArrayList<>();
 
     public Korisnik() {
+
     }
 
     public Korisnik(Zahtev zahtev) {

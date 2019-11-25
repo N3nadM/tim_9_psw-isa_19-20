@@ -132,7 +132,7 @@ const DodajAKTab = ({ admin, addNewAdmin }) => {
 };
 
 const mapStateToProps = state => ({
-  admin: state.newAdmin
+  admin: state.admin
 });
 
 export default connect(mapStateToProps, { addNewAdmin })(DodajAKTab);
