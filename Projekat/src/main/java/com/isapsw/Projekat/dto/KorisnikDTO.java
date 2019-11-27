@@ -8,6 +8,10 @@ public class KorisnikDTO {
     private String drzava;
     private String adresa;
     private String telefon;
+    private String email;
+    private String password;
+    private Long klinikaId;
+
 
     public KorisnikDTO() {
     }
@@ -20,6 +24,39 @@ public class KorisnikDTO {
         this.drzava = drzava;
         this.adresa = adresa;
         this.telefon = telefon;
+    }
+
+    public KorisnikDTO(Long id, String ime, String prezime, String grad, String drzava, String adresa, String telefon, String email, String password) {
+        this.id = id;
+        this.ime = ime;
+        this.prezime = prezime;
+        this.grad = grad;
+        this.drzava = drzava;
+        this.adresa = adresa;
+        this.telefon = telefon;
+        this.email = email;
+        this.password = password;
+    }
+
+    public KorisnikDTO(Long id, String ime, String prezime, String grad, String drzava, String adresa, String telefon, String email, String password, Long klinikaId) {
+        this.id = id;
+        this.ime = ime;
+        this.prezime = prezime;
+        this.grad = grad;
+        this.drzava = drzava;
+        this.adresa = adresa;
+        this.telefon = telefon;
+        this.email = email;
+        this.password = password;
+        this.klinikaId = klinikaId;
+    }
+
+    public Long getKlinikaId() {
+        return klinikaId;
+    }
+
+    public void setKlinikaId(Long klinikaId) {
+        this.klinikaId = klinikaId;
     }
 
     public Long getId() {
@@ -76,5 +113,21 @@ public class KorisnikDTO {
 
     public void setTelefon(String telefon) {
         this.telefon = telefon;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

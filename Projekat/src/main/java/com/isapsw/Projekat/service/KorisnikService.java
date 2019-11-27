@@ -31,4 +31,10 @@ public class KorisnikService {
 
     }
 
+    public Korisnik addKorisnik(Korisnik k){
+        return korisnikRepository.save(k);
+    }
+
+    public Korisnik findKoriskikId(Long id) { return korisnikRepository.findKorisnikById(id); }
+
 }
