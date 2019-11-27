@@ -58,6 +58,17 @@ public class Korisnik implements UserDetails {
 
     }
 
+    public Korisnik(KorisnikDTO korisnikDTO){
+        this.ime = korisnikDTO.getIme();
+        this.prezime = korisnikDTO.getPrezime();
+        this.password = korisnikDTO.getPassword();
+        this.email = korisnikDTO.getEmail();
+        this.adresa = korisnikDTO.getAdresa();
+        this.grad = korisnikDTO.getGrad();
+        this.drzava = korisnikDTO.getDrzava();
+        this.telefon = korisnikDTO.getTelefon();
+    }
+
     public Korisnik(Zahtev zahtev) {
         this.ime = zahtev.getIme();
         this.prezime = zahtev.getPrezime();

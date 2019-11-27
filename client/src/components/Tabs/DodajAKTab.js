@@ -1,11 +1,22 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import TextField from "@material-ui/core/TextField";
 import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
+import MenuItem from "@material-ui/core/MenuItem";
+import FormHelperText from "@material-ui/core/FormHelperText";
+import FormControl from "@material-ui/core/FormControl";
+import Select from "@material-ui/core/Select";
+import InputLabel from "@material-ui/core/InputLabel";
 import { connect } from "react-redux";
 import { addNewAdmin } from "../../store/actions/adminKlinike";
+import { getAllKlinike } from "../../store/actions/klinika";
 
-const DodajAKTab = ({ admin, addNewAdmin }) => {
+const DodajAKTab = ({
+  admin,
+  klinika: { klinike },
+  addNewAdmin,
+  getAllKlinike
+}) => {
   const [state, setState] = React.useState({
     ime: "",
     prezime: "",
@@ -14,7 +25,8 @@ const DodajAKTab = ({ admin, addNewAdmin }) => {
     drzava: "",
     grad: "",
     adresa: "",
-    telefon: ""
+    telefon: "",
+    klinikaId: ""
   });
 
   const handleChange = e => {
@@ -25,9 +37,13 @@ const DodajAKTab = ({ admin, addNewAdmin }) => {
     e.preventDefault();
     addNewAdmin(state);
   };
+  useEffect(() => {
+    getAllKlinike();
+  }, []);
 
   return (
     <form noValidate onSubmit={handleSubmit}>
+      {console.log(klinike)}
       <Grid container spacing={10}>
         <Grid item sm={4}>
           <TextField
@@ -121,6 +137,27 @@ const DodajAKTab = ({ admin, addNewAdmin }) => {
           />
         </Grid>
 
+        <FormControl>
+          <InputLabel shrink id="demo-simple-select-placeholder-label-label">
+            Klinika
+          </InputLabel>
+          <Select
+            labelId="demo-simple-select-placeholder-label-label"
+            id="klinike"
+            onChange={handleChange}
+            displayEmpty
+            name="klinikaId"
+          >
+            {klinike &&
+              klinike.map(klinika => (
+                <MenuItem key={klinika.id} value={klinika.id}>
+                  {klinika.naziv}
+                </MenuItem>
+              ))}
+          </Select>
+          <FormHelperText>Izaberite kliniku</FormHelperText>
+        </FormControl>
+
         <Grid container spacing={1}>
           <Button type="submit" variant="contained" color="primary">
             Dodaj
@@ -132,7 +169,10 @@ const DodajAKTab = ({ admin, addNewAdmin }) => {
 };
 
 const mapStateToProps = state => ({
-  admin: state.admin
+  admin: state.admin,
+  klinika: state.klinika
 });
 
-export default connect(mapStateToProps, { addNewAdmin })(DodajAKTab);
+export default connect(mapStateToProps, { addNewAdmin, getAllKlinike })(
+  DodajAKTab
+);

@@ -3,6 +3,7 @@ package com.isapsw.Projekat.controller;
 import com.isapsw.Projekat.domain.Authority;
 import com.isapsw.Projekat.domain.Korisnik;
 import com.isapsw.Projekat.domain.AdminKlinike;
+import com.isapsw.Projekat.domain.Zahtev;
 import com.isapsw.Projekat.dto.KorisnikDTO;
 import com.isapsw.Projekat.service.AdminKlinikeService;
 import com.isapsw.Projekat.service.AuthorityService;
@@ -13,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -24,15 +26,6 @@ public class AdminKlinikeController {
 
     @Autowired
     private AdminKlinikeService adminKlinikeService;
-
-    @Autowired
-    private KlinikaService klinikaService;
-
-    @Autowired
-    private KorisnikService korisnikService;
-
-    @Autowired
-    private AuthorityService authorityService;
 
     @GetMapping
     public ResponseEntity<List<AdminKlinike>> getAllAdmins(){
@@ -58,31 +51,11 @@ public class AdminKlinikeController {
         }
     }
 
-    @PostMapping(value = "")
+    @PostMapping
     public ResponseEntity<AdminKlinike> addAdminK(@RequestBody KorisnikDTO korisnikDTO) {
         try{
-            AdminKlinike ak = new AdminKlinike();
 
-            Korisnik k = new Korisnik();
-            k.setIme(korisnikDTO.getIme());
-            k.setPrezime(korisnikDTO.getPrezime());
-            k.setAdresa(korisnikDTO.getAdresa());
-            k.setDrzava(korisnikDTO.getDrzava());
-            k.setGrad(korisnikDTO.getGrad());
-            k.setTelefon(korisnikDTO.getTelefon());
-            k.setEmail(korisnikDTO.getEmail());
-            k.setPassword(korisnikDTO.getPassword());
-
-            Authority a = authorityService.findByName("ROLE_AK");
-            List<Authority> authorities = new ArrayList<>();
-            authorities.add(a);
-
-            k.setAuthorities(authorities);
-            korisnikService.addKorisnik(k);
-
-            ak.setKorisnik(k);
-            ak.setKlinika(klinikaService.findKlinikaId(1L).get());
-            return new ResponseEntity<AdminKlinike>(adminKlinikeService.save(ak), HttpStatus.OK);
+            return new ResponseEntity<AdminKlinike>(adminKlinikeService.createAdminKlinike(korisnikDTO), HttpStatus.OK);
         }
         catch(Exception e) {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);

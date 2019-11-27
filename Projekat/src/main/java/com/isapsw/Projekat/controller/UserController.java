@@ -102,7 +102,7 @@ public class UserController {
     }
 
     @PostMapping("/denie/{email}")
-    public ResponseEntity<String> denieAccount(@PathVariable String email, @RequestBody Map<String,Object> body ) {
+    public ResponseEntity<String> denieAccount(@PathVariable String email, @RequestBody Map<String,Object> body) {
 
         zahtevService.denieZahtev(email, body.get("message").toString());
 
