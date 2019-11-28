@@ -94,7 +94,7 @@ function ResponsiveDrawer(props) {
             {drawer}
           </Drawer>
         </nav>
-        <main>
+        <main className={classes.content}>
           <TabPanel value={value} index={0}>
             Home
           </TabPanel>
