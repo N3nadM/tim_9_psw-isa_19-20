@@ -48,4 +48,6 @@ INSERT INTO OCENA_KLINIKE VALUES('6', '6 - 1', '4', '6', '1');
 INSERT INTO OCENA_KLINIKE VALUES('7', '7 - 1', '4', '7', '1');
 INSERT INTO OCENA_KLINIKE VALUES('8', '8 - 1', '5', '8', '1');
 INSERT INTO OCENA_KLINIKE VALUES('9', '9 - 1', '5', '9', '1');
-INSERT INTO OCENA_KLINIKE VALUES('10', '10 - 1', '5', '10', '1')
+INSERT INTO OCENA_KLINIKE VALUES('10', '10 - 1', '5', '10', '1');
+
+INSERT INTO ZDR_KARTON(id, pacijent_id, dioptrija, visina, tezina, krvna_grupa) VALUES ('1', '1', '-1.5', '193', '80', '0+')
