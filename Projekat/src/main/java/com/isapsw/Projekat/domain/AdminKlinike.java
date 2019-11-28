@@ -17,13 +17,13 @@ public class AdminKlinike{
     @JoinColumn
     private Korisnik korisnik;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="klinika_id", updatable = false, nullable = false)
     @JsonIgnore
     private Klinika klinika;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="adminKlinCentra_id", updatable = false, nullable = false)
+    @JoinColumn(name="adminKlinCentra_id", updatable = false)
     @JsonIgnore
     private AdminKlinCentra adminKlinCentra;
 

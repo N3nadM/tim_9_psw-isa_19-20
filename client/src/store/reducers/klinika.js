@@ -16,7 +16,7 @@ export default (state = DEFAULT_STATE, action) => {
       return {
         ...state,
         newKlinika: action.newKlinika
-      }
+      };
     default:
       return state;
   }

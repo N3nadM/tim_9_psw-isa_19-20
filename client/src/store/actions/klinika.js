@@ -23,6 +23,7 @@ export const getAllKlinike = (sum, rpp) => async (dispatch, getState) => {
   }
 };
 
+
 export const searchKlinike = searchData => async dispatch => {
   try {
     const klinike = await axios.post(`/api/klinika/search`, searchData);
@@ -40,3 +41,13 @@ export const addNewKlinika = data => async dispatch => {
     console.log(err);
   }
 };
+
+export const getKlinika = id => async (dispatch, getState) => {
+  try {
+    const klinika = await axios.get(`/api/klinika/${id}`);
+    dispatch(setKlinike(klinika.data));
+  } catch (err) {
+    console.log(err);
+  }
+};
+

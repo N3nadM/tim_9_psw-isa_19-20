@@ -51,3 +51,32 @@ INSERT INTO OCENA_KLINIKE VALUES('9', '9 - 1', '5', '9', '1');
 INSERT INTO OCENA_KLINIKE VALUES('10', '10 - 1', '5', '10', '1');
 
 INSERT INTO ZDR_KARTON(id, pacijent_id, dioptrija, visina, tezina, krvna_grupa) VALUES ('1', '1', '-1.5', '193', '80', '0+')
+
+INSERT INTO KORISNIK (id, adresa, email, ime, password, prezime, drzava, grad, telefon) VALUES ('8', 'neka adresa', 'peraperic@gmail.com', 'Pera', '$2a$10$feiotRqclqYZ7aJnytCDSedhWmzztzhuwyujbVfVucV4nbmMRNnwa', 'Pacijent',  'drzava', 'Beograd', '33333213');
+INSERT INTO USER_AUTHORITY VALUES ('8', '1');
+INSERT INTO PACIJENT VALUES ('2', '2019-11-22', '666777', '8');
+
+INSERT INTO KORISNIK (id, adresa, email, ime, password, prezime, drzava, grad, telefon) VALUES ('9', 'tamo daleko', 'email@gmail.com', 'Email', '$2a$10$feiotRqclqYZ7aJnytCDSedhWmzztzhuwyujbVfVucV4nbmMRNnwa', 'emajil',  'drzava', 'Novi Sad', '543543543');
+INSERT INTO USER_AUTHORITY VALUES ('9', '1');
+INSERT INTO PACIJENT VALUES ('3', '2019-04-13', '654654', '9');
+
+INSERT INTO KORISNIK (id, adresa, email, ime, password, prezime, drzava, grad, telefon) VALUES ('10', 'ulica 54', 'trtrtr@gmail.com', 'Trtrtr', '$2a$10$feiotRqclqYZ7aJnytCDSedhWmzztzhuwyujbVfVucV4nbmMRNnwa', 'rttrt',  'drzava', 'Nis', '7864554');
+INSERT INTO USER_AUTHORITY VALUES ('10', '1');
+INSERT INTO PACIJENT VALUES ('4', '2019-11-07', '543543', '10');
+
+INSERT INTO KORISNIK (id, adresa, email, ime, password, prezime, drzava, grad, telefon) VALUES ('11', 'adresaaaa', 'ijasam@gmail.com', 'IJaSamPacijent', '$2a$10$feiotRqclqYZ7aJnytCDSedhWmzztzhuwyujbVfVucV4nbmMRNnwa', 'IJaSamPrezime',  'drzava', 'Subotica', '654765');
+INSERT INTO USER_AUTHORITY VALUES ('11', '1');
+INSERT INTO PACIJENT VALUES ('5', '2019-12-20', '123123', '11');
+
+INSERT INTO PACIJENTI_KLINIKE VALUES ('4', '1');
+INSERT INTO PACIJENTI_KLINIKE VALUES ('2', '2');
+INSERT INTO PACIJENTI_KLINIKE VALUES ('4', '3');
+INSERT INTO PACIJENTI_KLINIKE VALUES ('5', '3');
+INSERT INTO PACIJENTI_KLINIKE VALUES ('1', '4');
+INSERT INTO PACIJENTI_KLINIKE VALUES ('1', '5');
+INSERT INTO PACIJENTI_KLINIKE VALUES ('5', '2');
+INSERT INTO PACIJENTI_KLINIKE VALUES ('1', '3');
+INSERT INTO PACIJENTI_KLINIKE VALUES ('3', '2');
+INSERT INTO PACIJENTI_KLINIKE VALUES ('6', '4');
+INSERT INTO PACIJENTI_KLINIKE VALUES ('1', '1');
+

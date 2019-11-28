@@ -102,7 +102,7 @@ public class UserController {
     }
 
     @PostMapping("/denie/{email}")
-    public ResponseEntity<String> denieAccount(@PathVariable String email, @RequestBody Map<String,Object> body ) {
+    public ResponseEntity<String> denieAccount(@PathVariable String email, @RequestBody Map<String,Object> body) {
 
         zahtevService.denieZahtev(email, body.get("message").toString());
 
@@ -119,7 +119,7 @@ public class UserController {
     public ResponseEntity<Korisnik> editAccount(@RequestBody KorisnikDTO korisnik) {
         Korisnik k = korisnikService.editKorisnik(korisnik);
         if(k == null) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<Korisnik>(k, HttpStatus.OK);
     }

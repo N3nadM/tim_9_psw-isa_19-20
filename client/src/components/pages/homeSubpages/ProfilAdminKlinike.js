@@ -1,6 +1,4 @@
 import React from "react";
-import clsx from "@material-ui/core";
-import CssBaseline from "@material-ui/core/CssBaseline";
 import Divider from "@material-ui/core/Divider";
 import Drawer from "@material-ui/core/Drawer";
 import Typography from "@material-ui/core/Typography";
@@ -36,6 +34,7 @@ const useStyles = makeStyles(theme => ({
   paper: {
     padding: theme.spacing(30),
     textAlign: "center",
+
     color: theme.palette.text.primary
   },
   drawerPaper: {
@@ -43,6 +42,10 @@ const useStyles = makeStyles(theme => ({
   },
   tabs: {
     borderRight: `1px solid ${theme.palette.divider}`
+  },
+  content: {
+    flexGrow: 1,
+    padding: theme.spacing(3)
   },
   toolbar: theme.mixins.toolbar
 }));
@@ -101,9 +104,9 @@ function ResponsiveDrawer(props) {
             {drawer}
           </Drawer>
         </nav>
-        <main>
+        <main className={classes.content}>
           <TabPanel value={value} index={0}>
-            <PodaciKlinikaTabs />
+            {value === 0 && <PodaciKlinikaTabs />}
           </TabPanel>
           <TabPanel value={value} index={1}>
             Inbox

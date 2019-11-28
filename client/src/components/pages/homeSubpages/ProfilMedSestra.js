@@ -6,6 +6,7 @@ import Drawer from "@material-ui/core/Drawer";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import PasswordChange from "../../PasswordChange/PasswordChange";
+import TabelaPacijenataKlinike from "../../Tabele/TabelaPacijenataKlinike";
 import SaleTabs from "../../Tabs/SaleTabs";
 import TipoviPregledaTabs from "../../Tabs/TipoviPregledaTabs";
 import SlobodniTerminiTabs from "../../Tabs/SlobodniTerminTabs";
@@ -98,7 +99,7 @@ function ResponsiveDrawer(props) {
             Home
           </TabPanel>
           <TabPanel value={value} index={1}>
-            Lista pacijenata
+            <TabelaPacijenataKlinike />
           </TabPanel>
           <TabPanel value={value} index={2}>
             Radni kalendar

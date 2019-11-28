@@ -1,8 +1,6 @@
 package com.isapsw.Projekat.dto;
 
-import com.isapsw.Projekat.domain.AdminKlinike;
-
-public class KorisnikDTO {
+public class AdminKlinikeDTO{
     private Long id;
     private String ime;
     private String prezime;
@@ -12,23 +10,13 @@ public class KorisnikDTO {
     private String telefon;
     private String email;
     private String password;
+    private Long klinikaId;
 
-
-    public KorisnikDTO() {
+    public AdminKlinikeDTO() {
+        super();
     }
 
-    public KorisnikDTO(Long id, String ime, String prezime, String grad, String drzava, String adresa, String telefon) {
-        this.id = id;
-        this.ime = ime;
-        this.prezime = prezime;
-        this.grad = grad;
-        this.drzava = drzava;
-        this.adresa = adresa;
-        this.telefon = telefon;
-    }
-
-    public KorisnikDTO(Long id, String ime, String prezime, String grad, String drzava, String adresa, String telefon, String email, String password) {
-        this.id = id;
+    public AdminKlinikeDTO(String ime, String prezime, String grad, String drzava, String adresa, String telefon, String email, String password, Long klinikaId) {
         this.ime = ime;
         this.prezime = prezime;
         this.grad = grad;
@@ -37,18 +25,15 @@ public class KorisnikDTO {
         this.telefon = telefon;
         this.email = email;
         this.password = password;
+        this.klinikaId = klinikaId;
     }
 
-    public KorisnikDTO(AdminKlinikeDTO adminKlinikeDTO){
-        this.id = adminKlinikeDTO.getId();
-        this.ime = adminKlinikeDTO.getIme();
-        this.prezime = adminKlinikeDTO.getPrezime();
-        this.grad = adminKlinikeDTO.getGrad();
-        this.drzava = adminKlinikeDTO.getDrzava();
-        this.adresa = adminKlinikeDTO.getAdresa();
-        this.telefon = adminKlinikeDTO.getTelefon();
-        this.email = adminKlinikeDTO.getEmail();
-        this.password = adminKlinikeDTO.getPassword();
+    public Long getKlinikaId() {
+        return klinikaId;
+    }
+
+    public void setKlinikaId(Long klinikaId) {
+        this.klinikaId = klinikaId;
     }
 
     public Long getId() {
