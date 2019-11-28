@@ -28,3 +28,12 @@ export const addNewKlinika = data => async dispatch => {
     console.log(err);
   }
 };
+
+export const getKlinika = id => async (dispatch, getState) => {
+  try {
+    const klinika = await axios.get(`/api/klinika/${id}`);
+    dispatch(setKlinike(klinika.data));
+  } catch (err) {
+    console.log(err);
+  }
+};

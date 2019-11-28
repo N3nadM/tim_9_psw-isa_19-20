@@ -29,6 +29,9 @@ public class Pacijent{
     @Column(updatable = false)
     private Date datum_kreiranja;
 
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "pacijenti")
+    private List<Klinika> klinike = new ArrayList<>();
+
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "pacijent")
     private ZdrKarton zdrKarton;
 
