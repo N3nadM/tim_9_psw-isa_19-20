@@ -27,8 +27,7 @@ public class AdminKlinike{
     @JsonIgnore
     private AdminKlinCentra adminKlinCentra;
 
-    public AdminKlinike() {
-        super();
+    public AdminKlinike(){
     }
 
 

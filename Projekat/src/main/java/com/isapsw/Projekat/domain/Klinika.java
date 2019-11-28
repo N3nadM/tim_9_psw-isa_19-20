@@ -29,6 +29,8 @@ public class Klinika {
 
     //dodati listu slobodnih termina
 
+    private Double ocena = 0.0;
+
     @OneToMany(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY, mappedBy = "klinika", orphanRemoval = true)
     private List<Sala> sale = new ArrayList<>();
     //dodati cenovnik
@@ -57,6 +59,14 @@ public class Klinika {
         this.adminiKlinike = adminiKlinike;
         this.medicinskeSestre = new ArrayList<>();
         this.lekari = new ArrayList<>();
+    }
+
+    public Double getOcena() {
+        return ocena;
+    }
+
+    public void setOcena(Double ocena) {
+        this.ocena = ocena;
     }
 
     public String getNaziv() {

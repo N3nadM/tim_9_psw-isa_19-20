@@ -23,6 +23,15 @@ public class KlinikaService {
         return klinikaRepository.save(klinika);
     }
 
+
+    public List<Klinika> searchKlinike(String lokacija, String ocena) {
+        if(ocena.isEmpty()) {
+            return klinikaRepository.findKlinikaByAdresaContaining(lokacija.toUpperCase());
+        } else {
+            return klinikaRepository.findKlinikaByAdresaAndOcena(lokacija.toUpperCase(), Double.parseDouble(ocena));
+        }
+    }
+  
     public Optional<Klinika> findKlinikaId(Long id){
         return klinikaRepository.findById(id);
     }

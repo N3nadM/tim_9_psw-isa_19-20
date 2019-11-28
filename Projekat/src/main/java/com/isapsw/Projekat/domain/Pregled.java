@@ -10,8 +10,10 @@ import java.util.Date;
 @Entity
 public class Pregled extends Pregled_Operacija{
 
-    @NotBlank(message = "Neophodno je uneti tip pregleda.")
-    private String tipPregleda;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="tip_pregleda_id", updatable = false, nullable = false)
+    @JsonIgnore
+    private TipPregleda tipPregleda;
 
     private Integer popust;
 
@@ -34,11 +36,11 @@ public class Pregled extends Pregled_Operacija{
         super();
     }
 
-    public String getTipPregleda() {
+    public TipPregleda getTipPregleda() {
         return tipPregleda;
     }
 
-    public void setTipPregleda(String tipPregleda) {
+    public void setTipPregleda(TipPregleda tipPregleda) {
         this.tipPregleda = tipPregleda;
     }
 

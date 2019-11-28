@@ -94,7 +94,7 @@ export default function ProfilPacijent() {
             {value === 3 && <ZdrKarton />}
           </TabPanel>
           <TabPanel value={value} index={4}>
-            <ZakaziPregled />
+            {value === 4 && <ZakaziPregled />}
           </TabPanel>
         </main>
       </div>

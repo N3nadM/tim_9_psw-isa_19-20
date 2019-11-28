@@ -58,7 +58,7 @@ const ZdrKarton = ({ pacijent, zdrKarton, getZdrKarton }) => {
               {zdrKarton &&
                 !zdrKarton.visina &&
                 "Visina ce biti dodata na prvom pregledu"}
-              {zdrKarton && zdrKarton.visina && `${zdrKarton.visina}`}
+              {zdrKarton && zdrKarton.visina && `${zdrKarton.visina}cm`}
             </Typography>
           </ListItem>
           <ListItem>
@@ -95,7 +95,7 @@ const ZdrKarton = ({ pacijent, zdrKarton, getZdrKarton }) => {
               {zdrKarton &&
                 !zdrKarton.krvnaGrupa &&
                 "Krvna grupa ce biti dodata na prvom pregledu"}
-              {zdrKarton && zdrKarton.krvnaGrupa && `${zdrKarton.krvnaGrupa}kg`}
+              {zdrKarton && zdrKarton.krvnaGrupa && `${zdrKarton.krvnaGrupa}`}
             </Typography>
           </ListItem>
 

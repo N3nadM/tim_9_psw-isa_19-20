@@ -23,7 +23,7 @@ import Switch from "@material-ui/core/Switch";
 import FilterListIcon from "@material-ui/icons/FilterList";
 import Button from "@material-ui/core/Button";
 import { connect } from "react-redux";
-import { getAllKlinike } from "../../store/actions/klinika";
+import { getAllKlinike, searchKlinike } from "../../store/actions/klinika";
 import { Grid } from "@material-ui/core";
 import FormControl from "@material-ui/core/FormControl";
 import InputLabel from "@material-ui/core/InputLabel";
@@ -186,7 +186,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const ZakaziPregled = ({ klinike, getAllKlinike }) => {
+const ZakaziPregled = ({ klinike, getAllKlinike, searchKlinike }) => {
   useEffect(() => {
     getAllKlinike();
   }, []);
@@ -233,6 +233,11 @@ const ZakaziPregled = ({ klinike, getAllKlinike }) => {
   });
   // const [tip, setTip] = React.useState("");
 
+  const handleSubmit = e => {
+    e.preventDefault();
+    searchKlinike(state);
+  };
+
   const handleChange = e => {
     setState({ ...state, [e.target.name]: e.target.value });
   };
@@ -242,87 +247,89 @@ const ZakaziPregled = ({ klinike, getAllKlinike }) => {
 
   return (
     <div className={classes.root}>
-      <Paper style={{ padding: 50, marginBottom: 50 }}>
-        <Grid container spacing={3}>
-          <Grid item md={3}>
-            <MuiPickersUtilsProvider utils={DateFnsUtils}>
-              <KeyboardDatePicker
-                id="date-picker-dialog"
-                label="Datum pregleda"
-                format="MM/dd/yyyy"
-                value={selectedDate}
-                onChange={handleDateChange}
-                KeyboardButtonProps={{
-                  "aria-label": "change date"
-                }}
+      <form onSubmit={handleSubmit}>
+        <Paper style={{ padding: 50, marginBottom: 50 }}>
+          <Grid container spacing={3}>
+            <Grid item md={3}>
+              <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                <KeyboardDatePicker
+                  id="date-picker-dialog"
+                  label="Datum pregleda"
+                  format="MM/dd/yyyy"
+                  value={selectedDate}
+                  onChange={handleDateChange}
+                  KeyboardButtonProps={{
+                    "aria-label": "change date"
+                  }}
+                />
+              </MuiPickersUtilsProvider>
+            </Grid>
+            <Grid item md={2}>
+              <FormControl
+                className={classes.formControl}
+                style={{ width: "80%" }}
+              >
+                <InputLabel id="demo-simple-select-label">Ocena</InputLabel>
+                <Select
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  value={state.ocena}
+                  name="ocena"
+                  onChange={handleChange}
+                >
+                  <MenuItem value={1}>1+</MenuItem>
+                  <MenuItem value={2}>2+</MenuItem>
+                  <MenuItem value={3}>3+</MenuItem>
+                  <MenuItem value={4}>4+</MenuItem>
+                  <MenuItem value={5}>5</MenuItem>
+                </Select>
+              </FormControl>
+            </Grid>
+            <Grid item md={3}>
+              <FormControl style={{ width: "80%" }}>
+                <InputLabel id="demo-simple-select-label">
+                  Tip Pregleda
+                </InputLabel>
+                <Select
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  value={state.tip}
+                  name="tip"
+                  onChange={handleChange}
+                >
+                  <MenuItem value={10}>Pregled ociju</MenuItem>
+                  <MenuItem value={20}>Fizikalna terapija</MenuItem>
+                  <MenuItem value={30}>Rutinski pregled</MenuItem>
+                </Select>
+              </FormControl>
+            </Grid>
+            <Grid item md={2}>
+              <TextField
+                style={{ width: "80%" }}
+                id="standard-basic"
+                value={state.lokacija}
+                onChange={handleChange}
+                name="lokacija"
+                className={classes.textField}
+                label="Lokacija"
               />
-            </MuiPickersUtilsProvider>
-          </Grid>
-          <Grid item md={2}>
-            <FormControl
-              className={classes.formControl}
-              style={{ width: "80%" }}
+            </Grid>
+            <Grid
+              item
+              md={2}
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center"
+              }}
             >
-              <InputLabel id="demo-simple-select-label">Ocena</InputLabel>
-              <Select
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
-                value={state.ocena}
-                name="ocena"
-                onChange={handleChange}
-              >
-                <MenuItem value={1}>1</MenuItem>
-                <MenuItem value={2}>2</MenuItem>
-                <MenuItem value={3}>3</MenuItem>
-                <MenuItem value={4}>4</MenuItem>
-                <MenuItem value={5}>5</MenuItem>
-              </Select>
-            </FormControl>
+              <Button variant="contained" color="primary" type="submit">
+                Pretraži
+              </Button>
+            </Grid>
           </Grid>
-          <Grid item md={3}>
-            <FormControl style={{ width: "80%" }}>
-              <InputLabel id="demo-simple-select-label">
-                Tip Pregleda
-              </InputLabel>
-              <Select
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
-                value={state.tip}
-                name="tip"
-                onChange={handleChange}
-              >
-                <MenuItem value={10}>Pregled ociju</MenuItem>
-                <MenuItem value={20}>Fizikalna terapija</MenuItem>
-                <MenuItem value={30}>Rutinski pregled</MenuItem>
-              </Select>
-            </FormControl>
-          </Grid>
-          <Grid item md={2}>
-            <TextField
-              style={{ width: "80%" }}
-              id="standard-basic"
-              value={state.lokacija}
-              onChange={handleChange}
-              name="lokacija"
-              className={classes.textField}
-              label="Lokacija"
-            />
-          </Grid>
-          <Grid
-            item
-            md={2}
-            style={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center"
-            }}
-          >
-            <Button variant="contained" color="primary">
-              Pretraži
-            </Button>
-          </Grid>
-        </Grid>
-      </Paper>
+        </Paper>
+      </form>
       <Paper className={classes.paper}>
         <EnhancedTableToolbar />
         <div className={classes.tableWrapper}>
@@ -364,10 +371,7 @@ const ZakaziPregled = ({ klinike, getAllKlinike }) => {
                           {row.naziv}
                         </TableCell>
                         <TableCell align="left">{row.adresa}</TableCell>
-                        <TableCell align="left">
-                          {/*{row.ocena}*/}
-                          {index}
-                        </TableCell>
+                        <TableCell align="left">{row.ocena}</TableCell>
                         <TableCell align="right">
                           <Button variant="outlined" color="primary">
                             Pogledaj
@@ -412,4 +416,6 @@ const mapStateToProps = state => ({
   klinike: state.klinika.klinike
 });
 
-export default connect(mapStateToProps, { getAllKlinike })(ZakaziPregled);
+export default connect(mapStateToProps, { getAllKlinike, searchKlinike })(
+  ZakaziPregled
+);
