@@ -30,6 +30,7 @@ public class Lek {
             name = "lek_za_dijagnozu",
             joinColumns = @JoinColumn(name = "lek_id"),
             inverseJoinColumns = @JoinColumn(name = "dijagnoza_id"))
+    @JsonIgnore
     private List<Dijagnoza> dijagnoze = new ArrayList<>();
 
     @ManyToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
@@ -37,15 +38,13 @@ public class Lek {
             name = "alergije_pacijenata",
             joinColumns = @JoinColumn(name = "lek_id"),
             inverseJoinColumns = @JoinColumn(name = "zdrKarton_id"))
+    @JsonIgnore
     private List<ZdrKarton> zdrKarton = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "lek")
+    @JsonIgnore
     private List<Recept> recept = new ArrayList<>();
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="adminKlinCentra_id", updatable = false, nullable = false)
-    @JsonIgnore
-    private AdminKlinCentra adminKlinCentra;
 
     public Lek() {
     }
@@ -106,13 +105,4 @@ public class Lek {
         this.dijagnoze = dijagnoze;
     }
 
-
-
-    public AdminKlinCentra getAdminKlinCentra() {
-        return adminKlinCentra;
-    }
-
-    public void setAdminKlinCentra(AdminKlinCentra adminKlinCentra) {
-        this.adminKlinCentra = adminKlinCentra;
-    }
 }
