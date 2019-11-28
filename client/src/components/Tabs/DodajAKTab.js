@@ -34,7 +34,6 @@ const DodajAKTab = ({
   };
 
   const handleSubmit = e => {
-    e.preventDefault();
     addNewAdmin(state);
   };
   useEffect(() => {

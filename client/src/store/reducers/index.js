@@ -6,7 +6,7 @@ import lekar from "./lekar";
 import medsestra from "./medSestra";
 import klinika from "./klinika";
 import zdrKarton from "./zdrKarton";
-
+import adminKlinike from "./adminKlinike";
 
 const rootReducer = combineReducers({
   currentUser,
@@ -15,8 +15,8 @@ const rootReducer = combineReducers({
   lekar,
   medsestra,
   klinika,
-  zdrKarton
-
+  zdrKarton,
+  adminKlinike
 });
 
 export default rootReducer;

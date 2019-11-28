@@ -1,136 +1,87 @@
-import React from "react";
-import PropTypes from "prop-types";
-import { makeStyles, useTheme } from "@material-ui/core/styles";
-import Tabs from "@material-ui/core/Tabs";
-import Tab from "@material-ui/core/Tab";
-import Typography from "@material-ui/core/Typography";
-import Box from "@material-ui/core/Box";
-import TextField from "@material-ui/core/TextField";
+import React, { useEffect } from "react";
+import { connect } from "react-redux";
+import { getKlinikaAdmin } from "../../store/actions/adminKlinike";
+import { editKlinika } from "../../store/actions/adminKlinike";
 import Button from "@material-ui/core/Button";
 
-import { FormLabel } from "@material-ui/core";
-function TabPanel(props) {
-  const { children, value, index, ...other } = props;
+import List from "@material-ui/core/List";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemText from "@material-ui/core/ListItemText";
+import Divider from "@material-ui/core/Divider";
+import Typography from "@material-ui/core/Typography";
+import { Paper } from "@material-ui/core";
+import Skeleton from "@material-ui/lab/Skeleton";
+import EditKlinikaTab from "../Tabs/EditKlinikaTab";
+
+const PodaciKlinikaTabs = ({
+  adminKlinike: { klinika },
+  korisnikId,
+  getKlinikaAdmin,
+  editKlinika
+}) => {
+  useEffect(() => {
+    getKlinikaAdmin(korisnikId);
+  }, [getKlinikaAdmin, korisnikId]);
+
+  const [isEdit, setIsEdit] = React.useState(false);
 
   return (
-    <Typography
-      component="div"
-      role="tabpanel"
-      hidden={value !== index}
-      id={`full-width-tabpanel-${index}`}
-      aria-labelledby={`full-width-tab-${index}`}
-      {...other}
-    >
-      <Box p={3}>{children}</Box>
-    </Typography>
-  );
-}
-
-TabPanel.propTypes = {
-  children: PropTypes.node,
-  index: PropTypes.any.isRequired,
-  value: PropTypes.any.isRequired
-};
-
-function a11yProps(index) {
-  return {
-    id: `full-width-tab-${index}`,
-    "aria-controls": `full-width-tabpanel-${index}`
-  };
-}
-
-const useStyles = makeStyles(theme => ({
-  root: {
-    backgroundColor: theme.palette.background.paper,
-    flexGrow: 1
-  },
-  form: {
-    width: "100%", // Fix IE 11 issue.
-    marginTop: theme.spacing(1)
-  }
-}));
-
-export default function FullWidthTabs() {
-  const classes = useStyles();
-  const theme = useTheme();
-  const [value, setValue] = React.useState(0);
-
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
-  };
-
-  const handleChangeIndex = index => {
-    setValue(index);
-  };
-
-  return (
-    <div className={classes.root}>
-      <Tabs
-        value={value}
-        onChange={handleChange}
-        indicatorColor="primary"
-        textColor="primary"
+    <Paper style={{ padding: 50, paddingBottom: 75 }}>
+      <Typography
+        variant="h4"
+        component="h2"
+        style={{ marginBottom: 20, marginLeft: 13 }}
       >
-        <Tab label="Podaci o klinici" {...a11yProps(0)} />
-        <Tab label="Izmena podataka o klinici" {...a11yProps(1)} />
-      </Tabs>
-      <TabPanel value={value} index={0} dir={theme.direction}>
-        <form className={classes.form} noValidate>
-          <p>Podaci o klinici</p>
-          <FormLabel>Naziv: </FormLabel> <br /> <br />
-          <FormLabel>Opis: </FormLabel> <br /> <br />
-          <FormLabel>Adresa: </FormLabel> <br /> <br />
-          <br />
-        </form>
-      </TabPanel>
-      <TabPanel value={value} index={1} dir={theme.direction}>
-        <form className={classes.form} noValidate>
-          <TextField
-            margin="normal"
-            required
-            fullWidth
-            name="naziv"
-            label="Naziv"
-            type="text"
-            id="nazivKlinika"
-          />
-          <TextField
-            margin="normal"
-            required
-            fullWidth
-            name="opis"
-            label="Opis"
-            type="text"
-            id="opisKlinika"
-          />
-          <TextField
-            margin="normal"
-            required
-            fullWidth
-            name="adresa"
-            label="Adresa"
-            type="text"
-            id="adresa"
-          />
-          <TextField
-            margin="normal"
-            required
-            fullWidth
-            name="email"
-            label="Email"
-            type="email"
-            id="emailKlinika"
-          />
+        Profil klinike
+      </Typography>
+      {!klinika && <Skeleton height={350} />}
+      {isEdit && (
+        <EditKlinikaTab
+          klinika={klinika}
+          editKlinika={editKlinika}
+          setIsEdit={setIsEdit}
+        />
+      )}
+      {!isEdit && klinika && (
+        <>
+          <List disablePadding>
+            <ListItem>
+              <ListItemText primary="Naziv" />
+              <Typography variant="subtitle1">{klinika.naziv}</Typography>
+            </ListItem>
+            <ListItem>
+              <ListItemText primary="Opis" />
+              <Typography variant="subtitle1">{klinika.opis}</Typography>
+            </ListItem>
+            <Divider />
+            <ListItem>
+              <ListItemText primary="Adresa" />
+              <Typography variant="subtitle1">{klinika.adresa}</Typography>
+            </ListItem>
+
+            <Divider />
+          </List>
           <Button
-            type="submit"
             variant="contained"
             color="primary"
-            className={classes.submit}
+            style={{ float: "right", marginTop: 19 }}
+            onClick={() => setIsEdit(true)}
           >
-            Sačuvajte
+            Izmeni
           </Button>
-        </form>
-      </TabPanel>
-    </div>
+        </>
+      )}
+    </Paper>
   );
+};
+
+function mapStateToProps(state) {
+  return {
+    adminKlinike: state.adminKlinike,
+    korisnikId: state.currentUser.user.id
+  };
 }
+
+export default connect(mapStateToProps, { getKlinikaAdmin, editKlinika })(
+  PodaciKlinikaTabs
+);
