@@ -54,6 +54,10 @@ const PacijentProfilTab = ({
               <ListItemText primary="Prezime" />
               <Typography variant="subtitle1">{korisnik.prezime}</Typography>
             </ListItem>
+            <ListItem>
+              <ListItemText primary="Telefon" />
+              <Typography variant="subtitle1">{korisnik.telefon}</Typography>
+            </ListItem>
             <Divider />
             <ListItem>
               <ListItemText primary="Adresa" />

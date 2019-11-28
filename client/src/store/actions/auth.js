@@ -1,4 +1,9 @@
-import { SET_CURRENT_USER, SET_ERROR, SET_REAL_KORISNIK } from "../actionTypes";
+import {
+  SET_CURRENT_USER,
+  SET_ERROR,
+  SET_REAL_KORISNIK,
+  USER_LOGOUT
+} from "../actionTypes";
 import axios from "axios";
 import jwtDecode from "jwt-decode";
 
@@ -30,6 +35,7 @@ export function logout() {
     localStorage.clear();
     setAuthorizationToken(false);
     dispatch(setCurrentUser({}));
+    dispatch({ type: USER_LOGOUT });
   };
 }
 
