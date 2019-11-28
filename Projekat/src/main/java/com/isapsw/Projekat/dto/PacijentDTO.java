@@ -1,8 +1,10 @@
 package com.isapsw.Projekat.dto;
 
-import com.isapsw.Projekat.domain.AdminKlinike;
+import com.isapsw.Projekat.domain.Korisnik;
+import com.isapsw.Projekat.domain.Pacijent;
 
-public class KorisnikDTO {
+public class PacijentDTO {
+
     private Long id;
     private String ime;
     private String prezime;
@@ -12,22 +14,12 @@ public class KorisnikDTO {
     private String telefon;
     private String email;
     private String password;
+    private String jbzo;
 
-
-    public KorisnikDTO() {
+    public PacijentDTO() {
     }
 
-    public KorisnikDTO(Long id, String ime, String prezime, String grad, String drzava, String adresa, String telefon) {
-        this.id = id;
-        this.ime = ime;
-        this.prezime = prezime;
-        this.grad = grad;
-        this.drzava = drzava;
-        this.adresa = adresa;
-        this.telefon = telefon;
-    }
-
-    public KorisnikDTO(Long id, String ime, String prezime, String grad, String drzava, String adresa, String telefon, String email, String password) {
+    public PacijentDTO(Long id, String ime, String prezime, String grad, String drzava, String adresa, String telefon, String email, String password, String jbzo) {
         this.id = id;
         this.ime = ime;
         this.prezime = prezime;
@@ -37,18 +29,19 @@ public class KorisnikDTO {
         this.telefon = telefon;
         this.email = email;
         this.password = password;
+        this.jbzo = jbzo;
     }
 
-    public KorisnikDTO(AdminKlinikeDTO adminKlinikeDTO){
-        this.id = adminKlinikeDTO.getId();
-        this.ime = adminKlinikeDTO.getIme();
-        this.prezime = adminKlinikeDTO.getPrezime();
-        this.grad = adminKlinikeDTO.getGrad();
-        this.drzava = adminKlinikeDTO.getDrzava();
-        this.adresa = adminKlinikeDTO.getAdresa();
-        this.telefon = adminKlinikeDTO.getTelefon();
-        this.email = adminKlinikeDTO.getEmail();
-        this.password = adminKlinikeDTO.getPassword();
+    public PacijentDTO(Korisnik korisnik){
+        this.id = korisnik.getId();
+        this.ime = korisnik.getIme();
+        this.prezime = korisnik.getPrezime();
+        this.grad = korisnik.getGrad();
+        this.drzava = korisnik.getDrzava();
+        this.adresa = korisnik.getAdresa();
+        this.telefon = korisnik.getTelefon();
+        this.email = korisnik.getEmail();
+        this.password = korisnik.getPassword();
     }
 
     public Long getId() {
@@ -121,5 +114,13 @@ public class KorisnikDTO {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getJbzo() {
+        return jbzo;
+    }
+
+    public void setJbzo(String jbzo) {
+        this.jbzo = jbzo;
     }
 }

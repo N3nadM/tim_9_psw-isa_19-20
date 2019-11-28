@@ -1,7 +1,5 @@
 package com.isapsw.Projekat.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.util.ArrayList;
@@ -21,6 +19,14 @@ public class Klinika {
     private String adresa;
 
     private String opis;
+
+    @ManyToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "pacijenti_klinike",
+            joinColumns = @JoinColumn(name = "klinika_id"),
+            inverseJoinColumns = @JoinColumn(name = "pacijent_id"))
+    private List<Pacijent> pacijenti = new ArrayList<>();
+
     //dodati listu slobodnih termina
 
     @OneToMany(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY, mappedBy = "klinika", orphanRemoval = true)
@@ -115,5 +121,13 @@ public class Klinika {
 
     public void setLekari(List<Lekar> lekari) {
         this.lekari = lekari;
+    }
+
+    public List<Pacijent> getPacijenti() {
+        return pacijenti;
+    }
+
+    public void setPacijenti(List<Pacijent> pacijenti) {
+        this.pacijenti = pacijenti;
     }
 }
