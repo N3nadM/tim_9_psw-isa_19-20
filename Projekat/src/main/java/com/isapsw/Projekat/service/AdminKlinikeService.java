@@ -38,6 +38,8 @@ public class AdminKlinikeService {
         return adminKlinikeRepository.findAll();
     }
 
+    public Optional<AdminKlinike> findByKorisnikId(Long id) {return  adminKlinikeRepository.findAdminKlinikeByKorisnikId(id);}
+
     public AdminKlinike save(AdminKlinike ak){
         return adminKlinikeRepository.save(ak);
     }

@@ -1,4 +1,8 @@
-import { SET_ALL_ADMINK, SET_ADDED_ADMINK } from "../actionTypes";
+import {
+  SET_ALL_ADMINK,
+  SET_ADDED_ADMINK,
+  SET_ADMINOVA_KLINIKA
+} from "../actionTypes";
 import axios from "axios";
 
 export const setAdmins = admins => ({
@@ -9,6 +13,11 @@ export const setAdmins = admins => ({
 export const setNewAdmin = newAdmin => ({
   type: SET_ADDED_ADMINK,
   newAdmin
+});
+
+export const setAdminovaKlinika = adminovaKlinika => ({
+  type: SET_ADMINOVA_KLINIKA,
+  adminovaKlinika
 });
 
 export const getAllAdmins = (sum, rpp) => async dispatch => {
@@ -25,6 +34,15 @@ export const addNewAdmin = data => async dispatch => {
     console.log(data);
     const admin = await axios.post(`/api/adminK`, data);
     dispatch(setNewAdmin(admin.data));
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const getKlinikaAdmin = id => async (dispatch, getState) => {
+  try {
+    const klinika = await axios.get(`/api/adminK/getKlinika/${id}`);
+    dispatch(setAdminovaKlinika(klinika.data));
   } catch (err) {
     console.log(err);
   }

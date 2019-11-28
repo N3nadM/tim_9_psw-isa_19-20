@@ -17,7 +17,7 @@ public class AdminKlinike{
     @JoinColumn
     private Korisnik korisnik;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="klinika_id", updatable = false, nullable = false)
     @JsonIgnore
     private Klinika klinika;

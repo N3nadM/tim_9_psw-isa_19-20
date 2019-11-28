@@ -1,9 +1,6 @@
 package com.isapsw.Projekat.controller;
 
-import com.isapsw.Projekat.domain.Authority;
-import com.isapsw.Projekat.domain.Korisnik;
-import com.isapsw.Projekat.domain.AdminKlinike;
-import com.isapsw.Projekat.domain.Zahtev;
+import com.isapsw.Projekat.domain.*;
 import com.isapsw.Projekat.dto.KorisnikDTO;
 import com.isapsw.Projekat.service.AdminKlinikeService;
 import com.isapsw.Projekat.service.AuthorityService;
@@ -56,6 +53,21 @@ public class AdminKlinikeController {
         try{
 
             return new ResponseEntity<AdminKlinike>(adminKlinikeService.createAdminKlinike(korisnikDTO), HttpStatus.OK);
+        }
+        catch(Exception e) {
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping(value = "/getKlinika/{id}")
+    public ResponseEntity<Klinika> getKlinikaAdmin(@PathVariable Long id){
+
+        AdminKlinike ak = adminKlinikeService.findByKorisnikId(id).get();
+        System.out.println(ak.getId());
+        Klinika k = ak.getKlinika();
+        System.out.println(k.getNaziv());
+        try{
+            return new ResponseEntity<Klinika>(k, HttpStatus.OK);
         }
         catch(Exception e) {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);

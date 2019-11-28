@@ -1,8 +1,13 @@
-import { SET_ALL_ADMINK, SET_ADDED_ADMINK } from "../actionTypes";
+import {
+  SET_ALL_ADMINK,
+  SET_ADDED_ADMINK,
+  SET_ADMINOVA_KLINIKA
+} from "../actionTypes";
 
 const DEFAULT_STATE = {
   admins: null,
-  newAdmin: null
+  newAdmin: null,
+  adminovaKlinika: null
 };
 
 export default (state = DEFAULT_STATE, action) => {
@@ -16,7 +21,11 @@ export default (state = DEFAULT_STATE, action) => {
       return {
         ...state,
         newAdmin: action.newAdmin
-      }
+      };
+    case SET_ADMINOVA_KLINIKA:
+      return {
+        adminovaKlinika: action.adminovaKlinika
+      };
     default:
       return state;
   }
