@@ -23,7 +23,7 @@ public class Recept {
     private Date datumIzdavanja;
 
     @NotBlank
-    @JsonFormat(pattern = "yyyy-mm-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date datumIsticanja;
 
     @ManyToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
@@ -31,6 +31,7 @@ public class Recept {
             name = "recepti_pacijenta",
             joinColumns = @JoinColumn(name = "recept_id"),
             inverseJoinColumns = @JoinColumn(name = "zdrKarton_id"))
+    @JsonIgnore
     private List<ZdrKarton> zdrKarton = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -38,9 +39,8 @@ public class Recept {
     @JsonIgnore
     private MedicinskaSestra medicinskaSestra;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="lek_id", updatable = false, nullable = false)
-    @JsonIgnore
     private Lek lek;
 
     @PrePersist

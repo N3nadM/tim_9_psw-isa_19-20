@@ -1,6 +1,7 @@
 package com.isapsw.Projekat.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -23,7 +24,7 @@ public class Pacijent{
     @Column(updatable = false, unique = true)
     private String jbzo;
 
-    @JsonFormat(pattern = "yyyy-mm-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     @Column(updatable = false)
     private Date datum_kreiranja;
 
@@ -31,12 +32,15 @@ public class Pacijent{
     private List<Klinika> klinike = new ArrayList<>();
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "pacijent")
+    @JsonIgnore
     private ZdrKarton zdrKarton;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "pacijent")
+    @JsonIgnore
     private List<Pregled> pregledi = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "pacijent")
+    @JsonIgnore
     private List<Operacija> operacije = new ArrayList<>();
 
     public Pacijent() {

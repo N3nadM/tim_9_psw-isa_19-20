@@ -31,16 +31,12 @@ public class Dijagnoza {
             name = "dijagnoze_pacijenata",
             joinColumns = @JoinColumn(name = "dijagnoza_id"),
             inverseJoinColumns = @JoinColumn(name = "zdrKarton_id"))
+    @JsonIgnore
     private List<ZdrKarton> zdrKarton = new ArrayList<>();
 
-    @JsonFormat(pattern = "yyyy-mm-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     @Column(updatable = false)
     private Date datumKreiranja;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="adminKlinCentra_id", updatable = false, nullable = false)
-    @JsonIgnore
-    private AdminKlinCentra adminKlinCentra;
 
     @PrePersist
     protected void onCreate(){
@@ -56,7 +52,6 @@ public class Dijagnoza {
         this.sifra = sifra;
         this.terapija = terapija;
         this.datumKreiranja = datumKreiranja;
-        this.adminKlinCentra = adminKlinCentra;
     }
 
     public Long getId() {
@@ -97,13 +92,5 @@ public class Dijagnoza {
 
     public void setDatumKreiranja(Date datumKreiranja) {
         this.datumKreiranja = datumKreiranja;
-    }
-
-    public AdminKlinCentra getAdminKlinCentra() {
-        return adminKlinCentra;
-    }
-
-    public void setAdminKlinCentra(AdminKlinCentra adminKlinCentra) {
-        this.adminKlinCentra = adminKlinCentra;
     }
 }

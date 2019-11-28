@@ -50,11 +50,23 @@ INSERT INTO OCENA_KLINIKE VALUES('8', '8 - 1', '5', '8', '1');
 INSERT INTO OCENA_KLINIKE VALUES('9', '9 - 1', '5', '9', '1');
 INSERT INTO OCENA_KLINIKE VALUES('10', '10 - 1', '5', '10', '1');
 
-INSERT INTO ZDR_KARTON(id, pacijent_id, dioptrija, visina, tezina, krvna_grupa) VALUES ('1', '1', '-1.5', '193', '80', '0+')
+INSERT INTO ZDR_KARTON(id, pacijent_id, dioptrija, visina, tezina, krvna_grupa) VALUES ('1', '1', '-1.5', '193', '80', '0+');
+INSERT INTO LEK(id, naziv, sadrzaj, sifra) VALUES('1', 'Brufen 600mg', 'metan, propan, butan gutam', 'BrT6');
+INSERT INTO ALERGIJE_PACIJENATA VALUES('1','1');
+
+INSERT INTO Dijagnoza VALUES ('1', '2019-1-28 11:21:22', 'Lud', 'Pop');
+INSERT INTO DIJAGNOZE_PACIJENATA VALUES ('1', '1');
 
 INSERT INTO KORISNIK (id, adresa, email, ime, password, prezime, drzava, grad, telefon) VALUES ('8', 'neka adresa', 'peraperic@gmail.com', 'Pera', '$2a$10$feiotRqclqYZ7aJnytCDSedhWmzztzhuwyujbVfVucV4nbmMRNnwa', 'Pacijent',  'drzava', 'Beograd', '33333213');
 INSERT INTO USER_AUTHORITY VALUES ('8', '1');
 INSERT INTO PACIJENT VALUES ('2', '2019-11-22', '666777', '8');
+
+INSERT INTO ZDR_KARTON(id, pacijent_id, dioptrija, visina, tezina, krvna_grupa) VALUES ('2', '2', '-1.35', '153', '40', '0+');
+INSERT INTO LEK(id, naziv, sadrzaj, sifra) VALUES('2', 'Alergen 600mg', 'bitces alergican', 'Al234');
+INSERT INTO ALERGIJE_PACIJENATA VALUES('2','2');
+
+INSERT INTO RECEPT VALUES ('1', '2019-12-28 11:21:22', '2019-11-28 11:21:22', 'true', '2', '1');
+INSERT INTO RECEPTI_PACIJENTA VALUES ('1','1');
 
 INSERT INTO KORISNIK (id, adresa, email, ime, password, prezime, drzava, grad, telefon) VALUES ('9', 'tamo daleko', 'email@gmail.com', 'Email', '$2a$10$feiotRqclqYZ7aJnytCDSedhWmzztzhuwyujbVfVucV4nbmMRNnwa', 'emajil',  'drzava', 'Novi Sad', '543543543');
 INSERT INTO USER_AUTHORITY VALUES ('9', '1');

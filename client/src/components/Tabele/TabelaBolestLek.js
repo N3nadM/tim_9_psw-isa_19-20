@@ -8,16 +8,6 @@ import TableHead from "@material-ui/core/TableHead";
 import TablePagination from "@material-ui/core/TablePagination";
 import TableRow from "@material-ui/core/TableRow";
 
-const columns = [
-  { id: "naziv", label: "Naziv", minWidth: 170 },
-  {
-    id: "datumKreiranja",
-    label: "Datum kreiranja",
-    minWidth: 170,
-    align: "right"
-  }
-];
-
 const useStyles = makeStyles({
   root: {
     width: "100%"
@@ -48,15 +38,8 @@ export default function TabelaBolesti({ items }) {
         <Table stickyHeader aria-label="sticky table">
           <TableHead>
             <TableRow>
-              {columns.map(column => (
-                <TableCell
-                  key={column.id}
-                  align={column.align}
-                  style={{ minWidth: column.minWidth }}
-                >
-                  {column.label}
-                </TableCell>
-              ))}
+              <TableCell align="left">Naziv</TableCell>
+              <TableCell align="right">Šifra</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -71,16 +54,9 @@ export default function TabelaBolesti({ items }) {
                       tabIndex={-1}
                       key={row.code}
                     >
-                      {columns.map(column => {
-                        const value = row[column.id];
-                        return (
-                          <TableCell key={column.id} align={column.align}>
-                            {column.format && typeof value === "number"
-                              ? column.format(value)
-                              : value}
-                          </TableCell>
-                        );
-                      })}
+                      <TableCell align="left">{row.naziv}</TableCell>
+
+                      <TableCell align="right">{row.sifra}</TableCell>
                     </TableRow>
                   );
                 })

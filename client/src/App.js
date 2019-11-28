@@ -11,7 +11,6 @@ import ScrollToTop from "./components/ScrollToTop/ScrollToTop";
 import { setAuthorizationToken, setCurrentUser } from "./store/actions/auth";
 import PrivateRoute from "./routing/PrivateRoute";
 import MedSestra from "./components/pages/homeSubpages/ProfilMedSestra";
-import Lekar from "./components/pages/homeSubpages/ProfilLekar";
 
 import Home from "./components/pages/Home";
 

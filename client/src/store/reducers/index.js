@@ -8,7 +8,7 @@ import klinika from "./klinika";
 import zdrKarton from "./zdrKarton";
 import adminKlinike from "./adminKlinike";
 
-const rootReducer = combineReducers({
+const appReducer = combineReducers({
   currentUser,
   zahtev,
   pacijent,
@@ -18,5 +18,13 @@ const rootReducer = combineReducers({
   zdrKarton,
   adminKlinike
 });
+
+const rootReducer = (state, action) => {
+  if (action.type === "USER_LOGOUT") {
+    state = undefined;
+  }
+
+  return appReducer(state, action);
+};
 
 export default rootReducer;

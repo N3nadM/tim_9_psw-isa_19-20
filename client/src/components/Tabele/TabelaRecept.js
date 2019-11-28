@@ -8,16 +8,6 @@ import TableHead from "@material-ui/core/TableHead";
 import TablePagination from "@material-ui/core/TablePagination";
 import TableRow from "@material-ui/core/TableRow";
 
-const columns = [
-  { id: "sifra", label: "Šifra", minWidth: 170 },
-  {
-    id: "datumIsticanja",
-    label: "Datum isticanja",
-    minWidth: 170,
-    align: "right"
-  }
-];
-
 const useStyles = makeStyles({
   root: {
     width: "100%"
@@ -48,15 +38,8 @@ export default function TabelaRecept({ items }) {
         <Table stickyHeader aria-label="sticky table">
           <TableHead>
             <TableRow>
-              {columns.map(column => (
-                <TableCell
-                  key={column.id}
-                  align={column.align}
-                  style={{ minWidth: column.minWidth }}
-                >
-                  {column.label}
-                </TableCell>
-              ))}
+              <TableCell>Naziv</TableCell>
+              <TableCell align="right">Datum isticanja</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -71,16 +54,8 @@ export default function TabelaRecept({ items }) {
                       tabIndex={-1}
                       key={row.code}
                     >
-                      {columns.map(column => {
-                        const value = row[column.id];
-                        return (
-                          <TableCell key={column.id} align={column.align}>
-                            {column.format && typeof value === "number"
-                              ? column.format(value)
-                              : value}
-                          </TableCell>
-                        );
-                      })}
+                      <TableCell align="left">{row.lek.naziv}</TableCell>
+                      <TableCell align="right">{row.datumIsticanja}</TableCell>
                     </TableRow>
                   );
                 })
