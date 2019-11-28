@@ -29,6 +29,10 @@ public class Lekar{
     @JsonIgnore
     private Klinika klinika;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="tip_pregleda_id", updatable = false, nullable = false)
+    private TipPregleda tipPregleda;
+
     public Lekar(){
         super();
         this.pregledi = new ArrayList<>();

@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @CrossOrigin(origins = "*", allowedHeaders = "*")
@@ -38,4 +39,15 @@ public class KlinikaController {
         }
     }
 
+    @PostMapping("/search")
+    public ResponseEntity<List<Klinika>> getKlinikeWithSearch(@RequestBody Map<String,Object> body) {
+        try {
+            List<Klinika> klinike = klinikaService.searchKlinike(body.get("lokacija").toString(), body.get("ocena").toString());
+            return new ResponseEntity<>(klinike, HttpStatus.OK);
+        }
+        catch(Exception e) {
+            System.out.println(e.getMessage());
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
+    }
 }
