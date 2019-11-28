@@ -22,6 +22,7 @@ import TabPanel from "../../Tabs/TabPanel";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import LekarProfilTab from "../../Tabs/LekarProfilTab";
+import TabelaPacijenataKlinike from "../../Tabele/TabelaPacijenataKlinike";
 
 const drawerWidth = 240;
 
@@ -101,7 +102,7 @@ function ResponsiveDrawer(props) {
             Home
           </TabPanel>
           <TabPanel value={value} index={1}>
-            Lista pacijenata
+            <TabelaPacijenataKlinike />
           </TabPanel>
           <TabPanel value={value} index={2}>
             Radni kalendar
