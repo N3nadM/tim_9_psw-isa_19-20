@@ -9,7 +9,7 @@ export const setKlinike = klinike => ({
 export const setNewKlinika = newKlinika => ({
   type: SET_ADDED_KLINIKA,
   newKlinika
-})
+});
 
 export const getAllKlinike = (sum, rpp) => async dispatch => {
   try {
@@ -20,11 +20,20 @@ export const getAllKlinike = (sum, rpp) => async dispatch => {
   }
 };
 
-export const addNewKlinika = (data) => async dispatch => {
+export const addNewKlinika = data => async dispatch => {
   try {
-    const klinika = await axios.post('/api/klinika', data);
+    const klinika = await axios.post("/api/klinika", data);
     dispatch(setNewKlinika(klinika.data));
   } catch (err) {
     console.log(err);
   }
-}
+};
+
+export const getKlinika = id => async (dispatch, getState) => {
+  try {
+    const klinika = await axios.get(`/api/klinika/${id}`);
+    dispatch(setKlinike(klinika.data));
+  } catch (err) {
+    console.log(err);
+  }
+};

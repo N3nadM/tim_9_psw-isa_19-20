@@ -4,6 +4,7 @@ import com.isapsw.Projekat.domain.Authority;
 import com.isapsw.Projekat.domain.Korisnik;
 import com.isapsw.Projekat.domain.AdminKlinike;
 import com.isapsw.Projekat.domain.Zahtev;
+import com.isapsw.Projekat.dto.AdminKlinikeDTO;
 import com.isapsw.Projekat.dto.KorisnikDTO;
 import com.isapsw.Projekat.service.AdminKlinikeService;
 import com.isapsw.Projekat.service.AuthorityService;
@@ -52,10 +53,10 @@ public class AdminKlinikeController {
     }
 
     @PostMapping
-    public ResponseEntity<AdminKlinike> addAdminK(@RequestBody KorisnikDTO korisnikDTO) {
+    public ResponseEntity<AdminKlinike> addAdminK(@RequestBody AdminKlinikeDTO adminKlinikeDTO) {
         try{
 
-            return new ResponseEntity<AdminKlinike>(adminKlinikeService.createAdminKlinike(korisnikDTO), HttpStatus.OK);
+            return new ResponseEntity<AdminKlinike>(adminKlinikeService.createAdminKlinike(adminKlinikeDTO), HttpStatus.OK);
         }
         catch(Exception e) {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);

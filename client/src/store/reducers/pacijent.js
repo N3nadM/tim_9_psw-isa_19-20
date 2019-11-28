@@ -1,7 +1,8 @@
 import { SET_PACIJENT_PROFILE, SET_EDIT_PACIJENT } from "../actionTypes";
 
 const DEFAULT_STATE = {
-  pacijent: null
+  pacijent: null,
+  pacijenti: null
 };
 
 export default (state = DEFAULT_STATE, action) => {

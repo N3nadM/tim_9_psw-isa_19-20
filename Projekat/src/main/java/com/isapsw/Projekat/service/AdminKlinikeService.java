@@ -3,6 +3,7 @@ package com.isapsw.Projekat.service;
 import com.isapsw.Projekat.domain.AdminKlinike;
 import com.isapsw.Projekat.domain.Authority;
 import com.isapsw.Projekat.domain.Korisnik;
+import com.isapsw.Projekat.dto.AdminKlinikeDTO;
 import com.isapsw.Projekat.dto.KorisnikDTO;
 import com.isapsw.Projekat.repository.AdminKlinikeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,10 +43,10 @@ public class AdminKlinikeService {
         return adminKlinikeRepository.save(ak);
     }
 
-    public AdminKlinike createAdminKlinike(KorisnikDTO korisnikDTO) {
-        Korisnik k = new Korisnik(korisnikDTO);
+    public AdminKlinike createAdminKlinike(AdminKlinikeDTO adminKlinikeDTO) {
+        Korisnik k = new Korisnik(new KorisnikDTO(adminKlinikeDTO));
 
-        k.setPassword(bCryptPasswordEncoder.encode(korisnikDTO.getPassword()));
+        k.setPassword(bCryptPasswordEncoder.encode(adminKlinikeDTO.getPassword()));
 
         Authority a = authorityService.findByName("ROLE_AK");
         k.getAuthorityList().add(a);
@@ -54,7 +55,7 @@ public class AdminKlinikeService {
 
         AdminKlinike ak = new AdminKlinike();
         ak.setKorisnik(k);
-        ak.setKlinika(klinikaService.findKlinikaId(korisnikDTO.getKlinikaId()).get());
+        ak.setKlinika(klinikaService.findKlinikaId(adminKlinikeDTO.getKlinikaId()).get());
 
         return adminKlinikeRepository.save(ak);
     }
