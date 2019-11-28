@@ -15,9 +15,9 @@ export const setNewAdmin = newAdmin => ({
   newAdmin
 });
 
-export const setAdminovaKlinika = adminovaKlinika => ({
+export const setAdminovaKlinika = klinika => ({
   type: SET_ADMINOVA_KLINIKA,
-  adminovaKlinika
+  klinika
 });
 
 export const getAllAdmins = (sum, rpp) => async dispatch => {
@@ -43,6 +43,14 @@ export const getKlinikaAdmin = id => async (dispatch, getState) => {
   try {
     const klinika = await axios.get(`/api/adminK/getKlinika/${id}`);
     dispatch(setAdminovaKlinika(klinika.data));
+  } catch (err) {
+    console.log(err);
+  }
+};
+export const editKlinika = klinika => async dispatch => {
+  try {
+    const k = await axios.put(`/api/klinika/edit/${klinika.id}`, klinika);
+    dispatch(setAdminovaKlinika(k.data));
   } catch (err) {
     console.log(err);
   }

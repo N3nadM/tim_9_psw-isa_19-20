@@ -1,6 +1,7 @@
 package com.isapsw.Projekat.controller;
 
 import com.isapsw.Projekat.domain.Klinika;
+import com.isapsw.Projekat.dto.KlinikaDTO;
 import com.isapsw.Projekat.service.KlinikaService;
 import com.sun.mail.iap.Response;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +39,13 @@ public class KlinikaController {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
     }
-
+    @PutMapping("/edit/{id}")
+    public ResponseEntity<Klinika> editAccount(@RequestBody KlinikaDTO klinika) {
+        Klinika k = klinikaService.editKlinika(klinika);
+        if(k == null) {
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<Klinika>(k, HttpStatus.OK);
+    }
 
 }

@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { getKlinikaAdmin } from "../../store/actions/adminKlinike";
+import { editKlinika } from "../../store/actions/adminKlinike";
 import Button from "@material-ui/core/Button";
 
 import List from "@material-ui/core/List";
@@ -10,16 +11,17 @@ import Divider from "@material-ui/core/Divider";
 import Typography from "@material-ui/core/Typography";
 import { Paper } from "@material-ui/core";
 import Skeleton from "@material-ui/lab/Skeleton";
-import { stat } from "fs";
+import EditKlinikaTab from "../Tabs/EditKlinikaTab";
 
 const PodaciKlinikaTabs = ({
-  klinika: { klinika },
+  adminKlinike: { klinika },
   korisnikId,
-  getKlinikaAdmin
+  getKlinikaAdmin,
+  editKlinika
 }) => {
   useEffect(() => {
     getKlinikaAdmin(korisnikId);
-  }, []);
+  }, [getKlinikaAdmin, korisnikId]);
 
   const [isEdit, setIsEdit] = React.useState(false);
 
@@ -33,6 +35,13 @@ const PodaciKlinikaTabs = ({
         Profil klinike
       </Typography>
       {!klinika && <Skeleton height={350} />}
+      {isEdit && (
+        <EditKlinikaTab
+          klinika={klinika}
+          editKlinika={editKlinika}
+          setIsEdit={setIsEdit}
+        />
+      )}
       {!isEdit && klinika && (
         <>
           <List disablePadding>
@@ -68,9 +77,11 @@ const PodaciKlinikaTabs = ({
 
 function mapStateToProps(state) {
   return {
-    klinika: state.adminovaKlinika,
+    adminKlinike: state.adminKlinike,
     korisnikId: state.currentUser.user.id
   };
 }
 
-export default connect(mapStateToProps, { getKlinikaAdmin })(PodaciKlinikaTabs);
+export default connect(mapStateToProps, { getKlinikaAdmin, editKlinika })(
+  PodaciKlinikaTabs
+);

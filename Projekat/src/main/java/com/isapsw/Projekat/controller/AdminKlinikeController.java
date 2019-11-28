@@ -63,9 +63,7 @@ public class AdminKlinikeController {
     public ResponseEntity<Klinika> getKlinikaAdmin(@PathVariable Long id){
 
         AdminKlinike ak = adminKlinikeService.findByKorisnikId(id).get();
-        System.out.println(ak.getId());
         Klinika k = ak.getKlinika();
-        System.out.println(k.getNaziv());
         try{
             return new ResponseEntity<Klinika>(k, HttpStatus.OK);
         }

@@ -7,7 +7,7 @@ import {
 const DEFAULT_STATE = {
   admins: null,
   newAdmin: null,
-  adminovaKlinika: null
+  klinika: null
 };
 
 export default (state = DEFAULT_STATE, action) => {
@@ -24,7 +24,7 @@ export default (state = DEFAULT_STATE, action) => {
       };
     case SET_ADMINOVA_KLINIKA:
       return {
-        adminovaKlinika: action.adminovaKlinika
+        klinika: action.klinika
       };
     default:
       return state;
