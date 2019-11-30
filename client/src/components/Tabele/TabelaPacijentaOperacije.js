@@ -185,6 +185,7 @@ const TabelaPregleda = ({ operacije, getAllOperacije, pacijentId }) => {
                 <TableHead>
                   <TableRow>
                     <TableCell align="left">Lekar</TableCell>
+                    <TableCell align="right">Tip Operacije</TableCell>
                     <TableCell align="right">Datum Pregleda</TableCell>
                     <TableCell align="right">Cena</TableCell>
                     <TableCell align="right">Datum Zakazivanja</TableCell>
@@ -211,6 +212,9 @@ const TabelaPregleda = ({ operacije, getAllOperacije, pacijentId }) => {
                                   Lista Lekara
                                 </Button>
                               </Tooltip>
+                            </TableCell>
+                            <TableCell align="right">
+                              {row.tipOperacije}
                             </TableCell>
                             <TableCell align="right">{row.datum}</TableCell>
                             <TableCell align="right">{row.cena}</TableCell>
