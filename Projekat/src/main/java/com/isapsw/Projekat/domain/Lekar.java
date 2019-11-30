@@ -31,6 +31,7 @@ public class Lekar{
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="tip_pregleda_id", updatable = false, nullable = false)
+    @JsonIgnore
     private TipPregleda tipPregleda;
 
     public Lekar(){
@@ -85,5 +86,13 @@ public class Lekar{
 
     public void setKlinika(Klinika klinika) {
         this.klinika = klinika;
+    }
+
+    public TipPregleda getTipPregleda() {
+        return tipPregleda;
+    }
+
+    public void setTipPregleda(TipPregleda tipPregleda) {
+        this.tipPregleda = tipPregleda;
     }
 }
