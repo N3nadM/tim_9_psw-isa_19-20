@@ -30,6 +30,7 @@ public class Korisnik implements UserDetails {
 
     @NotBlank(message = "Neophodno je uneti password.")
     @Size(min=5)
+    @JsonIgnore
     protected String password;
 
     @NotBlank(message = "Neophodno je uneti email.")

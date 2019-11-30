@@ -7,6 +7,8 @@ import medsestra from "./medSestra";
 import klinika from "./klinika";
 import zdrKarton from "./zdrKarton";
 import adminKlinike from "./adminKlinike";
+import pregled from "./pregled";
+import operacija from "./operacija";
 
 const appReducer = combineReducers({
   currentUser,
@@ -16,7 +18,9 @@ const appReducer = combineReducers({
   medsestra,
   klinika,
   zdrKarton,
-  adminKlinike
+  adminKlinike,
+  pregled,
+  operacija
 });
 
 const rootReducer = (state, action) => {

@@ -1,9 +1,18 @@
-import { SET_ALL_KLINIKE, SET_ADDED_KLINIKA } from "../actionTypes";
+import {
+  SET_ALL_KLINIKE,
+  SET_ADDED_KLINIKA,
+  SET_KLINIKA
+} from "../actionTypes";
 import axios from "axios";
 
 export const setKlinike = klinike => ({
   type: SET_ALL_KLINIKE,
   klinike
+});
+
+export const setKlinika = klinika => ({
+  type: SET_KLINIKA,
+  klinika
 });
 
 export const setNewKlinika = newKlinika => ({
@@ -22,7 +31,6 @@ export const getAllKlinike = (sum, rpp) => async (dispatch, getState) => {
     console.log(err);
   }
 };
-
 
 export const searchKlinike = searchData => async dispatch => {
   try {
@@ -44,10 +52,16 @@ export const addNewKlinika = data => async dispatch => {
 
 export const getKlinika = id => async (dispatch, getState) => {
   try {
-    const klinika = await axios.get(`/api/klinika/${id}`);
-    dispatch(setKlinike(klinika.data));
+    const klinike = getState().klinika.klinike;
+    const k = klinike !== null && klinike.find(kl => kl.id == id);
+
+    if (!k) {
+      const klinika = await axios.get(`/api/klinika/${id}`);
+      dispatch(setKlinika(klinika.data));
+    } else {
+      dispatch(setKlinika(k));
+    }
   } catch (err) {
     console.log(err);
   }
 };
-

@@ -19,9 +19,11 @@ public class Lekar{
     private Korisnik korisnik;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "lekar")
+    @JsonIgnore
     private List<Pregled> pregledi = new ArrayList<>();
 
     @ManyToMany(mappedBy = "lekari")
+    @JsonIgnore
     private List<Operacija> operacije = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)

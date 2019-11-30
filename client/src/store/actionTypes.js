@@ -28,3 +28,8 @@ export const SET_ADMINOVA_KLINIKA = "SET_ADMINOVA_KLINIKA";
 export const SET_EDIT_KLINIKA = "SET_EDIT_KLINIKA";
 
 export const USER_LOGOUT = "USER_LOGOUT";
+
+export const SET_KLINIKA = "SET_KLINIKA";
+
+export const SET_PREGLEDI = "SET_PREGLEDI";
+export const SET_OPERACIJE = "SET_OPERACIJE";
