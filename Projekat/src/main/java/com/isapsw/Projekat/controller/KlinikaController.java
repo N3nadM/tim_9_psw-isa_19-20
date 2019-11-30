@@ -31,6 +31,15 @@ public class KlinikaController {
         }
     }
 
+    @GetMapping("/{id}") //parametri kasnije za pagination
+    public ResponseEntity<Klinika> getKlinikaById(@PathVariable Long id) {
+        try {
+            return new ResponseEntity<>(klinikaService.getKlinikaById(id), HttpStatus.OK);
+        } catch(Exception e) {
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
+    }
+
     @PostMapping
     public ResponseEntity<Klinika> addKlinika(@RequestBody Klinika klinika) {
         try{

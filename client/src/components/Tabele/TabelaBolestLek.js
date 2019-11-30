@@ -48,12 +48,7 @@ export default function TabelaBolesti({ items }) {
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map(row => {
                   return (
-                    <TableRow
-                      hover
-                      role="checkbox"
-                      tabIndex={-1}
-                      key={row.code}
-                    >
+                    <TableRow hover role="checkbox" tabIndex={-1} key={row.id}>
                       <TableCell align="left">{row.naziv}</TableCell>
 
                       <TableCell align="right">{row.sifra}</TableCell>

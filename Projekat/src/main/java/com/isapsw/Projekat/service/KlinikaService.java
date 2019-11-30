@@ -47,4 +47,8 @@ public class KlinikaService {
         klinikaRepository.save(k);
         return k;
     }
+
+    public Klinika getKlinikaById(Long id) {
+        return klinikaRepository.findKlinikaById(id);
+    }
 }

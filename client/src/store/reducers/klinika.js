@@ -1,8 +1,13 @@
-import { SET_ALL_KLINIKE, SET_ADDED_KLINIKA } from "../actionTypes";
+import {
+  SET_ALL_KLINIKE,
+  SET_ADDED_KLINIKA,
+  SET_KLINIKA
+} from "../actionTypes";
 
 const DEFAULT_STATE = {
   klinike: null,
-  newKlinika: null
+  newKlinika: null,
+  klinika: null
 };
 
 export default (state = DEFAULT_STATE, action) => {
@@ -16,6 +21,11 @@ export default (state = DEFAULT_STATE, action) => {
       return {
         ...state,
         newKlinika: action.newKlinika
+      };
+    case SET_KLINIKA:
+      return {
+        ...state,
+        klinika: action.klinika
       };
     default:
       return state;

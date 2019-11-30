@@ -41,7 +41,7 @@ public class Klinika {
     @OneToMany(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY, mappedBy = "klinika")
     private List<MedicinskaSestra> medicinskeSestre = new ArrayList<>();
 
-    @OneToMany(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY, mappedBy = "klinika")
+    @OneToMany(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER, mappedBy = "klinika")
     private List<Lekar> lekari = new ArrayList<>();
 
     public Klinika() {

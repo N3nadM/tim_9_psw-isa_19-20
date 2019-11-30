@@ -17,9 +17,8 @@ public class Pregled extends Pregled_Operacija{
 
     private Integer popust;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="lekar_id", updatable = false, nullable = false)
-    @JsonIgnore
     private Lekar lekar;
 
     @ManyToOne(fetch = FetchType.LAZY)

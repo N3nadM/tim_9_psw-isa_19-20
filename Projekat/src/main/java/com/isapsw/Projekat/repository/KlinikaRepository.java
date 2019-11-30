@@ -11,6 +11,7 @@ import java.util.Optional;
 
 @Repository
 public interface KlinikaRepository extends JpaRepository<Klinika, Long> {
+    Klinika findKlinikaById(Long id);
     List<Klinika> findAll();
 
     @Query("Select k from Klinika k where UPPER(k.adresa) LIKE %:lokacija%")

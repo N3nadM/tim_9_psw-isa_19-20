@@ -4,7 +4,6 @@ import {
   KeyboardDatePicker
 } from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
-import clsx from "clsx";
 import { makeStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -23,6 +22,7 @@ import Switch from "@material-ui/core/Switch";
 import FilterListIcon from "@material-ui/icons/FilterList";
 import Button from "@material-ui/core/Button";
 import { connect } from "react-redux";
+import { withRouter } from "react-router-dom";
 import { getAllKlinike, searchKlinike } from "../../store/actions/klinika";
 import { Grid } from "@material-ui/core";
 import FormControl from "@material-ui/core/FormControl";
@@ -186,7 +186,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const ZakaziPregled = ({ klinike, getAllKlinike, searchKlinike }) => {
+const ZakaziPregled = ({ klinike, getAllKlinike, searchKlinike, history }) => {
   useEffect(() => {
     getAllKlinike();
   }, []);
@@ -373,7 +373,16 @@ const ZakaziPregled = ({ klinike, getAllKlinike, searchKlinike }) => {
                         <TableCell align="left">{row.adresa}</TableCell>
                         <TableCell align="left">{row.ocena}</TableCell>
                         <TableCell align="right">
-                          <Button variant="outlined" color="primary">
+                          <Button
+                            variant="outlined"
+                            color="primary"
+                            onClick={() => {
+                              history.push({
+                                pathname: `/klinika/${row.id}`,
+                                state
+                              });
+                            }}
+                          >
                             Pogledaj
                           </Button>
                         </TableCell>
@@ -416,6 +425,6 @@ const mapStateToProps = state => ({
   klinike: state.klinika.klinike
 });
 
-export default connect(mapStateToProps, { getAllKlinike, searchKlinike })(
-  ZakaziPregled
+export default withRouter(
+  connect(mapStateToProps, { getAllKlinike, searchKlinike })(ZakaziPregled)
 );
