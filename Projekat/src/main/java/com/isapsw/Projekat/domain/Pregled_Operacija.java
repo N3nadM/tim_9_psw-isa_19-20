@@ -18,10 +18,10 @@ public class Pregled_Operacija {
 
     private String izvestaj;
 
-    @JsonFormat(pattern = "dd-M-yyyy hh:mm")
+    @JsonFormat(pattern = "yyyy-MM-dd hh:mm:ss")
     private Date datum;
 
-    @JsonFormat(pattern = "yyyy-mm-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     @Column(updatable = false)
     private Date datumKreiranja;
 

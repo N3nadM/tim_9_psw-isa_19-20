@@ -1,16 +1,13 @@
 import React, { useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import TabelaPacijentaPregledi from "../../Tabele/TabelaPacijentaPregledi";
-import TabelaPacijentaOperacije from "../../Tabele/TabelaPacijentaOperacije";
+
 import Divider from "@material-ui/core/Divider";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import Drawer from "@material-ui/core/Drawer";
-import TabPanel from "../../Tabs/TabPanel";
-import AppBar from "../../layout/AppBarLogedIn";
-import PacijentProfilTab from "../../Tabs/PacijentProfilTab";
-import ZakaziPregled from "../../Tabs/ZakaziPregled";
-import ZdrKarton from "../../Tabs/ZdrKarton";
+import TabPanel from "../Tabs/TabPanel";
+import AppBar from "../layout/AppBarLogedIn";
+import KlinikaShowTab from "../Tabs/Klinika/KlinikaShowTab";
 
 const drawerWidth = 240;
 
@@ -39,7 +36,7 @@ function a11yProps(index) {
   };
 }
 
-export default function ProfilPacijent() {
+export default function Klinika({ match, location }) {
   const [value, setValue] = React.useState(0);
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -57,18 +54,15 @@ export default function ProfilPacijent() {
         variant="scrollable"
         aria-label="simple tabs example"
       >
-        <Tab label="Profil" {...a11yProps(0)} />
-        <Tab label="Moji pregledi" {...a11yProps(1)} />
-        <Tab label="Moje operacije" {...a11yProps(2)} />
-        <Tab label="Zdravstveni karton" {...a11yProps(3)} />
-        <Tab label="Zakazi pregled" {...a11yProps(4)} />
+        <Tab label="Pretrazi lekare" {...a11yProps(0)} />
+        <Tab label="Profil Klinike" {...a11yProps(1)} />
       </Tabs>
     </div>
   );
 
   return (
     <>
-      <AppBar setTab={setValue} handleChange={handleChange} />
+      <AppBar klinikaRoute setTab={setValue} handleChange={handleChange} />
       <div className={classes.root}>
         <nav className={classes.drawer} aria-label="mailbox folders">
           <Drawer
@@ -83,19 +77,12 @@ export default function ProfilPacijent() {
         </nav>
         <main className={classes.content}>
           <TabPanel value={value} index={0}>
-            <PacijentProfilTab />
+            Pretraga lekara
           </TabPanel>
           <TabPanel value={value} index={1}>
-            {value === 1 && <TabelaPacijentaPregledi />}
-          </TabPanel>
-          <TabPanel value={value} index={2}>
-            {value === 2 && <TabelaPacijentaOperacije />}
-          </TabPanel>
-          <TabPanel value={value} index={3}>
-            {value === 3 && <ZdrKarton />}
-          </TabPanel>
-          <TabPanel value={value} index={4}>
-            {value === 4 && <ZakaziPregled />}
+            {value === 1 && (
+              <KlinikaShowTab id={match.params.id} state={location.state} />
+            )}
           </TabPanel>
         </main>
       </div>

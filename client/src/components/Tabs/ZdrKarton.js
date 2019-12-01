@@ -103,17 +103,17 @@ const ZdrKarton = ({ pacijent, zdrKarton, getZdrKarton }) => {
         </List>
       )}
       <Grid container spacing={3} className={classes.tables}>
-        <Grid item md={4}>
+        <Grid item md={12} lg={6} xl={4}>
           <Typography variant="h5">Istorija bolesti</Typography>
           {zdrKarton && <TabelaBolest items={zdrKarton.istorijaBolesti} />}
           {!zdrKarton && <Skeleton height={350} />}
         </Grid>
-        <Grid item md={4}>
+        <Grid item md={12} lg={6} xl={4}>
           <Typography variant="h5">Alergije na lekove</Typography>
           {zdrKarton && <TabelaBolest items={zdrKarton.alergijaNaLek} />}
           {!zdrKarton && <Skeleton height={350} />}
         </Grid>
-        <Grid item md={4}>
+        <Grid item md={12} lg={6} xl={4}>
           <Typography variant="h5">Izdati recepti</Typography>
           {zdrKarton && <TabelaRecept items={zdrKarton.izdatiRecepti} />}
           {!zdrKarton && <Skeleton height={350} />}

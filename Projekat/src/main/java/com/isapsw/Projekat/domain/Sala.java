@@ -29,7 +29,7 @@ public class Sala {
     @JsonIgnore
     private Klinika klinika;
 
-    @JsonFormat(pattern = "yyyy-mm-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     @Column(updatable = false)
     private Date datumKreiranja;
 

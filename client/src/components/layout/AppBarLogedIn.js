@@ -9,7 +9,9 @@ import AccountCircle from "@material-ui/icons/AccountCircle";
 import { connect } from "react-redux";
 import { logout } from "../../store/actions/auth";
 import MenuItem from "@material-ui/core/MenuItem";
+import Button from "@material-ui/core/Button";
 import Menu from "@material-ui/core/Menu";
+import { withRouter, Link } from "react-router-dom";
 
 const drawerWidth = 240;
 
@@ -32,7 +34,13 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const AppBarLogedIn = ({ logout, setTab, handleChange }) => {
+const AppBarLogedIn = ({
+  logout,
+  setTab,
+  handleChange,
+  location,
+  klinikaRoute
+}) => {
   const classes = useStyles();
   const theme = useTheme();
 
@@ -59,6 +67,11 @@ const AppBarLogedIn = ({ logout, setTab, handleChange }) => {
           </Typography>
 
           <div>
+            {klinikaRoute && (
+              <Link to="/">
+                <Button color="inherit">Početna</Button>
+              </Link>
+            )}
             <IconButton
               edge="end"
               aria-label="account of current user"
@@ -86,7 +99,9 @@ const AppBarLogedIn = ({ logout, setTab, handleChange }) => {
         open={isMenuOpen}
         onClose={handleMenuClose}
       >
-        <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
+        {location === "/" && (
+          <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
+        )}
         <MenuItem
           onClick={() => {
             handleMenuClose();
@@ -106,4 +121,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps, { logout })(AppBarLogedIn);
+export default withRouter(connect(mapStateToProps, { logout })(AppBarLogedIn));
