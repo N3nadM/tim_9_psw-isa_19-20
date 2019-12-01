@@ -29,6 +29,10 @@ export const SET_EDIT_KLINIKA = "SET_EDIT_KLINIKA";
 
 export const USER_LOGOUT = "USER_LOGOUT";
 
+export const SET_ALL_TIPOVI_PREGLEDA = "SET_ALL_TIPOVI_PREGLEDA";
+export const SET_ADDED_LEKAR = "SET_ADDES_LEKAR";
+
+export const SET_ADDED_SALA = "SET_ADDED_SALA";
 export const SET_KLINIKA = "SET_KLINIKA";
 
 export const SET_PREGLEDI = "SET_PREGLEDI";
