@@ -96,6 +96,18 @@ const LekariTabs = ({
     e.preventDefault();
     state.klinikaId = klinika.id;
     addNewLekar(state);
+    setState({
+      ime: "",
+      prezime: "",
+      email: "",
+      password: "",
+      drzava: "",
+      grad: "",
+      adresa: "",
+      telefon: "",
+      tipPregledaId: "",
+      klinikaId: ""
+    });
   };
   const handleChange1 = e => {
     setState({ ...state, [e.target.name]: e.target.value });
