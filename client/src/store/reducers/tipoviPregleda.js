@@ -1,7 +1,11 @@
-import { SET_ALL_TIPOVI_PREGLEDA } from "../actionTypes";
+import {
+  SET_ALL_TIPOVI_PREGLEDA,
+  SET_ADDED_TIP_PREGLEDA
+} from "../actionTypes";
 
 const DEFAULT_STATE = {
-  tipoviPregleda: null
+  tipoviPregleda: null,
+  newTipPregleda: null
 };
 
 export default (state = DEFAULT_STATE, action) => {
@@ -10,6 +14,11 @@ export default (state = DEFAULT_STATE, action) => {
       return {
         ...state,
         tipoviPregleda: action.tipoviPregleda
+      };
+    case SET_ADDED_TIP_PREGLEDA:
+      return {
+        ...state,
+        newTipPregleda: action.newTipPregleda
       };
     default:
       return state;
