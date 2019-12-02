@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
@@ -68,6 +69,22 @@ public class PacijentController {
             return new ResponseEntity<List<PacijentDTO>>(pacijentDTOList, HttpStatus.OK);
         }
         catch(Exception e) {
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PostMapping("/search")
+    public ResponseEntity<List<Pacijent>> getPacijentiWithSearch(@RequestBody Map<String,String> body) {
+        try {
+            System.out.println("usao");
+            List<PacijentDTO> pacijenti = pacijentService.searchPacijent(body.get("ime").toString(), body.get("prezime").toString(), body.get("email").toString(), body.get("grad").toString(), body.get("jbzo").toString());
+            for(PacijentDTO p : pacijenti){
+                System.out.println(p.getJbzo());
+            }
+            return new ResponseEntity(pacijenti, HttpStatus.OK);
+        }
+        catch(Exception e) {
+            System.out.println(e.getMessage());
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
     }

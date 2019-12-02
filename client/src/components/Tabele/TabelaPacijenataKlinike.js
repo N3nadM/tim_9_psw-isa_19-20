@@ -1,4 +1,8 @@
 import React, { useEffect, useState } from "react";
+import Button from "@material-ui/core/Button";
+import { Grid } from "@material-ui/core";
+import TextField from "@material-ui/core/TextField";
+import Paper from "@material-ui/core/Paper";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
@@ -7,14 +11,10 @@ import { makeStyles } from "@material-ui/core/styles";
 import TableRow from "@material-ui/core/TableRow";
 import TableSortLabel from "@material-ui/core/TableSortLabel";
 import { connect } from "react-redux";
-import IconButton from "@material-ui/core/IconButton";
-import Tooltip from "@material-ui/core/Tooltip";
 import { getPacijentiKlinike } from "../../store/actions/pacijent";
+import { searchPacijent } from "../../store/actions/pacijent";
 import Typography from "@material-ui/core/Typography";
 import Toolbar from "@material-ui/core/Toolbar";
-import FilterListIcon from "@material-ui/icons/FilterList";
-
-import CircularProgress from "@material-ui/core/CircularProgress";
 
 function desc(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -57,22 +57,6 @@ const headCells = [
   { id: "drazava", numeric: false, disablePadding: false, label: "Drzava" },
   { id: "jbzo", numeric: true, disablePadding: false, label: "JBZO" }
 ];
-
-const [state, setState] = React.useState({
-  ime: "",
-  prezime: "",
-  email: "",
-  grad: "",
-  jbzo: ""
-});
-
-const handleChange = e => {
-  setState({ ...state, [e.target.name]: e.target.value });
-};
-
-const handleSubmit = e => {
-  e.preventDefault();
-};
 
 function EnhancedTableHead(props) {
   const { classes, order, orderBy, onRequestSort } = props;
@@ -145,14 +129,64 @@ const useStyles = makeStyles(theme => ({
     minWidth: 120
   }
 }));
-const EnhancedTableToolbar = () => {
+const EnhancedTableToolbar = ({ pacijent, searchPacijent }) => {
   const classes = useToolbarStyles();
-  return (
-    <Toolbar>
-      <Typography variant="h6" id="tableTitle">
-        Lista pacijenata
-      </Typography>
 
+  return (
+    <div>
+      <Toolbar>
+        <Typography variant="h6" id="tableTitle">
+          Lista pacijenata
+        </Typography>
+      </Toolbar>
+    </div>
+  );
+};
+const useToolbarStyles = makeStyles(theme => ({
+  title: {
+    flex: "1 1 100%"
+  }
+}));
+
+const TabelaPacijenataKlinike = ({
+  korisnikId,
+  pacijent: { pacijent },
+  getPacijentiKlinike,
+  searchPacijent
+}) => {
+  useEffect(() => {
+    getPacijentiKlinike(korisnikId);
+  }, []);
+  const classes = useStyles();
+  const [order, setOrder] = React.useState("asc");
+  const [orderBy, setOrderBy] = React.useState("name");
+
+  const handleRequestSort = (event, property) => {
+    const isDesc = orderBy === property && order === "desc";
+    setOrder(isDesc ? "asc" : "desc");
+    setOrderBy(property);
+  };
+
+  const [state, setState] = React.useState({
+    ime: "",
+    prezime: "",
+    email: "",
+    grad: "",
+    jbzo: ""
+  });
+
+  const handleChange = e => {
+    setState({ ...state, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = e => {
+    e.preventDefault();
+    console.log({ ...state });
+    pacijent = searchPacijent({ ...state });
+  };
+
+  return (
+    <div className="TabelaPacijenataKlinike">
       <form onSubmit={handleSubmit}>
         <Paper>
           <Grid container spacing={3}>
@@ -222,36 +256,6 @@ const EnhancedTableToolbar = () => {
           </Grid>
         </Paper>
       </form>
-    </Toolbar>
-  );
-};
-const useToolbarStyles = makeStyles(theme => ({
-  title: {
-    flex: "1 1 100%"
-  }
-}));
-
-const TabelaPacijenataKlinike = ({
-  korisnikId,
-  pacijent: { pacijent },
-  getPacijentiKlinike
-}) => {
-  useEffect(() => {
-    getPacijentiKlinike(korisnikId);
-  }, []);
-  const classes = useStyles();
-  const [order, setOrder] = React.useState("asc");
-  const [orderBy, setOrderBy] = React.useState("name");
-
-  const handleRequestSort = (event, property) => {
-    const isDesc = orderBy === property && order === "desc";
-    setOrder(isDesc ? "asc" : "desc");
-    setOrderBy(property);
-  };
-
-  return (
-    <div className="TabelaPacijenataKlinike">
-      <EnhancedTableToolbar />
       <div className={classes.tableWrapper}>
         <Table aria-label="simple table">
           <EnhancedTableHead
@@ -309,5 +313,6 @@ function mapStateToProps(state) {
 }
 
 export default connect(mapStateToProps, {
-  getPacijentiKlinike
+  getPacijentiKlinike,
+  searchPacijent
 })(TabelaPacijenataKlinike);
