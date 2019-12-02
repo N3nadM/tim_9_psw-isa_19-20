@@ -1,7 +1,8 @@
 import {
   SET_ALL_KLINIKE,
   SET_ADDED_KLINIKA,
-  SET_KLINIKA
+  SET_KLINIKA,
+  SET_ALL_TIPOVI
 } from "../actionTypes";
 import axios from "axios";
 
@@ -18,6 +19,11 @@ export const setKlinika = klinika => ({
 export const setNewKlinika = newKlinika => ({
   type: SET_ADDED_KLINIKA,
   newKlinika
+});
+
+export const setTipovi = tipoviPregleda => ({
+  type: SET_ALL_TIPOVI,
+  tipoviPregleda
 });
 
 export const getAllKlinike = (sum, rpp) => async (dispatch, getState) => {
@@ -60,6 +66,18 @@ export const getKlinika = id => async (dispatch, getState) => {
       dispatch(setKlinika(klinika.data));
     } else {
       dispatch(setKlinika(k));
+    }
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const getTipoviPrelgeda = () => async (dispatch, getState) => {
+  try {
+    let tipoviPregleda = getState().klinika.tipoviPregleda;
+    if (!tipoviPregleda.length) {
+      tipoviPregleda = await axios.get("api/tipovi");
+      dispatch(setTipovi(tipoviPregleda.data));
     }
   } catch (err) {
     console.log(err);

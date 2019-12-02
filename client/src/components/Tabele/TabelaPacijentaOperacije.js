@@ -14,6 +14,7 @@ import Divider from "@material-ui/core/Divider";
 import Button from "@material-ui/core/Button";
 import Tooltip from "@material-ui/core/Tooltip";
 import IzvestajDialog from "../Tabs/Pacijent/IzvestajDialog";
+import TableSortLabel from "@material-ui/core/TableSortLabel";
 
 const useStyles = makeStyles({
   root: {
@@ -30,6 +31,9 @@ const TabelaPregleda = ({ operacije, getAllOperacije, pacijentId }) => {
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [open, setOpen] = React.useState(false);
   const [text, setText] = React.useState("");
+  const [orderBy, setOrderBy] = React.useState("datumPocetka");
+  const [order, setOrder] = React.useState("asc");
+  const [ll, setLl] = React.useState(false);
 
   React.useEffect(() => {
     getAllOperacije(pacijentId);
@@ -46,11 +50,13 @@ const TabelaPregleda = ({ operacije, getAllOperacije, pacijentId }) => {
 
   const handleClickOpen = izvestaj => {
     setText(izvestaj);
+    setLl(false);
     setOpen(true);
   };
 
   const handleClose = () => {
     setText("");
+    setLl(false);
     setOpen(false);
   };
 
@@ -58,7 +64,28 @@ const TabelaPregleda = ({ operacije, getAllOperacije, pacijentId }) => {
     setText(
       lekari.map(l => l.korisnik.ime + " " + l.korisnik.prezime).join(", ")
     );
+    setLl(true);
     setOpen(true);
+  };
+
+  const sort = sviPregledi => {
+    return sviPregledi.concat().sort((a, b) => {
+      if (orderBy === "tip") {
+        return order == "asc"
+          ? a.tipPregleda.naziv - b.tipPregleda.naziv
+          : b.tipPregleda.naziv - a.tipPregleda.naziv;
+      } else {
+        return order == "asc"
+          ? new Date(a.datumPocetka) - new Date(b.datumPocetka)
+          : new Date(b.datumPocetka) - new Date(a.datumPocetka);
+      }
+    });
+  };
+
+  const handleRequestSort = (property, event) => {
+    const isDesc = orderBy === property && order === "desc";
+    setOrder(isDesc ? "asc" : "desc");
+    setOrderBy(property);
   };
 
   return (
@@ -78,7 +105,24 @@ const TabelaPregleda = ({ operacije, getAllOperacije, pacijentId }) => {
                 <TableHead>
                   <TableRow>
                     <TableCell align="left">Lekari</TableCell>
-                    <TableCell align="right">Datum Pregleda</TableCell>
+                    <TableCell align="right">
+                      <TableSortLabel
+                        active={orderBy === "tip"}
+                        direction={order}
+                        onClick={() => handleRequestSort("tip")}
+                      >
+                        Tip operacije
+                      </TableSortLabel>
+                    </TableCell>
+                    <TableCell align="right">
+                      <TableSortLabel
+                        active={orderBy === "datumPocetka"}
+                        direction={order}
+                        onClick={() => handleRequestSort("datumPocetka")}
+                      >
+                        Datum Operacije
+                      </TableSortLabel>
+                    </TableCell>
                     <TableCell align="right">Cena</TableCell>
                     <TableCell align="right">Datum Zakazivanja</TableCell>
                     <TableCell align="right">Otkaži Pregled</TableCell>
@@ -91,7 +135,7 @@ const TabelaPregleda = ({ operacije, getAllOperacije, pacijentId }) => {
                         page * rowsPerPage,
                         page * rowsPerPage + rowsPerPage
                       )
-                      .filter(p => new Date() < new Date(p.datum))
+                      .filter(p => new Date() < new Date(p.datumPocetka))
                       .map(row => {
                         return (
                           <TableRow hover tabIndex={-1} key={row.id}>
@@ -105,15 +149,23 @@ const TabelaPregleda = ({ operacije, getAllOperacije, pacijentId }) => {
                                 </Button>
                               </Tooltip>
                             </TableCell>
-                            <TableCell align="right">{row.datum}</TableCell>
-                            <TableCell align="right">{row.cena}</TableCell>
+                            <TableCell align="right">
+                              {row.tipPregleda.naziv}
+                            </TableCell>
+                            <TableCell align="right">
+                              {row.datumPocetka}
+                            </TableCell>
+                            <TableCell align="right">
+                              {row.tipPregleda.cenaOperacije}
+                            </TableCell>
                             <TableCell align="right">
                               {row.datumKreiranja}
                             </TableCell>
                             <TableCell align="right">
                               <Tooltip
                                 title={
-                                  new Date() - new Date(row.datum) > -86400000
+                                  new Date() - new Date(row.datumPocetka) >
+                                  -86400000
                                     ? "Otkazivanje nije moguce u periodu od 24 sata pre pregleda"
                                     : "Otkaži zakazani pregled"
                                 }
@@ -124,7 +176,7 @@ const TabelaPregleda = ({ operacije, getAllOperacije, pacijentId }) => {
                                     color="secondary"
                                     variant="outlined"
                                     disabled={
-                                      new Date() - new Date(row.datum) >
+                                      new Date() - new Date(row.datumPocetka) >
                                       -86400000
                                     }
                                   >
@@ -153,7 +205,7 @@ const TabelaPregleda = ({ operacije, getAllOperacije, pacijentId }) => {
               count={
                 operacije
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                  .filter(p => new Date() < new Date(p.datum)).length
+                  .filter(p => new Date() < new Date(p.datumPocetka)).length
               }
               rowsPerPage={rowsPerPage}
               page={page}
@@ -185,8 +237,24 @@ const TabelaPregleda = ({ operacije, getAllOperacije, pacijentId }) => {
                 <TableHead>
                   <TableRow>
                     <TableCell align="left">Lekar</TableCell>
-                    <TableCell align="right">Tip Operacije</TableCell>
-                    <TableCell align="right">Datum Pregleda</TableCell>
+                    <TableCell align="right">
+                      <TableSortLabel
+                        active={orderBy === "tip"}
+                        direction={order}
+                        onClick={() => handleRequestSort("tip")}
+                      >
+                        Tip operacije
+                      </TableSortLabel>
+                    </TableCell>
+                    <TableCell align="right">
+                      <TableSortLabel
+                        active={orderBy === "datumPocetka"}
+                        direction={order}
+                        onClick={() => handleRequestSort("datumPocetka")}
+                      >
+                        Datum Operacije
+                      </TableSortLabel>
+                    </TableCell>
                     <TableCell align="right">Cena</TableCell>
                     <TableCell align="right">Datum Zakazivanja</TableCell>
                     <TableCell align="right">Izveštaj</TableCell>
@@ -194,12 +262,12 @@ const TabelaPregleda = ({ operacije, getAllOperacije, pacijentId }) => {
                 </TableHead>
                 <TableBody>
                   {operacije && operacije.length > 0 ? (
-                    operacije
+                    sort(operacije)
                       .slice(
                         page * rowsPerPage,
                         page * rowsPerPage + rowsPerPage
                       )
-                      .filter(p => new Date() > new Date(p.datum))
+                      .filter(p => new Date() > new Date(p.datumPocetka))
                       .map(row => {
                         return (
                           <TableRow hover tabIndex={-1} key={row.id}>
@@ -214,10 +282,14 @@ const TabelaPregleda = ({ operacije, getAllOperacije, pacijentId }) => {
                               </Tooltip>
                             </TableCell>
                             <TableCell align="right">
-                              {row.tipOperacije}
+                              {row.tipPregleda.naziv}
                             </TableCell>
-                            <TableCell align="right">{row.datum}</TableCell>
-                            <TableCell align="right">{row.cena}</TableCell>
+                            <TableCell align="right">
+                              {row.datumPocetka}
+                            </TableCell>
+                            <TableCell align="right">
+                              {row.tipPregleda.cenaOperacije}
+                            </TableCell>
                             <TableCell align="right">
                               {row.datumKreiranja}
                             </TableCell>
@@ -259,7 +331,7 @@ const TabelaPregleda = ({ operacije, getAllOperacije, pacijentId }) => {
               count={
                 operacije
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                  .filter(p => new Date() > new Date(p.datum)).length
+                  .filter(p => new Date() > new Date(p.datumPocetka)).length
               }
               rowsPerPage={rowsPerPage}
               page={page}
@@ -275,7 +347,12 @@ const TabelaPregleda = ({ operacije, getAllOperacije, pacijentId }) => {
           </>
         )}
       </Paper>
-      <IzvestajDialog text={text} handleClose={handleClose} open={open} />
+      <IzvestajDialog
+        text={text}
+        handleClose={handleClose}
+        open={open}
+        ll={ll}
+      />
     </>
   );
 };

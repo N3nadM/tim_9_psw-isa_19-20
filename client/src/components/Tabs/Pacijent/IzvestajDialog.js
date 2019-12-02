@@ -8,7 +8,7 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { useTheme } from "@material-ui/core/styles";
 
-export default function ResponsiveDialog({ text, handleClose, open }) {
+export default function ResponsiveDialog({ text, handleClose, open, ll }) {
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down("sm"));
 
@@ -20,7 +20,9 @@ export default function ResponsiveDialog({ text, handleClose, open }) {
         onClose={handleClose}
         aria-labelledby="responsive-dialog-title"
       >
-        <DialogTitle id="responsive-dialog-title">Izveštaj</DialogTitle>
+        <DialogTitle id="responsive-dialog-title">
+          {ll ? "Lista lekara:" : "Izveštaj:"}
+        </DialogTitle>
         <DialogContent>
           <DialogContentText>{text}</DialogContentText>
         </DialogContent>

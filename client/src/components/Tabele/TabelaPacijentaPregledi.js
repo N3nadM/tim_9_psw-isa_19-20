@@ -14,6 +14,7 @@ import Divider from "@material-ui/core/Divider";
 import Button from "@material-ui/core/Button";
 import Tooltip from "@material-ui/core/Tooltip";
 import IzvestajDialog from "../Tabs/Pacijent/IzvestajDialog";
+import TableSortLabel from "@material-ui/core/TableSortLabel";
 
 const useStyles = makeStyles({
   root: {
@@ -30,6 +31,8 @@ const TabelaPregleda = ({ pregledi, getAllPregledi, pacijentId }) => {
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [open, setOpen] = React.useState(false);
   const [text, setText] = React.useState("");
+  const [orderBy, setOrderBy] = React.useState("datumPocetka");
+  const [order, setOrder] = React.useState("asc");
 
   React.useEffect(() => {
     getAllPregledi(pacijentId);
@@ -54,6 +57,26 @@ const TabelaPregleda = ({ pregledi, getAllPregledi, pacijentId }) => {
     setOpen(false);
   };
 
+  const sort = sviPregledi => {
+    return sviPregledi.concat().sort((a, b) => {
+      if (orderBy === "tip") {
+        return order == "asc"
+          ? a.tipPregleda.naziv - b.tipPregleda.naziv
+          : b.tipPregleda.naziv - a.tipPregleda.naziv;
+      } else {
+        return order == "asc"
+          ? new Date(a.datumPocetka) - new Date(b.datumPocetka)
+          : new Date(b.datumPocetka) - new Date(a.datumPocetka);
+      }
+    });
+  };
+
+  const handleRequestSort = (property, event) => {
+    const isDesc = orderBy === property && order === "desc";
+    setOrder(isDesc ? "asc" : "desc");
+    setOrderBy(property);
+  };
+
   return (
     <>
       <Typography
@@ -71,20 +94,43 @@ const TabelaPregleda = ({ pregledi, getAllPregledi, pacijentId }) => {
                 <TableHead>
                   <TableRow>
                     <TableCell align="left">Lekar</TableCell>
-                    <TableCell align="right">Datum Pregleda</TableCell>
+                    <TableCell align="right">
+                      <TableSortLabel
+                        active={orderBy === "tip"}
+                        direction={order}
+                        onClick={() => handleRequestSort("tip")}
+                      >
+                        Tip pregleda
+                      </TableSortLabel>
+                    </TableCell>
+                    <TableCell align="right">
+                      <TableSortLabel
+                        active={orderBy === "datumPocetka"}
+                        direction={order}
+                        onClick={() => handleRequestSort("datumPocetka")}
+                      >
+                        Datum Pregleda
+                      </TableSortLabel>
+                    </TableCell>
                     <TableCell align="right">Cena</TableCell>
                     <TableCell align="right">Datum Zakazivanja</TableCell>
                     <TableCell align="right">Otkaži Pregled</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
+                  {console.log(
+                    sort(pregledi).slice(
+                      page * rowsPerPage,
+                      page * rowsPerPage + rowsPerPage
+                    )
+                  )}
                   {pregledi && pregledi.length > 0 ? (
-                    pregledi
+                    sort(pregledi)
                       .slice(
                         page * rowsPerPage,
                         page * rowsPerPage + rowsPerPage
                       )
-                      .filter(p => new Date() < new Date(p.datum))
+                      .filter(p => new Date() < new Date(p.datumPocetka))
                       .map(row => {
                         return (
                           <TableRow hover tabIndex={-1} key={row.id}>
@@ -93,15 +139,23 @@ const TabelaPregleda = ({ pregledi, getAllPregledi, pacijentId }) => {
                                 " " +
                                 row.lekar.korisnik.prezime}
                             </TableCell>
-                            <TableCell align="right">{row.datum}</TableCell>
-                            <TableCell align="right">{row.cena}</TableCell>
+                            <TableCell align="right">
+                              {row.tipPregleda.naziv}
+                            </TableCell>
+                            <TableCell align="right">
+                              {row.datumPocetka}
+                            </TableCell>
+                            <TableCell align="right">
+                              {row.tipPregleda.cenaPregleda}
+                            </TableCell>
                             <TableCell align="right">
                               {row.datumKreiranja}
                             </TableCell>
                             <TableCell align="right">
                               <Tooltip
                                 title={
-                                  new Date() - new Date(row.datum) > -86400000
+                                  new Date() - new Date(row.datumPocetka) >
+                                  -86400000
                                     ? "Otkazivanje nije moguce u periodu od 24 sata pre pregleda"
                                     : "Otkaži zakazani pregled"
                                 }
@@ -112,7 +166,7 @@ const TabelaPregleda = ({ pregledi, getAllPregledi, pacijentId }) => {
                                     color="secondary"
                                     variant="outlined"
                                     disabled={
-                                      new Date() - new Date(row.datum) >
+                                      new Date() - new Date(row.datumPocetka) >
                                       -86400000
                                     }
                                   >
@@ -141,7 +195,7 @@ const TabelaPregleda = ({ pregledi, getAllPregledi, pacijentId }) => {
               count={
                 pregledi
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                  .filter(p => new Date() < new Date(p.datum)).length
+                  .filter(p => new Date() < new Date(p.datumPocetka)).length
               }
               rowsPerPage={rowsPerPage}
               page={page}
@@ -173,7 +227,24 @@ const TabelaPregleda = ({ pregledi, getAllPregledi, pacijentId }) => {
                 <TableHead>
                   <TableRow>
                     <TableCell align="left">Lekar</TableCell>
-                    <TableCell align="right">Datum Pregleda</TableCell>
+                    <TableCell align="right">
+                      <TableSortLabel
+                        active={orderBy === "tip"}
+                        direction={order}
+                        onClick={() => handleRequestSort("tip")}
+                      >
+                        Tip pregleda
+                      </TableSortLabel>
+                    </TableCell>
+                    <TableCell align="right">
+                      <TableSortLabel
+                        active={orderBy === "datumPocetka"}
+                        direction={order}
+                        onClick={() => handleRequestSort("datumPocetka")}
+                      >
+                        Datum Pregleda
+                      </TableSortLabel>
+                    </TableCell>
                     <TableCell align="right">Cena</TableCell>
                     <TableCell align="right">Datum Zakazivanja</TableCell>
                     <TableCell align="right">Izveštaj</TableCell>
@@ -181,12 +252,12 @@ const TabelaPregleda = ({ pregledi, getAllPregledi, pacijentId }) => {
                 </TableHead>
                 <TableBody>
                   {pregledi && pregledi.length > 0 ? (
-                    pregledi
+                    sort(pregledi)
                       .slice(
                         page * rowsPerPage,
                         page * rowsPerPage + rowsPerPage
                       )
-                      .filter(p => new Date() > new Date(p.datum))
+                      .filter(p => new Date() > new Date(p.datumPocetka))
                       .map(row => {
                         return (
                           <TableRow hover tabIndex={-1} key={row.id}>
@@ -195,8 +266,15 @@ const TabelaPregleda = ({ pregledi, getAllPregledi, pacijentId }) => {
                                 " " +
                                 row.lekar.korisnik.prezime}
                             </TableCell>
-                            <TableCell align="right">{row.datum}</TableCell>
-                            <TableCell align="right">{row.cena}</TableCell>
+                            <TableCell align="right">
+                              {row.tipPregleda.naziv}
+                            </TableCell>
+                            <TableCell align="right">
+                              {row.datumPocetka}
+                            </TableCell>
+                            <TableCell align="right">
+                              {row.tipPregleda.cenaPregleda}
+                            </TableCell>
                             <TableCell align="right">
                               {row.datumKreiranja}
                             </TableCell>
@@ -238,7 +316,7 @@ const TabelaPregleda = ({ pregledi, getAllPregledi, pacijentId }) => {
               count={
                 pregledi
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                  .filter(p => new Date() > new Date(p.datum)).length
+                  .filter(p => new Date() > new Date(p.datumPocetka)).length
               }
               rowsPerPage={rowsPerPage}
               page={page}
