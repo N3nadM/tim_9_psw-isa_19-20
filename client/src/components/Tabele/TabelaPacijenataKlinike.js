@@ -58,6 +58,22 @@ const headCells = [
   { id: "jbzo", numeric: true, disablePadding: false, label: "JBZO" }
 ];
 
+const [state, setState] = React.useState({
+  ime: "",
+  prezime: "",
+  email: "",
+  grad: "",
+  jbzo: ""
+});
+
+const handleChange = e => {
+  setState({ ...state, [e.target.name]: e.target.value });
+};
+
+const handleSubmit = e => {
+  e.preventDefault();
+};
+
 function EnhancedTableHead(props) {
   const { classes, order, orderBy, onRequestSort } = props;
   const createSortHandler = property => event => {
