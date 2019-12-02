@@ -153,11 +153,75 @@ const EnhancedTableToolbar = () => {
         Lista pacijenata
       </Typography>
 
-      <Tooltip title="Filter list">
-        <IconButton aria-label="filter list">
-          <FilterListIcon />
-        </IconButton>
-      </Tooltip>
+      <form onSubmit={handleSubmit}>
+        <Paper>
+          <Grid container spacing={3}>
+            <Grid item md={2}>
+              <TextField
+                id="ime"
+                value={state.ime}
+                onChange={handleChange}
+                name="ime"
+                className={classes.textField}
+                label="Ime"
+              />
+            </Grid>
+            <Grid item md={2}>
+              <TextField
+                id="prezime"
+                value={state.prezime}
+                onChange={handleChange}
+                name="prezime"
+                className={classes.textField}
+                label="Prezime"
+              />
+            </Grid>
+            <Grid item md={2}>
+              <TextField
+                id="email"
+                value={state.email}
+                onChange={handleChange}
+                name="email"
+                className={classes.textField}
+                label="E-mail"
+              />
+            </Grid>
+            <Grid item md={2}>
+              <TextField
+                id="grad"
+                value={state.grad}
+                onChange={handleChange}
+                name="grad"
+                className={classes.textField}
+                label="Grad"
+              />
+            </Grid>
+            <Grid item md={2}>
+              <TextField
+                id="jbzo"
+                value={state.jbzo}
+                onChange={handleChange}
+                name="jbzo"
+                className={classes.textField}
+                label="Jbzo"
+              />
+            </Grid>
+            <Grid
+              item
+              md={2}
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center"
+              }}
+            >
+              <Button variant="contained" color="primary" type="submit">
+                Pretraži
+              </Button>
+            </Grid>
+          </Grid>
+        </Paper>
+      </form>
     </Toolbar>
   );
 };
