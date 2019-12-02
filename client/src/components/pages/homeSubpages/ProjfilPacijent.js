@@ -11,6 +11,7 @@ import AppBar from "../../layout/AppBarLogedIn";
 import PacijentProfilTab from "../../Tabs/PacijentProfilTab";
 import ZakaziPregled from "../../Tabs/ZakaziPregled";
 import ZdrKarton from "../../Tabs/ZdrKarton";
+import { connect } from "react-redux";
 
 const drawerWidth = 240;
 
@@ -39,7 +40,7 @@ function a11yProps(index) {
   };
 }
 
-export default function ProfilPacijent() {
+const ProfilPacijent = ({ pacijent }) => {
   const [value, setValue] = React.useState(0);
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -58,10 +59,14 @@ export default function ProfilPacijent() {
         aria-label="simple tabs example"
       >
         <Tab label="Profil" {...a11yProps(0)} />
-        <Tab label="Moji pregledi" {...a11yProps(1)} />
-        <Tab label="Moje operacije" {...a11yProps(2)} />
-        <Tab label="Zdravstveni karton" {...a11yProps(3)} />
-        <Tab label="Zakazi pregled" {...a11yProps(4)} />
+        <Tab label="Moji pregledi" disabled={!pacijent} {...a11yProps(1)} />
+        <Tab label="Moje operacije" disabled={!pacijent} {...a11yProps(2)} />
+        <Tab
+          label="Zdravstveni karton"
+          disabled={!pacijent}
+          {...a11yProps(3)}
+        />
+        <Tab label="Zakazi pregled" disabled={!pacijent} {...a11yProps(4)} />
       </Tabs>
     </div>
   );
@@ -101,4 +106,10 @@ export default function ProfilPacijent() {
       </div>
     </>
   );
-}
+};
+
+const mapStateToProps = state => ({
+  pacijent: state.pacijent.pacijent
+});
+
+export default connect(mapStateToProps, null)(ProfilPacijent);

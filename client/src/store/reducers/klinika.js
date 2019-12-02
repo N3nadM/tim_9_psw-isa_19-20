@@ -1,13 +1,15 @@
 import {
   SET_ALL_KLINIKE,
   SET_ADDED_KLINIKA,
-  SET_KLINIKA
+  SET_KLINIKA,
+  SET_ALL_TIPOVI
 } from "../actionTypes";
 
 const DEFAULT_STATE = {
   klinike: null,
   newKlinika: null,
-  klinika: null
+  klinika: null,
+  tipoviPregleda: []
 };
 
 export default (state = DEFAULT_STATE, action) => {
@@ -26,6 +28,11 @@ export default (state = DEFAULT_STATE, action) => {
       return {
         ...state,
         klinika: action.klinika
+      };
+    case SET_ALL_TIPOVI:
+      return {
+        ...state,
+        tipoviPregleda: action.tipoviPregleda
       };
     default:
       return state;

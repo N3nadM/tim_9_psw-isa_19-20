@@ -99,7 +99,7 @@ const AppBarLogedIn = ({
         open={isMenuOpen}
         onClose={handleMenuClose}
       >
-        {location === "/" && (
+        {location.pathname === "/" && (
           <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
         )}
         <MenuItem

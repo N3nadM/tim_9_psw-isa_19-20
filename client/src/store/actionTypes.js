@@ -37,3 +37,5 @@ export const SET_KLINIKA = "SET_KLINIKA";
 
 export const SET_PREGLEDI = "SET_PREGLEDI";
 export const SET_OPERACIJE = "SET_OPERACIJE";
+
+export const SET_ALL_TIPOVI = "SET_ALL_TIPOVI";

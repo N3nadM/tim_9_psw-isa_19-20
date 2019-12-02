@@ -3,6 +3,7 @@ package com.isapsw.Projekat.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -17,6 +18,10 @@ public class Lekar{
     @ManyToOne
     @JoinColumn
     private Korisnik korisnik;
+
+    private LocalTime pocetakRadnogVremena;
+    private LocalTime krajRadnogVremena;
+
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "lekar")
     @JsonIgnore
@@ -38,8 +43,6 @@ public class Lekar{
 
     public Lekar(){
         super();
-        this.pregledi = new ArrayList<>();
-        this.operacije = new ArrayList<>();
     }
 
     public Lekar(Korisnik korisnik, List<Pregled> pregledi, List<Operacija> operacije, Klinika klinika) {
@@ -48,6 +51,30 @@ public class Lekar{
         this.pregledi = pregledi;
         this.operacije = operacije;
         this.klinika = klinika;
+    }
+
+    public LocalTime getPocetakRadnogVremena() {
+        return pocetakRadnogVremena;
+    }
+
+    public void setPocetakRadnogVremena(LocalTime pocetakRadnogVremena) {
+        this.pocetakRadnogVremena = pocetakRadnogVremena;
+    }
+
+    public LocalTime getKrajRadnogVremena() {
+        return krajRadnogVremena;
+    }
+
+    public void setKrajRadnogVremena(LocalTime krajRadnogVremena) {
+        this.krajRadnogVremena = krajRadnogVremena;
+    }
+
+    public TipPregleda getTipPregleda() {
+        return tipPregleda;
+    }
+
+    public void setTipPregleda(TipPregleda tipPregleda) {
+        this.tipPregleda = tipPregleda;
     }
 
     public List<Pregled> getPregledi() {

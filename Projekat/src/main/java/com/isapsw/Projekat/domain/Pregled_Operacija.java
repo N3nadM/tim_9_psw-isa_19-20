@@ -2,9 +2,11 @@ package com.isapsw.Projekat.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import java.time.LocalDate;
 import java.util.Date;
 
 @MappedSuperclass
@@ -13,13 +15,18 @@ public class Pregled_Operacija {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank
-    private Integer cena;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="tip_pregleda_id", updatable = false, nullable = false)
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    private TipPregleda tipPregleda;
 
     private String izvestaj;
 
     @JsonFormat(pattern = "yyyy-MM-dd hh:mm:ss")
-    private Date datum;
+    private Date datumPocetka;
+
+    @JsonFormat(pattern = "yyyy-MM-dd hh:mm:ss")
+    private Date datumZavrsetka;
 
     @JsonFormat(pattern = "yyyy-MM-dd")
     @Column(updatable = false)
@@ -35,6 +42,14 @@ public class Pregled_Operacija {
 
     public Sala getSala() {
         return sala;
+    }
+
+    public TipPregleda getTipPregleda() {
+        return tipPregleda;
+    }
+
+    public void setTipPregleda(TipPregleda tipPregleda) {
+        this.tipPregleda = tipPregleda;
     }
 
     public void setSala(Sala sala) {
@@ -57,20 +72,20 @@ public class Pregled_Operacija {
         this.izvestaj = izvestaj;
     }
 
-    public Integer getCena() {
-        return cena;
+    public Date getDatumPocetka() {
+        return datumPocetka;
     }
 
-    public void setCena(Integer cena) {
-        this.cena = cena;
+    public void setDatumPocetka(Date datumPocetka) {
+        this.datumPocetka = datumPocetka;
     }
 
-    public Date getDatum() {
-        return datum;
+    public Date getDatumZavrsetka() {
+        return datumZavrsetka;
     }
 
-    public void setDatum(Date datum) {
-        this.datum = datum;
+    public void setDatumZavrsetka(Date datumZavrsetka) {
+        this.datumZavrsetka = datumZavrsetka;
     }
 
     public Date getDatumKreiranja() {

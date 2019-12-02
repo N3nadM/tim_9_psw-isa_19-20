@@ -1,5 +1,7 @@
 package com.isapsw.Projekat.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.util.ArrayList;
@@ -13,17 +15,59 @@ public class TipPregleda {
     private Long id;
 
     @NotBlank
-    @Column(unique = true, nullable = false)
-    private String Naziv;
+    private Integer cenaPregleda;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "tipPregleda")
-    private List<Pregled> pregledi = new ArrayList<>();
+    @NotBlank
+    private Integer cenaOperacije;
+
+    @NotBlank
+    @Column(nullable = false)
+    private String naziv;
+
+    private Integer minimalnoTrajanjeMin;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="klinika_id", updatable = false, nullable = false)
+    @JsonIgnore
+    private Klinika klinika;
 
     public TipPregleda() {
     }
 
     public TipPregleda(String naziv) {
-        Naziv = naziv;
+        naziv = naziv;
+    }
+
+    public Integer getMinimalnoTrajanjeMin() {
+        return minimalnoTrajanjeMin;
+    }
+
+    public void setMinimalnoTrajanjeMin(Integer minimalnoTrajanjeMin) {
+        this.minimalnoTrajanjeMin = minimalnoTrajanjeMin;
+    }
+
+    public Integer getCenaPregleda() {
+        return cenaPregleda;
+    }
+
+    public void setCenaPregleda(Integer cenaPregleda) {
+        this.cenaPregleda = cenaPregleda;
+    }
+
+    public Integer getCenaOperacije() {
+        return cenaOperacije;
+    }
+
+    public void setCenaOperacije(Integer cenaOperacije) {
+        this.cenaOperacije = cenaOperacije;
+    }
+
+    public Klinika getKlinika() {
+        return klinika;
+    }
+
+    public void setKlinika(Klinika klinika) {
+        this.klinika = klinika;
     }
 
     public Long getId() {
@@ -34,19 +78,11 @@ public class TipPregleda {
         this.id = id;
     }
 
-    public List<Pregled> getPregledi() {
-        return pregledi;
-    }
-
-    public void setPregledi(List<Pregled> pregledi) {
-        this.pregledi = pregledi;
-    }
-
     public String getNaziv() {
-        return Naziv;
+        return naziv;
     }
 
     public void setNaziv(String naziv) {
-        Naziv = naziv;
+        naziv = naziv;
     }
 }

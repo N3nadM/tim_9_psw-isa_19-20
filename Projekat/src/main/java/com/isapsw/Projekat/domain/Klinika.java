@@ -1,5 +1,8 @@
 package com.isapsw.Projekat.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.util.ArrayList;
@@ -25,6 +28,7 @@ public class Klinika {
             name = "pacijenti_klinike",
             joinColumns = @JoinColumn(name = "klinika_id"),
             inverseJoinColumns = @JoinColumn(name = "pacijent_id"))
+    @JsonIgnore
     private List<Pacijent> pacijenti = new ArrayList<>();
 
     //dodati listu slobodnih termina
@@ -32,8 +36,13 @@ public class Klinika {
     private Double ocena = 0.0;
 
     @OneToMany(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY, mappedBy = "klinika", orphanRemoval = true)
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private List<Sala> sale = new ArrayList<>();
     //dodati cenovnik
+
+    @OneToMany(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY, mappedBy = "klinika")
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    private List<TipPregleda> tipPregleda = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY, mappedBy = "klinika")
     private List<AdminKlinike> adminiKlinike = new ArrayList<>();
@@ -56,9 +65,6 @@ public class Klinika {
         this.adresa = adresa;
         this.opis = opis;
         this.sale = sale;
-        this.adminiKlinike = adminiKlinike;
-        this.medicinskeSestre = new ArrayList<>();
-        this.lekari = new ArrayList<>();
     }
 
     public Double getOcena() {
@@ -139,5 +145,13 @@ public class Klinika {
 
     public void setPacijenti(List<Pacijent> pacijenti) {
         this.pacijenti = pacijenti;
+    }
+
+    public List<TipPregleda> getTipPregleda() {
+        return tipPregleda;
+    }
+
+    public void setTipPregleda(List<TipPregleda> tipPregleda) {
+        this.tipPregleda = tipPregleda;
     }
 }
