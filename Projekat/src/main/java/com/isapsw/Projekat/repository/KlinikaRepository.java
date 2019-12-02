@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -13,6 +14,13 @@ import java.util.Optional;
 public interface KlinikaRepository extends JpaRepository<Klinika, Long> {
     Klinika findKlinikaById(Long id);
     List<Klinika> findAll();
+
+    @Query("SELECT DISTINCT k FROM Klinika k JOIN k.lekari l WHERE l.tipPregleda.naziv LIKE %:tip% AND UPPER(k.adresa) LIKE %:lokacija% AND k.ocena >= :ocena")
+    List<Klinika> findKlinikaByParameters(@Param("lokacija") String lokacija, @Param("tip") String tip, @Param("ocena") Double ocena);
+
+//
+//    @Query("SELECT DISTINCT k FROM Klinika k JOIN k.lekari l WHERE l.tipPregleda.naziv LIKE %:tip% AND UPPER(k.adresa) LIKE %:lokacija% AND k.ocena >= :ocena")
+//    List<Klinika> findKlinikaByParametersAndDate(@Param("lokacija") String lokacija, @Param("tip") String tip, @Param("ocena") Double ocena, @Param("datum") Date datum);
 
     @Query("Select k from Klinika k where UPPER(k.adresa) LIKE %:lokacija%")
     List<Klinika> findKlinikaByAdresaContaining(@Param("lokacija") String lokacija);

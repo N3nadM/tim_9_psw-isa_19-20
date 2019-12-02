@@ -61,7 +61,7 @@ public class KlinikaController {
     @PostMapping("/search")
     public ResponseEntity<List<Klinika>> getKlinikeWithSearch(@RequestBody Map<String,Object> body) {
         try {
-            List<Klinika> klinike = klinikaService.searchKlinike(body.get("lokacija").toString(), body.get("ocena").toString());
+            List<Klinika> klinike = klinikaService.searchKlinike(body.get("lokacija").toString(), body.get("ocena").toString(), body.get("tip").toString(), body.get("datum").toString());
             return new ResponseEntity<>(klinike, HttpStatus.OK);
         }
         catch(Exception e) {

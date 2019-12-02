@@ -1,6 +1,7 @@
 package com.isapsw.Projekat.controller;
 
 import com.isapsw.Projekat.domain.Pregled;
+import com.isapsw.Projekat.domain.TipPregleda;
 import com.isapsw.Projekat.service.PregledService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,7 +18,7 @@ public class PregledController {
     private PregledService pregledService;
 
     @GetMapping("/{id}")
-    public ResponseEntity<List<Pregled>> confirmAccount(@PathVariable String id) {
+    public ResponseEntity<List<Pregled>> getPregledByPacijentId(@PathVariable String id) {
         try {
             List<Pregled> pregledi = pregledService.getPreglediByPacijentId(Long.parseLong(id));
             return new ResponseEntity<List<Pregled>>(pregledi, HttpStatus.OK);
