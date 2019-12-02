@@ -117,11 +117,4 @@ public class Lekar{
         this.klinika = klinika;
     }
 
-    public TipPregleda getTipPregleda() {
-        return tipPregleda;
-    }
-
-    public void setTipPregleda(TipPregleda tipPregleda) {
-        this.tipPregleda = tipPregleda;
-    }
 }
