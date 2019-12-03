@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import Tabs from "@material-ui/core/Tabs";
@@ -8,6 +8,9 @@ import Box from "@material-ui/core/Box";
 import TextField from "@material-ui/core/TextField";
 import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
+import { addNewTipPregleda } from "../../store/actions/tipoviPregleda";
+
+import { connect } from "react-redux";
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -49,7 +52,17 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default function FullWidthTabs() {
+const TipoviPregledaTabs = ({
+  adminKlinike: { klinika },
+  addNewTipPregleda
+}) => {
+  const [state, setState] = React.useState({
+    naziv: "",
+    cenaPregleda: "",
+    cenaOperacije: "",
+    minimalnoTrajanjeMin: "",
+    klinikaId: ""
+  });
   const classes = useStyles();
   const theme = useTheme();
   const [value, setValue] = React.useState(0);
@@ -61,7 +74,21 @@ export default function FullWidthTabs() {
   const handleChangeIndex = index => {
     setValue(index);
   };
-
+  const handleChange1 = e => {
+    setState({ ...state, [e.target.name]: e.target.value });
+  };
+  const handleSubmit = e => {
+    e.preventDefault();
+    state.klinikaId = klinika.id;
+    addNewTipPregleda(state);
+    setState({
+      naziv: "",
+      cenaPregleda: "",
+      cenaOperacije: "",
+      minimalnoTrajanjeMin: "",
+      klinikaId: ""
+    });
+  };
   return (
     <div className={classes.root}>
       <Tabs
@@ -77,9 +104,11 @@ export default function FullWidthTabs() {
       </Tabs>
       <TabPanel value={value} index={0} dir={theme.direction}>
         <p>Unesite podatke o tipu pregleda</p>
-        <form className={classes.form}>
+        <form className={classes.form} onSubmit={handleSubmit}>
           <TextField
             margin="normal"
+            value={state.naziv}
+            onChange={handleChange1}
             required
             fullWidth
             name="naziv"
@@ -89,12 +118,36 @@ export default function FullWidthTabs() {
           />
           <TextField
             margin="normal"
+            value={state.cenaPregleda}
+            onChange={handleChange1}
             required
             fullWidth
-            name="cena"
-            label="Cena tipa pregleda"
-            type="text"
-            id="cena"
+            name="cenaPregleda"
+            label="Cena pregleda"
+            type="number"
+            id="cenaPregleda"
+          />
+          <TextField
+            margin="normal"
+            value={state.cenaOperacije}
+            onChange={handleChange1}
+            required
+            fullWidth
+            name="cenaOperacije"
+            label="Cena operacije"
+            type="number"
+            id="cenaOperacije"
+          />
+          <TextField
+            margin="normal"
+            value={state.minimalnoTrajanjeMin}
+            onChange={handleChange1}
+            required
+            fullWidth
+            name="minimalnoTrajanjeMin"
+            label="Minimalno trajanje u minutima"
+            type="number"
+            id="minimalnoTrajanjeMin"
           />
           <Button
             type="submit"
@@ -150,4 +203,11 @@ export default function FullWidthTabs() {
       </TabPanel>
     </div>
   );
-}
+};
+const mapStateToProps = state => ({
+  adminKlinike: state.adminKlinike
+});
+
+export default connect(mapStateToProps, { addNewTipPregleda })(
+  TipoviPregledaTabs
+);

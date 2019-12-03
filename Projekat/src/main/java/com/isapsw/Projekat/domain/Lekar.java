@@ -116,4 +116,5 @@ public class Lekar{
     public void setKlinika(Klinika klinika) {
         this.klinika = klinika;
     }
+
 }

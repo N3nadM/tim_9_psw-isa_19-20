@@ -1,9 +1,7 @@
 package com.isapsw.Projekat.dto;
 
-import com.isapsw.Projekat.domain.AdminKlinike;
-import com.isapsw.Projekat.domain.Lekar;
+public class LekarDTO {
 
-public class KorisnikDTO {
     private Long id;
     private String ime;
     private String prezime;
@@ -13,23 +11,12 @@ public class KorisnikDTO {
     private String telefon;
     private String email;
     private String password;
+    private Long klinikaId;
+    private Long tipPregledaId;
 
+    public  LekarDTO() {super();}
 
-    public KorisnikDTO() {
-    }
-
-    public KorisnikDTO(Long id, String ime, String prezime, String grad, String drzava, String adresa, String telefon) {
-        this.id = id;
-        this.ime = ime;
-        this.prezime = prezime;
-        this.grad = grad;
-        this.drzava = drzava;
-        this.adresa = adresa;
-        this.telefon = telefon;
-    }
-
-    public KorisnikDTO(Long id, String ime, String prezime, String grad, String drzava, String adresa, String telefon, String email, String password) {
-        this.id = id;
+    public LekarDTO(String ime, String prezime, String grad, String drzava, String adresa, String telefon, String email, String password, Long klinikaId, Long tipPregledaId) {
         this.ime = ime;
         this.prezime = prezime;
         this.grad = grad;
@@ -38,30 +25,16 @@ public class KorisnikDTO {
         this.telefon = telefon;
         this.email = email;
         this.password = password;
+        this.klinikaId = klinikaId;
+        this.tipPregledaId = tipPregledaId;
     }
 
-    public KorisnikDTO(AdminKlinikeDTO adminKlinikeDTO){
-        this.id = adminKlinikeDTO.getId();
-        this.ime = adminKlinikeDTO.getIme();
-        this.prezime = adminKlinikeDTO.getPrezime();
-        this.grad = adminKlinikeDTO.getGrad();
-        this.drzava = adminKlinikeDTO.getDrzava();
-        this.adresa = adminKlinikeDTO.getAdresa();
-        this.telefon = adminKlinikeDTO.getTelefon();
-        this.email = adminKlinikeDTO.getEmail();
-        this.password = adminKlinikeDTO.getPassword();
+    public Long getTipPregledaId() {
+        return tipPregledaId;
     }
 
-    public KorisnikDTO(LekarDTO l){
-        this.id = l.getId();
-        this.ime = l.getIme();
-        this.prezime = l.getPrezime();
-        this.grad = l.getGrad();
-        this.drzava = l.getDrzava();
-        this.adresa = l.getAdresa();
-        this.telefon = l.getTelefon();
-        this.email = l.getEmail();
-        this.password = l.getPassword();
+    public void setTipPregledaId(Long tipPrgegledaId) {
+        this.tipPregledaId = tipPrgegledaId;
     }
 
     public Long getId() {
@@ -134,5 +107,13 @@ public class KorisnikDTO {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public Long getKlinikaId() {
+        return klinikaId;
+    }
+
+    public void setKlinikaId(Long klinikaId) {
+        this.klinikaId = klinikaId;
     }
 }

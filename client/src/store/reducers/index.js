@@ -7,6 +7,8 @@ import medsestra from "./medSestra";
 import klinika from "./klinika";
 import zdrKarton from "./zdrKarton";
 import adminKlinike from "./adminKlinike";
+import tipoviPregleda from "./tipoviPregleda";
+import sala from "./sala";
 import pregled from "./pregled";
 import operacija from "./operacija";
 
@@ -19,6 +21,8 @@ const appReducer = combineReducers({
   klinika,
   zdrKarton,
   adminKlinike,
+  tipoviPregleda,
+  sala,
   pregled,
   operacija
 });

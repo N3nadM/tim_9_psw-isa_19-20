@@ -1,6 +1,7 @@
 package com.isapsw.Projekat.controller;
 import com.isapsw.Projekat.domain.Lek;
 import com.isapsw.Projekat.domain.Lekar;
+import com.isapsw.Projekat.dto.LekarDTO;
 import com.isapsw.Projekat.service.LekarService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -34,4 +35,13 @@ public class LekarController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
+
+    public ResponseEntity<Lekar> addLekar(@RequestBody LekarDTO lekar){
+        try{
+            return new ResponseEntity<Lekar>(lekarService.createLekar(lekar), HttpStatus.OK);
+        }catch(Exception e){
+            return new  ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
 }
