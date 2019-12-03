@@ -1,4 +1,8 @@
 import React, { useEffect, useState } from "react";
+import Button from "@material-ui/core/Button";
+import { Grid } from "@material-ui/core";
+import TextField from "@material-ui/core/TextField";
+import Paper from "@material-ui/core/Paper";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
@@ -7,14 +11,10 @@ import { makeStyles } from "@material-ui/core/styles";
 import TableRow from "@material-ui/core/TableRow";
 import TableSortLabel from "@material-ui/core/TableSortLabel";
 import { connect } from "react-redux";
-import IconButton from "@material-ui/core/IconButton";
-import Tooltip from "@material-ui/core/Tooltip";
 import { getPacijentiKlinike } from "../../store/actions/pacijent";
+import { searchPacijent } from "../../store/actions/pacijent";
 import Typography from "@material-ui/core/Typography";
 import Toolbar from "@material-ui/core/Toolbar";
-import FilterListIcon from "@material-ui/icons/FilterList";
-
-import CircularProgress from "@material-ui/core/CircularProgress";
 
 function desc(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -129,20 +129,17 @@ const useStyles = makeStyles(theme => ({
     minWidth: 120
   }
 }));
-const EnhancedTableToolbar = () => {
+const EnhancedTableToolbar = ({ pacijent, searchPacijent }) => {
   const classes = useToolbarStyles();
-  return (
-    <Toolbar>
-      <Typography variant="h6" id="tableTitle">
-        Lista pacijenata
-      </Typography>
 
-      <Tooltip title="Filter list">
-        <IconButton aria-label="filter list">
-          <FilterListIcon />
-        </IconButton>
-      </Tooltip>
-    </Toolbar>
+  return (
+    <div>
+      <Toolbar>
+        <Typography variant="h6" id="tableTitle">
+          Lista pacijenata
+        </Typography>
+      </Toolbar>
+    </div>
   );
 };
 const useToolbarStyles = makeStyles(theme => ({
@@ -154,7 +151,8 @@ const useToolbarStyles = makeStyles(theme => ({
 const TabelaPacijenataKlinike = ({
   korisnikId,
   pacijent: { pacijent },
-  getPacijentiKlinike
+  getPacijentiKlinike,
+  searchPacijent
 }) => {
   useEffect(() => {
     getPacijentiKlinike(korisnikId);
@@ -169,9 +167,95 @@ const TabelaPacijenataKlinike = ({
     setOrderBy(property);
   };
 
+  const [state, setState] = React.useState({
+    korisnikId: korisnikId,
+    ime: "",
+    prezime: "",
+    email: "",
+    grad: "",
+    jbzo: ""
+  });
+
+  const handleChange = e => {
+    setState({ ...state, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = e => {
+    e.preventDefault();
+    pacijent = searchPacijent({ ...state });
+  };
+
   return (
     <div className="TabelaPacijenataKlinike">
-      <EnhancedTableToolbar />
+      <form onSubmit={handleSubmit}>
+        <Paper>
+          <Grid container spacing={3}>
+            <Grid item md={2}>
+              <TextField
+                id="ime"
+                value={state.ime}
+                onChange={handleChange}
+                name="ime"
+                className={classes.textField}
+                label="Ime"
+              />
+            </Grid>
+            <Grid item md={2}>
+              <TextField
+                id="prezime"
+                value={state.prezime}
+                onChange={handleChange}
+                name="prezime"
+                className={classes.textField}
+                label="Prezime"
+              />
+            </Grid>
+            <Grid item md={2}>
+              <TextField
+                id="email"
+                value={state.email}
+                onChange={handleChange}
+                name="email"
+                className={classes.textField}
+                label="E-mail"
+              />
+            </Grid>
+            <Grid item md={2}>
+              <TextField
+                id="grad"
+                value={state.grad}
+                onChange={handleChange}
+                name="grad"
+                className={classes.textField}
+                label="Grad"
+              />
+            </Grid>
+            <Grid item md={2}>
+              <TextField
+                id="jbzo"
+                value={state.jbzo}
+                onChange={handleChange}
+                name="jbzo"
+                className={classes.textField}
+                label="Jbzo"
+              />
+            </Grid>
+            <Grid
+              item
+              md={2}
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center"
+              }}
+            >
+              <Button variant="contained" color="primary" type="submit">
+                Pretraži
+              </Button>
+            </Grid>
+          </Grid>
+        </Paper>
+      </form>
       <div className={classes.tableWrapper}>
         <Table aria-label="simple table">
           <EnhancedTableHead
@@ -229,5 +313,6 @@ function mapStateToProps(state) {
 }
 
 export default connect(mapStateToProps, {
-  getPacijentiKlinike
+  getPacijentiKlinike,
+  searchPacijent
 })(TabelaPacijenataKlinike);

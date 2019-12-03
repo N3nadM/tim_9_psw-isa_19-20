@@ -1,7 +1,6 @@
 import { SET_PACIJENT_PROFILE, SET_EDIT_PACIJENT } from "../actionTypes";
 import axios from "axios";
 import { setRealKorisnik } from "./auth";
-import { getKlinika } from "./klinika";
 
 export const setProfile = pacijent => ({
   type: SET_PACIJENT_PROFILE,
@@ -28,6 +27,15 @@ export const editPacijent = korisnik => async dispatch => {
     const k = await axios.put(`/api/users/${korisnik.id}`, korisnik);
     dispatch(setNewPacijentKorisnik(k.data));
     dispatch(setRealKorisnik(k.data));
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const searchPacijent = searchData => async dispatch => {
+  try {
+    const pacijent = await axios.post(`/api/pacijent/search`, searchData);
+    dispatch(setProfile(pacijent.data));
   } catch (err) {
     console.log(err);
   }
