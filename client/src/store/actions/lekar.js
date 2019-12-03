@@ -1,6 +1,7 @@
 import {
   SET_LEKAR_PROFILE,
   SET_EDIT_LEKAR,
+  SET_LEKAR_LIST,
   SET_ADDED_LEKAR
 } from "../actionTypes";
 import axios from "axios";
@@ -20,6 +21,11 @@ export const setAddedLekar = addedLekar => ({
   addedLekar
 });
 
+export const setLekariKlinike = lekarList => ({
+  type: SET_LEKAR_LIST,
+  lekarList
+});
+
 export const getLekar = id => async (dispatch, getState) => {
   try {
     const lekar = await axios.get(`/api/lekar/${id}`);
@@ -35,6 +41,19 @@ export const editLekar = korisnik => async dispatch => {
     const k = await axios.put(`/api/users/${korisnik.id}`, korisnik);
     dispatch(setNewLekarKorisnik(k.data));
     dispatch(setRealKorisnik(k.data));
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const getLekariKlinike = (id, searchData) => async (
+  dispatch,
+  getState
+) => {
+  console.log(searchData);
+  try {
+    const lekari = await axios.post(`/api/klinika/getLekari/${id}`, searchData);
+    dispatch(setLekariKlinike(lekari.data));
   } catch (err) {
     console.log(err);
   }

@@ -11,6 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
 @Service
 public class LekarService {
 
@@ -36,6 +40,13 @@ public class LekarService {
         return lekarRepository.findLekarByKorisnikId(Long.parseLong(id));
     }
 
+    public List<Date> findSlobodniTermini(Long id) {
+        List<Date> termini = new ArrayList<>();
+
+        termini.add(new Date());
+
+        return termini;
+    }
 
     public Lekar createLekar(LekarDTO lekarDTO) {
         Korisnik k = new Korisnik(new KorisnikDTO(lekarDTO));
@@ -50,5 +61,6 @@ public class LekarService {
         l.setKlinika(klinikaService.findKlinikaId(lekarDTO.getKlinikaId()).get());
         l.setTipPregleda(tipPregledaService.getTipPregledaById(lekarDTO.getTipPregledaId()).get());
         return lekarRepository.save(l);
+
     }
 }

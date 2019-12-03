@@ -1,6 +1,7 @@
 package com.isapsw.Projekat.controller;
 
 import com.isapsw.Projekat.domain.Klinika;
+import com.isapsw.Projekat.domain.Lekar;
 import com.isapsw.Projekat.dto.KlinikaDTO;
 import com.isapsw.Projekat.service.KlinikaService;
 import com.sun.mail.iap.Response;
@@ -21,7 +22,7 @@ public class KlinikaController {
     @Autowired
     private KlinikaService klinikaService;
 
-    @GetMapping //parametri kasnije za pagination
+    @GetMapping
     public ResponseEntity<List<Klinika>> getAllKlinike() {
         try {
             List<Klinika> klinike = klinikaService.getAllKlinike();
@@ -31,10 +32,10 @@ public class KlinikaController {
         }
     }
 
-    @GetMapping("/{id}") //parametri kasnije za pagination
-    public ResponseEntity<Klinika> getKlinikaById(@PathVariable Long id) {
+    @GetMapping("/{id}")
+    public ResponseEntity<Klinika> getKlinikaById(@PathVariable String id) {
         try {
-            return new ResponseEntity<>(klinikaService.getKlinikaById(id), HttpStatus.OK);
+            return new ResponseEntity<>(klinikaService.getKlinikaById(Long.parseLong(id)), HttpStatus.OK);
         } catch(Exception e) {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
@@ -69,4 +70,20 @@ public class KlinikaController {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
     }
+
+    @PostMapping("/getLekari/{id}")
+    public ResponseEntity<List<Lekar>> getLekariKlinike(@PathVariable String id, @RequestBody Map<String,Object> body) {
+        try {
+            System.out.println("Usao sam");
+            List<Lekar> lekars = klinikaService.getLekariKlinike(Long.parseLong(id), body.get("tip").toString(), body.get("datum").toString());
+            return new ResponseEntity<>(lekars, HttpStatus.OK);
+        }
+        catch(Exception e) {
+            System.out.println(e.getMessage());
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+
+
 }
