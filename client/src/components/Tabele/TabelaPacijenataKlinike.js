@@ -168,6 +168,7 @@ const TabelaPacijenataKlinike = ({
   };
 
   const [state, setState] = React.useState({
+    korisnikId: korisnikId,
     ime: "",
     prezime: "",
     email: "",
@@ -181,7 +182,6 @@ const TabelaPacijenataKlinike = ({
 
   const handleSubmit = e => {
     e.preventDefault();
-    console.log({ ...state });
     pacijent = searchPacijent({ ...state });
   };
 

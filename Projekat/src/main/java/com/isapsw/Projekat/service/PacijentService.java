@@ -29,7 +29,7 @@ public class PacijentService {
         return pacijentRepository.findPacijentByKorisnikId(Long.parseLong(id));
     }
 
-    public List<PacijentDTO> searchPacijent(String ime, String prezime, String email, String grad, String jbzo){
+    public List<PacijentDTO> searchPacijent(List<PacijentDTO> pacijentiKl, String ime, String prezime, String email, String grad, String jbzo){
 
         List<Long> pacijentId = pacijentRepository.findPacijentByParameters(ime, prezime, email, grad, jbzo);
 
@@ -40,8 +40,12 @@ public class PacijentService {
             PacijentDTO pacijentDTO = new PacijentDTO(korisnikRepository.findKorisnikById(id));
             Pacijent pacijent = pacijentRepository.findPacijentByKorisnikId(id);
             pacijentDTO.setJbzo(pacijent.getJbzo());
-
-            pacijenti.add(pacijentDTO);
+            for(PacijentDTO pDTO : pacijentiKl){
+                if(pDTO.getJbzo() == pacijentDTO.getJbzo()){
+                    pacijenti.add(pacijentDTO);
+                    break;
+                }
+            }
         }
 
         return pacijenti;
