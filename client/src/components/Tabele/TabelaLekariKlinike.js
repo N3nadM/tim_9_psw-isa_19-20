@@ -23,67 +23,15 @@ import FilterListIcon from "@material-ui/icons/FilterList";
 import Button from "@material-ui/core/Button";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
-import {
-  getAllKlinike,
-  searchKlinike,
-  getTipoviPrelgeda
-} from "../../store/actions/klinika";
+import { getTipoviPrelgeda } from "../../store/actions/klinika";
+import { getLekariKlinike } from "../../store/actions/lekar";
 import { Grid } from "@material-ui/core";
 import FormControl from "@material-ui/core/FormControl";
 import InputLabel from "@material-ui/core/InputLabel";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import TextField from "@material-ui/core/TextField";
-
-function desc(a, b, orderBy) {
-  if (b[orderBy] < a[orderBy]) {
-    return -1;
-  }
-  if (b[orderBy] > a[orderBy]) {
-    return 1;
-  }
-  return 0;
-}
-
-function stableSort(array, cmp) {
-  const stabilizedThis = array.map((el, index) => [el, index]);
-  stabilizedThis.sort((a, b) => {
-    const order = cmp(a[0], b[0]);
-    if (order !== 0) return order;
-    return a[1] - b[1];
-  });
-  return stabilizedThis.map(el => el[0]);
-}
-
-function getSorting(order, orderBy) {
-  return order === "desc"
-    ? (a, b) => desc(a, b, orderBy)
-    : (a, b) => -desc(a, b, orderBy);
-}
-
-const useToolbarStyles = makeStyles(theme => ({
-  title: {
-    flex: "1 1 100%"
-  }
-}));
-
-const EnhancedTableToolbar = () => {
-  const classes = useToolbarStyles();
-
-  return (
-    <Toolbar>
-      <Typography className={classes.title} variant="h6" id="tableTitle">
-        Klinike
-      </Typography>
-
-      <Tooltip title="Filter list">
-        <IconButton aria-label="filter list">
-          <FilterListIcon />
-        </IconButton>
-      </Tooltip>
-    </Toolbar>
-  );
-};
+import SlobodniTerminiDialog from "../Tabs/Lekar/SlobodniTerminiDialog";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -116,32 +64,28 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const ZakaziPregled = ({
-  klinike,
+const TabelaLekariKlinike = ({
+  params,
   tipovi,
-  getAllKlinike,
-  searchKlinike,
   getTipoviPrelgeda,
-  history
+  getLekariKlinike,
+  idKlinike,
+  lekari
 }) => {
   useEffect(() => {
-    getAllKlinike();
     getTipoviPrelgeda();
+    getLekariKlinike(idKlinike, params);
+    setLoading(false);
   }, []);
-
   const classes = useStyles();
+
+  const [loading, setLoading] = React.useState(true);
+
   const [order, setOrder] = React.useState("asc");
-  const [orderBy, setOrderBy] = React.useState("naziv");
+  const [orderBy, setOrderBy] = React.useState("ime");
 
   const [page, setPage] = React.useState(0);
-  const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
-
-  const handleRequestSort = (property, event) => {
-    const isDesc = orderBy === property && order === "desc";
-    setOrder(isDesc ? "asc" : "desc");
-    setOrderBy(property);
-  };
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -152,11 +96,7 @@ const ZakaziPregled = ({
     setPage(0);
   };
 
-  const handleChangeDense = event => {
-    setDense(event.target.checked);
-  };
-
-  const [selectedDate, setSelectedDate] = React.useState(null);
+  const [selectedDate, setSelectedDate] = React.useState(params.datum || null);
 
   const handleDateChange = date => {
     setSelectedDate(date);
@@ -164,20 +104,43 @@ const ZakaziPregled = ({
 
   const [state, setState] = React.useState({
     ocena: "",
-    tip: "",
-    lokacija: ""
+    tip: params.tip,
+    ime: "",
+    prezime: ""
   });
 
   const handleSubmit = e => {
     e.preventDefault();
-    searchKlinike({
-      ...state,
-      datum: !!selectedDate ? selectedDate : ""
-    });
+    if (state.tip !== "" || selectedDate != null) {
+      getLekariKlinike(idKlinike, {
+        ...state,
+        datum: !selectedDate ? "" : selectedDate
+      });
+    }
   };
 
   const handleChange = e => {
     setState({ ...state, [e.target.name]: e.target.value });
+  };
+
+  const sort = sviPregledi => {
+    return sviPregledi.concat().sort((a, b) => {
+      if (orderBy === "tip") {
+        return order == "asc"
+          ? a.tipPregleda.naziv - b.tipPregleda.naziv
+          : b.tipPregleda.naziv - a.tipPregleda.naziv;
+      } else {
+        return order == "asc"
+          ? new Date(a.datumPocetka) - new Date(b.datumPocetka)
+          : new Date(b.datumPocetka) - new Date(a.datumPocetka);
+      }
+    });
+  };
+
+  const handleRequestSort = (property, event) => {
+    const isDesc = orderBy === property && order === "desc";
+    setOrder(isDesc ? "asc" : "desc");
+    setOrderBy(property);
   };
 
   return (
@@ -185,21 +148,23 @@ const ZakaziPregled = ({
       <form onSubmit={handleSubmit}>
         <Paper style={{ padding: 50, marginBottom: 50 }}>
           <Grid container spacing={3}>
-            <Grid item md={3}>
-              <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                <KeyboardDatePicker
-                  id="date-picker-dialog"
-                  label="Datum pregleda"
-                  format="MM/dd/yyyy"
-                  value={selectedDate}
-                  onChange={handleDateChange}
-                  KeyboardButtonProps={{
-                    "aria-label": "change date"
-                  }}
-                />
-              </MuiPickersUtilsProvider>
-            </Grid>
-            <Grid item md={2}>
+            {params.datum === "" && (
+              <Grid item sm={12} md={6} lg={3}>
+                <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                  <KeyboardDatePicker
+                    id="date-picker-dialog"
+                    label="Datum pregleda"
+                    format="MM/dd/yyyy"
+                    value={selectedDate}
+                    onChange={handleDateChange}
+                    KeyboardButtonProps={{
+                      "aria-label": "change date"
+                    }}
+                  />
+                </MuiPickersUtilsProvider>
+              </Grid>
+            )}
+            <Grid item sm={12} md={6} lg={2}>
               <FormControl
                 className={classes.formControl}
                 style={{ width: "80%" }}
@@ -220,35 +185,48 @@ const ZakaziPregled = ({
                 </Select>
               </FormControl>
             </Grid>
-            <Grid item md={3}>
-              <FormControl style={{ width: "80%" }}>
-                <InputLabel id="demo-simple-select-label">
-                  Tip Pregleda
-                </InputLabel>
-                <Select
-                  labelId="demo-simple-select-label"
-                  id="demo-simple-select"
-                  value={state.tip}
-                  name="tip"
-                  onChange={handleChange}
-                >
-                  {tipovi.map(t => (
-                    <MenuItem key={t} value={t}>
-                      {t}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-            </Grid>
-            <Grid item md={2}>
+            {params.tip === "" && (
+              <Grid item sm={12} md={6} lg={3}>
+                <FormControl style={{ width: "80%" }}>
+                  <InputLabel id="demo-simple-select-label">
+                    Tip Pregleda
+                  </InputLabel>
+                  <Select
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    value={state.tip}
+                    name="tip"
+                    onChange={handleChange}
+                  >
+                    {tipovi.map(t => (
+                      <MenuItem key={t} value={t}>
+                        {t}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+              </Grid>
+            )}
+            <Grid item sm={12} md={6} lg={2}>
               <TextField
                 style={{ width: "80%" }}
                 id="standard-basic"
-                value={state.lokacija}
+                value={state.ime}
                 onChange={handleChange}
-                name="lokacija"
+                name="ime"
                 className={classes.textField}
-                label="Lokacija"
+                label="Ime"
+              />
+            </Grid>
+            <Grid item sm={12} md={6} lg={2}>
+              <TextField
+                style={{ width: "80%" }}
+                id="standard-basic"
+                value={state.prezime}
+                onChange={handleChange}
+                name="prezime"
+                className={classes.textField}
+                label="Prezime"
               />
             </Grid>
             <Grid
@@ -267,34 +245,32 @@ const ZakaziPregled = ({
           </Grid>
         </Paper>
       </form>
-      {klinike && !!klinike.length && (
+      {lekari && (
         <Paper className={classes.paper}>
-          <EnhancedTableToolbar />
           <div className={classes.tableWrapper}>
             <Table
               className={classes.table}
               aria-labelledby="tableTitle"
-              size={dense ? "small" : "medium"}
               aria-label="enhanced table"
             >
               <TableHead>
                 <TableRow>
                   <TableCell align="left">
                     <TableSortLabel
-                      active={orderBy === "naziv"}
+                      active={orderBy === "ime"}
                       direction={order}
-                      onClick={() => handleRequestSort("naziv")}
+                      onClick={() => handleRequestSort("ime")}
                     >
-                      Naziv
+                      Ime
                     </TableSortLabel>
                   </TableCell>
                   <TableCell align="left">
                     <TableSortLabel
-                      active={orderBy === "adresa"}
+                      active={orderBy === "prezime"}
                       direction={order}
-                      onClick={() => handleRequestSort("adresa")}
+                      onClick={() => handleRequestSort("prezime")}
                     >
-                      Adresa
+                      Prezime
                     </TableSortLabel>
                   </TableCell>
                   <TableCell align="left">
@@ -306,15 +282,15 @@ const ZakaziPregled = ({
                       Ocena
                     </TableSortLabel>
                   </TableCell>
-                  {!!state.tip.length && (
-                    <TableCell align="right">Cena</TableCell>
-                  )}
-                  <TableCell align="right">Saznaj</TableCell>
+
+                  <TableCell align="right">Termini Pregleda</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
-                {klinike &&
-                  stableSort(klinike, getSorting(order, orderBy))
+                {!loading &&
+                  lekari &&
+                  lekari.length > 0 &&
+                  sort(lekari)
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((row, index) => {
                       return (
@@ -322,53 +298,36 @@ const ZakaziPregled = ({
                           hover
                           role="checkbox"
                           tabIndex={-1}
-                          key={row.naziv}
+                          key={row.id}
                         >
                           <TableCell component="th" allign="left">
-                            {row.naziv}
+                            {row.korisnik.ime}
                           </TableCell>
-                          <TableCell align="left">{row.adresa}</TableCell>
-                          <TableCell align="left">{row.ocena}</TableCell>
-                          {!!state.tip.length && (
-                            <TableCell align="right">
-                              {row.tipPregleda.find(t => t.naziv == state.tip)
-                                ? row.tipPregleda.find(
-                                    t => t.naziv == state.tip
-                                  ).cenaPregleda
-                                : "Nema"}
-                            </TableCell>
-                          )}
+                          <TableCell align="left">
+                            {row.korisnik.prezime}
+                          </TableCell>
+                          <TableCell align="left">0</TableCell>
+
                           <TableCell align="right">
-                            <Button
-                              variant="outlined"
-                              color="primary"
-                              onClick={() => {
-                                history.push({
-                                  pathname: `/klinika/${row.id}`,
-                                  state: {
-                                    ...state,
-                                    datum: !!selectedDate ? selectedDate : ""
-                                  }
-                                });
-                              }}
-                            >
-                              Pogledaj
-                            </Button>
+                            <SlobodniTerminiDialog
+                              id={row.id}
+                              datum={!selectedDate ? "" : selectedDate}
+                            />
                           </TableCell>
                         </TableRow>
                       );
                     })}
                 {rowsPerPage -
-                  Math.min(rowsPerPage, klinike.length - page * rowsPerPage) >
+                  Math.min(rowsPerPage, lekari.length - page * rowsPerPage) >
                   0 && (
                   <TableRow
                     style={{
                       height:
-                        (dense ? 33 : 53) *
+                        53 *
                         (rowsPerPage -
                           Math.min(
                             rowsPerPage,
-                            klinike.length - page * rowsPerPage
+                            lekari.length - page * rowsPerPage
                           ))
                     }}
                   >
@@ -381,7 +340,7 @@ const ZakaziPregled = ({
           <TablePagination
             rowsPerPageOptions={[5, 10, 25]}
             component="div"
-            count={klinike.length}
+            count={lekari.length}
             rowsPerPage={rowsPerPage}
             page={page}
             backIconButtonProps={{
@@ -395,21 +354,17 @@ const ZakaziPregled = ({
           />
         </Paper>
       )}
-      <FormControlLabel
-        control={<Switch checked={dense} onChange={handleChangeDense} />}
-        label="Smanji pading"
-      />
     </div>
   );
 };
 
 const mapStateToProps = state => ({
-  klinike: state.klinika.klinike,
-  tipovi: state.klinika.tipoviPregleda
+  tipovi: state.klinika.tipoviPregleda,
+  lekari: state.lekar.lekarList
 });
 
 export default withRouter(
-  connect(mapStateToProps, { getAllKlinike, searchKlinike, getTipoviPrelgeda })(
-    ZakaziPregled
+  connect(mapStateToProps, { getTipoviPrelgeda, getLekariKlinike })(
+    TabelaLekariKlinike
   )
 );

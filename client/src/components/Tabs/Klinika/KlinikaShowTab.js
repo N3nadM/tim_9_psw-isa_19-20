@@ -45,8 +45,6 @@ const PodaciKlinikaTabs = ({ getKlinika, klinika, id, state }) => {
   const [value, setValue] = React.useState(0);
   const [visible, setVisible] = React.useState(false);
 
-  console.log(state);
-
   useEffect(() => {
     getKlinika(id);
   }, []);

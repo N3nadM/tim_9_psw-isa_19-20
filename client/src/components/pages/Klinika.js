@@ -8,6 +8,7 @@ import Drawer from "@material-ui/core/Drawer";
 import TabPanel from "../Tabs/TabPanel";
 import AppBar from "../layout/AppBarLogedIn";
 import KlinikaShowTab from "../Tabs/Klinika/KlinikaShowTab";
+import TabelaLekariKlinike from "../Tabele/TabelaLekariKlinike";
 
 const drawerWidth = 240;
 
@@ -77,12 +78,13 @@ export default function Klinika({ match, location }) {
         </nav>
         <main className={classes.content}>
           <TabPanel value={value} index={0}>
-            Pretraga lekara
+            <TabelaLekariKlinike
+              params={location.state}
+              idKlinike={match.params.id}
+            />
           </TabPanel>
           <TabPanel value={value} index={1}>
-            {value === 1 && (
-              <KlinikaShowTab id={match.params.id} state={location.state} />
-            )}
+            {value === 1 && <KlinikaShowTab id={match.params.id} />}
           </TabPanel>
         </main>
       </div>
