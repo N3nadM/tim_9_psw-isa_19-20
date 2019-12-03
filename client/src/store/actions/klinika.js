@@ -4,6 +4,7 @@ import {
   SET_KLINIKA,
   SET_ALL_TIPOVI
 } from "../actionTypes";
+import { setLekariKlinike } from "./lekar";
 import axios from "axios";
 
 export const setKlinike = klinike => ({
@@ -42,6 +43,7 @@ export const searchKlinike = searchData => async dispatch => {
   try {
     const klinike = await axios.post(`/api/klinika/search`, searchData);
     dispatch(setKlinike(klinike.data));
+    dispatch(setLekariKlinike([]));
   } catch (err) {
     console.log(err);
   }
@@ -76,7 +78,7 @@ export const getTipoviPrelgeda = () => async (dispatch, getState) => {
   try {
     let tipoviPregleda = getState().klinika.tipoviPregleda;
     if (!tipoviPregleda.length) {
-      tipoviPregleda = await axios.get("api/tipovi");
+      tipoviPregleda = await axios.get("/api/tipovi");
       dispatch(setTipovi(tipoviPregleda.data));
     }
   } catch (err) {

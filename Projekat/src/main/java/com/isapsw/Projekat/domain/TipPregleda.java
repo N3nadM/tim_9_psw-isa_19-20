@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,13 +15,14 @@ public class TipPregleda {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank
+    @NotNull
     private Integer cenaPregleda;
 
-    @NotBlank
+    @NotNull
     private Integer cenaOperacije;
 
-    @NotBlank
+
+    @NotBlank( message = "Neophodno je uneti naziv tipa pregleda.")
     @Column(nullable = false)
     private String naziv;
 
@@ -83,6 +85,6 @@ public class TipPregleda {
     }
 
     public void setNaziv(String naziv) {
-        naziv = naziv;
+        this.naziv = naziv;
     }
 }

@@ -9,11 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
-import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.util.*;
-import java.util.concurrent.TimeUnit;
 
 @Service
 public class KlinikaService {
@@ -36,7 +34,10 @@ public class KlinikaService {
     }
 
 
-    public List<Klinika> searchKlinike(String lokacija, String ocena, String tip, String datum) {
+    public List<Klinika> searchKlinike(String lokacija, String ocena, String tip, String datum) throws Exception {
+        if(!datum.isEmpty() && tip.isEmpty()) {
+            throw new Exception("Datum ne moze biti unet ako nije unet tip pregleda");
+        }
         if(ocena.isEmpty()) {
             ocena = "0.0";
         }
@@ -55,18 +56,27 @@ public class KlinikaService {
                 Lekar lekar = pregled.getLekar();
                 lekar.getPregledi().sort((p, k) -> p.getDatumPocetka().after(k.getDatumPocetka()) ? 1 : -1);
 
-                Date pocetak = makeDateFromDateAndTime(pregled.getDatumPocetka(),lekar.getPocetakRadnogVremena());
-                Date kraj = makeDateFromDateAndTime(pregled.getDatumPocetka(),lekar.getKrajRadnogVremena());
-
                 if(lekar.getTipPregleda().getNaziv().equals(tip)) {
+
+                    Date pocetak = makeDateFromDateAndTime(pregled.getDatumPocetka(),lekar.getPocetakRadnogVremena());
+                    Date kraj = makeDateFromDateAndTime(pregled.getDatumPocetka(),lekar.getKrajRadnogVremena());
+
+                    List<Pregled> preglediIstogDanaJednogLekara = new ArrayList<>();
                     for (int j = 0; j < lekar.getPregledi().size(); j++) {
                         if (compareDatesOnly(pregled.getDatumPocetka(),lekar.getPregledi().get(j).getDatumPocetka())) { //Ako se poklapa lekarov pregled sa pregledom tog datuma proveri ima li slobodno u rasporedu za taj dan
-                            System.out.println(pocetak.toString() + "poredim sa " + lekar.getPregledi().get(j).getDatumPocetka().toString());
-                            if (pocetak.getTime() + tipTrazenogPregleda.getMinimalnoTrajanjeMin() * 60 * 1000 < lekar.getPregledi().get(j).getDatumPocetka().getTime() && pocetak.getTime() < kraj.getTime()) {
-                                System.out.println("dodao sam");
+                            System.out.println(pregled.getDatumPocetka().toString() + " , " + lekar.getPregledi().get(j).getDatumPocetka());
+                            preglediIstogDanaJednogLekara.add(lekar.getPregledi().get(j));
+                        }
+                    }
+                    for (int j = 0; j < preglediIstogDanaJednogLekara.size(); j++) {
+                        if (pocetak.getTime() + tipTrazenogPregleda.getMinimalnoTrajanjeMin() * 60 * 1000 < preglediIstogDanaJednogLekara.get(j).getDatumPocetka().getTime() && pocetak.getTime() < kraj.getTime()) {
+                            retKlinike.add(lekar.getKlinika());
+                        } else {
+                            pocetak.setTime(preglediIstogDanaJednogLekara.get(j).getDatumZavrsetka().getTime());
+
+                            //Ako je dosao do poslednjeg pregleda tog dana proveri da li ima prostora od tad do kraja radnog vremena
+                            if(j == preglediIstogDanaJednogLekara.size() - 1 && pocetak.getTime() + tipTrazenogPregleda.getMinimalnoTrajanjeMin() * 60 * 1000 < kraj.getTime()) {
                                 retKlinike.add(lekar.getKlinika());
-                            } else {
-                                pocetak = lekar.getPregledi().get(j).getDatumZavrsetka();
                             }
                         }
                     }
@@ -136,5 +146,59 @@ public class KlinikaService {
 
     public Klinika getKlinikaById(Long id) {
         return klinikaRepository.findKlinikaById(id);
+    }
+
+    public List<Lekar> getLekariKlinike(Long id, String tip, String datum) throws Exception {
+        if(!datum.isEmpty() && tip.isEmpty()) {
+            throw new Exception("Datum ne moze biti unet ako nije unet tip pregleda");
+        }
+
+        Klinika klinika = klinikaRepository.findKlinikaById(id);
+        TipPregleda tipTrazenogPregleda = tipoviPregledaRepository.findFirstTipOnePregledaByNaziv(tip);
+        Set<Lekar> lekars = new HashSet<>();
+
+        System.out.println("datum je " + datum);
+        if(!datum.isEmpty()) {
+            klinika.getLekari().forEach(lekar -> {
+                if(lekar.getTipPregleda().getNaziv().equals(tip)) {
+                    lekar.getPregledi().sort((p, k) -> p.getDatumPocetka().after(k.getDatumPocetka()) ? 1 : -1);
+                    List<Pregled> preglediIstogDanaJednogLekara = new ArrayList<>();
+                    Date pocetak = makeDateFromDateAndTime(Date.from(Instant.parse(datum)),lekar.getPocetakRadnogVremena());
+                    Date kraj = makeDateFromDateAndTime(Date.from(Instant.parse(datum)),lekar.getKrajRadnogVremena());
+
+                    lekar.getPregledi().forEach(pregled -> {
+                        if (compareDatesOnly(Date.from(Instant.parse(datum)), pregled.getDatumPocetka())) {
+                           preglediIstogDanaJednogLekara.add(pregled);
+                        }
+                    });
+                    //Ako nema zakazanih pregleda za taj dan dodaj lekara u listu
+                    if(preglediIstogDanaJednogLekara.size() == 0) {
+                        lekars.add(lekar);
+                    }
+                    for (int j = 0; j < preglediIstogDanaJednogLekara.size(); j++) {
+                        if (pocetak.getTime() + tipTrazenogPregleda.getMinimalnoTrajanjeMin() * 60 * 1000 < preglediIstogDanaJednogLekara.get(j).getDatumPocetka().getTime() && pocetak.getTime() < kraj.getTime()) {
+                            lekars.add(lekar);
+                        } else {
+                            pocetak.setTime(preglediIstogDanaJednogLekara.get(j).getDatumZavrsetka().getTime());
+                            //Ako je dosao do poslednjeg pregleda tog dana proveri da li ima prostora od tad do kraja radnog vremena
+                            if(j == preglediIstogDanaJednogLekara.size() - 1 && pocetak.getTime() + tipTrazenogPregleda.getMinimalnoTrajanjeMin() * 60 * 1000 < kraj.getTime()) {
+                                lekars.add(lekar);
+                            }
+                        }
+                    }
+                }
+            });
+        } else if (!tip.isEmpty()) {
+            for (Lekar lekar : klinika.getLekari()) {
+                if (lekar.getTipPregleda().getNaziv().equals(tip)) {
+                    lekars.add(lekar);
+                }
+            }
+        }
+        else {
+            return klinika.getLekari();
+        }
+
+        return new ArrayList<>(lekars);
     }
 }
