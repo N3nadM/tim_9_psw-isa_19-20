@@ -50,7 +50,6 @@ export const getLekariKlinike = (id, searchData) => async (
   dispatch,
   getState
 ) => {
-  console.log(searchData);
   try {
     const lekari = await axios.post(`/api/klinika/getLekari/${id}`, searchData);
     dispatch(setLekariKlinike(lekari.data));

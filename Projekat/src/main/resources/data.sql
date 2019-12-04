@@ -35,23 +35,23 @@ INSERT INTO ADMIN_KLINIKE VALUES ('1', '1', '1', '2');
 
 INSERT INTO KORISNIK (id, adresa, email, ime, password, prezime, drzava, grad, telefon) VALUES ('3', 'adresa lekara', 'lekar@gmail.com', 'Lekar', '$2a$10$feiotRqclqYZ7aJnytCDSedhWmzztzhuwyujbVfVucV4nbmMRNnwa', 'Lekaric',  'drzava', 'grad', 'telefon');
 INSERT INTO USER_AUTHORITY VALUES ('3', '2');
-INSERT INTO LEKAR(id, tip_pregleda_id, korisnik_id, klinika_id, pocetak_radnog_vremena,  kraj_radnog_vremena) VALUES ('1', '1', '3', '1', '07:30', '20:00');
+INSERT INTO LEKAR(id, tip_pregleda_id, korisnik_id, klinika_id, pocetak_radnog_vremena,  kraj_radnog_vremena, ocena) VALUES ('1', '1', '3', '1', '07:30', '20:00', 3.4);
 
 INSERT INTO KORISNIK (id, adresa, email, ime, password, prezime, drzava, grad, telefon) VALUES (12, 'lekariceva 12', 'lekar123@gmail.com', 'Mile', '$2a$10$feiotRqclqYZ7aJnytCDSedhWmzztzhuwyujbVfVucV4nbmMRNnwa', 'Lekaricccccacca',  'drzava', 'grad', 'telefon');
 INSERT INTO USER_AUTHORITY VALUES ('12', '2');
-INSERT INTO LEKAR(id, tip_pregleda_id, korisnik_id, klinika_id, pocetak_radnog_vremena,  kraj_radnog_vremena) VALUES ('2', '2', '12', '1', '07:00', '21:00');
+INSERT INTO LEKAR(id, tip_pregleda_id, korisnik_id, klinika_id, pocetak_radnog_vremena,  kraj_radnog_vremena, ocena) VALUES ('2', '2', '12', '1', '07:00', '21:00', 4.5);
 
 INSERT INTO KORISNIK (id, adresa, email, ime, password, prezime, drzava, grad, telefon) VALUES (13, 'lekariceva 12', 'lekar1235@gmail.com', 'Micko', '$2a$10$feiotRqclqYZ7aJnytCDSedhWmzztzhuwyujbVfVucV4nbmMRNnwa', 'Lekaricccccacca',  'drzava', 'grad', 'telefon');
 INSERT INTO USER_AUTHORITY VALUES ('13', '2');
-INSERT INTO LEKAR(id, tip_pregleda_id, korisnik_id, klinika_id, pocetak_radnog_vremena,  kraj_radnog_vremena) VALUES ('3', '5', '13', '9', '08:00', '21:00');
+INSERT INTO LEKAR(id, tip_pregleda_id, korisnik_id, klinika_id, pocetak_radnog_vremena,  kraj_radnog_vremena, ocena) VALUES ('3', '5', '13', '9', '08:00', '21:00', 4.0);
 
 INSERT INTO KORISNIK (id, adresa, email, ime, password, prezime, drzava, grad, telefon) VALUES (14, 'lekariceva 12', 'lekarMicko@gmail.com', 'Micko', '$2a$10$feiotRqclqYZ7aJnytCDSedhWmzztzhuwyujbVfVucV4nbmMRNnwa', 'Lekaricccccacca',  'drzava', 'grad', 'telefon');
 INSERT INTO USER_AUTHORITY VALUES ('14', '2');
-INSERT INTO LEKAR(id, tip_pregleda_id, korisnik_id, klinika_id, pocetak_radnog_vremena,  kraj_radnog_vremena) VALUES ('4', '2', '14', '2', '08:00', '17:00');
+INSERT INTO LEKAR(id, tip_pregleda_id, korisnik_id, klinika_id, pocetak_radnog_vremena,  kraj_radnog_vremena, ocena) VALUES ('4', '2', '14', '2', '08:00', '17:00', 5.0);
 
 INSERT INTO KORISNIK (id, adresa, email, ime, password, prezime, drzava, grad, telefon) VALUES (15, 'lekariceva 12', 'lekarMilivoje@gmail.com', 'Milivoje', '$2a$10$feiotRqclqYZ7aJnytCDSedhWmzztzhuwyujbVfVucV4nbmMRNnwa', 'Lekaricccccacca',  'drzava', 'grad', 'telefon');
 INSERT INTO USER_AUTHORITY VALUES ('15', '2');
-INSERT INTO LEKAR(id, tip_pregleda_id, korisnik_id, klinika_id, pocetak_radnog_vremena,  kraj_radnog_vremena) VALUES ('5', '4', '15', '3', '08:00', '17:00');
+INSERT INTO LEKAR(id, tip_pregleda_id, korisnik_id, klinika_id, pocetak_radnog_vremena,  kraj_radnog_vremena, ocena) VALUES ('5', '4', '15', '3', '08:00', '17:00', 2.1);
 
 
 INSERT INTO KORISNIK (id, adresa, email, ime, password, prezime, drzava, grad, telefon) VALUES ('4', 'adresa pacijenta', 'pacijent@gmail.com', 'Pacijent', '$2a$10$feiotRqclqYZ7aJnytCDSedhWmzztzhuwyujbVfVucV4nbmMRNnwa', 'Pacijentic',  'drzava', 'grad', 'telefon');

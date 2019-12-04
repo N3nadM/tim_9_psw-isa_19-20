@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
@@ -26,10 +27,10 @@ public class LekarController {
         return  new ResponseEntity<Lekar>(lekar, HttpStatus.OK);
     }
 
-    @GetMapping("/getTermini/{id}")
-    public ResponseEntity<List<Date>> getSlobodniTermini(@PathVariable String id){
+    @PostMapping("/getTermini")
+    public ResponseEntity<List<String>> getSlobodniTermini(@RequestBody Map<String,Object> body){
         try {
-            List<Date> termini = lekarService.findSlobodniTermini(Long.parseLong(id));
+            List<String> termini = lekarService.findSlobodniTermini(Long.parseLong(body.get("id").toString()), body.get("datum").toString());
             return new ResponseEntity<>(termini, HttpStatus.OK);
         } catch(Exception e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

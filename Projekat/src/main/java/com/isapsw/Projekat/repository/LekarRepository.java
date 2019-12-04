@@ -13,5 +13,5 @@ public interface LekarRepository extends JpaRepository<Lekar, Long> {
 
     Lekar findLekarByKorisnikId(Long id);
 
-
+    Lekar findLekarById(Long id);
 }

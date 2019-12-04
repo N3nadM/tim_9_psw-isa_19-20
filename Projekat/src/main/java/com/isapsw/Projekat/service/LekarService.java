@@ -1,19 +1,15 @@
 package com.isapsw.Projekat.service;
 
-import com.isapsw.Projekat.domain.Authority;
-import com.isapsw.Projekat.domain.Korisnik;
-import com.isapsw.Projekat.domain.Lekar;
+import com.isapsw.Projekat.domain.*;
 import com.isapsw.Projekat.dto.KorisnikDTO;
 import com.isapsw.Projekat.dto.LekarDTO;
 import com.isapsw.Projekat.repository.LekarRepository;
-import com.isapsw.Projekat.repository.TipPregledaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.time.Instant;
+import java.util.*;
 
 @Service
 public class LekarService {
@@ -40,12 +36,46 @@ public class LekarService {
         return lekarRepository.findLekarByKorisnikId(Long.parseLong(id));
     }
 
-    public List<Date> findSlobodniTermini(Long id) {
-        List<Date> termini = new ArrayList<>();
+    public List<String> findSlobodniTermini(Long id, String datum) {
+        Lekar lekar = lekarRepository.findLekarById(id);
 
-        termini.add(new Date());
+        List<String> termini = new ArrayList<>();
 
-        return termini;
+        lekar.getPregledi().sort((p, k) -> p.getDatumPocetka().after(k.getDatumPocetka()) ? 1 : -1);
+
+        List<Pregled> preglediIstogDanaJednogLekara = new ArrayList<>();
+
+        for(int i = 0; i < lekar.getPregledi().size(); i++) {
+            if (KlinikaService.compareDatesOnly(Date.from(Instant.parse(datum)), lekar.getPregledi().get(i).getDatumPocetka())) {
+                preglediIstogDanaJednogLekara.add(lekar.getPregledi().get(i));
+            }
+        }
+
+        Date pocetak = KlinikaService.makeDateFromDateAndTime(Date.from(Instant.parse(datum)),lekar.getPocetakRadnogVremena());
+        Date kraj = KlinikaService.makeDateFromDateAndTime(Date.from(Instant.parse(datum)),lekar.getKrajRadnogVremena());
+
+        if(preglediIstogDanaJednogLekara.size() == 0) {
+            while(pocetak.getTime() < kraj.getTime()) {
+                termini.add(pocetak.toString());
+                pocetak.setTime(pocetak.getTime() + lekar.getTipPregleda().getMinimalnoTrajanjeMin() * 60 * 1000);
+            }
+        } else {
+            for(int i = 0; i < preglediIstogDanaJednogLekara.size(); i++) {
+                while(pocetak.getTime() < kraj.getTime() && pocetak.getTime() + lekar.getTipPregleda().getMinimalnoTrajanjeMin() * 60 * 1000 < preglediIstogDanaJednogLekara.get(i).getDatumPocetka().getTime()) {
+                    termini.add(pocetak.toString());
+                    pocetak.setTime(pocetak.getTime() + lekar.getTipPregleda().getMinimalnoTrajanjeMin() * 60 * 1000);
+                 }
+                pocetak.setTime(preglediIstogDanaJednogLekara.get(i).getDatumZavrsetka().getTime());
+                if(i == preglediIstogDanaJednogLekara.size() - 1) {
+                    while(pocetak.getTime() < kraj.getTime()) {
+                        termini.add(pocetak.toString());
+                        pocetak.setTime(pocetak.getTime() + lekar.getTipPregleda().getMinimalnoTrajanjeMin() * 60 * 1000);
+                    }
+                }
+            }
+        }
+
+        return new ArrayList<>(termini);
     }
 
     public Lekar createLekar(LekarDTO lekarDTO) {
