@@ -75,11 +75,8 @@ const TabelaLekariKlinike = ({
   useEffect(() => {
     getTipoviPrelgeda();
     getLekariKlinike(idKlinike, params);
-    setLoading(false);
   }, []);
   const classes = useStyles();
-
-  const [loading, setLoading] = React.useState(true);
 
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState("ime");
@@ -123,16 +120,26 @@ const TabelaLekariKlinike = ({
     setState({ ...state, [e.target.name]: e.target.value });
   };
 
-  const sort = sviPregledi => {
-    return sviPregledi.concat().sort((a, b) => {
-      if (orderBy === "tip") {
+  const sort = lekari => {
+    return lekari.sort((a, b) => {
+      if (orderBy === "ime") {
         return order == "asc"
-          ? a.tipPregleda.naziv - b.tipPregleda.naziv
-          : b.tipPregleda.naziv - a.tipPregleda.naziv;
+          ? a.korisnik.ime < b.korisnik.ime
+            ? 1
+            : -1
+          : b.korisnik.ime < a.korisnik.ime
+          ? 1
+          : -1;
+      } else if (orderBy === "ocena") {
+        return order == "asc" ? a.ocena - b.ocena : b.ocena - a.ocena;
       } else {
         return order == "asc"
-          ? new Date(a.datumPocetka) - new Date(b.datumPocetka)
-          : new Date(b.datumPocetka) - new Date(a.datumPocetka);
+          ? a.korisnik.prezime < b.korisnik.prezime
+            ? 1
+            : -1
+          : b.korisnik.prezime < a.korisnik.prezime
+          ? 1
+          : -1;
       }
     });
   };
@@ -229,15 +236,7 @@ const TabelaLekariKlinike = ({
                 label="Prezime"
               />
             </Grid>
-            <Grid
-              item
-              md={2}
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center"
-              }}
-            >
+            <Grid item md={2}>
               <Button variant="contained" color="primary" type="submit">
                 Pretraži
               </Button>
@@ -287,10 +286,18 @@ const TabelaLekariKlinike = ({
                 </TableRow>
               </TableHead>
               <TableBody>
-                {!loading &&
-                  lekari &&
+                {lekari &&
                   lekari.length > 0 &&
                   sort(lekari)
+                    .filter(
+                      l =>
+                        l.korisnik.ime
+                          .toUpperCase()
+                          .includes(state.ime.toUpperCase()) &&
+                        l.korisnik.prezime
+                          .toUpperCase()
+                          .includes(state.prezime.toUpperCase())
+                    )
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((row, index) => {
                       return (
@@ -306,7 +313,7 @@ const TabelaLekariKlinike = ({
                           <TableCell align="left">
                             {row.korisnik.prezime}
                           </TableCell>
-                          <TableCell align="left">0</TableCell>
+                          <TableCell align="left">{row.ocena}</TableCell>
 
                           <TableCell align="right">
                             <SlobodniTerminiDialog

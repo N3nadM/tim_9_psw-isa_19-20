@@ -93,12 +93,13 @@ export default function ConfirmationDialog({ id, datum }) {
   const [open, setOpen] = React.useState(false);
   const [options, setOptions] = React.useState([]);
 
-  console.log(datum);
-
   const handleClickListItem = async () => {
     setOpen(true);
-    const termini = await Axios.get(`/api/lekar/getTermini/${id}`);
-    setOptions(termini.data);
+    const termini = await Axios.post(`/api/lekar/getTermini`, {
+      id,
+      datum: !!datum ? datum : new Date()
+    });
+    setOptions(termini.data.sort((a, b) => new Date(a) - new Date(b)));
   };
 
   const handleClose = () => {

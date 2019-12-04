@@ -29,11 +29,8 @@ export const setTipovi = tipoviPregleda => ({
 
 export const getAllKlinike = (sum, rpp) => async (dispatch, getState) => {
   try {
-    let klinike = getState().klinika.klinike;
-    if (!klinike) {
-      klinike = await axios.get(`/api/klinika`);
-      dispatch(setKlinike(klinike.data));
-    }
+    const klinike = await axios.get(`/api/klinika`);
+    dispatch(setKlinike(klinike.data));
   } catch (err) {
     console.log(err);
   }
