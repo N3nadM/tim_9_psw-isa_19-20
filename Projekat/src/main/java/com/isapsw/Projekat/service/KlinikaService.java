@@ -108,7 +108,8 @@ public class KlinikaService {
         }
     }
 
-    private Date makeDateFromDateAndTime(Date d, LocalTime lt) {
+    //protected samo klase iz istog paketa da mogu da je koriste
+    protected static Date makeDateFromDateAndTime(Date d, LocalTime lt) {
         Calendar cal = Calendar.getInstance();
         cal.setTime(d);
         int year = cal.get(Calendar.YEAR);
@@ -124,7 +125,7 @@ public class KlinikaService {
         return cal.getTime();
     }
 
-    private boolean compareDatesOnly(Date d1, Date d2) {
+    protected static boolean compareDatesOnly(Date d1, Date d2) {
         return d1.toInstant().atZone(ZoneId.systemDefault()).toLocalDate().compareTo(d2.toInstant().atZone(ZoneId.systemDefault()).toLocalDate()) == 0;
     }
 
@@ -157,7 +158,6 @@ public class KlinikaService {
         TipPregleda tipTrazenogPregleda = tipoviPregledaRepository.findFirstTipOnePregledaByNaziv(tip);
         Set<Lekar> lekars = new HashSet<>();
 
-        System.out.println("datum je " + datum);
         if(!datum.isEmpty()) {
             klinika.getLekari().forEach(lekar -> {
                 if(lekar.getTipPregleda().getNaziv().equals(tip)) {

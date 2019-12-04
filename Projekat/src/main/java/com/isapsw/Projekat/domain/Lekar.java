@@ -22,6 +22,7 @@ public class Lekar{
     private LocalTime pocetakRadnogVremena;
     private LocalTime krajRadnogVremena;
 
+    private Double ocena = 0.0;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "lekar")
     @JsonIgnore
@@ -51,6 +52,14 @@ public class Lekar{
         this.pregledi = pregledi;
         this.operacije = operacije;
         this.klinika = klinika;
+    }
+
+    public Double getOcena() {
+        return ocena;
+    }
+
+    public void setOcena(Double ocena) {
+        this.ocena = ocena;
     }
 
     public LocalTime getPocetakRadnogVremena() {
