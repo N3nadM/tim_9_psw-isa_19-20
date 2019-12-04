@@ -77,7 +77,7 @@ public class PacijentController {
     public ResponseEntity<List<Pacijent>> getPacijentiWithSearch(@RequestBody Map<String,String> body) {
         try {
             List<PacijentDTO> pacijentiKlinike = getPacijentiKlinike(body.get("korisnikId")).getBody();
-            List<PacijentDTO> pacijenti = pacijentService.searchPacijent(pacijentiKlinike, body.get("ime").toString(), body.get("prezime").toString(), body.get("email").toString(), body.get("grad").toString(), body.get("jbzo").toString());
+            List<PacijentDTO> pacijenti = pacijentService.searchPacijent(pacijentiKlinike, body.get("ime").toString(), body.get("prezime").toString(), body.get("jbzo").toString());
 
             return new ResponseEntity(pacijenti, HttpStatus.OK);
         }

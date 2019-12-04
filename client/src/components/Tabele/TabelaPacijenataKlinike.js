@@ -13,6 +13,7 @@ import TableSortLabel from "@material-ui/core/TableSortLabel";
 import { connect } from "react-redux";
 import { getPacijentiKlinike } from "../../store/actions/pacijent";
 import { searchPacijent } from "../../store/actions/pacijent";
+import { withRouter } from "react-router-dom";
 import Typography from "@material-ui/core/Typography";
 import Toolbar from "@material-ui/core/Toolbar";
 
@@ -50,11 +51,6 @@ const headCells = [
     label: "Ime"
   },
   { id: "prezime", numeric: false, disablePadding: false, label: "Prezime" },
-  { id: "email", numeric: false, disablePadding: false, label: "E-mail" },
-  { id: "telefon", numeric: false, disablePadding: false, label: "Telefon" },
-  { id: "adresa", numeric: false, disablePadding: false, label: "Adresa" },
-  { id: "grad", numeric: false, disablePadding: false, label: "Grad" },
-  { id: "drazava", numeric: false, disablePadding: false, label: "Drzava" },
   { id: "jbzo", numeric: true, disablePadding: false, label: "JBZO" }
 ];
 
@@ -71,9 +67,10 @@ function EnhancedTableHead(props) {
         {headCells.map((headCell, i) => (
           <TableCell
             key={headCell.id}
-            align={i !== headCells.length - 1 ? "left" : "right"}
+            align={i !== headCells.length - 1 ? "left" : "center"}
             padding={headCell.disablePadding ? "none" : "default"}
             sortDirection={orderBy === headCell.id ? order : false}
+            style={{ fontWeight: "bold" }}
           >
             {headCell.id !== "saznaj" ? (
               <TableSortLabel
@@ -95,6 +92,7 @@ function EnhancedTableHead(props) {
             )}
           </TableCell>
         ))}
+        <TableCell></TableCell>
       </TableRow>
     </TableHead>
   );
@@ -152,7 +150,8 @@ const TabelaPacijenataKlinike = ({
   korisnikId,
   pacijent: { pacijent },
   getPacijentiKlinike,
-  searchPacijent
+  searchPacijent,
+  history
 }) => {
   useEffect(() => {
     getPacijentiKlinike(korisnikId);
@@ -171,8 +170,6 @@ const TabelaPacijenataKlinike = ({
     korisnikId: korisnikId,
     ime: "",
     prezime: "",
-    email: "",
-    grad: "",
     jbzo: ""
   });
 
@@ -212,26 +209,6 @@ const TabelaPacijenataKlinike = ({
             </Grid>
             <Grid item md={2}>
               <TextField
-                id="email"
-                value={state.email}
-                onChange={handleChange}
-                name="email"
-                className={classes.textField}
-                label="E-mail"
-              />
-            </Grid>
-            <Grid item md={2}>
-              <TextField
-                id="grad"
-                value={state.grad}
-                onChange={handleChange}
-                name="grad"
-                className={classes.textField}
-                label="Grad"
-              />
-            </Grid>
-            <Grid item md={2}>
-              <TextField
                 id="jbzo"
                 value={state.jbzo}
                 onChange={handleChange}
@@ -257,7 +234,7 @@ const TabelaPacijenataKlinike = ({
         </Paper>
       </form>
       <div className={classes.tableWrapper}>
-        <Table aria-label="simple table">
+        <Table aria-label="simple table" style={{ marginTop: 40 }}>
           <EnhancedTableHead
             classes={classes}
             order={order}
@@ -288,12 +265,24 @@ const TabelaPacijenataKlinike = ({
                         {row.ime}
                       </TableCell>
                       <TableCell align="left">{row.prezime}</TableCell>
-                      <TableCell align="left">{row.email}</TableCell>
-                      <TableCell align="left">{row.telefon}</TableCell>
-                      <TableCell align="left">{row.adresa}</TableCell>
-                      <TableCell align="left">{row.grad}</TableCell>
-                      <TableCell align="left">{row.drzava}</TableCell>
-                      <TableCell align="left">{row.jbzo}</TableCell>
+                      <TableCell align="center">{row.jbzo}</TableCell>
+                      <TableCell align="right">
+                        <Button
+                          variant="outlined"
+                          color="primary"
+                          onClick={() => {
+                            history.push({
+                              pathname: `/pacijent/${row.id}`,
+                              state: {
+                                id: row.id,
+                                ...state
+                              }
+                            });
+                          }}
+                        >
+                          Pogledaj
+                        </Button>
+                      </TableCell>
                     </TableRow>
                   );
                 }
@@ -312,7 +301,8 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps, {
-  getPacijentiKlinike,
-  searchPacijent
-})(TabelaPacijenataKlinike);
+export default withRouter(
+  connect(mapStateToProps, { getPacijentiKlinike, searchPacijent })(
+    TabelaPacijenataKlinike
+  )
+);
