@@ -3,7 +3,8 @@ import {
   SET_EDIT_LEKAR,
   SET_LEKAR_LIST,
   SET_ADDED_LEKAR,
-  SET_LEKARI_NA_KLINICI
+  SET_LEKARI_NA_KLINICI,
+  SET_EDITED_LEKAR
 } from "../actionTypes";
 import axios from "axios";
 import { setRealKorisnik } from "./auth";
@@ -95,3 +96,17 @@ export const searchLekariNaKlinici = (id, searchData) => async (
     console.log(err);
   }
 };
+
+export const editLekarByAdmin = (id, lekar) => async dispatch => {
+  try {
+    const k = await axios.put(`/api/lekar/editLekarByAdmin/${id}`, lekar);
+    dispatch(saveLekarAfterEdit(k.data));
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const saveLekarAfterEdit = lekar => ({
+  type: SET_EDITED_LEKAR,
+  lekar
+});
