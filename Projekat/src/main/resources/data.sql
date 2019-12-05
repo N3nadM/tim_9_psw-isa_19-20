@@ -53,6 +53,10 @@ INSERT INTO KORISNIK (id, adresa, email, ime, password, prezime, drzava, grad, t
 INSERT INTO USER_AUTHORITY VALUES ('15', '2');
 INSERT INTO LEKAR(id, tip_pregleda_id, korisnik_id, klinika_id, pocetak_radnog_vremena,  kraj_radnog_vremena, ocena) VALUES ('5', '4', '15', '3', '08:00', '17:00', 2.1);
 
+INSERT INTO KORISNIK (id, adresa, email, ime, password, prezime, drzava, grad, telefon) VALUES (16, 'lekariceva 12', 'lekarrrMilivoje@gmail.com', 'Milivojee1', '$2a$10$feiotRqclqYZ7aJnytCDSedhWmzztzhuwyujbVfVucV4nbmMRNnwa', 'Lekaricccccacca',  'drzava', 'grad', 'telefon');
+INSERT INTO USER_AUTHORITY VALUES ('16', '2');
+INSERT INTO LEKAR(id, tip_pregleda_id, korisnik_id, klinika_id, pocetak_radnog_vremena,  kraj_radnog_vremena, ocena) VALUES ('6', '4', '16', '1', '08:00', '17:00', 2.1);
+
 
 INSERT INTO KORISNIK (id, adresa, email, ime, password, prezime, drzava, grad, telefon) VALUES ('4', 'adresa pacijenta', 'pacijent@gmail.com', 'Pacijent', '$2a$10$feiotRqclqYZ7aJnytCDSedhWmzztzhuwyujbVfVucV4nbmMRNnwa', 'Pacijentic',  'drzava', 'grad', 'telefon');
 INSERT INTO USER_AUTHORITY VALUES ('4', '1');

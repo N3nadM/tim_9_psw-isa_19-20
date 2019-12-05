@@ -13,10 +13,12 @@ public class LekarDTO {
     private String password;
     private Long klinikaId;
     private Long tipPregledaId;
+    private String pocetakRadnogVremena;
+    private String krajRadnogVremena;
 
     public  LekarDTO() {super();}
 
-    public LekarDTO(String ime, String prezime, String grad, String drzava, String adresa, String telefon, String email, String password, Long klinikaId, Long tipPregledaId) {
+    public LekarDTO(String ime, String prezime, String grad, String drzava, String adresa, String telefon, String email, String password, Long klinikaId, Long tipPregledaId, String pocetakRadnogVremena, String krajRadnogVremena) {
         this.ime = ime;
         this.prezime = prezime;
         this.grad = grad;
@@ -27,6 +29,8 @@ public class LekarDTO {
         this.password = password;
         this.klinikaId = klinikaId;
         this.tipPregledaId = tipPregledaId;
+        this.pocetakRadnogVremena = pocetakRadnogVremena;
+        this.krajRadnogVremena = krajRadnogVremena;
     }
 
     public Long getTipPregledaId() {
@@ -115,5 +119,21 @@ public class LekarDTO {
 
     public void setKlinikaId(Long klinikaId) {
         this.klinikaId = klinikaId;
+    }
+
+    public String getPocetakRadnogVremena() {
+        return pocetakRadnogVremena;
+    }
+
+    public void setPocetakRadnogVremena(String pocetakRadnogVremena) {
+        this.pocetakRadnogVremena = pocetakRadnogVremena;
+    }
+
+    public String getKrajRadnogVremena() {
+        return krajRadnogVremena;
+    }
+
+    public void setKrajRadnogVremena(String krajRadnogVremena) {
+        this.krajRadnogVremena = krajRadnogVremena;
     }
 }

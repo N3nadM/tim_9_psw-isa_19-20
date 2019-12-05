@@ -46,4 +46,13 @@ public class LekarController {
         }
     }
 
+    @PutMapping("/editLekarByAdmin/{id}")
+    public ResponseEntity<Lekar> editLekarByAdmin(@PathVariable String id,@RequestBody LekarDTO lekar){
+        try{
+            return new ResponseEntity<Lekar>(lekarService.editLekarByAdmin(id,lekar), HttpStatus.OK);
+        }catch(Exception e){
+            return new  ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
 }
