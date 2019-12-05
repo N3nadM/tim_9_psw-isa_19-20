@@ -1,8 +1,13 @@
-import { SET_PACIJENT_PROFILE, SET_EDIT_PACIJENT } from "../actionTypes";
+import {
+  SET_PACIJENT_PROFILE,
+  SET_EDIT_PACIJENT,
+  SET_PACIJENT_ZDR
+} from "../actionTypes";
 
 const DEFAULT_STATE = {
   pacijent: null,
-  pacijenti: null
+  pacijenti: null,
+  zdrKarton: null
 };
 
 export default (state = DEFAULT_STATE, action) => {
@@ -14,6 +19,11 @@ export default (state = DEFAULT_STATE, action) => {
     case SET_EDIT_PACIJENT:
       return {
         pacijent: { ...state.pacijent, korisnik: action.korisnik }
+      };
+    case SET_PACIJENT_ZDR:
+      return {
+        ...state,
+        zdrKarton: action.zdrKarton
       };
 
     default:

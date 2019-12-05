@@ -14,6 +14,7 @@ import MedSestra from "./components/pages/homeSubpages/ProfilMedSestra";
 
 import Home from "./components/pages/Home";
 import Klinika from "./components/pages/Klinika";
+import Pacijent from "./components/pages/Pacijent";
 
 const store = configureStore();
 
@@ -52,6 +53,7 @@ function App() {
             <PrivateRoute exact path="/" component={Home} />
             <Route exact path="/ms" component={MedSestra} />
             <PrivateRoute exact path="/klinika/:id" component={Klinika} />
+            <PrivateRoute exact path="/pacijent/:id" component={Pacijent} />
           </Switch>
         </ScrollToTop>
       </Router>

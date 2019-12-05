@@ -1,5 +1,6 @@
 package com.isapsw.Projekat.controller;
 
+import ch.qos.logback.core.net.SyslogOutputStream;
 import com.isapsw.Projekat.domain.*;
 import com.isapsw.Projekat.dto.PacijentDTO;
 import com.isapsw.Projekat.service.*;
@@ -77,7 +78,7 @@ public class PacijentController {
     public ResponseEntity<List<Pacijent>> getPacijentiWithSearch(@RequestBody Map<String,String> body) {
         try {
             List<PacijentDTO> pacijentiKlinike = getPacijentiKlinike(body.get("korisnikId")).getBody();
-            List<PacijentDTO> pacijenti = pacijentService.searchPacijent(pacijentiKlinike, body.get("ime").toString(), body.get("prezime").toString(), body.get("email").toString(), body.get("grad").toString(), body.get("jbzo").toString());
+            List<PacijentDTO> pacijenti = pacijentService.searchPacijent(pacijentiKlinike, body.get("ime").toString(), body.get("prezime").toString(), body.get("jbzo").toString());
 
             return new ResponseEntity(pacijenti, HttpStatus.OK);
         }
@@ -86,4 +87,19 @@ public class PacijentController {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
     }
+
+    @GetMapping(value = "/getZdrKarton/{id}")
+    public ResponseEntity<ZdrKarton> getZdrKarton(@PathVariable String id){
+
+        Pacijent pacijent = pacijentService.findPacijentById(id);
+        System.out.println(pacijent.getJbzo());
+        ZdrKarton zdrKarton = pacijent.getZdrKarton();
+        try{
+            return new ResponseEntity<ZdrKarton>(zdrKarton, HttpStatus.OK);
+        }
+        catch(Exception e) {
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
+    }
+
 }
