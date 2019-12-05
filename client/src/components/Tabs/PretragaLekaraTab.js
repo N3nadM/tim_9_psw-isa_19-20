@@ -31,6 +31,8 @@ import MenuItem from "@material-ui/core/MenuItem";
 import TextField from "@material-ui/core/TextField";
 import { getLekariNaKlinici } from "../../store/actions/lekar";
 import { searchLekariNaKlinici } from "../../store/actions/lekar";
+import IzmenaLekara from "../Tabs/IzmenaLekara";
+import { editLekarByAdmin } from "../../store/actions/lekar";
 
 function desc(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -117,7 +119,8 @@ const PretragaLekaraTab = ({
   lekari,
   getLekariNaKlinici,
   klinikaId,
-  searchLekariNaKlinici
+  searchLekariNaKlinici,
+  editLekarByAdmin
 }) => {
   useEffect(() => {
     getLekariNaKlinici(klinikaId);
@@ -153,9 +156,11 @@ const PretragaLekaraTab = ({
   const [state, setState] = React.useState({
     imePretraga: "",
     prezimePretraga: "",
-    emailPretraga: ""
+    emailPretraga: "",
+    zaIzmenu: ""
   });
 
+  const [isEdit, setIsEdit] = React.useState(false);
   const handleSubmit = e => {
     e.preventDefault();
     searchLekariNaKlinici(klinikaId, {
@@ -169,65 +174,74 @@ const PretragaLekaraTab = ({
 
   return (
     <div className={classes.root}>
-      <form onSubmit={handleSubmit}>
-        <Paper style={{ padding: 50, marginBottom: 50 }}>
-          <Grid container spacing={3}>
-            <Grid item md={3}>
-              <TextField
-                style={{ width: "80%" }}
-                margin="normal"
-                value={state.imePretraga}
-                onChange={handleChange}
-                fullWidth
-                name="imePretraga"
-                label="Ime lekara"
-                type="text"
-                id="imePretraga"
-              />
+      {isEdit && (
+        <IzmenaLekara
+          lekar={state.zaIzmenu}
+          editLekarByAdmin={editLekarByAdmin}
+          setIsEdit={setIsEdit}
+        />
+      )}
+      {!isEdit && (
+        <form onSubmit={handleSubmit}>
+          <Paper style={{ padding: 50, marginBottom: 50 }}>
+            <Grid container spacing={3}>
+              <Grid item md={3}>
+                <TextField
+                  style={{ width: "80%" }}
+                  margin="normal"
+                  value={state.imePretraga}
+                  onChange={handleChange}
+                  fullWidth
+                  name="imePretraga"
+                  label="Ime lekara"
+                  type="text"
+                  id="imePretraga"
+                />
+              </Grid>
+              <Grid item md={3}>
+                <TextField
+                  style={{ width: "80%" }}
+                  margin="normal"
+                  value={state.prezimePretraga}
+                  onChange={handleChange}
+                  fullWidth
+                  name="prezimePretraga"
+                  label="Prezime lekara"
+                  type="text"
+                  id="prezimePretraga"
+                />
+              </Grid>
+              <Grid item md={2}>
+                <TextField
+                  style={{ width: "80%" }}
+                  onChange={handleChange}
+                  value={state.emailPretraga}
+                  margin="normal"
+                  fullWidth
+                  name="emailPretraga"
+                  label="E-mail lekara"
+                  type="text"
+                  id="emailPretraga"
+                />
+              </Grid>
+              <Grid
+                item
+                md={3}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center"
+                }}
+              >
+                <Button variant="contained" color="primary" type="submit">
+                  Pretraži
+                </Button>
+              </Grid>
             </Grid>
-            <Grid item md={3}>
-              <TextField
-                style={{ width: "80%" }}
-                margin="normal"
-                value={state.prezimePretraga}
-                onChange={handleChange}
-                fullWidth
-                name="prezimePretraga"
-                label="Prezime lekara"
-                type="text"
-                id="prezimePretraga"
-              />
-            </Grid>
-            <Grid item md={2}>
-              <TextField
-                style={{ width: "80%" }}
-                onChange={handleChange}
-                value={state.emailPretraga}
-                margin="normal"
-                fullWidth
-                name="emailPretraga"
-                label="E-mail lekara"
-                type="text"
-                id="emailPretraga"
-              />
-            </Grid>
-            <Grid
-              item
-              md={3}
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center"
-              }}
-            >
-              <Button variant="contained" color="primary" type="submit">
-                Pretraži
-              </Button>
-            </Grid>
-          </Grid>
-        </Paper>
-      </form>
-      {lekari && !!lekari.length && (
+          </Paper>
+        </form>
+      )}
+      {!isEdit && lekari && !!lekari.length && (
         <Paper className={classes.paper}>
           <EnhancedTableToolbar />
           <div className={classes.tableWrapper}>
@@ -294,15 +308,10 @@ const PretragaLekaraTab = ({
                             <Button
                               variant="outlined"
                               color="primary"
-                              /*onClick={() => {
-                                history.push({
-                                  pathname: `/klinika/${row.id}`,
-                                  state: {
-                                    ...state,
-                                    datum: !!selectedDate ? selectedDate : ""
-                                  }
-                                });
-                              }}*/
+                              onClick={() => {
+                                state.zaIzmenu = row;
+                                setIsEdit(true);
+                              }}
                             >
                               Izmeni
                             </Button>
@@ -347,10 +356,12 @@ const PretragaLekaraTab = ({
           />
         </Paper>
       )}
-      <FormControlLabel
-        control={<Switch checked={dense} onChange={handleChangeDense} />}
-        label="Smanji pading"
-      />
+      {!isEdit && (
+        <FormControlLabel
+          control={<Switch checked={dense} onChange={handleChangeDense} />}
+          label="Smanji pading"
+        />
+      )}
     </div>
   );
 };
@@ -360,7 +371,9 @@ const mapStateToProps = state => ({
 });
 
 export default withRouter(
-  connect(mapStateToProps, { getLekariNaKlinici, searchLekariNaKlinici })(
-    PretragaLekaraTab
-  )
+  connect(mapStateToProps, {
+    getLekariNaKlinici,
+    searchLekariNaKlinici,
+    editLekarByAdmin
+  })(PretragaLekaraTab)
 );
