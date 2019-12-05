@@ -7,7 +7,7 @@ import Tab from "@material-ui/core/Tab";
 import Drawer from "@material-ui/core/Drawer";
 import TabPanel from "../Tabs/TabPanel";
 import AppBar from "../layout/AppBarLogedIn";
-import PacijentZdrKarton from "../Tabs/Pacijent/PacijentZdrKarton";
+import PacijentZdr from "../Tabs/Pacijent/PacijentZdr";
 import ProfilPacijentaTab from "../Tabs/Pacijent/ProfilPacijentaTab";
 
 const drawerWidth = 240;
@@ -81,7 +81,7 @@ export default function Pacijent({ match }) {
             {value === 0 && <ProfilPacijentaTab id={match.params.id} />}
           </TabPanel>
           <TabPanel value={value} index={1}>
-            {value === 1 && <PacijentZdrKarton id={match.params.id} />}
+            {value === 1 && <PacijentZdr id={match.params.id} />}
           </TabPanel>
         </main>
       </div>

@@ -1,5 +1,6 @@
 package com.isapsw.Projekat.controller;
 
+import ch.qos.logback.core.net.SyslogOutputStream;
 import com.isapsw.Projekat.domain.*;
 import com.isapsw.Projekat.dto.PacijentDTO;
 import com.isapsw.Projekat.service.*;
@@ -86,4 +87,19 @@ public class PacijentController {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
     }
+
+    @GetMapping(value = "/getZdrKarton/{id}")
+    public ResponseEntity<ZdrKarton> getZdrKarton(@PathVariable String id){
+
+        Pacijent pacijent = pacijentService.findPacijentById(id);
+        System.out.println(pacijent.getJbzo());
+        ZdrKarton zdrKarton = pacijent.getZdrKarton();
+        try{
+            return new ResponseEntity<ZdrKarton>(zdrKarton, HttpStatus.OK);
+        }
+        catch(Exception e) {
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
+    }
+
 }
