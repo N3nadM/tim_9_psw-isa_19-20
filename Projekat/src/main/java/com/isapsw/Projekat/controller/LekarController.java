@@ -37,6 +37,7 @@ public class LekarController {
         }
     }
 
+    @PostMapping
     public ResponseEntity<Lekar> addLekar(@RequestBody LekarDTO lekar){
         try{
             return new ResponseEntity<Lekar>(lekarService.createLekar(lekar), HttpStatus.OK);

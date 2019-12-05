@@ -2,13 +2,15 @@ import {
   SET_LEKAR_PROFILE,
   SET_EDIT_LEKAR,
   SET_LEKAR_LIST,
-  SET_ADDED_LEKAR
+  SET_ADDED_LEKAR,
+  SET_LEKARI_NA_KLINICI
 } from "../actionTypes";
 
 const DEFAULT_STATE = {
   lekar: null,
   lekarList: null,
-  addedLekar: null
+  addedLekar: null,
+  listaLekaraNaKlinici: null
 };
 
 export default (state = DEFAULT_STATE, action) => {
@@ -32,6 +34,11 @@ export default (state = DEFAULT_STATE, action) => {
       return {
         addedLekar: action.addedLekar
       };
+    case SET_LEKARI_NA_KLINICI:
+      return {
+        listaLekaraNaKlinici: action.listaLekaraNaKlinici
+      };
+
     default:
       return state;
   }
