@@ -75,7 +75,9 @@ const LekariTabs = ({
     adresa: "",
     telefon: "",
     tipPregledaId: "",
-    klinikaId: ""
+    klinikaId: "",
+    pocetakRadnogVremena: "",
+    krajRadnogVremena: ""
   });
   useEffect(() => {
     getAllTipoviPregleda();
@@ -107,7 +109,9 @@ const LekariTabs = ({
       adresa: "",
       telefon: "",
       tipPregledaId: "",
-      klinikaId: ""
+      klinikaId: "",
+      krajRadnogVremena: "",
+      pocetakRadnogVremena: ""
     });
   };
   const handleChange1 = e => {
@@ -186,8 +190,6 @@ const LekariTabs = ({
                 type="text"
                 id="Adresa"
               />
-            </Grid>
-            <Grid item sm={5}>
               <TextField
                 margin="normal"
                 value={state.telefon}
@@ -199,6 +201,8 @@ const LekariTabs = ({
                 type="text"
                 id="telefon"
               />
+            </Grid>
+            <Grid item sm={5}>
               <TextField
                 margin="normal"
                 required
@@ -221,7 +225,11 @@ const LekariTabs = ({
                 type="email"
                 id="emailLekar"
               />
-              <FormControl className={classes.form} fullWidth>
+              <FormControl
+                className={classes.form}
+                fullWidth
+                style={{ marginTop: 16 }}
+              >
                 <InputLabel
                   shrink
                   id="demo-simple-select-placeholder-label-label"
@@ -248,8 +256,31 @@ const LekariTabs = ({
                 </Select>
                 <FormHelperText>Izaberite tip pregleda</FormHelperText>
               </FormControl>
+              <TextField
+                style={{ marginTop: 5 }}
+                id="pocetakRadnogVremena"
+                label="Početak radnog vremena"
+                type="time-local"
+                name="pocetakRadnogVremena"
+                value={state.pocetakRadnogVremena}
+                onChange={handleChange1}
+                required
+                fullWidth
+              />
+              <TextField
+                style={{ marginTop: 24 }}
+                id="krajRadnogVremena"
+                label="Kraj radnog vremena"
+                type="time-local"
+                name="krajRadnogVremena"
+                value={state.krajRadnogVremena}
+                onChange={handleChange1}
+                required
+                fullWidth
+              />
 
               <Button
+                style={{ marginTop: 24 }}
                 type="submit"
                 variant="contained"
                 color="primary"

@@ -91,6 +91,8 @@ public class LekarService {
 
         Lekar l = new Lekar();
         l.setKorisnik(k);
+        l.setPocetakRadnogVremena(LocalTime.parse(lekarDTO.getPocetakRadnogVremena()));
+        l.setKrajRadnogVremena(LocalTime.parse(lekarDTO.getKrajRadnogVremena()));
         l.setKlinika(klinikaService.findKlinikaId(lekarDTO.getKlinikaId()).get());
         l.setTipPregleda(tipPregledaService.getTipPregledaById(lekarDTO.getTipPregledaId()).get());
         return lekarRepository.save(l);
