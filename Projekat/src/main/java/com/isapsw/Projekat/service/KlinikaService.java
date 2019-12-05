@@ -3,6 +3,7 @@ package com.isapsw.Projekat.service;
 import com.isapsw.Projekat.domain.*;
 import com.isapsw.Projekat.dto.KlinikaDTO;
 import com.isapsw.Projekat.repository.KlinikaRepository;
+import com.isapsw.Projekat.repository.LekarRepository;
 import com.isapsw.Projekat.repository.PregledRepository;
 import com.isapsw.Projekat.repository.TipoviPregledaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,9 @@ public class KlinikaService {
 
     @Autowired
     private TipoviPregledaRepository tipoviPregledaRepository;
+
+    @Autowired
+    private LekarRepository lekarRepository;
 
     public List<Klinika> getAllKlinike() {
         return klinikaRepository.findAll();
@@ -200,5 +204,22 @@ public class KlinikaService {
         }
 
         return new ArrayList<>(lekars);
+    }
+    public List<Lekar> getLekariNaKlinici(Long id) {
+        Klinika k = klinikaRepository.findKlinikaById(id);
+        return k.getLekari();
+    }
+    public List<Lekar> searchLekariNaKlinici(Long id, String ime, String prezime, String email) {
+        Klinika k = klinikaRepository.findKlinikaById(id);
+        List<Long> lekariId = lekarRepository.findLekarByParameters(ime.toUpperCase(),prezime.toUpperCase(),email.toUpperCase());
+        List<Lekar> ret = new ArrayList<>();
+
+        k.getLekari().forEach(lekar -> {
+            if(lekariId.contains(lekar.getKorisnik().getId())){
+                ret.add(lekar);
+            }
+        });
+
+        return ret;
     }
 }

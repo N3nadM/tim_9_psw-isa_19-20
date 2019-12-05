@@ -18,6 +18,7 @@ import { Grid } from "@material-ui/core";
 import { connect } from "react-redux";
 import { getAllTipoviPregleda } from "../../store/actions/tipoviPregleda";
 import { addNewLekar } from "../../store/actions/lekar";
+import PretragLekaraTab from "./PretragaLekaraTab";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -261,49 +262,7 @@ const LekariTabs = ({
         </form>
       </TabPanel>
       <TabPanel value={value} index={1} dir={theme.direction}>
-        Unesite kriterijume pretrage
-        <form className={classes.form} noValidate>
-          <Grid container spacing={3}>
-            <Grid item xs>
-              <TextField
-                margin="normal"
-                fullWidth
-                name="imePretraga"
-                label="Ime lekara"
-                type="text"
-                id="imePretraga"
-              />
-            </Grid>
-            <Grid item xs>
-              <TextField
-                margin="normal"
-                fullWidth
-                name="prezimePretraga"
-                label="Prezime lekara"
-                type="text"
-                id="prezimePretraga"
-              />
-            </Grid>
-            <Grid item xs>
-              <TextField
-                margin="normal"
-                fullWidth
-                name="usernamePretraga"
-                label="Username lekara"
-                type="text"
-                id="usernamePretraga"
-              />
-            </Grid>
-          </Grid>
-          <Button
-            type="submit"
-            variant="contained"
-            color="primary"
-            className={classes.submit}
-          >
-            Pretraga
-          </Button>
-        </form>
+        {value == 1 && <PretragLekaraTab klinikaId={klinika.id} />}
       </TabPanel>
       <TabPanel value={value} index={2} dir={theme.direction}>
         Lista lekara ciji podaci mogu da se menjaju
