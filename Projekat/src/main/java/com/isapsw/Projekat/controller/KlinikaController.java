@@ -83,6 +83,30 @@ public class KlinikaController {
         }
     }
 
+    @GetMapping("/getLekariNaKlinici/{id}")
+    public ResponseEntity<List<Lekar>> getLekariNaKlinici(@PathVariable String id) {
+        try {
+            List<Lekar> lekars = klinikaService.getLekariNaKlinici(Long.parseLong(id));
+            return new ResponseEntity<>(lekars, HttpStatus.OK);
+        }
+        catch(Exception e) {
+            System.out.println(e.getMessage());
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
+    }
+    @PostMapping("/searchLekariNaKlinici/{id}")
+    public ResponseEntity<List<Lekar>> searchLekariNaKlinici(@PathVariable String id, @RequestBody Map<String,Object> body) {
+        try {
+            List<Lekar> lekars = klinikaService.searchLekariNaKlinici(Long.parseLong(id), body.get("imePretraga").toString(), body.get("prezimePretraga").toString(), body.get("emailPretraga").toString());
+            return new ResponseEntity<>(lekars, HttpStatus.OK);
+        }
+        catch(Exception e) {
+            System.out.println(e.getMessage());
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+
 
 
 }
