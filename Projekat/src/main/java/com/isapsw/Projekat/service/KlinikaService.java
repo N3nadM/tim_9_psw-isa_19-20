@@ -50,7 +50,6 @@ public class KlinikaService {
         } else {
             List<Klinika> klinike = klinikaRepository.findKlinikaByParameters(lokacija.toUpperCase(), tip, Double.parseDouble(ocena));
             List<Pregled> pregledi = pregledRepository.findByPregledDatumPocetka(Date.from(Instant.parse(datum)));
-            TipPregleda tipTrazenogPregleda = tipoviPregledaRepository.findFirstTipOnePregledaByNaziv(tip);
 
             Set<Klinika> retKlinike = new HashSet<>();
 
@@ -73,13 +72,13 @@ public class KlinikaService {
                         }
                     }
                     for (int j = 0; j < preglediIstogDanaJednogLekara.size(); j++) {
-                        if (pocetak.getTime() + tipTrazenogPregleda.getMinimalnoTrajanjeMin() * 60 * 1000 < preglediIstogDanaJednogLekara.get(j).getDatumPocetka().getTime() && pocetak.getTime() < kraj.getTime()) {
+                        if (pocetak.getTime() + lekar.getTipPregleda().getMinimalnoTrajanjeMin() * 60 * 1000 < preglediIstogDanaJednogLekara.get(j).getDatumPocetka().getTime() && pocetak.getTime() < kraj.getTime()) {
                             retKlinike.add(lekar.getKlinika());
                         } else {
                             pocetak.setTime(preglediIstogDanaJednogLekara.get(j).getDatumZavrsetka().getTime());
 
                             //Ako je dosao do poslednjeg pregleda tog dana proveri da li ima prostora od tad do kraja radnog vremena
-                            if(j == preglediIstogDanaJednogLekara.size() - 1 && pocetak.getTime() + tipTrazenogPregleda.getMinimalnoTrajanjeMin() * 60 * 1000 < kraj.getTime()) {
+                            if(j == preglediIstogDanaJednogLekara.size() - 1 && pocetak.getTime() + lekar.getTipPregleda().getMinimalnoTrajanjeMin() * 60 * 1000 < kraj.getTime()) {
                                 retKlinike.add(lekar.getKlinika());
                             }
                         }
@@ -111,6 +110,7 @@ public class KlinikaService {
             return new ArrayList<>(retKlinike);
         }
     }
+
 
     //protected samo klase iz istog paketa da mogu da je koriste
     protected static Date makeDateFromDateAndTime(Date d, LocalTime lt) {
