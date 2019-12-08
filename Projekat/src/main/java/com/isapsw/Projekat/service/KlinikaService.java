@@ -159,7 +159,6 @@ public class KlinikaService {
         }
 
         Klinika klinika = klinikaRepository.findKlinikaById(id);
-        TipPregleda tipTrazenogPregleda = tipoviPregledaRepository.findFirstTipOnePregledaByNaziv(tip);
         Set<Lekar> lekars = new HashSet<>();
 
         if(!datum.isEmpty()) {
@@ -172,7 +171,7 @@ public class KlinikaService {
 
                     lekar.getPregledi().forEach(pregled -> {
                         if (compareDatesOnly(Date.from(Instant.parse(datum)), pregled.getDatumPocetka())) {
-                           preglediIstogDanaJednogLekara.add(pregled);
+                            preglediIstogDanaJednogLekara.add(pregled);
                         }
                     });
                     //Ako nema zakazanih pregleda za taj dan dodaj lekara u listu
@@ -180,12 +179,12 @@ public class KlinikaService {
                         lekars.add(lekar);
                     }
                     for (int j = 0; j < preglediIstogDanaJednogLekara.size(); j++) {
-                        if (pocetak.getTime() + tipTrazenogPregleda.getMinimalnoTrajanjeMin() * 60 * 1000 < preglediIstogDanaJednogLekara.get(j).getDatumPocetka().getTime() && pocetak.getTime() < kraj.getTime()) {
+                        if (pocetak.getTime() + lekar.getTipPregleda().getMinimalnoTrajanjeMin() * 60 * 1000 < preglediIstogDanaJednogLekara.get(j).getDatumPocetka().getTime() && pocetak.getTime() < kraj.getTime()) {
                             lekars.add(lekar);
                         } else {
                             pocetak.setTime(preglediIstogDanaJednogLekara.get(j).getDatumZavrsetka().getTime());
                             //Ako je dosao do poslednjeg pregleda tog dana proveri da li ima prostora od tad do kraja radnog vremena
-                            if(j == preglediIstogDanaJednogLekara.size() - 1 && pocetak.getTime() + tipTrazenogPregleda.getMinimalnoTrajanjeMin() * 60 * 1000 < kraj.getTime()) {
+                            if(j == preglediIstogDanaJednogLekara.size() - 1 && pocetak.getTime() + lekar.getTipPregleda().getMinimalnoTrajanjeMin() * 60 * 1000 < kraj.getTime()) {
                                 lekars.add(lekar);
                             }
                         }
@@ -205,10 +204,12 @@ public class KlinikaService {
 
         return new ArrayList<>(lekars);
     }
+
     public List<Lekar> getLekariNaKlinici(Long id) {
         Klinika k = klinikaRepository.findKlinikaById(id);
         return k.getLekari();
     }
+
     public List<Lekar> searchLekariNaKlinici(Long id, String ime, String prezime, String email) {
         Klinika k = klinikaRepository.findKlinikaById(id);
         List<Long> lekariId = lekarRepository.findLekarByParameters(ime.toUpperCase(),prezime.toUpperCase(),email.toUpperCase());
