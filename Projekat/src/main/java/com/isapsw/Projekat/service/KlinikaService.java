@@ -2,10 +2,7 @@ package com.isapsw.Projekat.service;
 
 import com.isapsw.Projekat.domain.*;
 import com.isapsw.Projekat.dto.KlinikaDTO;
-import com.isapsw.Projekat.repository.KlinikaRepository;
-import com.isapsw.Projekat.repository.LekarRepository;
-import com.isapsw.Projekat.repository.PregledRepository;
-import com.isapsw.Projekat.repository.TipoviPregledaRepository;
+import com.isapsw.Projekat.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,10 +21,13 @@ public class KlinikaService {
     private PregledRepository pregledRepository;
 
     @Autowired
-    private TipoviPregledaRepository tipoviPregledaRepository;
+    private PacijentRepository pacijentRepository;
 
     @Autowired
     private LekarRepository lekarRepository;
+
+    @Autowired
+    private OcenaKlinikeRepository ocenaKlinikeRepository;
 
     public List<Klinika> getAllKlinike() {
         return klinikaRepository.findAll();
@@ -36,7 +36,6 @@ public class KlinikaService {
     public Klinika addKlinika(Klinika klinika) {
         return klinikaRepository.save(klinika);
     }
-
 
     public List<Klinika> searchKlinike(String lokacija, String ocena, String tip, String datum) throws Exception {
         if(!datum.isEmpty() && tip.isEmpty()) {
@@ -110,7 +109,6 @@ public class KlinikaService {
             return new ArrayList<>(retKlinike);
         }
     }
-
 
     //protected samo klase iz istog paketa da mogu da je koriste
     protected static Date makeDateFromDateAndTime(Date d, LocalTime lt) {
@@ -222,5 +220,39 @@ public class KlinikaService {
         });
 
         return ret;
+    }
+
+    public Integer getOcenaKlinikeOdPacijenta(Korisnik korisnik, String id) {
+        OcenaKlinike ocenaKlinike = ocenaKlinikeRepository.findByOcKlinikeIdentifier(id + "-" + korisnik.getId());
+        if(ocenaKlinike == null) {
+            return 0;
+        } else {
+            return ocenaKlinike.getOcena();
+        }
+    }
+
+    public OcenaKlinike oceniKliniku(String id, String ocena, Korisnik korisnik){
+        OcenaKlinike ocenaKlinike = ocenaKlinikeRepository.findByOcKlinikeIdentifier(id + "-" + korisnik.getId());
+        if(ocenaKlinike == null) {
+            Pacijent pacijentForSearch = pacijentRepository.findPacijentByKorisnikId(korisnik.getId());
+            Pacijent pacijent = klinikaRepository.findPacijentInKlinika(Long.parseLong(id), pacijentForSearch.getId());
+            if(pacijent == null) {
+                return null;
+            }
+            ocenaKlinike = new OcenaKlinike();
+            ocenaKlinike.setKorisnik(korisnik);
+            ocenaKlinike.setKlinika(klinikaRepository.getOne(Long.parseLong(id)));
+            ocenaKlinike.setOcKlinikeIdentifier(id + "-" + korisnik.getId());
+        }
+        ocenaKlinike.setOcena(Integer.parseInt(ocena));
+
+        ocenaKlinikeRepository.save(ocenaKlinike);
+
+        Klinika klinika = klinikaRepository.findKlinikaById(Long.parseLong(id));
+        klinika.setOcena(ocenaKlinikeRepository.calculateAverage(Long.parseLong(id)));
+
+        klinikaRepository.save(klinika);
+
+        return ocenaKlinike;
     }
 }

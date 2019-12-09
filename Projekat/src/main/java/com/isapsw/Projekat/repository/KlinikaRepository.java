@@ -1,6 +1,7 @@
 package com.isapsw.Projekat.repository;
 
 import com.isapsw.Projekat.domain.Klinika;
+import com.isapsw.Projekat.domain.Pacijent;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -29,5 +30,8 @@ public interface KlinikaRepository extends JpaRepository<Klinika, Long> {
     List<Klinika> findKlinikaByAdresaAndOcena(@Param("lokacija") String lokacija, @Param("ocena") Double ocena);
 
     Optional<Klinika> findById(Long id);
+
+    @Query("SELECT p FROM Klinika k LEFT JOIN k.pacijenti p WHERE k.id = :klinikaId AND p.id = :pacijentId")
+    Pacijent findPacijentInKlinika(@Param("klinikaId") Long klinikaId, @Param("pacijentId") Long pacijentId);
 
 }

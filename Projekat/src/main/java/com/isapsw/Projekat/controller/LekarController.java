@@ -1,11 +1,15 @@
 package com.isapsw.Projekat.controller;
+import com.isapsw.Projekat.domain.Korisnik;
 import com.isapsw.Projekat.domain.Lek;
 import com.isapsw.Projekat.domain.Lekar;
+import com.isapsw.Projekat.domain.OcenaLekara;
 import com.isapsw.Projekat.dto.LekarDTO;
 import com.isapsw.Projekat.service.LekarService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
@@ -55,4 +59,38 @@ public class LekarController {
         }
     }
 
+    @GetMapping("/ocenaPacijenta/{idLekara}")
+    @PreAuthorize("hasRole('ROLE_PACIJENT')")
+    public ResponseEntity<Integer> getOcenaPacijenta(@PathVariable String idLekara, Authentication authentication) {
+        try {
+            Korisnik korisnik = (Korisnik)authentication.getPrincipal();
+            return new ResponseEntity<>(lekarService.getOcenaLekaraOdPacijenta(korisnik, idLekara), HttpStatus.OK);
+        } catch(Exception e) {
+            System.out.println(e.getMessage());
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PostMapping("/oceni")
+    @PreAuthorize("hasRole('ROLE_PACIJENT')")
+    public ResponseEntity<OcenaLekara> oceniLekara(@RequestBody Map<String,Object> body, Authentication authentication) {
+        try{
+            Korisnik korisnik = (Korisnik)authentication.getPrincipal();
+            return new ResponseEntity<OcenaLekara>(lekarService.oceniLekara(body.get("id").toString(),body.get("ocena").toString(), korisnik), HttpStatus.OK);
+        }catch(Exception e){
+            System.out.println(e.getMessage());
+            return new  ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PostMapping("/ocenePacijenta")
+    public ResponseEntity<List<OcenaLekara>> getPacijenoveOceneLekara(@RequestBody Map<String,Object> body, Authentication authentication) {
+        try{
+            Korisnik korisnik = (Korisnik)authentication.getPrincipal();
+            return new ResponseEntity<List<OcenaLekara>>(lekarService.getOceneLekara(body.get("ocene").toString(), korisnik), HttpStatus.OK);
+        }catch(Exception e){
+            System.out.println(e.getMessage());
+            return new  ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
 }

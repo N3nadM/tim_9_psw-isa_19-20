@@ -36,7 +36,6 @@ public class Klinika {
     private Double ocena = 0.0;
 
     @OneToMany(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY, mappedBy = "klinika", orphanRemoval = true)
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private List<Sala> sale = new ArrayList<>();
     //dodati cenovnik
 
