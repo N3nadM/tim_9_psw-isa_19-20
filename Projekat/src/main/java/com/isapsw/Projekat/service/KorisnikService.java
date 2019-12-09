@@ -37,4 +37,7 @@ public class KorisnikService {
 
     public Korisnik findKoriskikId(Long id) { return korisnikRepository.findKorisnikById(id); }
 
+    public Korisnik findByUsername(String username) {
+        return korisnikRepository.findByEmail(username);
+    }
 }

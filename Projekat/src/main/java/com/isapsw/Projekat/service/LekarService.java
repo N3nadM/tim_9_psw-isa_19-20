@@ -3,10 +3,12 @@ package com.isapsw.Projekat.service;
 import com.isapsw.Projekat.domain.*;
 import com.isapsw.Projekat.dto.KorisnikDTO;
 import com.isapsw.Projekat.dto.LekarDTO;
-import com.isapsw.Projekat.repository.LekarRepository;
+import com.isapsw.Projekat.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -34,6 +36,18 @@ public class LekarService {
 
     @Autowired
     private TipPregledaService tipPregledaService;
+
+    @Autowired
+    private OcenaLekaraRepository ocenaLekaraRepository;
+
+    @Autowired
+    private PregledRepository pregledRepository;
+
+    @Autowired
+    private PacijentRepository pacijentRepository;
+
+    @Autowired
+    private OperacijaRepository operacijaRepository;
 
     public Lekar findLekar(String id) {
         return lekarRepository.findLekarByKorisnikId(Long.parseLong(id));
@@ -138,5 +152,56 @@ public class LekarService {
         l.setKrajRadnogVremena(noviKraj);
 
         return lekarRepository.save(l);
+    }
+
+    public Integer getOcenaLekaraOdPacijenta(Korisnik korisnik, String id) {
+        OcenaLekara ocenaLekara = ocenaLekaraRepository.findOcenaLekaraByOcLekaraIdentifier(id + "-" + korisnik.getId());
+        if(ocenaLekara == null) {
+            return 0;
+        } else {
+            return ocenaLekara.getOcena();
+        }
+
+    }
+
+    public OcenaLekara oceniLekara(String id, String ocena, Korisnik korisnik) {
+        OcenaLekara ocenaLekara = ocenaLekaraRepository.findOcenaLekaraByOcLekaraIdentifier(id + "-" + korisnik.getId());
+        Lekar lekar = lekarRepository.getOne(Long.parseLong(id));
+        if(ocenaLekara == null) {
+            Pacijent pacijent = pacijentRepository.findPacijentByKorisnikId(korisnik.getId());
+            List<Pregled> pregledi = pregledRepository.findPregledByPacijentIdAndLekarId(Long.parseLong(id), pacijent.getId(), new Date());
+            List<Operacija> operacije = operacijaRepository.findOperacijeByPacijentIdAndLekarId(Long.parseLong(id), pacijent.getId(), new Date());
+            System.out.println(operacije.size());
+            if(pregledi.size() == 0 && operacije.size() == 0) {
+                return null;
+            }
+            ocenaLekara = new OcenaLekara();
+            ocenaLekara.setKorisnik(korisnik);
+            ocenaLekara.setLekar(lekar);
+            ocenaLekara.setOcLekaraIdentifier(id + "-" + korisnik.getId());
+        }
+        ocenaLekara.setOcena(Integer.parseInt(ocena));
+
+        ocenaLekaraRepository.save(ocenaLekara);
+
+        Double prosek = ocenaLekaraRepository.calculateAverage(Long.parseLong(id));
+        lekar.setOcena(prosek);
+        lekarRepository.save(lekar);
+        return ocenaLekara;
+    }
+
+    public List<OcenaLekara> getOceneLekara(String ids, Korisnik korisnik) {
+        List<String> idjevi = new ArrayList<>();
+        ids = ids.replace("[", "");
+        ids = ids.replace("]", "");
+        String[] parts = ids.split("\\s*,\\s*");
+
+        for(int i = 0; i < parts.length; i++) {
+            idjevi.add(parts[i] + "-" + korisnik.getId());
+        }
+        List<OcenaLekara> ocene = ocenaLekaraRepository.findLekariByIds(idjevi);
+
+
+        return ocene;
     }
 }

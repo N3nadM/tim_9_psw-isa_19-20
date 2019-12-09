@@ -34,7 +34,7 @@ public class Pregled_Operacija {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="sala_id", updatable = false, nullable = false)
-    @JsonIgnore
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private Sala sala;
 
     public Pregled_Operacija() {

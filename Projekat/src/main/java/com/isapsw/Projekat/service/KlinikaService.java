@@ -2,10 +2,7 @@ package com.isapsw.Projekat.service;
 
 import com.isapsw.Projekat.domain.*;
 import com.isapsw.Projekat.dto.KlinikaDTO;
-import com.isapsw.Projekat.repository.KlinikaRepository;
-import com.isapsw.Projekat.repository.LekarRepository;
-import com.isapsw.Projekat.repository.PregledRepository;
-import com.isapsw.Projekat.repository.TipoviPregledaRepository;
+import com.isapsw.Projekat.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,10 +21,13 @@ public class KlinikaService {
     private PregledRepository pregledRepository;
 
     @Autowired
-    private TipoviPregledaRepository tipoviPregledaRepository;
+    private PacijentRepository pacijentRepository;
 
     @Autowired
     private LekarRepository lekarRepository;
+
+    @Autowired
+    private OcenaKlinikeRepository ocenaKlinikeRepository;
 
     public List<Klinika> getAllKlinike() {
         return klinikaRepository.findAll();
@@ -36,7 +36,6 @@ public class KlinikaService {
     public Klinika addKlinika(Klinika klinika) {
         return klinikaRepository.save(klinika);
     }
-
 
     public List<Klinika> searchKlinike(String lokacija, String ocena, String tip, String datum) throws Exception {
         if(!datum.isEmpty() && tip.isEmpty()) {
@@ -50,7 +49,6 @@ public class KlinikaService {
         } else {
             List<Klinika> klinike = klinikaRepository.findKlinikaByParameters(lokacija.toUpperCase(), tip, Double.parseDouble(ocena));
             List<Pregled> pregledi = pregledRepository.findByPregledDatumPocetka(Date.from(Instant.parse(datum)));
-            TipPregleda tipTrazenogPregleda = tipoviPregledaRepository.findFirstTipOnePregledaByNaziv(tip);
 
             Set<Klinika> retKlinike = new HashSet<>();
 
@@ -73,13 +71,13 @@ public class KlinikaService {
                         }
                     }
                     for (int j = 0; j < preglediIstogDanaJednogLekara.size(); j++) {
-                        if (pocetak.getTime() + tipTrazenogPregleda.getMinimalnoTrajanjeMin() * 60 * 1000 < preglediIstogDanaJednogLekara.get(j).getDatumPocetka().getTime() && pocetak.getTime() < kraj.getTime()) {
+                        if (pocetak.getTime() + lekar.getTipPregleda().getMinimalnoTrajanjeMin() * 60 * 1000 < preglediIstogDanaJednogLekara.get(j).getDatumPocetka().getTime() && pocetak.getTime() < kraj.getTime()) {
                             retKlinike.add(lekar.getKlinika());
                         } else {
                             pocetak.setTime(preglediIstogDanaJednogLekara.get(j).getDatumZavrsetka().getTime());
 
                             //Ako je dosao do poslednjeg pregleda tog dana proveri da li ima prostora od tad do kraja radnog vremena
-                            if(j == preglediIstogDanaJednogLekara.size() - 1 && pocetak.getTime() + tipTrazenogPregleda.getMinimalnoTrajanjeMin() * 60 * 1000 < kraj.getTime()) {
+                            if(j == preglediIstogDanaJednogLekara.size() - 1 && pocetak.getTime() + lekar.getTipPregleda().getMinimalnoTrajanjeMin() * 60 * 1000 < kraj.getTime()) {
                                 retKlinike.add(lekar.getKlinika());
                             }
                         }
@@ -159,7 +157,6 @@ public class KlinikaService {
         }
 
         Klinika klinika = klinikaRepository.findKlinikaById(id);
-        TipPregleda tipTrazenogPregleda = tipoviPregledaRepository.findFirstTipOnePregledaByNaziv(tip);
         Set<Lekar> lekars = new HashSet<>();
 
         if(!datum.isEmpty()) {
@@ -172,7 +169,7 @@ public class KlinikaService {
 
                     lekar.getPregledi().forEach(pregled -> {
                         if (compareDatesOnly(Date.from(Instant.parse(datum)), pregled.getDatumPocetka())) {
-                           preglediIstogDanaJednogLekara.add(pregled);
+                            preglediIstogDanaJednogLekara.add(pregled);
                         }
                     });
                     //Ako nema zakazanih pregleda za taj dan dodaj lekara u listu
@@ -180,12 +177,12 @@ public class KlinikaService {
                         lekars.add(lekar);
                     }
                     for (int j = 0; j < preglediIstogDanaJednogLekara.size(); j++) {
-                        if (pocetak.getTime() + tipTrazenogPregleda.getMinimalnoTrajanjeMin() * 60 * 1000 < preglediIstogDanaJednogLekara.get(j).getDatumPocetka().getTime() && pocetak.getTime() < kraj.getTime()) {
+                        if (pocetak.getTime() + lekar.getTipPregleda().getMinimalnoTrajanjeMin() * 60 * 1000 < preglediIstogDanaJednogLekara.get(j).getDatumPocetka().getTime() && pocetak.getTime() < kraj.getTime()) {
                             lekars.add(lekar);
                         } else {
                             pocetak.setTime(preglediIstogDanaJednogLekara.get(j).getDatumZavrsetka().getTime());
                             //Ako je dosao do poslednjeg pregleda tog dana proveri da li ima prostora od tad do kraja radnog vremena
-                            if(j == preglediIstogDanaJednogLekara.size() - 1 && pocetak.getTime() + tipTrazenogPregleda.getMinimalnoTrajanjeMin() * 60 * 1000 < kraj.getTime()) {
+                            if(j == preglediIstogDanaJednogLekara.size() - 1 && pocetak.getTime() + lekar.getTipPregleda().getMinimalnoTrajanjeMin() * 60 * 1000 < kraj.getTime()) {
                                 lekars.add(lekar);
                             }
                         }
@@ -205,10 +202,12 @@ public class KlinikaService {
 
         return new ArrayList<>(lekars);
     }
+
     public List<Lekar> getLekariNaKlinici(Long id) {
         Klinika k = klinikaRepository.findKlinikaById(id);
         return k.getLekari();
     }
+
     public List<Lekar> searchLekariNaKlinici(Long id, String ime, String prezime, String email) {
         Klinika k = klinikaRepository.findKlinikaById(id);
         List<Long> lekariId = lekarRepository.findLekarByParameters(ime.toUpperCase(),prezime.toUpperCase(),email.toUpperCase());
@@ -221,5 +220,39 @@ public class KlinikaService {
         });
 
         return ret;
+    }
+
+    public Integer getOcenaKlinikeOdPacijenta(Korisnik korisnik, String id) {
+        OcenaKlinike ocenaKlinike = ocenaKlinikeRepository.findByOcKlinikeIdentifier(id + "-" + korisnik.getId());
+        if(ocenaKlinike == null) {
+            return 0;
+        } else {
+            return ocenaKlinike.getOcena();
+        }
+    }
+
+    public OcenaKlinike oceniKliniku(String id, String ocena, Korisnik korisnik){
+        OcenaKlinike ocenaKlinike = ocenaKlinikeRepository.findByOcKlinikeIdentifier(id + "-" + korisnik.getId());
+        if(ocenaKlinike == null) {
+            Pacijent pacijentForSearch = pacijentRepository.findPacijentByKorisnikId(korisnik.getId());
+            Pacijent pacijent = klinikaRepository.findPacijentInKlinika(Long.parseLong(id), pacijentForSearch.getId());
+            if(pacijent == null) {
+                return null;
+            }
+            ocenaKlinike = new OcenaKlinike();
+            ocenaKlinike.setKorisnik(korisnik);
+            ocenaKlinike.setKlinika(klinikaRepository.getOne(Long.parseLong(id)));
+            ocenaKlinike.setOcKlinikeIdentifier(id + "-" + korisnik.getId());
+        }
+        ocenaKlinike.setOcena(Integer.parseInt(ocena));
+
+        ocenaKlinikeRepository.save(ocenaKlinike);
+
+        Klinika klinika = klinikaRepository.findKlinikaById(Long.parseLong(id));
+        klinika.setOcena(ocenaKlinikeRepository.calculateAverage(Long.parseLong(id)));
+
+        klinikaRepository.save(klinika);
+
+        return ocenaKlinike;
     }
 }
