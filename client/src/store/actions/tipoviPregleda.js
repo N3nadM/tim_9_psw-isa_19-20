@@ -14,14 +14,13 @@ export const setNewTipPregleda = newTipPregleda => ({
   newTipPregleda
 });
 
-export const getAllTipoviPregleda = (sum, rpp) => async (
-  dispatch,
-  getState
-) => {
+export const getAllTipoviPregleda = id => async (dispatch, getState) => {
   try {
     let tipoviPregleda = getState().tipoviPregleda.tipoviPregleda;
     if (!tipoviPregleda) {
-      tipoviPregleda = await axios.get(`/api/tipPregleda`);
+      tipoviPregleda = await axios.get(
+        `/api/tipPregleda/getTipoviNaKlinici/${id}`
+      );
       dispatch(setTipoviPregleda(tipoviPregleda.data));
     }
   } catch (err) {

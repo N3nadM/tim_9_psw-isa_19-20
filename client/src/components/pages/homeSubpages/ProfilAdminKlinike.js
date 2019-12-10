@@ -118,10 +118,10 @@ function ResponsiveDrawer(props) {
             <PasswordChange />
           </TabPanel>
           <TabPanel value={value} index={4}>
-            <SlobodniTerminiTabs />
+            {value === 4 && <SlobodniTerminiTabs />}
           </TabPanel>
           <TabPanel value={value} index={5}>
-            <LekariTabs />
+            {value === 5 && <LekariTabs />}
           </TabPanel>
           <TabPanel value={value} index={6}>
             <SaleTabs />
