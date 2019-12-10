@@ -9,7 +9,7 @@ import PasswordChange from "../../PasswordChange/PasswordChange";
 import TabelaPacijenataKlinike from "../../Tabele/TabelaPacijenataKlinike";
 import SaleTabs from "../../Tabs/SaleTabs";
 import TipoviPregledaTabs from "../../Tabs/TipoviPregledaTabs";
-import SlobodniTerminiTabs from "../../Tabs/SlobodniTerminTabs";
+import SlobodniTerminiTabs from "../../Tabs/BrzoZakazivanjePregleda/SlobodniTerminTabs";
 import LicniPodaciTabs from "../../Tabs/LicniPodaciTabs";
 import PodaciKlinikaTabs from "../../Tabs/PodaciKlinikaTabs";
 import AppBar from "../../layout/AppBarLogedIn";
