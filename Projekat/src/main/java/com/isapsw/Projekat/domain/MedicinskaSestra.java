@@ -1,6 +1,8 @@
 package com.isapsw.Projekat.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -24,6 +26,14 @@ public class MedicinskaSestra{
     @JoinColumn(name="klinika_id", updatable = false, nullable = false)
     @JsonIgnore
     private Klinika klinika;
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "medicinskaSestra")
+    @JsonIgnore
+    private List<Pregled> pregledi = new ArrayList<>();
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "medicinskaSestra")
+    @JsonIgnore
+    private List<Operacija> operacije = new ArrayList<>();
 
     public MedicinskaSestra(){
         super();
@@ -59,5 +69,21 @@ public class MedicinskaSestra{
 
     public void setKorisnik(Korisnik korisnik) {
         this.korisnik = korisnik;
+    }
+
+    public List<Pregled> getPregledi() {
+        return pregledi;
+    }
+
+    public void setPregledi(List<Pregled> pregledi) {
+        this.pregledi = pregledi;
+    }
+
+    public List<Operacija> getOperacije() {
+        return operacije;
+    }
+
+    public void setOperacije(List<Operacija> operacije) {
+        this.operacije = operacije;
     }
 }

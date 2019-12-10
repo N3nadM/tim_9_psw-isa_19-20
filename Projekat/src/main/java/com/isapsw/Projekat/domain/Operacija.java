@@ -1,6 +1,9 @@
 package com.isapsw.Projekat.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -24,6 +27,11 @@ public class Operacija extends Pregled_Operacija {
     @JoinColumn(name="pacijent_id", updatable = false, nullable = false)
     @JsonIgnore
     private Pacijent pacijent;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="medicinskaSestra_id", updatable = false, nullable = false)
+    @JsonIgnore
+    private MedicinskaSestra medicinskaSestra;
 
     public Operacija() {
         super();
@@ -51,6 +59,14 @@ public class Operacija extends Pregled_Operacija {
 
     public void setPacijent(Pacijent pacijent) {
         this.pacijent = pacijent;
+    }
+
+    public MedicinskaSestra getMedicinskaSestra() {
+        return medicinskaSestra;
+    }
+
+    public void setMedicinskaSestra(MedicinskaSestra medicinskaSestra) {
+        this.medicinskaSestra = medicinskaSestra;
     }
 
     @Override

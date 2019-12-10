@@ -15,4 +15,13 @@ public class OperacijaService {
     public List<Operacija> getOperacijeByPacijentId(Long id) {
         return operacijaRepository.findOperacijeByPacijentId(id);
     }
+
+    public List<Operacija> getOperacijeByLekarId(Long id) {
+        return operacijaRepository.findOperacijasByLekari(id);
+    }
+
+    public List<Operacija> getOperacijeByMedSestraId(Long id) {
+        return operacijaRepository.findOperacijasByMedicinskaSestraId(id);
+    }
+
 }

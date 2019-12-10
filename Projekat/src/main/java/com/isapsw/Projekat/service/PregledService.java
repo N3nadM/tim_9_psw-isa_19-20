@@ -17,4 +17,10 @@ public class PregledService {
         return pregledRepository.findPregledByPacijentId(id);
     }
 
+    public List<Pregled> getPreglediByLekarId(Long id) {
+        return pregledRepository.findPregledByLekarId(id);
+    }
+
+    public List<Pregled> getPreglediByMedSestraId(Long id){ return pregledRepository.findPregledsByMedicinskaSestraId(id); }
+
 }

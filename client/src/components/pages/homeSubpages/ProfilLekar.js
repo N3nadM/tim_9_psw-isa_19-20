@@ -18,7 +18,7 @@ import IzvestajPregledTab from "../../Tabs/IzvestajPregledTab";
 import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
 import TabPanel from "../../Tabs/TabPanel";
-
+import RadniKalendarTab from "../../Tabs/RadniKalendarTab";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import LekarProfilTab from "../../Tabs/LekarProfilTab";
@@ -105,7 +105,7 @@ function ResponsiveDrawer(props) {
             <TabelaPacijenataKlinike />
           </TabPanel>
           <TabPanel value={value} index={2}>
-            Radni kalendar
+            <RadniKalendarTab />
           </TabPanel>
           <TabPanel value={value} index={3}>
             <GodisnjiOdmorTab />

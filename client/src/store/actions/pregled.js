@@ -17,3 +17,15 @@ export const getAllPregledi = id => async (dispatch, getState) => {
     console.log(err);
   }
 };
+
+export const getAllLekarPregledi = id => async (dispatch, getState) => {
+  try {
+    let pregledi = getState().pregled.pregledi;
+    if (!pregledi.length) {
+      pregledi = await axios.get(`/api/pregled/osoblje/${id}`);
+      dispatch(setPregledi(pregledi.data));
+    }
+  } catch (err) {
+    console.log(err);
+  }
+};

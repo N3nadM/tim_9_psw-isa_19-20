@@ -12,6 +12,7 @@ import TipoviPregledaTabs from "../../Tabs/TipoviPregledaTabs";
 import SlobodniTerminiTabs from "../../Tabs/SlobodniTerminTabs";
 import LicniPodaciTabs from "../../Tabs/LicniPodaciTabs";
 import PodaciKlinikaTabs from "../../Tabs/PodaciKlinikaTabs";
+import RadniKalendarTab from "../../Tabs/RadniKalendarTab";
 import AppBar from "../../layout/AppBarLogedIn";
 import GodisnjiOdmorTab from "../../Tabs/GodisnjiOdmorTab";
 import MedSestraProfilTab from "../../Tabs/MedSestraProfilTab";
@@ -102,7 +103,7 @@ function ResponsiveDrawer(props) {
             <TabelaPacijenataKlinike />
           </TabPanel>
           <TabPanel value={value} index={2}>
-            Radni kalendar
+            <RadniKalendarTab />
           </TabPanel>
           <TabPanel value={value} index={3}>
             <GodisnjiOdmorTab />
