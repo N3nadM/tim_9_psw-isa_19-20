@@ -8,7 +8,7 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 
 @Entity
-public class OcenaKlinike {
+public class OcenaLekara {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -19,10 +19,9 @@ public class OcenaKlinike {
     private Korisnik korisnik;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="klinika_id", updatable = false, nullable = false)
+    @JoinColumn(name="lekar_id", updatable = false, nullable = false)
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-    private Klinika klinika;
-
+    private Lekar lekar;
 
     @Min(1)
     @Max(5)
@@ -30,9 +29,9 @@ public class OcenaKlinike {
     private Integer ocena;
 
     @Column(unique = true)
-    private String ocKlinikeIdentifier; // Moze biti formata idKlinike - idKorisnika, po ovome cemo proveravati da li postoji ili ne postoji
+    private String ocLekaraIdentifier;
 
-    public OcenaKlinike() {
+    public OcenaLekara() {
     }
 
     public Long getId() {
@@ -43,14 +42,6 @@ public class OcenaKlinike {
         this.id = id;
     }
 
-    public String getOcKlinikeIdentifier() {
-        return ocKlinikeIdentifier;
-    }
-
-    public void setOcKlinikeIdentifier(String ocKlinikeIdentifier) {
-        this.ocKlinikeIdentifier = ocKlinikeIdentifier;
-    }
-
     public Korisnik getKorisnik() {
         return korisnik;
     }
@@ -59,12 +50,12 @@ public class OcenaKlinike {
         this.korisnik = korisnik;
     }
 
-    public Klinika getKlinika() {
-        return klinika;
+    public Lekar getLekar() {
+        return lekar;
     }
 
-    public void setKlinika(Klinika klinika) {
-        this.klinika = klinika;
+    public void setLekar(Lekar lekar) {
+        this.lekar = lekar;
     }
 
     public Integer getOcena() {
@@ -73,5 +64,24 @@ public class OcenaKlinike {
 
     public void setOcena(Integer ocena) {
         this.ocena = ocena;
+    }
+
+    public String getOcLekaraIdentifier() {
+        return ocLekaraIdentifier;
+    }
+
+    public void setOcLekaraIdentifier(String ocLekaraIdentifier) {
+        this.ocLekaraIdentifier = ocLekaraIdentifier;
+    }
+
+    @Override
+    public String toString() {
+        return "OcenaLekara{" +
+                "id=" + id +
+                ", korisnik=" + korisnik +
+                ", lekar=" + lekar +
+                ", ocena=" + ocena +
+                ", ocLekaraIdentifier='" + ocLekaraIdentifier + '\'' +
+                '}';
     }
 }

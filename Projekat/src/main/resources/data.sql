@@ -68,16 +68,17 @@ INSERT INTO MEDICINSKA_SESTRA VALUES ('1','1', '5');
 
 INSERT INTO ZAHTEV(ime, prezime, adresa, grad, drzava, telefon, email, password, jbzo, verified) VALUES ('dsads', 'dssadsa', 'dsadsa', 'dsadffds', 'fsdgdf', 'fdssd', 'fdsfds@gmail.com', '$2a$10$feiotRqclqYZ7aJnytCDSedhWmzztzhuwyujbVfVucV4nbmMRNnwa', '2132131', False);
 
-INSERT INTO OCENA_KLINIKE VALUES('1', '1 - 1', '1', '1', '1');
-INSERT INTO OCENA_KLINIKE VALUES('2', '2 - 1', '2', '2', '1');
-INSERT INTO OCENA_KLINIKE VALUES('3', '3 - 1', '2', '3', '1');
-INSERT INTO OCENA_KLINIKE VALUES('4', '4 - 1', '3', '4', '1');
-INSERT INTO OCENA_KLINIKE VALUES('5', '5 - 1', '3', '5', '1');
-INSERT INTO OCENA_KLINIKE VALUES('6', '6 - 1', '4', '6', '1');
-INSERT INTO OCENA_KLINIKE VALUES('7', '7 - 1', '4', '7', '1');
-INSERT INTO OCENA_KLINIKE VALUES('8', '8 - 1', '5', '8', '1');
-INSERT INTO OCENA_KLINIKE VALUES('9', '9 - 1', '5', '9', '1');
-INSERT INTO OCENA_KLINIKE VALUES('10', '10 - 1', '5', '10', '1');
+-- INSERT INTO OCENA_KLINIKE (id, oc_klinike_identifier, ocena, klinika_id, korisnik_id) VALUES('1', '1-4', '1', '1', '4');
+-- INSERT INTO OCENA_LEKARA (id, oc_lekara_identifier, ocena, lekar_id, korisnik_id) VALUES('1', '2-4', '5', '2', '4');
+-- INSERT INTO OCENA_KLINIKE VALUES('2', '2-1', '2', '2', '1');
+-- INSERT INTO OCENA_KLINIKE VALUES('3', '3-1', '2', '3', '1');
+-- INSERT INTO OCENA_KLINIKE VALUES('4', '4-1', '3', '4', '1');
+-- INSERT INTO OCENA_KLINIKE VALUES('5', '5-1', '3', '5', '1');
+-- INSERT INTO OCENA_KLINIKE VALUES('6', '6-1', '4', '6', '1');
+-- INSERT INTO OCENA_KLINIKE VALUES('7', '7-1', '4', '7', '1');
+-- INSERT INTO OCENA_KLINIKE VALUES('8', '8-1', '5', '8', '1');
+-- INSERT INTO OCENA_KLINIKE VALUES('9', '9-1', '5', '9', '1');
+-- INSERT INTO OCENA_KLINIKE VALUES('10', '10-1', '5', '10', '1');
 
 INSERT INTO ZDR_KARTON(id, pacijent_id, dioptrija, visina, tezina, krvna_grupa) VALUES ('1', '1', '-1.5', '193', '80', '0+');
 INSERT INTO LEK(id, naziv, sadrzaj, sifra) VALUES('1', 'Brufen 600mg', 'metan, propan, butan gutam', 'BrT6');
@@ -118,18 +119,17 @@ INSERT INTO PREGLED (id, izvestaj, datum_pocetka, datum_zavrsetka, tip_pregleda_
 INSERT INTO PREGLED (id, izvestaj, datum_pocetka, datum_zavrsetka, tip_pregleda_id, lekar_id, sala_id, pacijent_id, popust, datum_kreiranja) VALUES (7, 'Bit ce unet', '2019-12-25 07:30:00', '2019-12-25 16:51:00','1', '1', '1', '1', '0', '2019-11-6');
 INSERT INTO PREGLED (id, izvestaj, datum_pocetka, datum_zavrsetka, tip_pregleda_id, lekar_id, sala_id, pacijent_id, popust, datum_kreiranja) VALUES (8, 'Odlicno ste bolesni', '2019-12-25 16:52:00', '2019-12-25 21:00:00', '2', '2', '2', '2', '0', '2019-11-6');
 INSERT INTO PREGLED (id, izvestaj, datum_pocetka, datum_zavrsetka, tip_pregleda_id, lekar_id, sala_id, pacijent_id, popust, datum_kreiranja) VALUES (9, 'Svaka cast', '2019-12-25 07:10:00', '2019-12-25 16:52:00', '2', '2', '2', '2', '0', '2019-11-6');
+INSERT INTO PREGLED (id, izvestaj, datum_pocetka, datum_zavrsetka, tip_pregleda_id, lekar_id, sala_id, pacijent_id, popust, datum_kreiranja) VALUES (10, 'Svaka cast', '2019-11-25 07:10:00', '2019-11-25 16:52:00', '2', '2', '2', '2', '0', '2019-11-6');
+
 
 INSERT INTO OPERACIJA (id, izvestaj, datum_pocetka, datum_zavrsetka, tip_operacije, sala_id, pacijent_id, datum_kreiranja, tip_pregleda_id) VALUES (1,'Bit ce unet', '2019-12-1 15:51:00', '2019-12-1 16:41:00', 'Operacija jea', '1', '1', '2019-11-6', 1);
 INSERT INTO OPERACIJA (id, izvestaj, datum_pocetka, datum_zavrsetka, tip_operacije, sala_id, pacijent_id, datum_kreiranja, tip_pregleda_id) VALUES (2,'Bit ce unet', '2019-12-11 15:51:00', '2019-12-11 17:51:00','Operacija jea', '1', '1', '2019-11-6', 1);
 INSERT INTO OPERACIJA (id, izvestaj, datum_pocetka, datum_zavrsetka, tip_operacije, sala_id, pacijent_id, datum_kreiranja, tip_pregleda_id) VALUES (3,'Operisan od zivota...', '2019-3-11 15:51:00', '2019-3-11 16:51:00', 'Operacija jea', '1', '1', '2019-11-6', 1);
 
-
 INSERT INTO PRISUTNI_LEKARI VALUES (1, 1);
 INSERT INTO PRISUTNI_LEKARI VALUES (1, 2);
 INSERT INTO PRISUTNI_LEKARI VALUES (2, 1);
 INSERT INTO PRISUTNI_LEKARI VALUES (3, 2);
-
-
 
 INSERT INTO PACIJENTI_KLINIKE VALUES ('4', '1');
 INSERT INTO PACIJENTI_KLINIKE VALUES ('2', '2');
@@ -142,4 +142,4 @@ INSERT INTO PACIJENTI_KLINIKE VALUES ('1', '3');
 INSERT INTO PACIJENTI_KLINIKE VALUES ('3', '2');
 INSERT INTO PACIJENTI_KLINIKE VALUES ('6', '4');
 INSERT INTO PACIJENTI_KLINIKE VALUES ('1', '1');
-
+INSERT INTO PACIJENTI_KLINIKE VALUES ('1', '2');

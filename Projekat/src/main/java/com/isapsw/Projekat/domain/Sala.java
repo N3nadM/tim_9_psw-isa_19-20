@@ -19,9 +19,11 @@ public class Sala {
     private String salaIdentifier;
 
     @OneToMany(mappedBy = "sala", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<Pregled> pregled = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "sala")
+    @JsonIgnore
     private List<Operacija> operacija = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)

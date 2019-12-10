@@ -21,11 +21,6 @@ public class Operacija extends Pregled_Operacija {
     List<Lekar> lekari = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="sala_id", updatable = false, nullable = false)
-    @JsonIgnore
-    private Sala sala;
-
-    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="pacijent_id", updatable = false, nullable = false)
     @JsonIgnore
     private Pacijent pacijent;
@@ -48,14 +43,6 @@ public class Operacija extends Pregled_Operacija {
 
     public void setLekari(List<Lekar> lekari) {
         this.lekari = lekari;
-    }
-
-    public Sala getSala() {
-        return sala;
-    }
-
-    public void setSala(Sala sala) {
-        this.sala = sala;
     }
 
     public Pacijent getPacijent() {

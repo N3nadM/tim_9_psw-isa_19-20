@@ -15,6 +15,7 @@ import Button from "@material-ui/core/Button";
 import Tooltip from "@material-ui/core/Tooltip";
 import IzvestajDialog from "../Tabs/Pacijent/IzvestajDialog";
 import TableSortLabel from "@material-ui/core/TableSortLabel";
+import OceniPopup from "../Tabs/Pacijent/OceniPopup";
 
 const useStyles = makeStyles({
   root: {
@@ -247,6 +248,7 @@ const TabelaPregleda = ({ pregledi, getAllPregledi, pacijentId }) => {
                     </TableCell>
                     <TableCell align="right">Cena</TableCell>
                     <TableCell align="right">Datum Zakazivanja</TableCell>
+                    <TableCell align="center">Oceni</TableCell>
                     <TableCell align="right">Izveštaj</TableCell>
                   </TableRow>
                 </TableHead>
@@ -277,6 +279,15 @@ const TabelaPregleda = ({ pregledi, getAllPregledi, pacijentId }) => {
                             </TableCell>
                             <TableCell align="right">
                               {row.datumKreiranja}
+                            </TableCell>
+                            <TableCell align="center">
+                              <OceniPopup
+                                klinikaId={row.sala.salaIdentifier.substring(
+                                  0,
+                                  1
+                                )}
+                                lekarId={row.lekar.id}
+                              />
                             </TableCell>
                             <TableCell align="right">
                               <Tooltip
