@@ -30,7 +30,7 @@ import InputLabel from "@material-ui/core/InputLabel";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import TextField from "@material-ui/core/TextField";
-import SlobodniTerminiDialog from "../../Tabs/Lekar/SlobodniTerminiDialog";
+import Dijalog from "../../Tabs/BrzoZakazivanjePregleda/Dijalog";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -65,20 +65,14 @@ const useStyles = makeStyles(theme => ({
 
 const PretragaSlobodniLekara = ({
   stariState,
+  setState,
   getLekariKlinike,
   idKlinike,
-  lekari
+  lekari,
+  setIsEdit
 }) => {
-  const [state, setState] = React.useState({
-    tip: "",
-    datum: ""
-  });
   useEffect(() => {
     console.log(stariState);
-    setState({
-      tip: stariState.tipPregledaId,
-      datum: stariState.datum
-    });
     getLekariKlinike(idKlinike, stariState);
   }, []);
   const classes = useStyles();
@@ -98,7 +92,9 @@ const PretragaSlobodniLekara = ({
     setPage(0);
   };
 
-  const [selectedDate, setSelectedDate] = React.useState(state.datum || null);
+  const [selectedDate, setSelectedDate] = React.useState(
+    stariState.datum || null
+  );
 
   const handleDateChange = date => {
     setSelectedDate(date);
@@ -106,16 +102,16 @@ const PretragaSlobodniLekara = ({
 
   const handleSubmit = e => {
     e.preventDefault();
-    if (state.tip !== "" || selectedDate != null) {
+    if (stariState.tip !== "" || selectedDate != null) {
       getLekariKlinike(idKlinike, {
-        ...state,
+        ...stariState,
         datum: !selectedDate ? "" : selectedDate
       });
     }
   };
 
   const handleChange = e => {
-    setState({ ...state, [e.target.name]: e.target.value });
+    setState({ ...stariState, [e.target.name]: e.target.value });
   };
 
   const sort = lekari => {
@@ -213,9 +209,10 @@ const PretragaSlobodniLekara = ({
                           <TableCell align="left">{row.ocena}</TableCell>
 
                           <TableCell align="right">
-                            <SlobodniTerminiDialog
+                            <Dijalog
                               id={row.id}
-                              datum={!selectedDate ? "" : selectedDate}
+                              datum={!stariState.datum ? "" : stariState.datum}
+                              lekar={row}
                             />
                           </TableCell>
                         </TableRow>
@@ -240,6 +237,14 @@ const PretragaSlobodniLekara = ({
                 )}
               </TableBody>
             </Table>
+            <Button
+              variant="contained"
+              color="primary"
+              className={classes.submit}
+              onClick={() => setIsEdit(false)}
+            >
+              Gotovo
+            </Button>
           </div>
           <TablePagination
             rowsPerPageOptions={[5, 10, 25]}
@@ -258,7 +263,6 @@ const PretragaSlobodniLekara = ({
           />
         </Paper>
       )}
-      {!lekari && <h3>Nije pronadjen nijedan slobodan lekar za uneti datum</h3>}
     </div>
   );
 };

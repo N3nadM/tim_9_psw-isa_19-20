@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.net.ssl.HttpsURLConnection;
+import java.util.List;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
@@ -24,6 +25,15 @@ public class SalaController {
             return new ResponseEntity<Sala>(salaService.addSala(salaDTO), HttpStatus.OK);
         }catch (Exception e){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("/saleNaKlinici/{id}")
+    public ResponseEntity<List<Sala>> getSaleNaKlinici(@PathVariable String id){
+        try{
+            return  new ResponseEntity<List<Sala>>(salaService.getSaleNaKlinici(id), HttpStatus.OK);
+        }catch(Exception e){
+            return  new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
 }

@@ -124,7 +124,7 @@ function ResponsiveDrawer(props) {
             {value === 5 && <LekariTabs />}
           </TabPanel>
           <TabPanel value={value} index={6}>
-            <SaleTabs />
+            {value === 6 && <SaleTabs />}
           </TabPanel>
           <TabPanel value={value} index={7}>
             <TipoviPregledaTabs />

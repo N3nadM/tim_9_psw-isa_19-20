@@ -23,7 +23,7 @@ import InputLabel from "@material-ui/core/InputLabel";
 import { connect } from "react-redux";
 import Grid from "@material-ui/core/Grid";
 import PretragaSlobodnihLekara from "../BrzoZakazivanjePregleda/PretragaSlobodnihLekara";
-
+import PretragaSlobodnihSala from "../BrzoZakazivanjePregleda/PretragaSlobodnihSala";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import { stat } from "fs";
 function TabPanel(props) {
@@ -71,7 +71,8 @@ const SlobodniTerminiTabs = ({
   tipoviPregleda: { tipoviPregleda },
   adminKlinike: { klinika },
   getKlinikaAdmin,
-  getAllTipoviPregleda
+  getAllTipoviPregleda,
+  lekarZaPregled
 }) => {
   const [state, setState] = React.useState({
     cena: "",
@@ -80,15 +81,21 @@ const SlobodniTerminiTabs = ({
     tip: "",
     klinikaId: "",
     lekarId: "",
-    datum: ""
+    datum: "",
+    sala: ""
   });
   useEffect(() => {
     getAllTipoviPregleda(klinika.id);
+    setState({
+      ...state,
+      lekarId: lekarZaPregled ? lekarZaPregled.korisnik.ime : ""
+    });
   }, []);
   const classes = useStyles();
   const theme = useTheme();
   const [value, setValue] = React.useState(0);
   const [isEdit, setIsEdit] = React.useState(false);
+  const [isSala, setIsSala] = React.useState(false);
 
   const [selectedDate, setSelectedDate] = React.useState(
     new Date("2019-12-18T21:11:54")
@@ -96,6 +103,10 @@ const SlobodniTerminiTabs = ({
 
   const handleDateChange = date => {
     setSelectedDate(date);
+    setState({
+      ...state,
+      datum: date
+    });
   };
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -138,10 +149,14 @@ const SlobodniTerminiTabs = ({
         <Tab label="Slobodni termini pregleda" {...a11yProps(1)} />
       </Tabs>
       <TabPanel value={value} index={0} dir={theme.direction}>
-        {isEdit && (
-          <PretragaSlobodnihLekara stariState={state} idKlinike={klinika.id} />
+        {isEdit && !isSala && (
+          <PretragaSlobodnihLekara
+            stariState={state}
+            idKlinike={klinika.id}
+            setIsEdit={setIsEdit}
+          />
         )}
-        {!isEdit && (
+        {!isEdit && !isSala && (
           <form className={classes.form} noValidate>
             <Grid container spacing={3}>
               <Grid item sm={6}>
@@ -223,13 +238,24 @@ const SlobodniTerminiTabs = ({
                 />
               </Grid>
               <Grid item sm={6}>
-                <Autocomplete
+                <TextField
                   id="sala"
-                  style={{ width: 440 }}
-                  renderInput={params => (
-                    <TextField {...params} label="Sala" fullWidth />
-                  )}
+                  label="Sala"
+                  type="text"
+                  disabled={true}
+                  value={state.sala}
+                  fullWidth
+                  className={classes.textField}
+                  inputProps={{ min: "0", max: "100", step: "1" }}
                 />
+                <Button
+                  variant="contained"
+                  color="primary"
+                  className={classes.submit}
+                  onClick={() => setIsSala(true)}
+                >
+                  Pronadji salu
+                </Button>
                 <TextField
                   id="lekar"
                   label="Lekar"
@@ -260,6 +286,7 @@ const SlobodniTerminiTabs = ({
             </Grid>
           </form>
         )}
+        {!isEdit && isSala && <PretragaSlobodnihSala klinikaId={klinika.id} />}
       </TabPanel>
 
       <TabPanel value={value} index={1} dir={theme.direction}>
@@ -270,7 +297,8 @@ const SlobodniTerminiTabs = ({
 };
 const mapStateToProps = state => ({
   tipoviPregleda: state.tipoviPregleda,
-  adminKlinike: state.adminKlinike
+  adminKlinike: state.adminKlinike,
+  lekarZaPregled: state.lekar.lekarZaPregled
 });
 
 export default connect(mapStateToProps, {
