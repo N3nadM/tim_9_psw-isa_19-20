@@ -57,6 +57,13 @@ public class PregledController {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
     }
-
+    @GetMapping("/sala/{id}")
+    public ResponseEntity<List<Pregled>> getPregledBySalaId(@PathVariable String id) {
+        try {
+            return new ResponseEntity<List<Pregled>>(pregledService.getPreglediBySalaId(Long.parseLong(id)), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
+    }
 
 }

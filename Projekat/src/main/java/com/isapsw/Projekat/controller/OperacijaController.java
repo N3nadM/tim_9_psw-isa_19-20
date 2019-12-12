@@ -55,4 +55,13 @@ public class OperacijaController {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
     }
+
+    @GetMapping("/sala/{id}")
+    public ResponseEntity<List<Operacija>> findOperacijeBySalaId(@PathVariable String id) {
+        try {
+            return new ResponseEntity<List<Operacija>>(operacijaService.getOperacijeBySalaId(Long.parseLong(id)), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
+    }
 }

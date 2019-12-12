@@ -29,6 +29,7 @@ import InputLabel from "@material-ui/core/InputLabel";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import TextField from "@material-ui/core/TextField";
+import KalendarSala from "../Tabs/BrzoZakazivanjePregleda/KalendarSala";
 
 import { getListaSala } from "../../store/actions/sala";
 
@@ -201,9 +202,7 @@ const IzmenaSala = ({ sale, getListaSala, klinikaId }) => {
                         </TableCell>
                         <TableCell align="left">{row.naziv}</TableCell>
                         <TableCell align="right">
-                          <Button variant="outlined" color="primary">
-                            Kalendar zauzeca
-                          </Button>
+                          <KalendarSala salaId={row.id} />
                         </TableCell>
                         <TableCell align="right">
                           <Button variant="outlined" color="primary">
