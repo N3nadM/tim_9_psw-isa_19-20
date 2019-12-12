@@ -1,8 +1,6 @@
 package com.isapsw.Projekat.domain;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -22,6 +20,11 @@ public class Pregled extends Pregled_Operacija{
     @JoinColumn(name="pacijent_id", updatable = false, nullable = false)
     @JsonIgnore
     private Pacijent pacijent;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="medicinskaSestra_id", updatable = false, nullable = false)
+    @JsonIgnore
+    private MedicinskaSestra medicinskaSestra;
 
     public Pregled() {
         super();
@@ -49,5 +52,13 @@ public class Pregled extends Pregled_Operacija{
 
     public void setPacijent(Pacijent pacijent) {
         this.pacijent = pacijent;
+    }
+
+    public MedicinskaSestra getMedicinskaSestra() {
+        return medicinskaSestra;
+    }
+
+    public void setMedicinskaSestra(MedicinskaSestra medicinskaSestra) {
+        this.medicinskaSestra = medicinskaSestra;
     }
 }
