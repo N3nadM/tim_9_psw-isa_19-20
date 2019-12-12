@@ -18,7 +18,7 @@ export const getAllPregledi = id => async (dispatch, getState) => {
   }
 };
 
-export const getAllLekarPregledi = id => async (dispatch, getState) => {
+export const getAllOsobljePregledi = id => async (dispatch, getState) => {
   try {
     let pregledi = getState().pregled.pregledi;
     if (!pregledi.length) {
