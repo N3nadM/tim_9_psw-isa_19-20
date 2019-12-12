@@ -6,6 +6,7 @@ import "react-big-calendar/lib/css/react-big-calendar.css";
 import { connect } from "react-redux";
 import { getAllLekarPregledi } from "../../store/actions/pregled";
 import { getAllOsobljeOperacije } from "../../store/actions/operacija";
+import LicniPodaciTabs from "../Tabs/LicniPodaciTabs";
 
 const localizer = momentLocalizer(moment);
 
@@ -21,39 +22,44 @@ const RadniKalendarTab = ({
     getAllOsobljeOperacije(korisnikId);
   }, []);
 
-  {
-    pregledi.map(function(pregled, i) {
-      pregled.datumZavrsetka = new Date(pregled.datumZavrsetka);
-      pregled.datumPocetka = new Date(pregled.datumPocetka);
-    });
+  pregledi = pregledi.map((pregled, i) => ({
+    ...pregled,
+    tip: "Pregled: " + pregled.tipPregleda.naziv,
+    datumZavrsetka: new Date(pregled.datumZavrsetka),
+    datumPocetka: new Date(pregled.datumPocetka)
+  }));
 
-    operacije.map(function(operacija, i) {
-      operacija.datumZavrsetka = new Date(operacija.datumZavrsetka);
-      operacija.datumPocetka = new Date(operacija.datumPocetka);
-    });
+  operacije = operacije.map((operacija, i) => ({
+    ...operacija,
+    tip: "Operacija: " + operacija.tipPregleda.naziv,
+    datumZavrsetka: new Date(operacija.datumZavrsetka),
+    datumPocetka: new Date(operacija.datumPocetka)
+  }));
 
-    console.log(pregledi);
-    console.log(operacije);
-  }
+  console.log(pregledi);
+  console.log(operacije);
+
+  const handleEvent = obj => {
+    console.log(obj);
+  };
 
   let preg_oper = pregledi.concat(operacije);
 
   return (
-    <Paper>
+    <div style={{ height: 700 }}>
       {pregledi && (
-        <div>
-          <Calendar
-            style={{ height: "500pt" }}
-            events={preg_oper}
-            showMultiDayTimes={true}
-            startAccessor="datumPocetka"
-            endAccessor="datumZavrsetka"
-            titleAccessor="izvestaj"
-            localizer={localizer}
-          />
-        </div>
+        <Calendar
+          style={{ maxHeight: "100%" }}
+          events={preg_oper}
+          showMultiDayTimes={true}
+          startAccessor="datumPocetka"
+          endAccessor="datumZavrsetka"
+          titleAccessor="tip"
+          localizer={localizer}
+          onSelectEvent={obj => handleEvent(obj)}
+        />
       )}
-    </Paper>
+    </div>
   );
 };
 
