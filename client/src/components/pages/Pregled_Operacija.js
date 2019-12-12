@@ -1,15 +1,15 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import Tabela from "../../TabelaAKC/Tabela";
-import DodajKliniku from "../../Tabs/DodajKlinikuTab";
-import DodajAK from "../../Tabs/DodajAKTab";
-import DodajAKC from "../../Tabs/DodajAKCTab";
+
 import Divider from "@material-ui/core/Divider";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import Drawer from "@material-ui/core/Drawer";
-import TabPanel from "../../Tabs/TabPanel";
-import AppBar from "../../layout/AppBarLogedIn";
+import TabPanel from "../Tabs/TabPanel";
+import AppBar from "../layout/AppBarLogedIn";
+import Informacije from "../Tabs/Pregled_Operacija/Informacije";
+import { connect } from "react-redux";
+import { withRouter } from "react-router-dom";
 
 const drawerWidth = 240;
 
@@ -38,7 +38,7 @@ function a11yProps(index) {
   };
 }
 
-export default function ProfilAKC() {
+const Pregled_Operacija = ({ match, location }) => {
   const [value, setValue] = React.useState(0);
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -56,17 +56,21 @@ export default function ProfilAKC() {
         variant="scrollable"
         aria-label="simple tabs example"
       >
-        <Tab label="Zahtevi" {...a11yProps(0)} />
-        <Tab label="Dodaj kliniku" {...a11yProps(1)} />
-        <Tab label="Dodaj admina klinike" {...a11yProps(2)} />
-        <Tab label="Dodaj admina KC" {...a11yProps(3)} />
+        <Tab label="Informacije" {...a11yProps(0)} />
       </Tabs>
     </div>
   );
 
+  let obj = location.objekat;
+
+  {
+    console.log(match.params.obj);
+    console.log(location.objekat);
+  }
+
   return (
     <>
-      <AppBar setTab={setValue} handleChange={handleChange} />
+      <AppBar pacijentRoute setTab={setValue} handleChange={handleChange} />
       <div className={classes.root}>
         <nav className={classes.drawer} aria-label="mailbox folders">
           <Drawer
@@ -81,19 +85,14 @@ export default function ProfilAKC() {
         </nav>
         <main className={classes.content}>
           <TabPanel value={value} index={0}>
-            <Tabela />
-          </TabPanel>
-          <TabPanel value={value} index={1}>
-            <DodajKliniku />
-          </TabPanel>
-          <TabPanel value={value} index={2}>
-            <DodajAK />
-          </TabPanel>
-          <TabPanel value={value} index={3}>
-            <DodajAKC />
+            {value === 0 && <Informacije obj={obj} />}
           </TabPanel>
         </main>
       </div>
     </>
   );
-}
+};
+
+const mapStateToProps = state => ({});
+
+export default withRouter(connect(mapStateToProps, {})(Pregled_Operacija));

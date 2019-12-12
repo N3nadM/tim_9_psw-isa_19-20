@@ -29,9 +29,9 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const ZdrKarton = ({ pacijent, zdrKarton, getZdrKarton }) => {
+const ZdrKarton = ({ pacijent: { pacijent }, zdrKarton, getZdrKarton }) => {
   useEffect(() => {
-    getZdrKarton(pacijent.pacijent.id);
+    getZdrKarton(pacijent.id);
   }, []);
 
   const classes = useStyles();
@@ -125,7 +125,7 @@ const ZdrKarton = ({ pacijent, zdrKarton, getZdrKarton }) => {
 
 const mapStateToProps = state => ({
   zdrKarton: state.zdrKarton.zdrKarton,
-  pacijent: state.pacijent
+  pacijent: state.pacijent.pacijent
 });
 
 export default connect(mapStateToProps, { getZdrKarton })(ZdrKarton);

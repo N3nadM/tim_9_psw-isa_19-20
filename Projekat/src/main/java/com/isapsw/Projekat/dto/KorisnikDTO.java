@@ -52,6 +52,18 @@ public class KorisnikDTO {
         this.password = adminKlinikeDTO.getPassword();
     }
 
+    public KorisnikDTO(AdminKCDTO adminKCDTO){
+        this.id = adminKCDTO.getId();
+        this.ime = adminKCDTO.getIme();
+        this.prezime = adminKCDTO.getPrezime();
+        this.grad = adminKCDTO.getGrad();
+        this.drzava = adminKCDTO.getDrzava();
+        this.adresa = adminKCDTO.getAdresa();
+        this.telefon = adminKCDTO.getTelefon();
+        this.email = adminKCDTO.getEmail();
+        this.password = adminKCDTO.getPassword();
+    }
+
     public KorisnikDTO(LekarDTO l){
         this.id = l.getId();
         this.ime = l.getIme();
