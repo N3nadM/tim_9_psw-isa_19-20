@@ -80,8 +80,7 @@ const LekariTabs = ({
     krajRadnogVremena: ""
   });
   useEffect(() => {
-    getAllTipoviPregleda();
-    getKlinikaAdmin(korisnikId);
+    getAllTipoviPregleda(klinika.id);
   }, []);
   const classes = useStyles();
   const theme = useTheme();

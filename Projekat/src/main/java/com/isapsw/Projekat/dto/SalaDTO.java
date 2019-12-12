@@ -3,6 +3,7 @@ package com.isapsw.Projekat.dto;
 public class SalaDTO {
     private Long id;
     private String salaIdentifier;
+    private String naziv;
     private Long klinikaId;
 
     public SalaDTO( String salaIdentifier, Long klinikaId) {
@@ -32,5 +33,13 @@ public class SalaDTO {
 
     public void setKlinikaId(Long klinikaId) {
         this.klinikaId = klinikaId;
+    }
+
+    public String getNaziv() {
+        return naziv;
+    }
+
+    public void setNaziv(String naziv) {
+        this.naziv = naziv;
     }
 }

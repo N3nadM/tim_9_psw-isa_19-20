@@ -14,6 +14,8 @@ public class TipPregledaService {
     @Autowired
     private TipPregledaRepository tipPregledaRepository;
 
+    public List<TipPregleda> getTipoviSaKlinike(String id) { return  tipPregledaRepository.findTipPregledasByKlinikaId(Long.parseLong(id)); }
+
     public List<TipPregleda> getAllTipoviPregleda() { return  tipPregledaRepository.findAll(); }
 
     public Optional<TipPregleda> getTipPregledaById(Long id) {return  tipPregledaRepository.findById(id);}

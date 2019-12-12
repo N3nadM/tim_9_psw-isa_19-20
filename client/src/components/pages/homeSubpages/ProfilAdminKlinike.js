@@ -7,7 +7,7 @@ import PasswordChange from "../../PasswordChange/PasswordChange";
 import LekariTabs from "../../Tabs/LekariTabs";
 import SaleTabs from "../../Tabs/SaleTabs";
 import TipoviPregledaTabs from "../../Tabs/TipoviPregledaTabs";
-import SlobodniTerminiTabs from "../../Tabs/SlobodniTerminTabs";
+import SlobodniTerminiTabs from "../../Tabs/BrzoZakazivanjePregleda/SlobodniTerminTabs";
 import LicniPodaciTabs from "../../Tabs/LicniPodaciTabs";
 import PodaciKlinikaTabs from "../../Tabs/PodaciKlinikaTabs";
 import AppBar from "../../layout/AppBarLogedIn";
@@ -118,13 +118,13 @@ function ResponsiveDrawer(props) {
             <PasswordChange />
           </TabPanel>
           <TabPanel value={value} index={4}>
-            <SlobodniTerminiTabs />
+            {value === 4 && <SlobodniTerminiTabs />}
           </TabPanel>
           <TabPanel value={value} index={5}>
-            <LekariTabs />
+            {value === 5 && <LekariTabs />}
           </TabPanel>
           <TabPanel value={value} index={6}>
-            <SaleTabs />
+            {value === 6 && <SaleTabs />}
           </TabPanel>
           <TabPanel value={value} index={7}>
             <TipoviPregledaTabs />
