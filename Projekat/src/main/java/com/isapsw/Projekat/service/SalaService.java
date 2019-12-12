@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -26,11 +27,16 @@ public class SalaService {
         Sala s = new Sala();
         s.setKlinika(klinikaRepository.findById(salaDTO.getKlinikaId()).get());
         s.setSalaIdentifier(salaDTO.getSalaIdentifier());
+        s.setNaziv(salaDTO.getNaziv());
         DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd");
         Date d = new Date();
         dateFormat.format(d);
         s.setDatumKreiranja(d);
         return salaRepository.save(s);
+    }
+
+    public List<Sala> getSaleNaKlinici(String id){
+        return salaRepository.findByKlinikaId(Long.parseLong(id));
     }
 
 }

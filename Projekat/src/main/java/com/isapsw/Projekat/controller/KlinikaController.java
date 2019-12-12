@@ -108,6 +108,8 @@ public class KlinikaController {
     @PostMapping("/getLekari/{id}")
     public ResponseEntity<List<Lekar>> getLekariKlinike(@PathVariable String id, @RequestBody Map<String,Object> body) {
         try {
+            System.out.println(body.get("tip").toString());
+            System.out.println(body.get("datum").toString());
             List<Lekar> lekars = klinikaService.getLekariKlinike(Long.parseLong(id), body.get("tip").toString(), body.get("datum").toString());
             return new ResponseEntity<>(lekars, HttpStatus.OK);
         }

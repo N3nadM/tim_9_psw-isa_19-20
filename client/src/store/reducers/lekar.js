@@ -4,7 +4,8 @@ import {
   SET_LEKAR_LIST,
   SET_ADDED_LEKAR,
   SET_LEKARI_NA_KLINICI,
-  SET_EDITED_LEKAR
+  SET_EDITED_LEKAR,
+  SET_LEKAR_ZA_PREGLED
 } from "../actionTypes";
 import { statement } from "@babel/template";
 
@@ -12,7 +13,8 @@ const DEFAULT_STATE = {
   lekar: null,
   lekarList: null,
   addedLekar: null,
-  listaLekaraNaKlinici: null
+  listaLekaraNaKlinici: null,
+  lekarZaPregled: null
 };
 
 export default (state = DEFAULT_STATE, action) => {
@@ -48,6 +50,11 @@ export default (state = DEFAULT_STATE, action) => {
         listaLekaraNaKlinici: state.listaLekaraNaKlinici.map(l =>
           l.id === action.lekar.id ? action.lekar : l
         )
+      };
+    case SET_LEKAR_ZA_PREGLED:
+      return {
+        ...state,
+        lekarZaPregled: action.lekarZaPregled
       };
     default:
       return state;

@@ -1,7 +1,8 @@
-import { SET_ADDED_SALA } from "../actionTypes";
+import { SET_ADDED_SALA, SET_LISTA_SALA } from "../actionTypes";
 
 const DEFAULT_STATE = {
-  newSala: null
+  newSala: null,
+  listaSala: null
 };
 
 export default (state = DEFAULT_STATE, action) => {
@@ -10,6 +11,11 @@ export default (state = DEFAULT_STATE, action) => {
       return {
         ...state,
         newSala: action.newSala
+      };
+    case SET_LISTA_SALA:
+      return {
+        ...state,
+        listaSala: action.listaSala
       };
     default:
       return state;

@@ -19,6 +19,6 @@ public interface PacijentRepository extends JpaRepository<Pacijent, Long> {
 
     Pacijent findPacijentByKorisnikId(Long id);
 
-    @Query("SELECT DISTINCT k.id FROM Pacijent p JOIN Korisnik k ON p.korisnik.id = k.id WHERE k.ime LIKE %:ime% AND UPPER(k.prezime) LIKE %:prezime% AND p.jbzo LIKE %:jbzo% ")
+    @Query("SELECT DISTINCT k.id FROM Pacijent p JOIN Korisnik k ON p.korisnik.id = k.id WHERE UPPER(k.ime) LIKE %:ime% AND UPPER(k.prezime) LIKE %:prezime% AND p.jbzo LIKE %:jbzo% ")
     List<Long> findPacijentByParameters(@Param("ime") String ime, @Param("prezime") String prezime, @Param("jbzo") String jbzo);
 }

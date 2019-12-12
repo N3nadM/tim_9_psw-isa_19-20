@@ -15,9 +15,9 @@ INSERT INTO KLINIKA (id, adresa, naziv, opis, ocena) VALUES ('8', 'Venac, toranj
 INSERT INTO KLINIKA (id, adresa, naziv, opis, ocena) VALUES ('9', 'Bogojevo, Radnicka 104', 'Sjajna', 'opis klinike', '5.0');
 INSERT INTO KLINIKA (id, adresa, naziv, opis, ocena) VALUES ('10', 'Knić, Narodnog Fronta 2', 'Lepa klinika', 'opis klinike', '5.0');
 
-INSERT INTO SALA (id, datum_kreiranja, sala_identifier, klinika_id) VALUES ('1', '2019-11-30','1 - 1', '1');
+INSERT INTO SALA (id, datum_kreiranja, sala_identifier, naziv, klinika_id) VALUES ('1', '2019-11-30','1 - 1', 'Sala za preglede 1', '1');
 
-INSERT INTO SALA (id, datum_kreiranja, sala_identifier, klinika_id) VALUES ('2', '2019-11-30','1 - 2', '1');
+INSERT INTO SALA (id, datum_kreiranja, sala_identifier, naziv, klinika_id) VALUES ('2', '2019-11-30','1 - 2', 'Sala za preglede 2', '1');
 
 INSERT INTO TIP_PREGLEDA(id, naziv, cena_pregleda, cena_operacije, minimalno_trajanje_min, klinika_id) VALUES ('1', 'Kardiovaskularni', 1200, 1300, 25, '1');
 INSERT INTO TIP_PREGLEDA(id, naziv, cena_pregleda, cena_operacije, minimalno_trajanje_min, klinika_id) VALUES ('2', 'Fizijatrijski', 1600, 12200, 66, '1');

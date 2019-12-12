@@ -36,7 +36,7 @@ public class PacijentService {
 
     public List<PacijentDTO> searchPacijent(List<PacijentDTO> pacijentiKl, String ime, String prezime, String jbzo){
 
-        List<Long> pacijentId = pacijentRepository.findPacijentByParameters(ime, prezime, jbzo);
+        List<Long> pacijentId = pacijentRepository.findPacijentByParameters(ime.toUpperCase(), prezime.toUpperCase(), jbzo.toUpperCase());
 
         List<PacijentDTO> pacijenti = new ArrayList<>();
 

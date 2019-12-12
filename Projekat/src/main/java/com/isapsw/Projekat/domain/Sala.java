@@ -18,6 +18,9 @@ public class Sala {
     @Column(unique = true, nullable = false)
     private String salaIdentifier;
 
+    @Column(nullable = false)
+    private String naziv;
+
     @OneToMany(mappedBy = "sala", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonIgnore
     private List<Pregled> pregled = new ArrayList<>();
@@ -95,6 +98,14 @@ public class Sala {
                 ", klinika=" + klinika +
                 ", datumKreiranja=" + datumKreiranja +
                 '}';
+    }
+
+    public String getNaziv() {
+        return naziv;
+    }
+
+    public void setNaziv(String naziv) {
+        this.naziv = naziv;
     }
 
     @PrePersist

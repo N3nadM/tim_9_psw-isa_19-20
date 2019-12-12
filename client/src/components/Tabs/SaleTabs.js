@@ -10,7 +10,7 @@ import Button from "@material-ui/core/Button";
 import { getKlinikaAdmin } from "../../store/actions/adminKlinike";
 import { connect } from "react-redux";
 import { addNewSala } from "../../store/actions/sala";
-
+import IzmenaSala from "../Tabs/IzmenaSala";
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -55,7 +55,8 @@ const useStyles = makeStyles(theme => ({
 const SaleTabs = ({ adminKlinike: { klinika }, addNewSala }) => {
   const [state, setState] = React.useState({
     salaIdentifier: "",
-    klinikaId: ""
+    klinikaId: "",
+    naziv: ""
   });
   const classes = useStyles();
   const theme = useTheme();
@@ -72,7 +73,7 @@ const SaleTabs = ({ adminKlinike: { klinika }, addNewSala }) => {
     e.preventDefault();
     state.klinikaId = klinika.id;
     addNewSala(state);
-    setState({ ...state, salaIdentifier: "" });
+    setState({ ...state, salaIdentifier: "", naziv: "" });
   };
   const handleChange1 = e => {
     setState({ ...state, [e.target.name]: e.target.value });
@@ -86,12 +87,14 @@ const SaleTabs = ({ adminKlinike: { klinika }, addNewSala }) => {
         indicatorColor="primary"
         textColor="primary"
       >
-        <Tab label="Unos nove sale" {...a11yProps(0)} />
-        <Tab label="Pretraga sale" {...a11yProps(1)} />
-        <Tab label="Izmena sale" {...a11yProps(2)} />
-        <Tab label="Uklanjanje sale" {...a11yProps(3)} />
+        <Tab label="Lista sala na klinici" {...a11yProps(0)} />
+        <Tab label="Unos nove sale" {...a11yProps(1)} />
+        <Tab label="Uklanjanje sale" {...a11yProps(2)} />
       </Tabs>
       <TabPanel value={value} index={0} dir={theme.direction}>
+        {value === 0 && <IzmenaSala klinikaId={klinika.id} />}
+      </TabPanel>
+      <TabPanel value={value} index={1} dir={theme.direction}>
         <form className={classes.form} onSubmit={handleSubmit}>
           <TextField
             margin="normal"
@@ -104,6 +107,17 @@ const SaleTabs = ({ adminKlinike: { klinika }, addNewSala }) => {
             type="text"
             id="salaIdentifier"
           />
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            name="naziv"
+            value={state.naziv}
+            onChange={handleChange1}
+            label="Naziv sale"
+            type="text"
+            id="naziv"
+          />
           <Button
             type="submit"
             variant="contained"
@@ -114,32 +128,7 @@ const SaleTabs = ({ adminKlinike: { klinika }, addNewSala }) => {
           </Button>
         </form>
       </TabPanel>
-      <TabPanel value={value} index={1} dir={theme.direction}>
-        <p>Unesite broj sale</p>
-        <form className={classes.form} noValidate>
-          <TextField
-            margin="normal"
-            required
-            fullWidth
-            name="brojSalePretraga"
-            label="Broj sale"
-            type="text"
-            id="brojSalePretraga"
-          />
-          <Button
-            type="submit"
-            variant="contained"
-            color="primary"
-            className={classes.submit}
-          >
-            Pretraga
-          </Button>
-        </form>
-      </TabPanel>
       <TabPanel value={value} index={2} dir={theme.direction}>
-        Lista sala koje mogu da se menjaju
-      </TabPanel>
-      <TabPanel value={value} index={3} dir={theme.direction}>
         Lista sala koje mogu da se obrisu (ukoliko nisu rezervisane)
       </TabPanel>
     </div>
