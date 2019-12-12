@@ -4,7 +4,7 @@ import { Calendar, momentLocalizer } from "react-big-calendar";
 import moment from "moment";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import { connect } from "react-redux";
-import { getAllLekarPregledi } from "../../store/actions/pregled";
+import { getAllOsobljePregledi } from "../../store/actions/pregled";
 import { getAllOsobljeOperacije } from "../../store/actions/operacija";
 import LicniPodaciTabs from "../Tabs/LicniPodaciTabs";
 
@@ -14,11 +14,11 @@ const RadniKalendarTab = ({
   korisnikId,
   pregledi: { pregledi },
   operacije: { operacije },
-  getAllLekarPregledi,
+  getAllOsobljePregledi,
   getAllOsobljeOperacije
 }) => {
   useEffect(() => {
-    getAllLekarPregledi(korisnikId);
+    getAllOsobljePregledi(korisnikId);
     getAllOsobljeOperacije(korisnikId);
   }, []);
 
@@ -70,6 +70,6 @@ const mapStateToProps = state => ({
 });
 
 export default connect(mapStateToProps, {
-  getAllLekarPregledi,
+  getAllOsobljePregledi,
   getAllOsobljeOperacije
 })(RadniKalendarTab);
