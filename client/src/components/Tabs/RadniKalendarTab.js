@@ -1,12 +1,14 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Paper } from "@material-ui/core";
 import { Calendar, momentLocalizer } from "react-big-calendar";
 import moment from "moment";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import { connect } from "react-redux";
+import { withRouter } from "react-router-dom";
 import { getAllOsobljePregledi } from "../../store/actions/pregled";
 import { getAllOsobljeOperacije } from "../../store/actions/operacija";
 import LicniPodaciTabs from "../Tabs/LicniPodaciTabs";
+import Pregled_Operacija from "../pages/Pregled_Operacija";
 
 const localizer = momentLocalizer(moment);
 
@@ -15,7 +17,9 @@ const RadniKalendarTab = ({
   pregledi: { pregledi },
   operacije: { operacije },
   getAllOsobljePregledi,
-  getAllOsobljeOperacije
+  getAllOsobljeOperacije,
+  history,
+  objekat
 }) => {
   useEffect(() => {
     getAllOsobljePregledi(korisnikId);
@@ -36,18 +40,11 @@ const RadniKalendarTab = ({
     datumPocetka: new Date(operacija.datumPocetka)
   }));
 
-  console.log(pregledi);
-  console.log(operacije);
-
-  const handleEvent = obj => {
-    console.log(obj);
-  };
-
   let preg_oper = pregledi.concat(operacije);
 
   return (
     <div style={{ height: 700 }}>
-      {pregledi && (
+      {preg_oper && (
         <Calendar
           style={{ maxHeight: "100%" }}
           events={preg_oper}
@@ -56,7 +53,14 @@ const RadniKalendarTab = ({
           endAccessor="datumZavrsetka"
           titleAccessor="tip"
           localizer={localizer}
-          onSelectEvent={obj => handleEvent(obj)}
+          onSelectEvent={obj => {
+            objekat = obj;
+            console.log(objekat);
+            history.push({
+              pathname: `/pregled_operacija/${objekat.id}`,
+              objekat
+            });
+          }}
         />
       )}
     </div>
@@ -69,7 +73,8 @@ const mapStateToProps = state => ({
   operacije: state.operacija
 });
 
-export default connect(mapStateToProps, {
-  getAllOsobljePregledi,
-  getAllOsobljeOperacije
-})(RadniKalendarTab);
+export default withRouter(
+  connect(mapStateToProps, { getAllOsobljePregledi, getAllOsobljeOperacije })(
+    RadniKalendarTab
+  )
+);
