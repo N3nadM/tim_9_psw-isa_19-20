@@ -1,5 +1,6 @@
 package com.isapsw.Projekat.controller;
 
+import com.isapsw.Projekat.domain.Lekar;
 import com.isapsw.Projekat.domain.Sala;
 import com.isapsw.Projekat.dto.SalaDTO;
 import com.isapsw.Projekat.service.SalaService;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.net.ssl.HttpsURLConnection;
 import java.util.List;
+import java.util.Map;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
@@ -36,4 +38,27 @@ public class SalaController {
             return  new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
+    @GetMapping("/dostupneSale/{id}/{termin}/{trajanje}")
+    public ResponseEntity<List<Sala>> getDostupneSale(@PathVariable String id, @PathVariable String termin, @PathVariable String trajanje){
+        try{
+            System.out.println(id);
+            System.out.println(termin);
+            return  new ResponseEntity<List<Sala>>(salaService.getDostupneSale(id, termin, trajanje), HttpStatus.OK);
+        }catch(Exception e){
+            return  new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PostMapping("/search/{id}")
+    public ResponseEntity<List<Sala>> searchLekariNaKlinici(@PathVariable String id, @RequestBody Map<String,Object> body) {
+        try {
+            List<Sala> salas = salaService.search(Long.parseLong(id), body.get("broj").toString(), body.get("naziv").toString());
+            return new ResponseEntity<>(salas, HttpStatus.OK);
+        }
+        catch(Exception e) {
+            System.out.println(e.getMessage());
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
+    }
+
 }

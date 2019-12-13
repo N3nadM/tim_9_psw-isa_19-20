@@ -5,7 +5,8 @@ import {
   SET_ADDED_LEKAR,
   SET_LEKARI_NA_KLINICI,
   SET_EDITED_LEKAR,
-  SET_LEKAR_ZA_PREGLED
+  SET_LEKAR_ZA_PREGLED,
+  SET_TERMIN_ZA_PREGLED
 } from "../actionTypes";
 import axios from "axios";
 import { setRealKorisnik } from "./auth";
@@ -36,6 +37,11 @@ export const setLekariNaJednojKlinici = listaLekaraNaKlinici => ({
 export const setLekarZaPregled = lekarZaPregled => ({
   type: SET_LEKAR_ZA_PREGLED,
   lekarZaPregled
+});
+
+export const setTerminZaPregled = terminZaPregled => ({
+  type: SET_TERMIN_ZA_PREGLED,
+  terminZaPregled
 });
 
 export const getLekar = id => async (dispatch, getState) => {
@@ -112,9 +118,10 @@ export const editLekarByAdmin = (id, lekar) => async dispatch => {
   }
 };
 
-export const setLekarZakazivanje = lekar => async dispatch => {
+export const setLekarZakazivanje = (lekar, termin) => async dispatch => {
   try {
     dispatch(setLekarZaPregled(lekar));
+    dispatch(setTerminZaPregled(termin));
   } catch (err) {
     console.log(err);
   }

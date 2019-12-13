@@ -1,7 +1,8 @@
-import { SET_OPERACIJE } from "../actionTypes";
+import { SET_OPERACIJE, SET_OPERACIJE_ZA_SALU } from "../actionTypes";
 
 const DEFAULT_STATE = {
-  operacije: []
+  operacije: [],
+  operacijeZaSalu: []
 };
 
 export default (state = DEFAULT_STATE, action) => {
@@ -9,6 +10,12 @@ export default (state = DEFAULT_STATE, action) => {
     case SET_OPERACIJE:
       return {
         operacije: action.operacije.sort(
+          (a, b) => new Date(b.datum) - new Date(a.datum)
+        )
+      };
+    case SET_OPERACIJE_ZA_SALU:
+      return {
+        operacijeZaSalu: action.operacijeZaSalu.sort(
           (a, b) => new Date(b.datum) - new Date(a.datum)
         )
       };

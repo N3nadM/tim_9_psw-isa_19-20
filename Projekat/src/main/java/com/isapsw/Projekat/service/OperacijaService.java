@@ -24,4 +24,6 @@ public class OperacijaService {
         return operacijaRepository.findOperacijasByMedicinskaSestraId(id);
     }
 
+    public List<Operacija> getOperacijeBySalaId(Long id) { return operacijaRepository.findOperacijasBySalaId(id); }
+
 }

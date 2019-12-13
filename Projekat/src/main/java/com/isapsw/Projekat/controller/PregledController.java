@@ -4,6 +4,7 @@ import com.isapsw.Projekat.domain.Lekar;
 import com.isapsw.Projekat.domain.MedicinskaSestra;
 import com.isapsw.Projekat.domain.Pregled;
 import com.isapsw.Projekat.domain.TipPregleda;
+import com.isapsw.Projekat.dto.PregledDTO;
 import com.isapsw.Projekat.service.LekarService;
 import com.isapsw.Projekat.service.MedSestraService;
 import com.isapsw.Projekat.service.PregledService;
@@ -14,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -53,6 +55,26 @@ public class PregledController {
 
 
             return new ResponseEntity<List<Pregled>>(pregledi, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
+    }
+    @GetMapping("/sala/{id}")
+    public ResponseEntity<List<Pregled>> getPregledBySalaId(@PathVariable String id) {
+        try {
+            return new ResponseEntity<List<Pregled>>(pregledService.getPreglediBySalaId(Long.parseLong(id)), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PostMapping
+    public ResponseEntity<Pregled> addPregled(@RequestBody PregledDTO pregledDTO) {
+        try {
+
+            System.out.println(pregledDTO.getDatum());
+
+            return new ResponseEntity<Pregled>(pregledService.addPregled(pregledDTO), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }

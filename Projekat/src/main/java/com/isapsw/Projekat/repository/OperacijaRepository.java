@@ -15,6 +15,8 @@ public interface OperacijaRepository extends JpaRepository<Operacija, Long> {
 
     List<Operacija> findOperacijasByMedicinskaSestraId(Long id);
 
+    List<Operacija> findOperacijasBySalaId(Long id);
+
     @Query("SELECT o FROM Operacija o LEFT JOIN o.lekari l WHERE l.id = :id")
     List<Operacija> findOperacijasByLekari(@Param("id") Long id);
 

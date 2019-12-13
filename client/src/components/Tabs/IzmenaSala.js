@@ -29,6 +29,8 @@ import InputLabel from "@material-ui/core/InputLabel";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import TextField from "@material-ui/core/TextField";
+import KalendarSala from "../Tabs/BrzoZakazivanjePregleda/KalendarSala";
+import { searchSalaNaKlinici } from "../../store/actions/sala";
 
 import { getListaSala } from "../../store/actions/sala";
 
@@ -113,10 +115,14 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const IzmenaSala = ({ sale, getListaSala, klinikaId }) => {
+const IzmenaSala = ({ sale, getListaSala, klinikaId, searchSalaNaKlinici }) => {
   useEffect(() => {
     getListaSala(klinikaId);
   }, []);
+  const [state, setState] = React.useState({
+    broj: "",
+    naziv: ""
+  });
 
   const classes = useStyles();
   const [order, setOrder] = React.useState("asc");
@@ -140,6 +146,9 @@ const IzmenaSala = ({ sale, getListaSala, klinikaId }) => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
+  const handleChange = e => {
+    setState({ ...state, [e.target.name]: e.target.value });
+  };
 
   const handleChangeDense = event => {
     setDense(event.target.checked);
@@ -148,10 +157,58 @@ const IzmenaSala = ({ sale, getListaSala, klinikaId }) => {
   const [isEdit, setIsEdit] = React.useState(false);
   const handleSubmit = e => {
     e.preventDefault();
+    searchSalaNaKlinici(klinikaId, {
+      ...state
+    });
   };
 
   return (
     <div className={classes.root}>
+      <form onSubmit={handleSubmit}>
+        <Paper style={{ padding: 50, marginBottom: 50 }}>
+          <Grid container spacing={3}>
+            <Grid item md={3}>
+              <TextField
+                style={{ width: "80%" }}
+                margin="normal"
+                value={state.broj}
+                onChange={handleChange}
+                fullWidth
+                name="broj"
+                label="Broj sale"
+                type="text"
+                id="broj"
+              />
+            </Grid>
+            <Grid item md={3}>
+              <TextField
+                style={{ width: "80%" }}
+                margin="normal"
+                value={state.prezimePretraga}
+                onChange={handleChange}
+                fullWidth
+                name="naziv"
+                label="Naziv sale"
+                type="text"
+                id="naziv"
+              />
+            </Grid>
+            <Grid
+              item
+              md={3}
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center"
+              }}
+            >
+              <Button variant="contained" color="primary" type="submit">
+                Pretraži
+              </Button>
+            </Grid>
+          </Grid>
+        </Paper>
+      </form>
       <Paper className={classes.paper}>
         <EnhancedTableToolbar />
         <div className={classes.tableWrapper}>
@@ -201,9 +258,7 @@ const IzmenaSala = ({ sale, getListaSala, klinikaId }) => {
                         </TableCell>
                         <TableCell align="left">{row.naziv}</TableCell>
                         <TableCell align="right">
-                          <Button variant="outlined" color="primary">
-                            Kalendar zauzeca
-                          </Button>
+                          <KalendarSala salaId={row.id} />
                         </TableCell>
                         <TableCell align="right">
                           <Button variant="outlined" color="primary">
@@ -266,6 +321,7 @@ const mapStateToProps = state => ({
 
 export default withRouter(
   connect(mapStateToProps, {
-    getListaSala
+    getListaSala,
+    searchSalaNaKlinici
   })(IzmenaSala)
 );

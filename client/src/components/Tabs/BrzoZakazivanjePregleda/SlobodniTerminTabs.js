@@ -26,6 +26,7 @@ import PretragaSlobodnihLekara from "../BrzoZakazivanjePregleda/PretragaSlobodni
 import PretragaSlobodnihSala from "../BrzoZakazivanjePregleda/PretragaSlobodnihSala";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import { stat } from "fs";
+import { setPregled } from "../../../store/actions/pregled";
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -72,7 +73,10 @@ const SlobodniTerminiTabs = ({
   adminKlinike: { klinika },
   getKlinikaAdmin,
   getAllTipoviPregleda,
-  lekarZaPregled
+  lekarZaPregled,
+  setPregled,
+  salaZaPregled,
+  termin
 }) => {
   const [state, setState] = React.useState({
     cena: "",
@@ -82,7 +86,9 @@ const SlobodniTerminiTabs = ({
     klinikaId: "",
     lekarId: "",
     datum: "",
-    sala: ""
+    salaId: "",
+    popust: "",
+    medSestraId: ""
   });
   useEffect(() => {
     getAllTipoviPregleda(klinika.id);
@@ -127,7 +133,13 @@ const SlobodniTerminiTabs = ({
     }
   };
   const handleChange1 = e => {
-    setState({ ...state, [e.target.name]: e.target.value });
+    setState({
+      ...state,
+      salaId: salaZaPregled,
+      lekarId: lekarZaPregled,
+      datum: termin,
+      [e.target.name]: e.target.value
+    });
     {
       e.target.name === "tipPregledaId" && postaviCenuTrajanje(e.target.value);
     }
@@ -135,6 +147,17 @@ const SlobodniTerminiTabs = ({
 
   const handleChangeIndex = index => {
     setValue(index);
+  };
+
+  const handleSubmit = e => {
+    e.preventDefault();
+    setState({
+      ...state,
+      datum: termin
+    });
+    console.log(termin);
+    console.log(state.datum);
+    setPregled(state);
   };
 
   return (
@@ -232,6 +255,9 @@ const SlobodniTerminiTabs = ({
                   id="popust"
                   label="Popust"
                   type="number"
+                  name="popust"
+                  value={state.popust}
+                  onChange={handleChange1}
                   fullWidth
                   className={classes.textField}
                   inputProps={{ min: "0", max: "100", step: "1" }}
@@ -243,7 +269,7 @@ const SlobodniTerminiTabs = ({
                   label="Sala"
                   type="text"
                   disabled={true}
-                  value={state.sala}
+                  onChange={handleChange1}
                   fullWidth
                   className={classes.textField}
                   inputProps={{ min: "0", max: "100", step: "1" }}
@@ -261,7 +287,7 @@ const SlobodniTerminiTabs = ({
                   label="Lekar"
                   type="text"
                   disabled={true}
-                  value={state.lekarId}
+                  onChange={handleChange1}
                   fullWidth
                   className={classes.textField}
                   inputProps={{ min: "0", max: "100", step: "1" }}
@@ -280,13 +306,20 @@ const SlobodniTerminiTabs = ({
                 variant="contained"
                 color="primary"
                 className={classes.submit}
+                onClick={handleSubmit}
               >
                 Sačuvajte
               </Button>
             </Grid>
           </form>
         )}
-        {!isEdit && isSala && <PretragaSlobodnihSala klinikaId={klinika.id} />}
+        {!isEdit && isSala && (
+          <PretragaSlobodnihSala
+            klinikaId={klinika.id}
+            trajanje={state.trajanje}
+            setIsSala={setIsSala}
+          />
+        )}
       </TabPanel>
 
       <TabPanel value={value} index={1} dir={theme.direction}>
@@ -298,10 +331,13 @@ const SlobodniTerminiTabs = ({
 const mapStateToProps = state => ({
   tipoviPregleda: state.tipoviPregleda,
   adminKlinike: state.adminKlinike,
-  lekarZaPregled: state.lekar.lekarZaPregled
+  lekarZaPregled: state.lekar.lekarZaPregled,
+  salaZaPregled: state.sala.salaZaPregled,
+  termin: state.lekar.terminZaPregled
 });
 
 export default connect(mapStateToProps, {
   getAllTipoviPregleda,
-  getKlinikaAdmin
+  getKlinikaAdmin,
+  setPregled
 })(SlobodniTerminiTabs);
