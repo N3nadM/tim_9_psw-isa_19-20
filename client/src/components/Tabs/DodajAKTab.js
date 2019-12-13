@@ -43,8 +43,8 @@ const DodajAKTab = ({
   return (
     <form noValidate onSubmit={handleSubmit}>
       {console.log(klinike)}
-      <Grid container spacing={10}>
-        <Grid item sm={4}>
+      <Grid container spacing={4} direction="row" alignItems="baseline">
+        <Grid item sm={5}>
           <TextField
             value={state.ime}
             onChange={handleChange}
@@ -90,7 +90,7 @@ const DodajAKTab = ({
             id="password"
           />
         </Grid>
-        <Grid item sm={4}>
+        <Grid item sm={5}>
           <TextField
             value={state.drzava}
             onChange={handleChange}
@@ -135,29 +135,38 @@ const DodajAKTab = ({
             id="telefon"
           />
         </Grid>
+      </Grid>
+      <Grid
+        container
+        spacing={4}
+        direction="column"
+        justify="space-evenly"
+        alignItems={200}
+      >
+        <Grid item sm={5}>
+          <FormControl>
+            <InputLabel shrink id="demo-simple-select-placeholder-label-label">
+              Klinika
+            </InputLabel>
+            <Select
+              labelId="demo-simple-select-placeholder-label-label"
+              id="klinike"
+              onChange={handleChange}
+              displayEmpty
+              name="klinikaId"
+            >
+              {klinike &&
+                klinike.map(klinika => (
+                  <MenuItem key={klinika.id} value={klinika.id}>
+                    {klinika.naziv}
+                  </MenuItem>
+                ))}
+            </Select>
+            <FormHelperText>Izaberite kliniku</FormHelperText>
+          </FormControl>
+        </Grid>
 
-        <FormControl>
-          <InputLabel shrink id="demo-simple-select-placeholder-label-label">
-            Klinika
-          </InputLabel>
-          <Select
-            labelId="demo-simple-select-placeholder-label-label"
-            id="klinike"
-            onChange={handleChange}
-            displayEmpty
-            name="klinikaId"
-          >
-            {klinike &&
-              klinike.map(klinika => (
-                <MenuItem key={klinika.id} value={klinika.id}>
-                  {klinika.naziv}
-                </MenuItem>
-              ))}
-          </Select>
-          <FormHelperText>Izaberite kliniku</FormHelperText>
-        </FormControl>
-
-        <Grid container spacing={1}>
+        <Grid item sm={5}>
           <Button type="submit" variant="contained" color="primary">
             Dodaj
           </Button>
