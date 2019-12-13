@@ -31,7 +31,8 @@ import MenuItem from "@material-ui/core/MenuItem";
 import TextField from "@material-ui/core/TextField";
 import KalendarSala from "../BrzoZakazivanjePregleda/KalendarSala";
 
-import { getListaSala } from "../../../store/actions/sala";
+import { getListaDostupnihSala } from "../../../store/actions/sala";
+import { setSalaZaPregled } from "../../../store/actions/sala";
 
 function desc(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -114,9 +115,18 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const PretragaSalaTab = ({ sale, getListaSala, klinikaId, datum }) => {
+const PretragaSalaTab = ({
+  sale,
+  getListaDostupnihSala,
+  klinikaId,
+  datum,
+  terminZaPregled,
+  trajanje,
+  setSalaZaPregled,
+  setIsSala
+}) => {
   useEffect(() => {
-    getListaSala(klinikaId);
+    getListaDostupnihSala(klinikaId, terminZaPregled, trajanje);
   }, []);
 
   const classes = useStyles();
@@ -126,6 +136,12 @@ const PretragaSalaTab = ({ sale, getListaSala, klinikaId, datum }) => {
   const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
+
+  const [state, setState] = React.useState({
+    broj: "",
+    naziv: "",
+    termin: ""
+  });
 
   const handleRequestSort = (property, event) => {
     const isDesc = orderBy === property && order === "desc";
@@ -146,11 +162,6 @@ const PretragaSalaTab = ({ sale, getListaSala, klinikaId, datum }) => {
     setDense(event.target.checked);
   };
 
-  const [state, setState] = React.useState({
-    broj: "",
-    naziv: ""
-  });
-
   const [isEdit, setIsEdit] = React.useState(false);
   const handleSubmit = e => {
     e.preventDefault();
@@ -162,51 +173,6 @@ const PretragaSalaTab = ({ sale, getListaSala, klinikaId, datum }) => {
 
   return (
     <div className={classes.root}>
-      <form onSubmit={handleSubmit}>
-        <Paper style={{ padding: 50, marginBottom: 50 }}>
-          <Grid container spacing={3}>
-            <Grid item md={3}>
-              <TextField
-                style={{ width: "80%" }}
-                margin="normal"
-                value={state.broj}
-                onChange={handleChange}
-                fullWidth
-                name="broj"
-                label="Broj sale"
-                type="text"
-                id="broj"
-              />
-            </Grid>
-            <Grid item md={3}>
-              <TextField
-                style={{ width: "80%" }}
-                margin="normal"
-                value={state.prezimePretraga}
-                onChange={handleChange}
-                fullWidth
-                name="naziv"
-                label="Naziv sale"
-                type="text"
-                id="naziv"
-              />
-            </Grid>
-            <Grid
-              item
-              md={3}
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center"
-              }}
-            >
-              <Button variant="contained" color="primary" type="submit">
-                Pretraži
-              </Button>
-            </Grid>
-          </Grid>
-        </Paper>
-      </form>
       <Paper className={classes.paper}>
         <EnhancedTableToolbar />
         <div className={classes.tableWrapper}>
@@ -257,6 +223,19 @@ const PretragaSalaTab = ({ sale, getListaSala, klinikaId, datum }) => {
                         <TableCell align="left">{row.naziv}</TableCell>
                         <TableCell align="right">
                           <KalendarSala salaId={row.id} />
+                        </TableCell>
+                        <TableCell align="right">
+                          <Button
+                            variant="contained"
+                            color="primary"
+                            className={classes.submit}
+                            onClick={() => {
+                              setIsSala(false);
+                              setSalaZaPregled(row.id);
+                            }}
+                          >
+                            Rezervisi
+                          </Button>
                         </TableCell>
                       </TableRow>
                     );
@@ -309,11 +288,13 @@ const PretragaSalaTab = ({ sale, getListaSala, klinikaId, datum }) => {
 };
 
 const mapStateToProps = state => ({
-  sale: state.sala.listaSala
+  sale: state.sala.listaDostupnihSala,
+  terminZaPregled: state.lekar.terminZaPregled
 });
 
 export default withRouter(
   connect(mapStateToProps, {
-    getListaSala
+    getListaDostupnihSala,
+    setSalaZaPregled
   })(PretragaSalaTab)
 );

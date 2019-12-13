@@ -1,18 +1,21 @@
 package com.isapsw.Projekat.service;
 
 import com.isapsw.Projekat.domain.Klinika;
+import com.isapsw.Projekat.domain.Pregled;
 import com.isapsw.Projekat.domain.Sala;
 import com.isapsw.Projekat.dto.SalaDTO;
 import com.isapsw.Projekat.repository.KlinikaRepository;
+import com.isapsw.Projekat.repository.PregledRepository;
 import com.isapsw.Projekat.repository.SalaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.time.LocalTime;
+import java.util.*;
 
 @Service
 public class SalaService {
@@ -22,6 +25,9 @@ public class SalaService {
 
     @Autowired
     private KlinikaRepository klinikaRepository;
+
+    @Autowired
+    private PregledRepository pregledRepository;
 
     public Sala addSala(SalaDTO salaDTO){
         Sala s = new Sala();
@@ -37,6 +43,41 @@ public class SalaService {
 
     public List<Sala> getSaleNaKlinici(String id){
         return salaRepository.findByKlinikaId(Long.parseLong(id));
+    }
+
+    public List<Sala> getDostupneSale(String id, String termin, String trajanje) throws ParseException {
+        List<Sala> saleNaKlinici = salaRepository.findByKlinikaId(Long.parseLong(id));
+        SimpleDateFormat sdf = new SimpleDateFormat("EE MMM dd HH:mm:ss z yyyy", Locale.ENGLISH);
+        Date datum = sdf.parse(termin);
+        List<Pregled> pregledi = pregledRepository.findByPregledDatumPocetka(datum);
+        for(Pregled p : pregledi){
+            //brisanje sale iz liste za koju se vrsi provera
+            saleNaKlinici.remove(p.getSala());
+            if(saleNaKlinici.contains(p.getSala())){
+                System.out.println("Nasao pregled koji se odrzava o sali");
+                if(datum.getTime() > p.getDatumPocetka().getTime() && datum.getTime() <p.getDatumZavrsetka().getTime() ){
+                    //proverava da li se vreme pocetka novog pregleda nalazi izmedju pocetka i zavrsetka vec rezervisanog pregleda u toj sali
+                }else if((datum.getTime() + Integer.parseInt(trajanje)*60*100) >p.getDatumPocetka().getTime() && (datum.getTime() + Integer.parseInt(trajanje) *60 * 100) <p.getDatumZavrsetka().getTime()){
+                    //proverava da li se vreme zavrsetka novog pregleda nalazi izmedju pocetka i zavrsetka vec rezervisanog pregleda u toj sali
+                }else{
+                    //ako nije nijedan od prethodnih uslova ispunjen ta sala je dostupna i ubacije se u listu
+                    saleNaKlinici.add(p.getSala());
+                }
+            }
+        }
+
+        return  saleNaKlinici;
+    }
+
+    public List<Sala> search(Long id, String broj, String naziv){
+        List<Sala> sale = salaRepository.findSalaByParameters(broj, naziv);
+        List<Sala> ret = new ArrayList<>();
+        for(Sala s: sale){
+            if(s.getKlinika().getId().equals(id)){
+                ret.add(s);
+            }
+        }
+        return ret;
     }
 
 }

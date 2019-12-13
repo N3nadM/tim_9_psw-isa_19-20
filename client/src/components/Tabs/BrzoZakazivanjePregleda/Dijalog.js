@@ -39,7 +39,7 @@ function ConfirmationDialogRaw(props) {
   };
 
   const handleOk = () => {
-    setLekarZakazivanje(lekar);
+    setLekarZakazivanje(lekar.id, value);
     onClose();
   };
 

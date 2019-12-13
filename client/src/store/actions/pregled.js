@@ -43,3 +43,11 @@ export const getAllSalaPregledi = id => async (dispatch, getState) => {
     console.log(err);
   }
 };
+
+export const setPregled = data => async (dispatch, getState) => {
+  try {
+    let pregled = await axios.post(`/api/pregled`, data);
+  } catch (err) {
+    console.log(err);
+  }
+};

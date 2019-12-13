@@ -17,12 +17,12 @@ public class Pregled extends Pregled_Operacija{
     private Lekar lekar;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="pacijent_id", updatable = false, nullable = false)
+    @JoinColumn(name="pacijent_id", updatable = false, nullable = true)
     @JsonIgnore
     private Pacijent pacijent;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="medicinskaSestra_id", updatable = false, nullable = false)
+    @JoinColumn(name="medicinskaSestra_id", updatable = false, nullable = true)
     @JsonIgnore
     private MedicinskaSestra medicinskaSestra;
 
