@@ -31,8 +31,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import TextField from "@material-ui/core/TextField";
 import KalendarSala from "../BrzoZakazivanjePregleda/KalendarSala";
 
-import { getListaDostupnihSala } from "../../../store/actions/sala";
-import { setSalaZaPregled } from "../../../store/actions/sala";
+import { getPredefinisaniPregledi } from "../../../store/actions/pregled";
 
 function desc(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -72,7 +71,7 @@ const EnhancedTableToolbar = () => {
   return (
     <Toolbar>
       <Typography className={classes.title} variant="h6" id="tableTitle">
-        Sale
+        Slobodni termini
       </Typography>
 
       <Tooltip title="Filter list">
@@ -115,17 +114,13 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const PretragaSalaTab = ({
-  sale,
-  getListaDostupnihSala,
-  klinikaId,
-  datum,
-  terminZaPregled,
-  trajanje,
-  setSalaZaPregled
+const ListaSlobodnihTermina = ({
+  termini,
+  getPredefinisaniPregledi,
+  klinikaId
 }) => {
   useEffect(() => {
-    getListaDostupnihSala(klinikaId, terminZaPregled, trajanje);
+    getPredefinisaniPregledi(klinikaId);
   }, []);
 
   const classes = useStyles();
@@ -185,28 +180,49 @@ const PretragaSalaTab = ({
               <TableRow>
                 <TableCell align="left">
                   <TableSortLabel
-                    active={orderBy === "sala.salaIdentifier"}
+                    active={orderBy === "termini.datum"}
                     direction={order}
-                    onClick={() => handleRequestSort("sala.salaIdentifier")}
+                    onClick={() => handleRequestSort("termini.datum")}
+                  >
+                    Datum
+                  </TableSortLabel>
+                </TableCell>
+                <TableCell align="left">
+                  <TableSortLabel
+                    active={orderBy === "termini.tipPregleda.naziv"}
+                    direction={order}
+                    onClick={() =>
+                      handleRequestSort("termini.tipPregleda.naziv")
+                    }
+                  >
+                    Tip pregleda
+                  </TableSortLabel>
+                </TableCell>
+                <TableCell align="left">
+                  <TableSortLabel
+                    active={orderBy === "termini.sala.broj"}
+                    direction={order}
+                    onClick={() => handleRequestSort("termini.sala.broj")}
                   >
                     Broj sale
                   </TableSortLabel>
                 </TableCell>
                 <TableCell align="left">
                   <TableSortLabel
-                    active={orderBy === "sala.naziv"}
+                    active={orderBy === "termini.lekar.korisnik.ime"}
                     direction={order}
-                    onClick={() => handleRequestSort("sala.naziv")}
+                    onClick={() =>
+                      handleRequestSort("termini.lekar.korisnik.ime")
+                    }
                   >
-                    Naziv sale
+                    Lekar
                   </TableSortLabel>
                 </TableCell>
-                <TableCell align="right"></TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {sale &&
-                stableSort(sale, getSorting(order, orderBy))
+              {termini &&
+                stableSort(termini, getSorting(order, orderBy))
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   .map((row, index) => {
                     return (
@@ -217,33 +233,23 @@ const PretragaSalaTab = ({
                         key={row.id}
                       >
                         <TableCell component="th" allign="left">
-                          {row.salaIdentifier}
+                          {row.datumPocetka}
                         </TableCell>
-                        <TableCell align="left">{row.naziv}</TableCell>
-                        <TableCell align="right">
-                          <KalendarSala salaId={row.id} />
+                        <TableCell align="left">
+                          {row.tipPregleda.naziv}
                         </TableCell>
                         <TableCell align="right">
-                          <Button
-                            variant="contained"
-                            color="primary"
-                            name={row.id}
-                            label="Rezervisi"
-                            className={classes.submit}
-                            onClick={() => {
-                              setSalaZaPregled(row.id);
-                              setState({ ...state, broj: row.salaIdentifier });
-                            }}
-                          >
-                            Rezervisi
-                          </Button>
+                          {row.sala.salaIdentifier}
+                        </TableCell>
+                        <TableCell align="right">
+                          {row.lekar.korisnik.ime}
                         </TableCell>
                       </TableRow>
                     );
                   })}
-              {sale &&
+              {termini &&
                 rowsPerPage -
-                  Math.min(rowsPerPage, sale.length - page * rowsPerPage) >
+                  Math.min(rowsPerPage, termini.length - page * rowsPerPage) >
                   0 && (
                   <TableRow
                     style={{
@@ -252,7 +258,7 @@ const PretragaSalaTab = ({
                         (rowsPerPage -
                           Math.min(
                             rowsPerPage,
-                            sale.length - page * rowsPerPage
+                            termini.length - page * rowsPerPage
                           ))
                     }}
                   >
@@ -262,11 +268,11 @@ const PretragaSalaTab = ({
             </TableBody>
           </Table>
         </div>
-        {sale && (
+        {termini && (
           <TablePagination
             rowsPerPageOptions={[5, 10, 25]}
             component="div"
-            count={sale.length}
+            count={termini.length}
             rowsPerPage={rowsPerPage}
             page={page}
             backIconButtonProps={{
@@ -279,17 +285,6 @@ const PretragaSalaTab = ({
             onChangeRowsPerPage={handleChangeRowsPerPage}
           />
         )}
-        <TextField
-          variant="outlined"
-          margin="normal"
-          required
-          value={state.broj}
-          fullWidth
-          id="iza"
-          label="Izabrana sala"
-          name="lekar"
-          autoComplete="off"
-        />
       </Paper>
       <FormControlLabel
         control={<Switch checked={dense} onChange={handleChangeDense} />}
@@ -300,13 +295,11 @@ const PretragaSalaTab = ({
 };
 
 const mapStateToProps = state => ({
-  sale: state.sala.listaDostupnihSala,
-  terminZaPregled: state.lekar.terminZaPregled
+  termini: state.pregled.listaPredefinisanih
 });
 
 export default withRouter(
   connect(mapStateToProps, {
-    getListaDostupnihSala,
-    setSalaZaPregled
-  })(PretragaSalaTab)
+    getPredefinisaniPregledi
+  })(ListaSlobodnihTermina)
 );

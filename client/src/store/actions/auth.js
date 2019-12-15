@@ -48,6 +48,7 @@ export const authUser = userData => async dispatch => {
     const decodedToken = jwtDecode(pureJwt);
     dispatch(setCurrentUser(decodedToken));
   } catch (err) {
+    console.log(err);
     dispatch(setError(err));
   }
 };

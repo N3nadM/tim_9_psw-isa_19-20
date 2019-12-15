@@ -27,6 +27,153 @@ import PretragaSlobodnihSala from "../BrzoZakazivanjePregleda/PretragaSlobodnihS
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import { stat } from "fs";
 import { setPregled } from "../../../store/actions/pregled";
+
+import Stepper from "@material-ui/core/Stepper";
+import Step from "@material-ui/core/Step";
+import StepLabel from "@material-ui/core/StepLabel";
+import PretragaSlobodnihSestara from "../BrzoZakazivanjePregleda/PretragaSlobodnihSestara";
+import ListaSlobodnihTermina from "../BrzoZakazivanjePregleda/ListaSlobodnihTermina";
+
+function getSteps() {
+  return [
+    "Unos tipa pregleda, popusta i datuma",
+    "Izbor lekara",
+    "Izbor medicinske sestre",
+    "Izbor sale"
+  ];
+}
+let d = new Date();
+function getStepContent(
+  step,
+  state,
+  handleChange1,
+  classes,
+  tipoviPregleda,
+  klinika,
+  selectedDate,
+  handleDateChange
+) {
+  const today = new Date();
+  switch (step) {
+    case 0:
+      return (
+        <>
+          <Grid container spacing={3}>
+            <Grid item sm={6}>
+              <FormControl
+                className={classes.form}
+                fullWidth
+                style={{ marginTop: 16 }}
+              >
+                <InputLabel
+                  shrink
+                  id="demo-simple-select-placeholder-label-label"
+                >
+                  Tip pregleda
+                </InputLabel>
+                <Select
+                  style={{ height: 18 }}
+                  labelId="demo-simple-select-placeholder-label-label"
+                  id="tipPregledaId"
+                  fullWidth
+                  value={state.tipPregledaId}
+                  onChange={handleChange1}
+                  name="tipPregledaId"
+                >
+                  {tipoviPregleda &&
+                    tipoviPregleda.map(tipoviPregleda => (
+                      <MenuItem
+                        key={tipoviPregleda.id}
+                        value={tipoviPregleda.id}
+                      >
+                        {tipoviPregleda.naziv}
+                      </MenuItem>
+                    ))}
+                </Select>
+              </FormControl>
+              <TextField
+                id="cena"
+                label="Cena"
+                type="text"
+                value={state.cena}
+                disabled={true}
+                fullWidth
+                className={classes.textField}
+                InputLabelProps={{
+                  shrink: true
+                }}
+              />
+              <TextField
+                id="trajanje"
+                label="Trajanje pregleda"
+                type="text"
+                fullWidth
+                disabled={true}
+                value={state.trajanje}
+                className={classes.textField}
+                InputLabelProps={{
+                  shrink: true
+                }}
+              />
+            </Grid>
+            <Grid item sm={6}>
+              <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                <KeyboardDatePicker
+                  id="date-picker-dialog"
+                  format="MM/dd/yyyy"
+                  minDate={today}
+                  fullWidth
+                  style={{ marginTop: 18 }}
+                  value={d}
+                  onChange={e => handleDateChange(e)}
+                  KeyboardButtonProps={{
+                    "aria-label": "change date"
+                  }}
+                />
+              </MuiPickersUtilsProvider>
+              <TextField
+                id="popust"
+                label="Popust"
+                type="number"
+                name="popust"
+                value={state.popust}
+                onChange={handleChange1}
+                fullWidth
+                className={classes.textField}
+                inputProps={{ min: "0", max: "100", step: "1" }}
+              />
+            </Grid>
+          </Grid>
+        </>
+      );
+    case 1:
+      return (
+        <>
+          <PretragaSlobodnihLekara stariState={state} idKlinike={klinika.id} />
+        </>
+      );
+    case 2:
+      return (
+        <>
+          <PretragaSlobodnihSestara
+            klinikaId={klinika.id}
+            trajanje={state.trajanje}
+          />
+        </>
+      );
+    case 3:
+      return (
+        <>
+          <PretragaSlobodnihSala
+            klinikaId={klinika.id}
+            trajanje={state.trajanje}
+          />
+        </>
+      );
+    default:
+      return "Unknown step";
+  }
+}
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -76,6 +223,7 @@ const SlobodniTerminiTabs = ({
   lekarZaPregled,
   setPregled,
   salaZaPregled,
+  medSestraId,
   termin
 }) => {
   const [state, setState] = React.useState({
@@ -94,7 +242,7 @@ const SlobodniTerminiTabs = ({
     getAllTipoviPregleda(klinika.id);
     setState({
       ...state,
-      lekarId: lekarZaPregled ? lekarZaPregled.korisnik.ime : ""
+      lekarId: lekarZaPregled ? lekarZaPregled : ""
     });
   }, []);
   const classes = useStyles();
@@ -103,16 +251,21 @@ const SlobodniTerminiTabs = ({
   const [isEdit, setIsEdit] = React.useState(false);
   const [isSala, setIsSala] = React.useState(false);
 
-  const [selectedDate, setSelectedDate] = React.useState(
-    new Date("2019-12-18T21:11:54")
-  );
+  const handleNext = () => {
+    setActiveStep(prevActiveStep => prevActiveStep + 1);
+  };
+
+  const handleBack = () => {
+    setActiveStep(prevActiveStep => prevActiveStep - 1);
+  };
+
+  const [selectedDate, setSelectedDate] = React.useState(new Date());
 
   const handleDateChange = date => {
     setSelectedDate(date);
-    setState({
-      ...state,
-      datum: date
-    });
+    d = date;
+    state.datum = date;
+    console.log(state.datum);
   };
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -137,7 +290,6 @@ const SlobodniTerminiTabs = ({
       ...state,
       salaId: salaZaPregled,
       lekarId: lekarZaPregled,
-      datum: termin,
       [e.target.name]: e.target.value
     });
     {
@@ -150,15 +302,22 @@ const SlobodniTerminiTabs = ({
   };
 
   const handleSubmit = e => {
+    const state2 = {
+      lekarId: lekarZaPregled,
+      salaId: salaZaPregled,
+      medSestraId: medSestraId,
+      datum: termin,
+      popust: state.popust,
+      tipPregledaId: state.tipPregledaId
+    };
+    console.log(state2);
+    setIsEdit(true);
     e.preventDefault();
-    setState({
-      ...state,
-      datum: termin
-    });
-    console.log(termin);
-    console.log(state.datum);
-    setPregled(state);
+    setPregled(state2);
   };
+
+  const steps = getSteps();
+  const [activeStep, setActiveStep] = useState(0);
 
   return (
     <div className={classes.root}>
@@ -172,158 +331,85 @@ const SlobodniTerminiTabs = ({
         <Tab label="Slobodni termini pregleda" {...a11yProps(1)} />
       </Tabs>
       <TabPanel value={value} index={0} dir={theme.direction}>
-        {isEdit && !isSala && (
-          <PretragaSlobodnihLekara
-            stariState={state}
-            idKlinike={klinika.id}
-            setIsEdit={setIsEdit}
-          />
-        )}
-        {!isEdit && !isSala && (
-          <form className={classes.form} noValidate>
-            <Grid container spacing={3}>
-              <Grid item sm={6}>
-                <FormControl
-                  className={classes.form}
-                  fullWidth
-                  style={{ marginTop: 16 }}
-                >
-                  <InputLabel
-                    shrink
-                    id="demo-simple-select-placeholder-label-label"
-                  >
-                    Tip pregleda
-                  </InputLabel>
-                  <Select
-                    labelId="demo-simple-select-placeholder-label-label"
-                    id="tipPregledaId"
-                    displayEmpty
-                    fullWidth
-                    onChange={handleChange1}
-                    name="tipPregledaId"
-                  >
-                    {tipoviPregleda &&
-                      tipoviPregleda.map(tipoviPregleda => (
-                        <MenuItem
-                          key={tipoviPregleda.id}
-                          value={tipoviPregleda.id}
-                        >
-                          {tipoviPregleda.naziv}
-                        </MenuItem>
-                      ))}
-                  </Select>
-                  <FormHelperText>Izaberite tip pregleda</FormHelperText>
-                </FormControl>
-                <TextField
-                  id="cena"
-                  label="Cena"
-                  type="text"
-                  value={state.cena}
-                  disabled={true}
-                  fullWidth
-                  className={classes.textField}
-                  InputLabelProps={{
-                    shrink: true
-                  }}
-                />
-                <TextField
-                  id="trajanje"
-                  label="Trajanje pregleda"
-                  type="text"
-                  fullWidth
-                  disabled={true}
-                  value={state.trajanje}
-                  className={classes.textField}
-                  InputLabelProps={{
-                    shrink: true
-                  }}
-                />
-
-                <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                  <KeyboardDatePicker
-                    id="date-picker-dialog"
-                    label="Datum pregleda"
-                    format="MM/dd/yyyy"
-                    value={selectedDate}
-                    onChange={handleDateChange}
-                    KeyboardButtonProps={{
-                      "aria-label": "change date"
-                    }}
-                  />
-                </MuiPickersUtilsProvider>
-                <TextField
-                  id="popust"
-                  label="Popust"
-                  type="number"
-                  name="popust"
-                  value={state.popust}
-                  onChange={handleChange1}
-                  fullWidth
-                  className={classes.textField}
-                  inputProps={{ min: "0", max: "100", step: "1" }}
-                />
-              </Grid>
-              <Grid item sm={6}>
-                <TextField
-                  id="sala"
-                  label="Sala"
-                  type="text"
-                  disabled={true}
-                  onChange={handleChange1}
-                  fullWidth
-                  className={classes.textField}
-                  inputProps={{ min: "0", max: "100", step: "1" }}
-                />
-                <Button
-                  variant="contained"
-                  color="primary"
-                  className={classes.submit}
-                  onClick={() => setIsSala(true)}
-                >
-                  Pronadji salu
-                </Button>
-                <TextField
-                  id="lekar"
-                  label="Lekar"
-                  type="text"
-                  disabled={true}
-                  onChange={handleChange1}
-                  fullWidth
-                  className={classes.textField}
-                  inputProps={{ min: "0", max: "100", step: "1" }}
-                />
-                <Button
-                  variant="contained"
-                  color="primary"
-                  className={classes.submit}
-                  onClick={() => setIsEdit(true)}
-                >
-                  Pronadji lekara
-                </Button>
-              </Grid>
+        {!isEdit ? (
+          <div>
+            <div
+              style={{
+                marginTop: 64,
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center"
+              }}
+            >
+              <Typography component="h1" variant="h5">
+                Unos novog termina pregleda
+              </Typography>
+            </div>
+            <Stepper activeStep={activeStep}>
+              {steps.map((label, index) => {
+                return (
+                  <Step key={label}>
+                    <StepLabel>{label}</StepLabel>
+                  </Step>
+                );
+              })}
+            </Stepper>
+            <form className={classes.form} noValidate onSubmit={handleSubmit}>
+              <div className={classes.instructions}>
+                {getStepContent(
+                  activeStep,
+                  state,
+                  handleChange1,
+                  classes,
+                  tipoviPregleda,
+                  klinika,
+                  selectedDate,
+                  handleDateChange
+                )}
+              </div>
               <Button
-                type="submit"
-                variant="contained"
-                color="primary"
-                className={classes.submit}
-                onClick={handleSubmit}
+                disabled={activeStep === 0}
+                onClick={handleBack}
+                className={classes.button}
+                style={{ marginTop: 10 }}
               >
-                Sačuvajte
+                Nazad
               </Button>
-            </Grid>
-          </form>
-        )}
-        {!isEdit && isSala && (
-          <PretragaSlobodnihSala
-            klinikaId={klinika.id}
-            trajanje={state.trajanje}
-            setIsSala={setIsSala}
-          />
+
+              {activeStep !== steps.length - 1 ? (
+                <Button
+                  style={{ marginTop: 10 }}
+                  variant="contained"
+                  color="primary"
+                  onClick={handleNext}
+                  className={classes.button}
+                >
+                  Dalje
+                </Button>
+              ) : (
+                <Button
+                  variant="contained"
+                  color="primary"
+                  className={classes.submit}
+                  onClick={handleSubmit}
+                >
+                  Sačuvajte
+                </Button>
+              )}
+            </form>{" "}
+          </div>
+        ) : (
+          <div>
+            <Typography style={{ marginTop: 40 }} variant="h6">
+              Uspesno ste kreirali slobodan termin pregleda koji pacijenti mogu
+              da rezervisu jednim klikom.
+            </Typography>
+          </div>
         )}
       </TabPanel>
 
       <TabPanel value={value} index={1} dir={theme.direction}>
-        Lista slobodnih termina pregleda
+        {value === 1 && <ListaSlobodnihTermina klinikaId={klinika.id} />}
       </TabPanel>
     </div>
   );
@@ -333,7 +419,8 @@ const mapStateToProps = state => ({
   adminKlinike: state.adminKlinike,
   lekarZaPregled: state.lekar.lekarZaPregled,
   salaZaPregled: state.sala.salaZaPregled,
-  termin: state.lekar.terminZaPregled
+  termin: state.lekar.terminZaPregled,
+  medSestraId: state.medsestra.sestraZaPregled
 });
 
 export default connect(mapStateToProps, {

@@ -1,4 +1,8 @@
-import { SET_PREGLEDI, SET_PREGLEDI_ZA_SALU } from "../actionTypes";
+import {
+  SET_PREGLEDI,
+  SET_PREGLEDI_ZA_SALU,
+  SET_LISTA_PREDEFINISANIH_PREGLEDA
+} from "../actionTypes";
 import axios from "axios";
 
 export const setPregledi = pregledi => ({
@@ -9,6 +13,11 @@ export const setPregledi = pregledi => ({
 export const setPreglediZaSalu = preglediZaSalu => ({
   type: SET_PREGLEDI_ZA_SALU,
   preglediZaSalu
+});
+
+export const setListaPredefinisanih = listaPredefinisanih => ({
+  type: SET_LISTA_PREDEFINISANIH_PREGLEDA,
+  listaPredefinisanih
 });
 
 export const getAllPregledi = id => async (dispatch, getState) => {
@@ -47,6 +56,15 @@ export const getAllSalaPregledi = id => async (dispatch, getState) => {
 export const setPregled = data => async (dispatch, getState) => {
   try {
     let pregled = await axios.post(`/api/pregled`, data);
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const getPredefinisaniPregledi = id => async (dispatch, getState) => {
+  try {
+    let pregledi = await axios.get(`/api/pregled/predefinisani/${id}`);
+    dispatch(setListaPredefinisanih(pregledi.data));
   } catch (err) {
     console.log(err);
   }

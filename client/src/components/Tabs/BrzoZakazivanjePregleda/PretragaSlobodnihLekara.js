@@ -68,8 +68,7 @@ const PretragaSlobodniLekara = ({
   setState,
   getLekariKlinike,
   idKlinike,
-  lekari,
-  setIsEdit
+  lekari
 }) => {
   useEffect(() => {
     console.log(stariState);
@@ -237,14 +236,6 @@ const PretragaSlobodniLekara = ({
                 )}
               </TableBody>
             </Table>
-            <Button
-              variant="contained"
-              color="primary"
-              className={classes.submit}
-              onClick={() => setIsEdit(false)}
-            >
-              Gotovo
-            </Button>
           </div>
           <TablePagination
             rowsPerPageOptions={[5, 10, 25]}

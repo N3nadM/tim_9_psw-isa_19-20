@@ -5,10 +5,7 @@ import com.isapsw.Projekat.domain.Pregled;
 import com.isapsw.Projekat.domain.Sala;
 import com.isapsw.Projekat.domain.TipPregleda;
 import com.isapsw.Projekat.dto.PregledDTO;
-import com.isapsw.Projekat.repository.LekarRepository;
-import com.isapsw.Projekat.repository.PregledRepository;
-import com.isapsw.Projekat.repository.SalaRepository;
-import com.isapsw.Projekat.repository.TipoviPregledaRepository;
+import com.isapsw.Projekat.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,6 +28,9 @@ public class PregledService {
     @Autowired
     private TipoviPregledaRepository tipoviPregledaRepository;
 
+    @Autowired
+    private MedSestraRepository medSestraRepository;
+
     public List<Pregled> getPreglediByPacijentId(Long id) {
         return pregledRepository.findPregledByPacijentId(id);
     }
@@ -43,6 +43,11 @@ public class PregledService {
 
     public List<Pregled> getPreglediBySalaId(Long id) { return pregledRepository.findPregledBySalaId(id); }
 
+    public List<Pregled> getPredefinisaniPregledi(Long id) {
+       return pregledRepository.findPregledBySalaKlinikaId(id);
+
+    }
+
     public Pregled addPregled(PregledDTO pregledDTO) throws ParseException {
         Pregled pregled = new Pregled();
         Optional<Sala> sala = salaRepository.findById(Long.parseLong(pregledDTO.getSalaId()));
@@ -53,7 +58,7 @@ public class PregledService {
         Optional<TipPregleda> tp = tipoviPregledaRepository.findById(Long.parseLong(pregledDTO.getTipPregledaId()));
         pregled.setTipPregleda(tp.get());
 
-        pregled.setMedicinskaSestra(null);
+        pregled.setMedicinskaSestra(medSestraRepository.findById(Long.parseLong(pregledDTO.getMedSestraId())).get());
         pregled.setPacijent(null);
 
         SimpleDateFormat sdf = new SimpleDateFormat("EE MMM dd HH:mm:ss z yyyy", Locale.ENGLISH);
@@ -61,7 +66,7 @@ public class PregledService {
         Date d2 = sdf.parse(pregledDTO.getDatum());
         pregled.setDatumPocetka(datum);
 
-        d2.setTime(d2.getTime() + tp.get().getMinimalnoTrajanjeMin() * 600 * 1000);
+        d2.setTime(d2.getTime() + tp.get().getMinimalnoTrajanjeMin() * 60 * 1000);
         pregled.setDatumZavrsetka(d2);
 
         Date date = Calendar.getInstance().getTime();

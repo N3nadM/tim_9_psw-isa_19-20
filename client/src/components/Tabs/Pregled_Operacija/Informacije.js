@@ -63,17 +63,21 @@ const Informacije = ({ obj }) => {
         <Divider />
         <ListItem>
           <ListItemText primary="Ime pacijenta" />
-          <Typography variant="subtitle1">{pacijent.korisnik.ime}</Typography>
+          <Typography variant="subtitle1">
+            {pacijent ? pacijent.korisnik.ime : "Nema leba"}
+          </Typography>
         </ListItem>
         <ListItem>
           <ListItemText primary="Prezime pacijenta" />
           <Typography variant="subtitle1">
-            {pacijent.korisnik.prezime}
+            {pacijent ? pacijent.korisnik.prezime : "Nema lebaca"}
           </Typography>
         </ListItem>
         <ListItem>
           <ListItemText primary="Broj osiguranika" />
-          <Typography variant="subtitle1">{pacijent.jbzo}</Typography>
+          <Typography variant="subtitle1">
+            {pacijent ? pacijent.jbzo : "Lebac neces jesti"}
+          </Typography>
         </ListItem>
       </List>
     </Paper>

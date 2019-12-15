@@ -41,8 +41,6 @@ public class SalaController {
     @GetMapping("/dostupneSale/{id}/{termin}/{trajanje}")
     public ResponseEntity<List<Sala>> getDostupneSale(@PathVariable String id, @PathVariable String termin, @PathVariable String trajanje){
         try{
-            System.out.println(id);
-            System.out.println(termin);
             return  new ResponseEntity<List<Sala>>(salaService.getDostupneSale(id, termin, trajanje), HttpStatus.OK);
         }catch(Exception e){
             return  new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -50,7 +48,7 @@ public class SalaController {
     }
 
     @PostMapping("/search/{id}")
-    public ResponseEntity<List<Sala>> searchLekariNaKlinici(@PathVariable String id, @RequestBody Map<String,Object> body) {
+    public ResponseEntity<List<Sala>> searcSaleNaKlinici(@PathVariable String id, @RequestBody Map<String,Object> body) {
         try {
             List<Sala> salas = salaService.search(Long.parseLong(id), body.get("broj").toString(), body.get("naziv").toString());
             return new ResponseEntity<>(salas, HttpStatus.OK);
