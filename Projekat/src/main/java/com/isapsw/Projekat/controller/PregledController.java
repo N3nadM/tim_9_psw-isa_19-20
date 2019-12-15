@@ -80,5 +80,13 @@ public class PregledController {
         }
     }
 
+    @GetMapping("/predefinisani/{id}")
+    public ResponseEntity<List<Pregled>> getPredefinisaniPregledi(@PathVariable String id) {
+        try {
+            return new ResponseEntity<List<Pregled>>(pregledService.getPredefinisaniPregledi(Long.parseLong(id)), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
+    }
 
 }

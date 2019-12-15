@@ -29,10 +29,9 @@ import InputLabel from "@material-ui/core/InputLabel";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import TextField from "@material-ui/core/TextField";
-import KalendarSala from "../BrzoZakazivanjePregleda/KalendarSala";
 
-import { getListaDostupnihSala } from "../../../store/actions/sala";
-import { setSalaZaPregled } from "../../../store/actions/sala";
+import { getListaDostupnihSestara } from "../../../store/actions/medSestra";
+import { setSestraZakazivanje } from "../../../store/actions/medSestra";
 
 function desc(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -72,7 +71,7 @@ const EnhancedTableToolbar = () => {
   return (
     <Toolbar>
       <Typography className={classes.title} variant="h6" id="tableTitle">
-        Sale
+        Medicinske sestre
       </Typography>
 
       <Tooltip title="Filter list">
@@ -115,17 +114,19 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const PretragaSalaTab = ({
-  sale,
-  getListaDostupnihSala,
+const PretragaSestraTab = ({
+  sestre,
+  getListaDostupnihSestara,
   klinikaId,
+  sestraId,
   datum,
   terminZaPregled,
   trajanje,
-  setSalaZaPregled
+  setSestraZakazivanje
 }) => {
   useEffect(() => {
-    getListaDostupnihSala(klinikaId, terminZaPregled, trajanje);
+    console.log(klinikaId);
+    getListaDostupnihSestara(klinikaId, terminZaPregled, trajanje);
   }, []);
 
   const classes = useStyles();
@@ -137,9 +138,8 @@ const PretragaSalaTab = ({
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
   const [state, setState] = React.useState({
-    broj: "",
-    naziv: "",
-    termin: ""
+    ime: "",
+    prezime: ""
   });
 
   const handleRequestSort = (property, event) => {
@@ -185,28 +185,28 @@ const PretragaSalaTab = ({
               <TableRow>
                 <TableCell align="left">
                   <TableSortLabel
-                    active={orderBy === "sala.salaIdentifier"}
+                    active={orderBy === "sestra.ime"}
                     direction={order}
-                    onClick={() => handleRequestSort("sala.salaIdentifier")}
+                    onClick={() => handleRequestSort("sestra.ime")}
                   >
-                    Broj sale
+                    Ime
                   </TableSortLabel>
                 </TableCell>
                 <TableCell align="left">
                   <TableSortLabel
-                    active={orderBy === "sala.naziv"}
+                    active={orderBy === "sestra.prezime"}
                     direction={order}
-                    onClick={() => handleRequestSort("sala.naziv")}
+                    onClick={() => handleRequestSort("sestra.prezime")}
                   >
-                    Naziv sale
+                    Prezime
                   </TableSortLabel>
                 </TableCell>
                 <TableCell align="right"></TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {sale &&
-                stableSort(sale, getSorting(order, orderBy))
+              {sestre &&
+                stableSort(sestre, getSorting(order, orderBy))
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   .map((row, index) => {
                     return (
@@ -217,11 +217,10 @@ const PretragaSalaTab = ({
                         key={row.id}
                       >
                         <TableCell component="th" allign="left">
-                          {row.salaIdentifier}
+                          {row.korisnik.ime}
                         </TableCell>
-                        <TableCell align="left">{row.naziv}</TableCell>
-                        <TableCell align="right">
-                          <KalendarSala salaId={row.id} />
+                        <TableCell align="left">
+                          {row.korisnik.prezime}
                         </TableCell>
                         <TableCell align="right">
                           <Button
@@ -231,19 +230,23 @@ const PretragaSalaTab = ({
                             label="Rezervisi"
                             className={classes.submit}
                             onClick={() => {
-                              setSalaZaPregled(row.id);
-                              setState({ ...state, broj: row.salaIdentifier });
+                              setSestraZakazivanje(row.id);
+                              setState({
+                                ...state,
+                                ime: row.korisnik.ime,
+                                prezime: row.korisnik.prezime
+                              });
                             }}
                           >
-                            Rezervisi
+                            Izaberi
                           </Button>
                         </TableCell>
                       </TableRow>
                     );
                   })}
-              {sale &&
+              {sestre &&
                 rowsPerPage -
-                  Math.min(rowsPerPage, sale.length - page * rowsPerPage) >
+                  Math.min(rowsPerPage, sestre.length - page * rowsPerPage) >
                   0 && (
                   <TableRow
                     style={{
@@ -252,7 +255,7 @@ const PretragaSalaTab = ({
                         (rowsPerPage -
                           Math.min(
                             rowsPerPage,
-                            sale.length - page * rowsPerPage
+                            sestre.length - page * rowsPerPage
                           ))
                     }}
                   >
@@ -262,11 +265,11 @@ const PretragaSalaTab = ({
             </TableBody>
           </Table>
         </div>
-        {sale && (
+        {sestre && (
           <TablePagination
             rowsPerPageOptions={[5, 10, 25]}
             component="div"
-            count={sale.length}
+            count={sestre.length}
             rowsPerPage={rowsPerPage}
             page={page}
             backIconButtonProps={{
@@ -283,11 +286,11 @@ const PretragaSalaTab = ({
           variant="outlined"
           margin="normal"
           required
-          value={state.broj}
+          value={state.ime + " " + state.prezime}
           fullWidth
           id="iza"
-          label="Izabrana sala"
-          name="lekar"
+          label="Izabrana sestra"
+          name="sestra"
           autoComplete="off"
         />
       </Paper>
@@ -300,13 +303,14 @@ const PretragaSalaTab = ({
 };
 
 const mapStateToProps = state => ({
-  sale: state.sala.listaDostupnihSala,
-  terminZaPregled: state.lekar.terminZaPregled
+  sestre: state.medsestra.listaDostupnihSestara,
+  terminZaPregled: state.lekar.terminZaPregled,
+  sestraId: state.medsestra.sestraZaPregled
 });
 
 export default withRouter(
   connect(mapStateToProps, {
-    getListaDostupnihSala,
-    setSalaZaPregled
-  })(PretragaSalaTab)
+    getListaDostupnihSestara,
+    setSestraZakazivanje
+  })(PretragaSestraTab)
 );

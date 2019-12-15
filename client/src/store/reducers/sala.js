@@ -2,7 +2,6 @@ import {
   SET_ADDED_SALA,
   SET_LISTA_SALA,
   SET_LISTA_DOSTUPNIH_SALA,
-  SET_TERMIN_ZA_PREGLED,
   SET_SALA_ZA_PREGLED
 } from "../actionTypes";
 

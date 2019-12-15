@@ -14,10 +14,12 @@ export default (state = DEFAULT_STATE, action) => {
   switch (action.type) {
     case SET_PACIJENT_PROFILE:
       return {
+        ...state,
         pacijent: action.pacijent
       };
     case SET_EDIT_PACIJENT:
       return {
+        ...state,
         pacijent: { ...state.pacijent, korisnik: action.korisnik }
       };
     case SET_PACIJENT_ZDR:

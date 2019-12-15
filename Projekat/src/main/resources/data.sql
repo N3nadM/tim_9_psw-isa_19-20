@@ -64,11 +64,11 @@ INSERT INTO PACIJENT VALUES ('1', '2019-11-20', '555333', '4');
 
 INSERT INTO KORISNIK (id, adresa, email, ime, password, prezime, drzava, grad, telefon) VALUES ('5', 'adresa med sestre', 'medsestra@gmail.com', 'Sestra', '$2a$10$feiotRqclqYZ7aJnytCDSedhWmzztzhuwyujbVfVucV4nbmMRNnwa', 'Sestric',  'drzava', 'grad', 'telefon');
 INSERT INTO USER_AUTHORITY VALUES ('5', '5');
-INSERT INTO MEDICINSKA_SESTRA VALUES ('1','1', '5');
+INSERT INTO MEDICINSKA_SESTRA(id, korisnik_id, klinika_id, pocetak_radnog_vremena,  kraj_radnog_vremena) VALUES ('1','5', '1', '08:00', '17:00');
 
-INSERT INTO KORISNIK (id, adresa, email, ime, password, prezime, drzava, grad, telefon) VALUES ('17', 'adresa med sestre', 'medsestra2@gmail.com', 'Sestrica', '$2a$10$feiotRqclqYZ7aJnytCDSedhWmzztzhuwyujbVfVucV4nbmMRNnwa', 'Ses',  'drzava', 'grad', 'telefon');
+INSERT INTO KORISNIK (id, adresa, email, ime, password, prezime, drzava, grad, telefon) VALUES ('17', 'adresa med sestre', 'medsestra2@gmail.com', 'Sestrica', '$2a$10$feiotRqclqYZ7aJnytCDSedhWmzztzhuwyujbVfVucV4nbmMRNnwa', 'Sestricevic',  'drzava', 'grad', 'telefon');
 INSERT INTO USER_AUTHORITY VALUES ('17', '5');
-INSERT INTO MEDICINSKA_SESTRA VALUES ('2','1', '17');
+INSERT INTO MEDICINSKA_SESTRA(id, korisnik_id, klinika_id, pocetak_radnog_vremena,  kraj_radnog_vremena) VALUES ('2','17', '1', '08:00', '20:00');
 
 INSERT INTO ZAHTEV(ime, prezime, adresa, grad, drzava, telefon, email, password, jbzo, verified) VALUES ('dsads', 'dssadsa', 'dsadsa', 'dsadffds', 'fsdgdf', 'fdssd', 'fdsfds@gmail.com', '$2a$10$feiotRqclqYZ7aJnytCDSedhWmzztzhuwyujbVfVucV4nbmMRNnwa', '2132131', False);
 

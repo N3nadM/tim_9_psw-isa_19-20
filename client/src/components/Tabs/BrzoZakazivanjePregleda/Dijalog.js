@@ -57,7 +57,9 @@ function ConfirmationDialogRaw(props) {
       open={open}
       {...other}
     >
-      <DialogTitle id="confirmation-dialog-title">Phone Ringtone</DialogTitle>
+      <DialogTitle id="confirmation-dialog-title">
+        Slobodni termini lekara
+      </DialogTitle>
       <DialogContent dividers>
         <RadioGroup
           ref={radioGroupRef}

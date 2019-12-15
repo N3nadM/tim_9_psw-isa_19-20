@@ -125,7 +125,7 @@ const ZdrKarton = ({ pacijent: { pacijent }, zdrKarton, getZdrKarton }) => {
 
 const mapStateToProps = state => ({
   zdrKarton: state.zdrKarton.zdrKarton,
-  pacijent: state.pacijent.pacijent
+  pacijent: state.pacijent
 });
 
 export default connect(mapStateToProps, { getZdrKarton })(ZdrKarton);

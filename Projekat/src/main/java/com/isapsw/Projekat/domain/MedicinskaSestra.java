@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,6 +27,9 @@ public class MedicinskaSestra{
     @JoinColumn(name="klinika_id", updatable = false, nullable = false)
     @JsonIgnore
     private Klinika klinika;
+
+    private LocalTime pocetakRadnogVremena;
+    private LocalTime krajRadnogVremena;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "medicinskaSestra")
     @JsonIgnore
@@ -85,5 +89,21 @@ public class MedicinskaSestra{
 
     public void setOperacije(List<Operacija> operacije) {
         this.operacije = operacije;
+    }
+
+    public LocalTime getPocetakRadnogVremena() {
+        return pocetakRadnogVremena;
+    }
+
+    public void setPocetakRadnogVremena(LocalTime pocetakRadnogVremena) {
+        this.pocetakRadnogVremena = pocetakRadnogVremena;
+    }
+
+    public LocalTime getKrajRadnogVremena() {
+        return krajRadnogVremena;
+    }
+
+    public void setKrajRadnogVremena(LocalTime krajRadnogVremena) {
+        this.krajRadnogVremena = krajRadnogVremena;
     }
 }
