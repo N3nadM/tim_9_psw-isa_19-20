@@ -124,6 +124,7 @@ public class KlinikaService {
         cal.set(Calendar.HOUR_OF_DAY, lt.getHour());
         cal.set(Calendar.MINUTE, lt.getMinute());
         cal.set(Calendar.SECOND, 0);
+        cal.set(Calendar.MILLISECOND, 0);
         return cal.getTime();
     }
 
