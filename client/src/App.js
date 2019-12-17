@@ -54,11 +54,7 @@ function App() {
             <PrivateRoute exact path="/" component={Home} />
             <Route exact path="/ms" component={MedSestra} />
             <PrivateRoute exact path="/klinika/:id" component={Klinika} />
-            <PrivateRoute
-              exact
-              path="/pacijent/:objekat"
-              component={Pacijent}
-            />
+            <PrivateRoute exact path="/pacijent/:id" component={Pacijent} />
             <PrivateRoute
               exact
               path="/pregled_operacija/:obj"

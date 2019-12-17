@@ -4,6 +4,7 @@ import Tabela from "../../TabelaAKC/Tabela";
 import DodajKliniku from "../../Tabs/DodajKlinikuTab";
 import DodajAK from "../../Tabs/DodajAKTab";
 import DodajAKC from "../../Tabs/DodajAKCTab";
+import SifranikTab from "../../Tabs/SifranikTab";
 import Divider from "@material-ui/core/Divider";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
@@ -60,6 +61,7 @@ export default function ProfilAKC() {
         <Tab label="Dodaj kliniku" {...a11yProps(1)} />
         <Tab label="Dodaj admina klinike" {...a11yProps(2)} />
         <Tab label="Dodaj admina KC" {...a11yProps(3)} />
+        <Tab label="Sifranik" {...a11yProps(4)} />
       </Tabs>
     </div>
   );
@@ -91,6 +93,9 @@ export default function ProfilAKC() {
           </TabPanel>
           <TabPanel value={value} index={3}>
             <DodajAKC />
+          </TabPanel>
+          <TabPanel value={value} index={4}>
+            <SifranikTab />
           </TabPanel>
         </main>
       </div>
