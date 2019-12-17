@@ -1,15 +1,10 @@
 package com.isapsw.Projekat.service;
 
-import com.isapsw.Projekat.domain.Korisnik;
 import com.isapsw.Projekat.domain.Pacijent;
-import com.isapsw.Projekat.domain.ZdrKarton;
 import com.isapsw.Projekat.dto.PacijentDTO;
 import com.isapsw.Projekat.repository.KorisnikRepository;
 import com.isapsw.Projekat.repository.PacijentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;

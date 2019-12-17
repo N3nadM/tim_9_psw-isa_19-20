@@ -1,16 +1,15 @@
 package com.isapsw.Projekat.service;
 
-import com.isapsw.Projekat.domain.Lekar;
-import com.isapsw.Projekat.domain.Pregled;
-import com.isapsw.Projekat.domain.Sala;
-import com.isapsw.Projekat.domain.TipPregleda;
+import com.isapsw.Projekat.domain.*;
 import com.isapsw.Projekat.dto.PregledDTO;
 import com.isapsw.Projekat.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
 import java.util.*;
 
 @Service
@@ -31,8 +30,11 @@ public class PregledService {
     @Autowired
     private MedSestraRepository medSestraRepository;
 
+    @Autowired
+    private PacijentRepository pacijentRepository;
+
     public List<Pregled> getPreglediByPacijentId(Long id) {
-        return pregledRepository.findPregledByPacijentId(id);
+        return pregledRepository.findPregledByPacijentIdWhereSalaIdIsNotNull(id);
     }
 
     public List<Pregled> getPreglediByLekarId(Long id) {
@@ -75,5 +77,65 @@ public class PregledService {
 
         pregled.setIzvestaj("");
         return pregledRepository.save(pregled);
+    }
+
+    @Transactional
+    public Boolean zakaziPregled(Long korisnikId, String lekarId, String datum) throws ParseException {
+        Lekar lekar = lekarRepository.findLekarById(Long.parseLong(lekarId));
+
+        Date date = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss").parse(datum);
+
+        for(int i = 0; i < lekar.getPregledi().size(); i++) {
+            if(date.getTime() == lekar.getPregledi().get(i).getDatumPocetka().getTime()) {
+                return false;
+            }
+        }
+
+        Pacijent pacijent = pacijentRepository.findPacijentByKorisnikId(korisnikId);
+        List<Pregled> pregledi = pregledRepository.findPregledByDatumPac(pacijent.getId(), date);
+        for (Pregled p: pregledi) {
+
+            long pocetakStari = p.getDatumPocetka().getTime();
+            long krajStari = p.getDatumZavrsetka().getTime();
+            long pocetakNovi = date.getTime();
+            long krajNovi = date.getTime() + lekar.getTipPregleda().getMinimalnoTrajanjeMin() * 60 * 1000;
+
+            if(pocetakStari <= pocetakNovi && krajStari >= pocetakNovi) {
+                return false;
+            } else if(pocetakStari >= pocetakNovi && krajStari <= krajNovi) {
+                return false;
+            } else if(pocetakNovi <= pocetakStari && krajNovi >= pocetakStari) {
+                return false;
+            } else if(pocetakStari <= pocetakNovi && krajStari >= krajNovi) {
+                return false;
+            }
+        }
+        Pregled pregled = new Pregled();
+
+        pregled.setLekar(lekar);
+        pregled.setPopust(0);
+        pregled.setPacijent(pacijent);
+        pregled.setDatumPocetka(date);
+        pregled.setTipPregleda(lekar.getTipPregleda());
+        pregled.setDatumZavrsetka(new Date(date.getTime() + lekar.getTipPregleda().getMinimalnoTrajanjeMin() * 60 * 1000));
+
+        pregledRepository.save(pregled);
+
+        return true;
+    }
+
+    public Boolean otkaziPregled(Long kId, String pregledId) {
+        Pacijent pacijent = pacijentRepository.findPacijentByKorisnikId(kId);
+        Pregled pregled = pregledRepository.getOne(Long.parseLong(pregledId));
+
+        Date sad = new Date();
+
+        if(pregled.getPacijent().getId() != pacijent.getId() || pregled.getDatumPocetka().getTime() - 24 * 60 * 60 * 1000 < sad.getTime()) {
+            return false;
+        }
+
+        pregledRepository.delete(pregled);
+
+        return true;
     }
 }

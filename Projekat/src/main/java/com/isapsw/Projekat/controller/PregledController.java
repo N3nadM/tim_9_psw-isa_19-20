@@ -1,9 +1,6 @@
 package com.isapsw.Projekat.controller;
 
-import com.isapsw.Projekat.domain.Lekar;
-import com.isapsw.Projekat.domain.MedicinskaSestra;
-import com.isapsw.Projekat.domain.Pregled;
-import com.isapsw.Projekat.domain.TipPregleda;
+import com.isapsw.Projekat.domain.*;
 import com.isapsw.Projekat.dto.PregledDTO;
 import com.isapsw.Projekat.service.LekarService;
 import com.isapsw.Projekat.service.MedSestraService;
@@ -12,11 +9,13 @@ import org.h2.compress.LZFInputStream;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @CrossOrigin(origins = "*", allowedHeaders = "*")
@@ -59,6 +58,7 @@ public class PregledController {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
     }
+
     @GetMapping("/sala/{id}")
     public ResponseEntity<List<Pregled>> getPregledBySalaId(@PathVariable String id) {
         try {
@@ -89,4 +89,27 @@ public class PregledController {
         }
     }
 
+    @PostMapping("/zakaziPregled")
+    public ResponseEntity<Boolean> zakaziPregled(@RequestBody Map<String,String> body, Authentication authentication) {
+        try {
+            Korisnik korisnik = (Korisnik)authentication.getPrincipal();
+            return new ResponseEntity(pregledService.zakaziPregled(korisnik.getId(), body.get("lekarId").toString(), body.get("datum").toString()), HttpStatus.OK);
+        }
+        catch(Exception e) {
+            System.out.println(e.getMessage());
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PostMapping("/otkaziPregled")
+    public ResponseEntity<Boolean> otkaziPregled(@RequestBody Map<String,String> body, Authentication authentication) {
+        try {
+            Korisnik korisnik = (Korisnik)authentication.getPrincipal();
+            return new ResponseEntity(pregledService.otkaziPregled(korisnik.getId(), body.get("pregledId").toString()), HttpStatus.OK);
+        }
+        catch(Exception e) {
+            System.out.println(e.getMessage());
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
+    }
 }

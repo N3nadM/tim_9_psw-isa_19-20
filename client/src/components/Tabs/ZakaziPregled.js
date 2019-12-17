@@ -347,6 +347,8 @@ const ZakaziPregled = ({
                                   pathname: `/klinika/${row.id}`,
                                   state: {
                                     ...state,
+                                    nazivKlinike: row.naziv,
+                                    adresa: row.adresa,
                                     datum: !!selectedDate ? selectedDate : ""
                                   }
                                 });

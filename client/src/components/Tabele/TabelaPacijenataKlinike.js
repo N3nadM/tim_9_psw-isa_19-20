@@ -274,8 +274,8 @@ const TabelaPacijenataKlinike = ({
                             history.push({
                               pathname: `/pacijent/${row.id}`,
                               state: {
-                                id: row.id,
-                                ...state
+                                ...state,
+                                id: row.id
                               }
                             });
                           }}
