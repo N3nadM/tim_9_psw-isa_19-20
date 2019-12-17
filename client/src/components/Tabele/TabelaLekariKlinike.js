@@ -12,14 +12,7 @@ import TableHead from "@material-ui/core/TableHead";
 import TablePagination from "@material-ui/core/TablePagination";
 import TableRow from "@material-ui/core/TableRow";
 import TableSortLabel from "@material-ui/core/TableSortLabel";
-import Toolbar from "@material-ui/core/Toolbar";
-import Typography from "@material-ui/core/Typography";
 import Paper from "@material-ui/core/Paper";
-import IconButton from "@material-ui/core/IconButton";
-import Tooltip from "@material-ui/core/Tooltip";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Switch from "@material-ui/core/Switch";
-import FilterListIcon from "@material-ui/icons/FilterList";
 import Button from "@material-ui/core/Button";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
@@ -217,7 +210,6 @@ const TabelaLekariKlinike = ({
             <Grid item sm={12} md={6} lg={2}>
               <TextField
                 style={{ width: "80%" }}
-                id="standard-basic"
                 value={state.ime}
                 onChange={handleChange}
                 name="ime"
@@ -228,7 +220,6 @@ const TabelaLekariKlinike = ({
             <Grid item sm={12} md={6} lg={2}>
               <TextField
                 style={{ width: "80%" }}
-                id="standard-basic"
                 value={state.prezime}
                 onChange={handleChange}
                 name="prezime"
@@ -319,6 +310,12 @@ const TabelaLekariKlinike = ({
                             <SlobodniTerminiDialog
                               id={row.id}
                               datum={!selectedDate ? "" : selectedDate}
+                              klinika={params.nazivKlinike}
+                              tipPregleda={row.tipPregleda}
+                              lekar={
+                                row.korisnik.ime + " " + row.korisnik.prezime
+                              }
+                              adresa={params.adresa}
                             />
                           </TableCell>
                         </TableRow>

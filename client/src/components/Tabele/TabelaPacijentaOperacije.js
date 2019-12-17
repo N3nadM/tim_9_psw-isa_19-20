@@ -126,7 +126,7 @@ const TabelaPregleda = ({ operacije, getAllOperacije, pacijentId }) => {
                     </TableCell>
                     <TableCell align="right">Cena</TableCell>
                     <TableCell align="right">Datum Zakazivanja</TableCell>
-                    <TableCell align="right">Otkaži Pregled</TableCell>
+                    <TableCell align="right">Otkaži Operaciju</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>

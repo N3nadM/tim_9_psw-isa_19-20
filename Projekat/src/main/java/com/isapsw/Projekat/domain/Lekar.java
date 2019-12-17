@@ -1,6 +1,7 @@
 package com.isapsw.Projekat.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import java.time.LocalTime;
@@ -39,7 +40,7 @@ public class Lekar{
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="tip_pregleda_id", updatable = false, nullable = false)
-    @JsonIgnore
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private TipPregleda tipPregleda;
 
     public Lekar(){

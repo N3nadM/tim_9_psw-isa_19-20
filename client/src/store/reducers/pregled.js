@@ -1,7 +1,8 @@
 import {
   SET_PREGLEDI,
   SET_PREGLEDI_ZA_SALU,
-  SET_LISTA_PREDEFINISANIH_PREGLEDA
+  SET_LISTA_PREDEFINISANIH_PREGLEDA,
+  SET_FILTERED_PREGLEDI
 } from "../actionTypes";
 
 const DEFAULT_STATE = {
@@ -28,6 +29,11 @@ export default (state = DEFAULT_STATE, action) => {
       return {
         ...state,
         listaPredefinisanih: action.listaPredefinisanih
+      };
+    case SET_FILTERED_PREGLEDI:
+      return {
+        ...state,
+        pregledi: state.pregledi.filter(p => p.id !== action.id)
       };
     default:
       return state;

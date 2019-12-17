@@ -8,7 +8,7 @@ import TableHead from "@material-ui/core/TableHead";
 import TablePagination from "@material-ui/core/TablePagination";
 import TableRow from "@material-ui/core/TableRow";
 import { connect } from "react-redux";
-import { getAllPregledi } from "../../store/actions/pregled";
+import { getAllPregledi, deletePregled } from "../../store/actions/pregled";
 import Typography from "@material-ui/core/Typography";
 import Divider from "@material-ui/core/Divider";
 import Button from "@material-ui/core/Button";
@@ -26,7 +26,12 @@ const useStyles = makeStyles({
   }
 });
 
-const TabelaPregleda = ({ pregledi, getAllPregledi, pacijentId }) => {
+const TabelaPregleda = ({
+  pregledi,
+  getAllPregledi,
+  deletePregled,
+  pacijentId
+}) => {
   const classes = useStyles();
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
@@ -76,6 +81,10 @@ const TabelaPregleda = ({ pregledi, getAllPregledi, pacijentId }) => {
     const isDesc = orderBy === property && order === "desc";
     setOrder(isDesc ? "asc" : "desc");
     setOrderBy(property);
+  };
+
+  const handleOtkazi = (id, e) => {
+    deletePregled(id);
   };
 
   return (
@@ -170,6 +179,7 @@ const TabelaPregleda = ({ pregledi, getAllPregledi, pacijentId }) => {
                                       new Date() - new Date(row.datumPocetka) >
                                       -86400000
                                     }
+                                    onClick={() => handleOtkazi(row.id)}
                                   >
                                     Otkaži
                                   </Button>
@@ -353,4 +363,6 @@ const mapStateToProps = state => ({
   pacijentId: state.pacijent.pacijent.id
 });
 
-export default connect(mapStateToProps, { getAllPregledi })(TabelaPregleda);
+export default connect(mapStateToProps, { getAllPregledi, deletePregled })(
+  TabelaPregleda
+);

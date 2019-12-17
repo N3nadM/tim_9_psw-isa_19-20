@@ -36,6 +36,7 @@ public class Klinika {
     private Double ocena = 0.0;
 
     @OneToMany(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY, mappedBy = "klinika", orphanRemoval = true)
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private List<Sala> sale = new ArrayList<>();
     //dodati cenovnik
 
@@ -44,12 +45,15 @@ public class Klinika {
     private List<TipPregleda> tipPregleda = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY, mappedBy = "klinika")
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private List<AdminKlinike> adminiKlinike = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY, mappedBy = "klinika")
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private List<MedicinskaSestra> medicinskeSestre = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER, mappedBy = "klinika")
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private List<Lekar> lekari = new ArrayList<>();
 
     public Klinika() {

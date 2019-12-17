@@ -17,6 +17,9 @@ public interface PregledRepository extends JpaRepository<Pregled, Long> {
 
     List<Pregled> findPregledByPacijentId(Long id);
 
+    @Query("SELECT p FROM Pregled p WHERE p.pacijent.id = :id AND p.sala is not null")
+    List<Pregled> findPregledByPacijentIdWhereSalaIdIsNotNull(@Param("id") Long id);
+
     List<Pregled> findPregledByLekarId(Long id);
 
     List<Pregled> findPregledsByMedicinskaSestraId(Long id);
@@ -28,4 +31,7 @@ public interface PregledRepository extends JpaRepository<Pregled, Long> {
 
     @Query("SELECT p FROM Pregled p WHERE p.lekar.id = :lekarId AND p.pacijent.id = :pacijentId AND p.datumZavrsetka < :datum")
     List<Pregled> findPregledByPacijentIdAndLekarId(@Param("lekarId") Long lekarId, @Param("pacijentId")Long pacijentId, @Param("datum") Date datum);
+
+    @Query("SELECT p FROM Pregled p WHERE p.pacijent.id = :pacijentId AND CAST(p.datumZavrsetka AS date) = CAST(:datum AS date)")
+    List<Pregled> findPregledByDatumPac(@Param("pacijentId")Long pacijentId, @Param("datum") Date datum);
 }

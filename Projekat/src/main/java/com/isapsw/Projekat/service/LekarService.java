@@ -10,6 +10,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -74,19 +75,25 @@ public class LekarService {
 
         if(preglediIstogDanaJednogLekara.size() == 0) {
             while(pocetak.getTime() < kraj.getTime()) {
-                termini.add(pocetak.toString());
+                SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss");
+                String stringDate = dateFormat.format(pocetak);
+                termini.add(stringDate);
                 pocetak.setTime(pocetak.getTime() + lekar.getTipPregleda().getMinimalnoTrajanjeMin() * 60 * 1000);
             }
         } else {
             for(int i = 0; i < preglediIstogDanaJednogLekara.size(); i++) {
-                while(pocetak.getTime() < kraj.getTime() && pocetak.getTime() + lekar.getTipPregleda().getMinimalnoTrajanjeMin() * 60 * 1000 < preglediIstogDanaJednogLekara.get(i).getDatumPocetka().getTime()) {
-                    termini.add(pocetak.toString());
+                while(pocetak.getTime() < kraj.getTime() && pocetak.getTime() + lekar.getTipPregleda().getMinimalnoTrajanjeMin() * 60 * 1000 <= preglediIstogDanaJednogLekara.get(i).getDatumPocetka().getTime()) {
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss");
+                    String stringDate = dateFormat.format(pocetak);
+                    termini.add(stringDate);
                     pocetak.setTime(pocetak.getTime() + lekar.getTipPregleda().getMinimalnoTrajanjeMin() * 60 * 1000);
                  }
                 pocetak.setTime(preglediIstogDanaJednogLekara.get(i).getDatumZavrsetka().getTime());
                 if(i == preglediIstogDanaJednogLekara.size() - 1) {
                     while(pocetak.getTime() < kraj.getTime()) {
-                        termini.add(pocetak.toString());
+                        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss");
+                        String stringDate = dateFormat.format(pocetak);
+                        termini.add(stringDate);
                         pocetak.setTime(pocetak.getTime() + lekar.getTipPregleda().getMinimalnoTrajanjeMin() * 60 * 1000);
                     }
                 }
@@ -172,7 +179,6 @@ public class LekarService {
             Pacijent pacijent = pacijentRepository.findPacijentByKorisnikId(korisnik.getId());
             List<Pregled> pregledi = pregledRepository.findPregledByPacijentIdAndLekarId(Long.parseLong(id), pacijent.getId(), new Date());
             List<Operacija> operacije = operacijaRepository.findOperacijeByPacijentIdAndLekarId(Long.parseLong(id), pacijent.getId(), new Date());
-            System.out.println(operacije.size());
             if(pregledi.size() == 0 && operacije.size() == 0) {
                 return null;
             }

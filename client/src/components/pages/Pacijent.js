@@ -44,6 +44,8 @@ export default function Pacijent({ match }) {
   };
   const classes = useStyles();
 
+  console.log(match);
+
   const drawer = (
     <div>
       <div className={classes.toolbar} />
@@ -81,7 +83,7 @@ export default function Pacijent({ match }) {
             {value === 0 && <ProfilPacijentaTab id={match.params.id} />}
           </TabPanel>
           <TabPanel value={value} index={1}>
-            {value === 1 && <PacijentZdr id={match.params.id} />}
+            {value === 1 && <PacijentZdr id={match.params.objekat} />}
           </TabPanel>
         </main>
       </div>

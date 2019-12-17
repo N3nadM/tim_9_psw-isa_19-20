@@ -34,7 +34,7 @@ public class Pregled_Operacija {
     private Date datumKreiranja;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="sala_id", updatable = false, nullable = false)
+    @JoinColumn(name="sala_id", updatable = false, nullable = true)
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private Sala sala;
 
@@ -97,4 +97,8 @@ public class Pregled_Operacija {
         this.datumKreiranja = datumKreiranja;
     }
 
+    @PrePersist
+    protected void onCreate(){
+        this.datumKreiranja = new Date();
+    }
 }
