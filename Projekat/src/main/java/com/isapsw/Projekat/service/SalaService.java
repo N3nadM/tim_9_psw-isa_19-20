@@ -79,4 +79,25 @@ public class SalaService {
         return ret;
     }
 
+    public List<Sala> getSaleKojeSeMoguObrisati(String id){
+        List<Sala> salas = salaRepository.findByKlinikaId(Long.parseLong(id));
+        List<Sala> ret = new ArrayList<>();
+        for(Sala s: salas){
+            if(s.getPregled().isEmpty() && s.getOperacija().isEmpty()){
+                ret.add(s);
+            }
+        }
+        return ret;
+    }
+
+    public Sala obrisiSalu(String id){
+        Sala sala = salaRepository.findById(Long.parseLong(id)).get();
+        salaRepository.delete(sala);
+        return sala;
+    }
+
+    public Sala find(String id){
+        return salaRepository.findById(Long.parseLong(id)).get();
+    }
+
 }

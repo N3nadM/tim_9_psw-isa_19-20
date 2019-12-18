@@ -2,14 +2,20 @@ import {
   SET_ADDED_SALA,
   SET_LISTA_SALA,
   SET_LISTA_DOSTUPNIH_SALA,
-  SET_SALA_ZA_PREGLED
+  SET_SALA_ZA_PREGLED,
+  SET_SALE_KOJE_SE_MOGU_OBRISATI,
+  SET_OBRISANA_SALA,
+  SET_SALA_ZA_IZMENU
 } from "../actionTypes";
 
 const DEFAULT_STATE = {
   newSala: null,
   listaSala: null,
   listaDostupnihSala: null,
-  salaZaPregled: null
+  salaZaPregled: null,
+  saleZaBrisanje: null,
+  obrisanaSala: null,
+  salaZaIzmeu: null
 };
 
 export default (state = DEFAULT_STATE, action) => {
@@ -33,6 +39,24 @@ export default (state = DEFAULT_STATE, action) => {
       return {
         ...state,
         salaZaPregled: action.salaZaPregled
+      };
+    case SET_SALE_KOJE_SE_MOGU_OBRISATI:
+      return {
+        ...state,
+        saleZaBrisanje: action.saleZaBrisanje
+      };
+    case SET_OBRISANA_SALA:
+      return {
+        ...state,
+        obrisanaSala: action.obrisanaSala,
+        saleZaBrisanje: state.saleZaBrisanje.filter(
+          s => s.id != action.obrisanaSala.id
+        )
+      };
+    case SET_SALA_ZA_IZMENU:
+      return {
+        ...state,
+        salaZaIzmeu: action.salaZaIzmeu
       };
     default:
       return state;
