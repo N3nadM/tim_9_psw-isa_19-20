@@ -33,8 +33,7 @@ public class MedSestraService {
 
     public List<MedicinskaSestra> getDostupneSestre(String id, String termin, String trajanje) throws ParseException {
         List<MedicinskaSestra> sestreNaKlinici = medSestraRepository.findMedicinskaSestrasByKlinikaId(Long.parseLong(id));
-        SimpleDateFormat sdf = new SimpleDateFormat("EE MMM dd HH:mm:ss z yyyy", Locale.ENGLISH);
-        Date datum = sdf.parse(termin);
+        Date datum = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss").parse(termin);
         List<Pregled> pregledi = pregledRepository.findByPregledDatumPocetka(datum);
         for(Pregled p : pregledi){
             if(sestreNaKlinici.contains(p.getMedicinskaSestra())){
