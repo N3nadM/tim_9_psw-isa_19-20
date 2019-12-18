@@ -19,6 +19,7 @@ import { connect } from "react-redux";
 import { getAllTipoviPregleda } from "../../store/actions/tipoviPregleda";
 import { addNewLekar } from "../../store/actions/lekar";
 import PretragLekaraTab from "./PretragaLekaraTab";
+import BrisanjeLekaraTab from "../Tabs/Lekar/BrisanjeLekaraTab";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -298,8 +299,7 @@ const LekariTabs = ({
         Lista lekara ciji podaci mogu da se menjaju
       </TabPanel>
       <TabPanel value={value} index={3} dir={theme.direction}>
-        Lista lekara koji mogu da se obrisu (nemaju zakazane preglede i
-        operacije)
+        {value === 3 && <BrisanjeLekaraTab />}
       </TabPanel>
     </div>
   );

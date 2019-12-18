@@ -6,7 +6,9 @@ import {
   SET_LEKARI_NA_KLINICI,
   SET_EDITED_LEKAR,
   SET_LEKAR_ZA_PREGLED,
-  SET_TERMIN_ZA_PREGLED
+  SET_TERMIN_ZA_PREGLED,
+  SET_LEKARI_KOJI_SE_MOGU_OBRISATI,
+  SET_OBRISAN_LEKAR
 } from "../actionTypes";
 import { statement } from "@babel/template";
 
@@ -16,7 +18,9 @@ const DEFAULT_STATE = {
   addedLekar: null,
   listaLekaraNaKlinici: null,
   lekarZaPregled: null,
-  terminZaPregled: null
+  terminZaPregled: null,
+  lekariZaBrisanje: null,
+  obrisanLekar: null
 };
 
 export default (state = DEFAULT_STATE, action) => {
@@ -62,6 +66,19 @@ export default (state = DEFAULT_STATE, action) => {
       return {
         ...state,
         terminZaPregled: action.terminZaPregled
+      };
+    case SET_LEKARI_KOJI_SE_MOGU_OBRISATI:
+      return {
+        ...state,
+        lekariZaBrisanje: action.lekariZaBrisanje
+      };
+    case SET_OBRISAN_LEKAR:
+      return {
+        ...state,
+        obrisanLekar: action.obrisanLekar,
+        lekariZaBrisanje: state.lekariZaBrisanje.filter(
+          l => l.id != action.obrisanLekar.id
+        )
       };
     default:
       return state;
