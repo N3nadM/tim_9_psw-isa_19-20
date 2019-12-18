@@ -47,8 +47,7 @@ public class SalaService {
 
     public List<Sala> getDostupneSale(String id, String termin, String trajanje) throws ParseException {
         List<Sala> saleNaKlinici = salaRepository.findByKlinikaId(Long.parseLong(id));
-        SimpleDateFormat sdf = new SimpleDateFormat("EE MMM dd HH:mm:ss z yyyy", Locale.ENGLISH);
-        Date datum = sdf.parse(termin);
+        Date datum = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss").parse(termin);
         List<Pregled> pregledi = pregledRepository.findByPregledDatumPocetka(datum);
         for(Pregled p : pregledi){
             //brisanje sale iz liste za koju se vrsi provera

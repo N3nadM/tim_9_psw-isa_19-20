@@ -2,7 +2,8 @@ import {
   SET_PREGLEDI,
   SET_PREGLEDI_ZA_SALU,
   SET_LISTA_PREDEFINISANIH_PREGLEDA,
-  SET_FILTERED_PREGLEDI
+  SET_FILTERED_PREGLEDI,
+  SET_FILTERED_PREDEFINISANI
 } from "../actionTypes";
 import axios from "axios";
 
@@ -23,6 +24,11 @@ export const setListaPredefinisanih = listaPredefinisanih => ({
 
 export const filterPreglediAfterDelete = id => ({
   type: SET_FILTERED_PREGLEDI,
+  id
+});
+
+export const setFilteredPredefinisani = id => ({
+  type: SET_FILTERED_PREDEFINISANI,
   id
 });
 
@@ -84,6 +90,21 @@ export const deletePregled = id => async dispatch => {
     if (res.data) {
       dispatch(filterPreglediAfterDelete(id));
     }
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const rezervisiPregled = id => async dispatch => {
+  try {
+    console.log(id);
+    const res = await axios.post("/api/pregled/zakaziPredefinisani", {
+      pregledId: id
+    });
+    if (res.data) {
+      console.log("uspesno");
+    }
+    dispatch(setFilteredPredefinisani(id));
   } catch (err) {
     console.log(err);
   }
