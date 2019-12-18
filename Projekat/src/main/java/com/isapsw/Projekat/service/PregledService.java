@@ -63,9 +63,8 @@ public class PregledService {
         pregled.setMedicinskaSestra(medSestraRepository.findById(Long.parseLong(pregledDTO.getMedSestraId())).get());
         pregled.setPacijent(null);
 
-        SimpleDateFormat sdf = new SimpleDateFormat("EE MMM dd HH:mm:ss z yyyy", Locale.ENGLISH);
-        Date datum = sdf.parse(pregledDTO.getDatum());
-        Date d2 = sdf.parse(pregledDTO.getDatum());
+        Date datum = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss").parse(pregledDTO.getDatum());
+        Date d2 = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss").parse(pregledDTO.getDatum());
         pregled.setDatumPocetka(datum);
 
         d2.setTime(d2.getTime() + tp.get().getMinimalnoTrajanjeMin() * 60 * 1000);
@@ -135,6 +134,34 @@ public class PregledService {
         }
 
         pregledRepository.delete(pregled);
+
+        return true;
+    }
+
+    @Transactional
+    public Boolean zakaziPredefinisaniPregled(Long kId, String pregledId) {
+        Pacijent pacijent = pacijentRepository.findPacijentByKorisnikId(kId);
+        Pregled pregled = pregledRepository.getOne(Long.parseLong(pregledId));
+
+        for (Pregled p: pacijent.getPregledi()) {
+
+            long pocetakStari = p.getDatumPocetka().getTime();
+            long krajStari = p.getDatumZavrsetka().getTime();
+            long pocetakNovi = pregled.getDatumPocetka().getTime();
+            long krajNovi = pregled.getDatumZavrsetka().getTime();
+
+            if(pocetakStari <= pocetakNovi && krajStari >= pocetakNovi) {
+                return false;
+            } else if(pocetakStari >= pocetakNovi && krajStari <= krajNovi) {
+                return false;
+            } else if(pocetakNovi <= pocetakStari && krajNovi >= pocetakStari) {
+                return false;
+            } else if(pocetakStari <= pocetakNovi && krajStari >= krajNovi) {
+                return false;
+            }
+        }
+        pregled.setPacijent(pacijent);
+        pregledRepository.save(pregled);
 
         return true;
     }

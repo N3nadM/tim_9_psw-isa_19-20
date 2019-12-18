@@ -9,6 +9,7 @@ import TabPanel from "../Tabs/TabPanel";
 import AppBar from "../layout/AppBarLogedIn";
 import KlinikaShowTab from "../Tabs/Klinika/KlinikaShowTab";
 import TabelaLekariKlinike from "../Tabele/TabelaLekariKlinike";
+import UnapredDefinisaniPregledi from "../Tabs/Klinika/UnapredDefinisaniPregledi";
 
 const drawerWidth = 240;
 
@@ -57,6 +58,7 @@ export default function Klinika({ match, location }) {
       >
         <Tab label="Pretrazi lekare" {...a11yProps(0)} />
         <Tab label="Profil Klinike" {...a11yProps(1)} />
+        <Tab label="Pregledi" {...a11yProps(2)} />
       </Tabs>
     </div>
   );
@@ -85,6 +87,11 @@ export default function Klinika({ match, location }) {
           </TabPanel>
           <TabPanel value={value} index={1}>
             {value === 1 && <KlinikaShowTab id={match.params.id} />}
+          </TabPanel>
+          <TabPanel value={value} index={2}>
+            {value === 2 && (
+              <UnapredDefinisaniPregledi klinikaId={match.params.id} />
+            )}
           </TabPanel>
         </main>
       </div>

@@ -18,7 +18,7 @@ public class Pregled extends Pregled_Operacija{
 
     @ManyToOne(fetch = FetchType.LAZY)
 
-    @JoinColumn(name="pacijent_id", updatable = false, nullable = true)
+    @JoinColumn(name="pacijent_id", updatable = true, nullable = true)
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private Pacijent pacijent;
 

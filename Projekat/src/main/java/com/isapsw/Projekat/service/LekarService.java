@@ -50,6 +50,9 @@ public class LekarService {
     @Autowired
     private OperacijaRepository operacijaRepository;
 
+    @Autowired
+    private KorisnikRepository korisnikRepository;
+
     public Lekar findLekar(String id) {
         return lekarRepository.findLekarByKorisnikId(Long.parseLong(id));
     }
@@ -210,5 +213,27 @@ public class LekarService {
 
 
         return ocene;
+    }
+
+    public List<Lekar> getLekartKojiSeMeoguObrisati(String klinikaId){
+        List<Lekar> lekars = lekarRepository.findLekarsByKlinikaId(Long.parseLong(klinikaId));
+        List<Lekar> ret = new ArrayList<>(lekars);
+        for (Lekar l : lekars){
+            if(!l.getPregledi().isEmpty()){
+                ret.remove(l);
+            }else {
+                //dodati proveri da se mogu obrisati i lekari koji su imali zakazane preglede ali nemaju buduce preglede
+            }
+        }
+        return ret;
+    }
+
+    public Lekar obrisiLekara(String id){
+        Lekar l = lekarRepository.findLekarById(Long.parseLong(id));
+        lekarRepository.delete(l);
+        l.getKorisnik().setAuthorities(null);
+        korisnikRepository.delete(l.getKorisnik());
+
+        return l;
     }
 }

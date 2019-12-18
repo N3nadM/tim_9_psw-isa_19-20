@@ -6,7 +6,9 @@ import {
   SET_LEKARI_NA_KLINICI,
   SET_EDITED_LEKAR,
   SET_LEKAR_ZA_PREGLED,
-  SET_TERMIN_ZA_PREGLED
+  SET_TERMIN_ZA_PREGLED,
+  SET_LEKARI_KOJI_SE_MOGU_OBRISATI,
+  SET_OBRISAN_LEKAR
 } from "../actionTypes";
 import axios from "axios";
 import { setRealKorisnik } from "./auth";
@@ -42,6 +44,15 @@ export const setLekarZaPregled = lekarZaPregled => ({
 export const setTerminZaPregled = terminZaPregled => ({
   type: SET_TERMIN_ZA_PREGLED,
   terminZaPregled
+});
+export const setLekariZaBrisanje = lekariZaBrisanje => ({
+  type: SET_LEKARI_KOJI_SE_MOGU_OBRISATI,
+  lekariZaBrisanje
+});
+
+export const setObrisanLekar = obrisanLekar => ({
+  type: SET_OBRISAN_LEKAR,
+  obrisanLekar
 });
 
 export const getLekar = id => async (dispatch, getState) => {
@@ -131,3 +142,22 @@ export const saveLekarAfterEdit = lekar => ({
   type: SET_EDITED_LEKAR,
   lekar
 });
+
+export const getLekariZaBrisanje = id => async dispatch => {
+  try {
+    console.log(id);
+    const k = await axios.get(`/api/lekar/lekariZaBrisanje/${id}`, id);
+    dispatch(setLekariZaBrisanje(k.data));
+  } catch (err) {
+    console.log(err);
+  }
+};
+export const obrisiLekara = id => async dispatch => {
+  try {
+    console.log(id);
+    const k = await axios.delete(`/api/lekar/delete/${id}`, id);
+    dispatch(setObrisanLekar(k.data));
+  } catch (err) {
+    console.log(err);
+  }
+};
