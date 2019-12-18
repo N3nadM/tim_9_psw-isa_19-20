@@ -42,7 +42,6 @@ const DodajAKTab = ({
 
   return (
     <form noValidate onSubmit={handleSubmit}>
-      {console.log(klinike)}
       <Grid container spacing={4} direction="row" alignItems="baseline">
         <Grid item sm={5}>
           <TextField

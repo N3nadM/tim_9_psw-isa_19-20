@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import PropTypes from "prop-types";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import Tabs from "@material-ui/core/Tabs";
@@ -15,8 +15,11 @@ import ListItemText from "@material-ui/core/ListItemText";
 import Select from "@material-ui/core/Select";
 import Checkbox from "@material-ui/core/Checkbox";
 import Grid from "@material-ui/core/Grid";
+import { connect } from "react-redux";
+import { getAllLekovi } from "../../store/actions/lek";
+import { addNewLek } from "../../store/actions/lek";
+import { addNewDijagnoza } from "../../store/actions/dijagnoza";
 
-import { FormLabel } from "@material-ui/core";
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -48,6 +51,10 @@ function a11yProps(index) {
 }
 
 const useStyles = makeStyles(theme => ({
+  FormControl: {
+    minWidth: 120,
+    maxWidth: 300
+  },
   root: {
     backgroundColor: theme.palette.background.paper,
     flexGrow: 1
@@ -58,57 +65,143 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default function FullWidthTabs() {
+const SifranikTab = ({
+  lekovi,
+  getAllLekovi,
+  lek,
+  addNewLek,
+  dijagnoza,
+  addNewDijagnoza
+}) => {
+  useEffect(() => {
+    getAllLekovi();
+  }, []);
+
+  {
+    console.log(lekovi);
+  }
+
   const classes = useStyles();
   const theme = useTheme();
   const [value, setValue] = React.useState(0);
-
-  const names = [
-    "Oliver Hansen",
-    "Van Henry",
-    "April Tucker",
-    "Ralph Hubbard",
-    "Omar Alexander",
-    "Carlos Abbott",
-    "Miriam Wagner",
-    "Bradley Wilkerson",
-    "Virginia Andrews",
-    "Kelly Snyder"
-  ];
+  const [state, setState] = React.useState({
+    naziv: "",
+    sifra: "",
+    lekovi: [],
+    checked: -1
+  });
+  const [state2, setState2] = React.useState({
+    naziv: "",
+    sifra: "",
+    sadrzaj: ""
+  });
+  const [lekName, setLekName] = React.useState([]);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
 
-  const handleChangeIndex = index => {
-    setValue(index);
+  const handleChangeDijagnoza = e => {
+    setState({ ...state, [e.target.name]: e.target.value });
   };
 
-  const [personName, setPersonName] = React.useState([]);
+  const handleChangeLek = e => {
+    setState2({ ...state2, [e.target.name]: e.target.value });
+  };
 
-  const handleChangeMultiple = event => {
-    const { options } = event.target;
-    const value = [];
-    for (let i = 0, l = options.length; i < l; i += 1) {
-      if (options[i].selected) {
-        value.push(options[i].value);
-      }
-    }
-    setPersonName(value);
+  const handleChangeSelect = event => {
+    setLekName(event.target.value);
+  };
+
+  const handleSubmitDijagnoza = e => {
+    e.preventDefault();
+    state.lekovi = lekName;
+    addNewDijagnoza(state);
+  };
+
+  const handleSubmitLek = e => {
+    e.preventDefault();
+    addNewLek(state2);
   };
 
   return (
     <div className={classes.root}>
       <Tabs
         value={value}
-        onChange={handleChange}
         indicatorColor="primary"
+        onChange={handleChange}
         textColor="primary"
       >
         <Tab label="Dodavanje dijagnize" {...a11yProps(0)} />
         <Tab label="Dodavanje leka" {...a11yProps(1)} />
       </Tabs>
       <TabPanel value={value} index={0} dir={theme.direction}>
+        {lekovi && (
+          <form className={classes.form} noValidate>
+            <Grid container direction="column" spacing={3}>
+              <Grid item sm={4}>
+                <TextField
+                  margin="normal"
+                  required
+                  fullWidth
+                  onChange={handleChangeDijagnoza}
+                  name="naziv"
+                  label="Naziv"
+                  type="text"
+                  id="naziv"
+                />
+              </Grid>
+              <Grid item sm={4}>
+                <TextField
+                  margin="normal"
+                  required
+                  fullWidth
+                  onChange={handleChangeDijagnoza}
+                  name="sifra"
+                  label="Sifra"
+                  type="text"
+                  id="sifra"
+                />
+              </Grid>
+              <Grid item sm={4}>
+                <FormControl className={classes.formControl}>
+                  <InputLabel id="demo-mutiple-checkbox-label">
+                    Izaberi lekove
+                  </InputLabel>
+                  <Select
+                    labelId="demo-mutiple-checkbox-label"
+                    id="demo-mutiple-checkbox"
+                    multiple
+                    value={lekName}
+                    onChange={handleChangeSelect}
+                    input={<Input />}
+                    renderValue={selected => selected.join(", ")}
+                  >
+                    {lekovi.map(row => (
+                      <MenuItem key={row.naziv} value={row.naziv}>
+                        <Checkbox checked={lekName.indexOf(row.naziv) > -1} />
+                        <ListItemText primary={row.naziv} />
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+              </Grid>
+              <Grid item sm={4}>
+                <Button
+                  type="submit"
+                  variant="contained"
+                  color="primary"
+                  className={classes.submit}
+                  onClick={handleSubmitDijagnoza}
+                >
+                  Dodaj
+                </Button>
+              </Grid>
+            </Grid>
+          </form>
+        )}
+      </TabPanel>
+      <TabPanel value={value} index={1} dir={theme.direction}>
         <form className={classes.form} noValidate>
           <Grid container direction="column" spacing={3}>
             <Grid item sm={4}>
@@ -116,6 +209,7 @@ export default function FullWidthTabs() {
                 margin="normal"
                 required
                 fullWidth
+                onChange={handleChangeLek}
                 name="naziv"
                 label="Naziv"
                 type="text"
@@ -127,6 +221,7 @@ export default function FullWidthTabs() {
                 margin="normal"
                 required
                 fullWidth
+                onChange={handleChangeLek}
                 name="sifra"
                 label="Sifra"
                 type="text"
@@ -138,32 +233,12 @@ export default function FullWidthTabs() {
                 margin="normal"
                 required
                 fullWidth
-                name="Username"
-                label="Username"
+                onChange={handleChangeLek}
+                name="sadrzaj"
+                label="Sadrzaj"
                 type="text"
-                id="username"
+                id="sadrzaj"
               />
-            </Grid>
-            <Grid item sm={4}>
-              <FormControl className={classes.formControl}>
-                <InputLabel id="demo-mutiple-checkbox-label">Tag</InputLabel>
-                <Select
-                  labelId="demo-mutiple-checkbox-label"
-                  id="demo-mutiple-checkbox"
-                  multiple
-                  value={personName}
-                  onChange={handleChange}
-                  input={<Input />}
-                  renderValue={selected => selected.join(", ")}
-                >
-                  {names.map(name => (
-                    <MenuItem key={name} value={name}>
-                      <Checkbox checked={personName.indexOf(name) > -1} />
-                      <ListItemText primary={name} />
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
             </Grid>
             <Grid item sm={4}>
               <Button
@@ -171,6 +246,7 @@ export default function FullWidthTabs() {
                 variant="contained"
                 color="primary"
                 className={classes.submit}
+                onClick={handleSubmitLek}
               >
                 Dodaj
               </Button>
@@ -178,45 +254,20 @@ export default function FullWidthTabs() {
           </Grid>
         </form>
       </TabPanel>
-      <TabPanel value={value} index={1} dir={theme.direction}>
-        <form className={classes.form} noValidate>
-          <TextField
-            margin="normal"
-            required
-            fullWidth
-            name="naziv"
-            label="Naziv"
-            type="text"
-            id="naziv"
-          />
-          <TextField
-            margin="normal"
-            required
-            fullWidth
-            name="sadrzaj"
-            label="Sadrzaj"
-            type="text"
-            id="sadrzaj"
-          />
-          <TextField
-            margin="normal"
-            required
-            fullWidth
-            name="sifra"
-            label="Sifra"
-            type="text"
-            id="sifra"
-          />
-          <Button
-            type="submit"
-            variant="contained"
-            color="primary"
-            className={classes.submit}
-          >
-            Dodaj
-          </Button>
-        </form>
-      </TabPanel>
     </div>
   );
+};
+
+function mapStateToProps(state) {
+  return {
+    lekovi: state.lek.lekovi,
+    lek: state.lek.lek,
+    dijagnoza: state.dijagnoza.dijagnoza
+  };
 }
+
+export default connect(mapStateToProps, {
+  getAllLekovi,
+  addNewDijagnoza,
+  addNewLek
+})(SifranikTab);

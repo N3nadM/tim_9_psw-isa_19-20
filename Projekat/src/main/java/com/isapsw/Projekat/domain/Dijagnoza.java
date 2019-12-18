@@ -2,6 +2,7 @@ package com.isapsw.Projekat.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.isapsw.Projekat.dto.DijagnozaDTO;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -47,11 +48,17 @@ public class Dijagnoza {
         this.terapija = new ArrayList<>();
     }
 
-    public Dijagnoza(@NotBlank String naziv, @NotBlank @Size(min = 3) String sifra, List<Lek> terapija, Date datumKreiranja, AdminKlinCentra adminKlinCentra) {
+    public Dijagnoza(@NotBlank String naziv, @NotBlank @Size(min = 3) String sifra, List<Lek> terapija, AdminKlinCentra adminKlinCentra) {
         this.naziv = naziv;
         this.sifra = sifra;
         this.terapija = terapija;
-        this.datumKreiranja = datumKreiranja;
+    }
+
+    public Dijagnoza(DijagnozaDTO dijagnozaDTO, List<Lek> terapija){
+        this.naziv = dijagnozaDTO.getNaziv();
+        this.sifra = dijagnozaDTO.getSifra();
+        this.terapija = terapija;
+        this.zdrKarton = new ArrayList<>();
     }
 
     public Long getId() {
