@@ -59,4 +59,34 @@ public class SalaController {
         }
     }
 
+    @GetMapping("/saleZaBrisanje/{id}")
+    public ResponseEntity<List<Sala>> getSaleKojeSeMoguObrisati(@PathVariable String id) {
+        try {
+            List<Sala> salas = salaService.getSaleKojeSeMoguObrisati(id);
+            return new ResponseEntity<>(salas, HttpStatus.OK);
+        }
+        catch(Exception e) {
+            System.out.println(e.getMessage());
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<Sala> addSala(@PathVariable String id){
+        try{
+            return new ResponseEntity<Sala>(salaService.obrisiSalu(id), HttpStatus.OK);
+        }catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("/find/{id}")
+    public ResponseEntity<Sala> getSala(@PathVariable String id){
+        try{
+            return new ResponseEntity<Sala>(salaService.find(id), HttpStatus.OK);
+        }catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
 }

@@ -11,6 +11,7 @@ import { getKlinikaAdmin } from "../../store/actions/adminKlinike";
 import { connect } from "react-redux";
 import { addNewSala } from "../../store/actions/sala";
 import IzmenaSala from "../Tabs/IzmenaSala";
+import BrisanjeSalaTab from "./Sala/BrisanjeSalaTab";
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -129,7 +130,7 @@ const SaleTabs = ({ adminKlinike: { klinika }, addNewSala }) => {
         </form>
       </TabPanel>
       <TabPanel value={value} index={2} dir={theme.direction}>
-        Lista sala koje mogu da se obrisu (ukoliko nisu rezervisane)
+        {value === 2 && <BrisanjeSalaTab />}
       </TabPanel>
     </div>
   );

@@ -164,153 +164,160 @@ const IzmenaSala = ({ sale, getListaSala, klinikaId, searchSalaNaKlinici }) => {
 
   return (
     <div className={classes.root}>
-      <form onSubmit={handleSubmit}>
-        <Paper style={{ padding: 50, marginBottom: 50 }}>
-          <Grid container spacing={3}>
-            <Grid item md={3}>
-              <TextField
-                style={{ width: "80%" }}
-                margin="normal"
-                value={state.broj}
-                onChange={handleChange}
-                fullWidth
-                name="broj"
-                label="Broj sale"
-                type="text"
-                id="broj"
-              />
-            </Grid>
-            <Grid item md={3}>
-              <TextField
-                style={{ width: "80%" }}
-                margin="normal"
-                value={state.prezimePretraga}
-                onChange={handleChange}
-                fullWidth
-                name="naziv"
-                label="Naziv sale"
-                type="text"
-                id="naziv"
-              />
-            </Grid>
-            <Grid
-              item
-              md={3}
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center"
-              }}
-            >
-              <Button variant="contained" color="primary" type="submit">
-                Pretraži
-              </Button>
-            </Grid>
-          </Grid>
-        </Paper>
-      </form>
-      <Paper className={classes.paper}>
-        <EnhancedTableToolbar />
-        <div className={classes.tableWrapper}>
-          <Table
-            className={classes.table}
-            aria-labelledby="tableTitle"
-            size={dense ? "small" : "medium"}
-            aria-label="enhanced table"
-          >
-            <TableHead>
-              <TableRow>
-                <TableCell align="left">
-                  <TableSortLabel
-                    active={orderBy === "sala.salaIdentifier"}
-                    direction={order}
-                    onClick={() => handleRequestSort("sala.salaIdentifier")}
-                  >
-                    Broj sale
-                  </TableSortLabel>
-                </TableCell>
-                <TableCell align="left">
-                  <TableSortLabel
-                    active={orderBy === "sala.naziv"}
-                    direction={order}
-                    onClick={() => handleRequestSort("sala.naziv")}
-                  >
-                    Naziv sale
-                  </TableSortLabel>
-                </TableCell>
-                <TableCell align="right"></TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {sale &&
-                stableSort(sale, getSorting(order, orderBy))
-                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                  .map((row, index) => {
-                    return (
-                      <TableRow
-                        hover
-                        role="checkbox"
-                        tabIndex={-1}
-                        key={row.id}
+      {!isEdit && (
+        <div>
+          <form onSubmit={handleSubmit}>
+            <Paper style={{ padding: 50, marginBottom: 50 }}>
+              <Grid container spacing={3}>
+                <Grid item md={3}>
+                  <TextField
+                    style={{ width: "80%" }}
+                    margin="normal"
+                    value={state.broj}
+                    onChange={handleChange}
+                    fullWidth
+                    name="broj"
+                    label="Broj sale"
+                    type="text"
+                    id="broj"
+                  />
+                </Grid>
+                <Grid item md={3}>
+                  <TextField
+                    style={{ width: "80%" }}
+                    margin="normal"
+                    value={state.prezimePretraga}
+                    onChange={handleChange}
+                    fullWidth
+                    name="naziv"
+                    label="Naziv sale"
+                    type="text"
+                    id="naziv"
+                  />
+                </Grid>
+                <Grid
+                  item
+                  md={3}
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center"
+                  }}
+                >
+                  <Button variant="contained" color="primary" type="submit">
+                    Pretraži
+                  </Button>
+                </Grid>
+              </Grid>
+            </Paper>
+          </form>
+          <Paper className={classes.paper}>
+            <EnhancedTableToolbar />
+            <div className={classes.tableWrapper}>
+              <Table
+                className={classes.table}
+                aria-labelledby="tableTitle"
+                size={dense ? "small" : "medium"}
+                aria-label="enhanced table"
+              >
+                <TableHead>
+                  <TableRow>
+                    <TableCell align="left">
+                      <TableSortLabel
+                        active={orderBy === "sala.salaIdentifier"}
+                        direction={order}
+                        onClick={() => handleRequestSort("sala.salaIdentifier")}
                       >
-                        <TableCell component="th" allign="left">
-                          {row.salaIdentifier}
-                        </TableCell>
-                        <TableCell align="left">{row.naziv}</TableCell>
-                        <TableCell align="right">
-                          <KalendarSala salaId={row.id} />
-                        </TableCell>
-                        <TableCell align="right">
-                          <Button variant="outlined" color="primary">
-                            Izmeni
-                          </Button>
-                        </TableCell>
-                      </TableRow>
-                    );
-                  })}
-              {sale &&
-                rowsPerPage -
-                  Math.min(rowsPerPage, sale.length - page * rowsPerPage) >
-                  0 && (
-                  <TableRow
-                    style={{
-                      height:
-                        (dense ? 33 : 53) *
-                        (rowsPerPage -
-                          Math.min(
-                            rowsPerPage,
-                            sale.length - page * rowsPerPage
-                          ))
-                    }}
-                  >
-                    <TableCell colSpan={6} />
+                        Broj sale
+                      </TableSortLabel>
+                    </TableCell>
+                    <TableCell align="left">
+                      <TableSortLabel
+                        active={orderBy === "sala.naziv"}
+                        direction={order}
+                        onClick={() => handleRequestSort("sala.naziv")}
+                      >
+                        Naziv sale
+                      </TableSortLabel>
+                    </TableCell>
+                    <TableCell align="right"></TableCell>
                   </TableRow>
-                )}
-            </TableBody>
-          </Table>
-        </div>
-        {sale && (
-          <TablePagination
-            rowsPerPageOptions={[5, 10, 25]}
-            component="div"
-            count={sale.length}
-            rowsPerPage={rowsPerPage}
-            page={page}
-            backIconButtonProps={{
-              "aria-label": "previous page"
-            }}
-            nextIconButtonProps={{
-              "aria-label": "next page"
-            }}
-            onChangePage={handleChangePage}
-            onChangeRowsPerPage={handleChangeRowsPerPage}
+                </TableHead>
+                <TableBody>
+                  {sale &&
+                    stableSort(sale, getSorting(order, orderBy))
+                      .slice(
+                        page * rowsPerPage,
+                        page * rowsPerPage + rowsPerPage
+                      )
+                      .map((row, index) => {
+                        return (
+                          <TableRow
+                            hover
+                            role="checkbox"
+                            tabIndex={-1}
+                            key={row.id}
+                          >
+                            <TableCell component="th" allign="left">
+                              {row.salaIdentifier}
+                            </TableCell>
+                            <TableCell align="left">{row.naziv}</TableCell>
+                            <TableCell align="right">
+                              <KalendarSala salaId={row.id} />
+                            </TableCell>
+                            <TableCell align="right">
+                              <Button variant="outlined" color="primary">
+                                Izmeni
+                              </Button>
+                            </TableCell>
+                          </TableRow>
+                        );
+                      })}
+                  {sale &&
+                    rowsPerPage -
+                      Math.min(rowsPerPage, sale.length - page * rowsPerPage) >
+                      0 && (
+                      <TableRow
+                        style={{
+                          height:
+                            (dense ? 33 : 53) *
+                            (rowsPerPage -
+                              Math.min(
+                                rowsPerPage,
+                                sale.length - page * rowsPerPage
+                              ))
+                        }}
+                      >
+                        <TableCell colSpan={6} />
+                      </TableRow>
+                    )}
+                </TableBody>
+              </Table>
+            </div>
+            {sale && (
+              <TablePagination
+                rowsPerPageOptions={[5, 10, 25]}
+                component="div"
+                count={sale.length}
+                rowsPerPage={rowsPerPage}
+                page={page}
+                backIconButtonProps={{
+                  "aria-label": "previous page"
+                }}
+                nextIconButtonProps={{
+                  "aria-label": "next page"
+                }}
+                onChangePage={handleChangePage}
+                onChangeRowsPerPage={handleChangeRowsPerPage}
+              />
+            )}
+          </Paper>
+          <FormControlLabel
+            control={<Switch checked={dense} onChange={handleChangeDense} />}
+            label="Smanji pading"
           />
-        )}
-      </Paper>
-      <FormControlLabel
-        control={<Switch checked={dense} onChange={handleChangeDense} />}
-        label="Smanji pading"
-      />
+        </div>
+      )}
     </div>
   );
 };

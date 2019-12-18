@@ -93,4 +93,24 @@ public class LekarController {
             return new  ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
+
+    @GetMapping("/lekariZaBrisanje/{id}")
+    public ResponseEntity<List<Lekar>> getlekariKojiSeMoguObristi(@PathVariable String id){
+        try{
+            return new ResponseEntity<List<Lekar>>(lekarService.getLekartKojiSeMeoguObrisati(id), HttpStatus.OK);
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<Lekar> obrisiLekara(@PathVariable String id){
+        try{
+            return new ResponseEntity<Lekar>(lekarService.obrisiLekara(id), HttpStatus.OK);
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
 }

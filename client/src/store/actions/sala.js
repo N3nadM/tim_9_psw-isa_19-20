@@ -2,7 +2,10 @@ import {
   SET_ADDED_SALA,
   SET_LISTA_SALA,
   SET_LISTA_DOSTUPNIH_SALA,
-  SET_SALA_ZA_PREGLED
+  SET_SALA_ZA_PREGLED,
+  SET_SALE_KOJE_SE_MOGU_OBRISATI,
+  SET_OBRISANA_SALA,
+  SET_SALA_ZA_IZMENU
 } from "../actionTypes";
 import axios from "axios";
 
@@ -24,6 +27,21 @@ export const setSalaZaPregled = salaZaPregled => ({
 export const setListaDostupnihSala = listaDostupnihSala => ({
   type: SET_LISTA_DOSTUPNIH_SALA,
   listaDostupnihSala
+});
+
+export const setSaleZaBrisanje = saleZaBrisanje => ({
+  type: SET_SALE_KOJE_SE_MOGU_OBRISATI,
+  saleZaBrisanje
+});
+
+export const setObrisanaSala = obrisanaSala => ({
+  type: SET_OBRISANA_SALA,
+  obrisanaSala
+});
+
+export const setSalaZaIzmenu = salaZaIzmenu => ({
+  type: SET_SALA_ZA_IZMENU,
+  salaZaIzmenu
 });
 
 export const addNewSala = data => async dispatch => {
@@ -73,6 +91,33 @@ export const searchSalaNaKlinici = (id, searchData) => async (
 export const setSalaZakazivanje = sala => async dispatch => {
   try {
     dispatch(setSalaZaPregled(sala));
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const getSaleZaBrisanje = id => async dispatch => {
+  try {
+    const k = await axios.get(`/api/sala/saleZaBrisanje/${id}`, id);
+    dispatch(setSaleZaBrisanje(k.data));
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const obrisiSalu = id => async dispatch => {
+  try {
+    const k = await axios.delete(`/api/sala/delete/${id}`, id);
+    dispatch(setObrisanaSala(k.data));
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const getSalaZaIzmenu = id => async dispatch => {
+  try {
+    const k = await axios.get(`/api/sala/find/${id}`, id);
+    dispatch(setSalaZaIzmenu(k.data));
   } catch (err) {
     console.log(err);
   }
