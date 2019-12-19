@@ -5,7 +5,7 @@ import {
   SET_SALA_ZA_PREGLED,
   SET_SALE_KOJE_SE_MOGU_OBRISATI,
   SET_OBRISANA_SALA,
-  SET_SALA_ZA_IZMENU
+  SET_EDITED_SALA
 } from "../actionTypes";
 
 const DEFAULT_STATE = {
@@ -15,7 +15,7 @@ const DEFAULT_STATE = {
   salaZaPregled: null,
   saleZaBrisanje: null,
   obrisanaSala: null,
-  salaZaIzmeu: null
+  editedSala: null
 };
 
 export default (state = DEFAULT_STATE, action) => {
@@ -53,10 +53,13 @@ export default (state = DEFAULT_STATE, action) => {
           s => s.id != action.obrisanaSala.id
         )
       };
-    case SET_SALA_ZA_IZMENU:
+    case SET_EDITED_SALA:
       return {
         ...state,
-        salaZaIzmeu: action.salaZaIzmeu
+        editedSala: action.editedSala,
+        listaSala: state.listaSala.map(l =>
+          l.id === action.editedSala.id ? action.editedSala : l
+        )
       };
     default:
       return state;

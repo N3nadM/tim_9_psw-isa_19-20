@@ -31,8 +31,8 @@ import MenuItem from "@material-ui/core/MenuItem";
 import TextField from "@material-ui/core/TextField";
 import KalendarSala from "../Tabs/BrzoZakazivanjePregleda/KalendarSala";
 import { searchSalaNaKlinici } from "../../store/actions/sala";
-
 import { getListaSala } from "../../store/actions/sala";
+import IzmenaPodatakSala from "../Tabs/Sala/IzmenaPodatakaSala";
 
 function desc(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -120,6 +120,7 @@ const IzmenaSala = ({ sale, getListaSala, klinikaId, searchSalaNaKlinici }) => {
     getListaSala(klinikaId);
   }, []);
   const [state, setState] = React.useState({
+    zaIzmenu: "",
     broj: "",
     naziv: ""
   });
@@ -164,6 +165,9 @@ const IzmenaSala = ({ sale, getListaSala, klinikaId, searchSalaNaKlinici }) => {
 
   return (
     <div className={classes.root}>
+      {isEdit && (
+        <IzmenaPodatakSala sala={state.zaIzmenu} setIsEdit={setIsEdit} />
+      )}
       {!isEdit && (
         <div>
           <form onSubmit={handleSubmit}>
@@ -266,7 +270,14 @@ const IzmenaSala = ({ sale, getListaSala, klinikaId, searchSalaNaKlinici }) => {
                               <KalendarSala salaId={row.id} />
                             </TableCell>
                             <TableCell align="right">
-                              <Button variant="outlined" color="primary">
+                              <Button
+                                variant="outlined"
+                                color="primary"
+                                onClick={() => {
+                                  state.zaIzmenu = row;
+                                  setIsEdit(true);
+                                }}
+                              >
                                 Izmeni
                               </Button>
                             </TableCell>

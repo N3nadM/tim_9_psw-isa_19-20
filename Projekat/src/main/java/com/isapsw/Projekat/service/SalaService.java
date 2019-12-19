@@ -96,8 +96,12 @@ public class SalaService {
         return sala;
     }
 
-    public Sala find(String id){
-        return salaRepository.findById(Long.parseLong(id)).get();
+
+    public Sala editSala(SalaDTO salaDTO){
+        Sala sala = salaRepository.findById(salaDTO.getId()).get();
+        sala.setNaziv(salaDTO.getNaziv());
+        sala.setSalaIdentifier(salaDTO.getSalaIdentifier());
+        return salaRepository.save(sala);
     }
 
 }

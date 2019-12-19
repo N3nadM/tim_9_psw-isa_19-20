@@ -81,12 +81,13 @@ public class SalaController {
         }
     }
 
-    @GetMapping("/find/{id}")
-    public ResponseEntity<Sala> getSala(@PathVariable String id){
+    @PutMapping("/edit")
+    public ResponseEntity<Sala> editSala(@RequestBody SalaDTO salaDTO){
         try{
-            return new ResponseEntity<Sala>(salaService.find(id), HttpStatus.OK);
+            return new ResponseEntity<Sala>(salaService.editSala(salaDTO), HttpStatus.OK);
         }catch (Exception e){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
+
 }
