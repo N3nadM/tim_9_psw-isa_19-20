@@ -5,7 +5,7 @@ import {
   SET_SALA_ZA_PREGLED,
   SET_SALE_KOJE_SE_MOGU_OBRISATI,
   SET_OBRISANA_SALA,
-  SET_SALA_ZA_IZMENU
+  SET_EDITED_SALA
 } from "../actionTypes";
 import axios from "axios";
 
@@ -38,10 +38,9 @@ export const setObrisanaSala = obrisanaSala => ({
   type: SET_OBRISANA_SALA,
   obrisanaSala
 });
-
-export const setSalaZaIzmenu = salaZaIzmenu => ({
-  type: SET_SALA_ZA_IZMENU,
-  salaZaIzmenu
+export const setEditedSala = editedSala => ({
+  type: SET_EDITED_SALA,
+  editedSala
 });
 
 export const addNewSala = data => async dispatch => {
@@ -114,10 +113,10 @@ export const obrisiSalu = id => async dispatch => {
   }
 };
 
-export const getSalaZaIzmenu = id => async dispatch => {
+export const editSala = state => async dispatch => {
   try {
-    const k = await axios.get(`/api/sala/find/${id}`, id);
-    dispatch(setSalaZaIzmenu(k.data));
+    const k = await axios.put(`/api/sala/edit`, state);
+    dispatch(setEditedSala(k.data));
   } catch (err) {
     console.log(err);
   }
