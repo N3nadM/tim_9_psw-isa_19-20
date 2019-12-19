@@ -16,13 +16,10 @@ export const setNewTipPregleda = newTipPregleda => ({
 
 export const getAllTipoviPregleda = id => async (dispatch, getState) => {
   try {
-    let tipoviPregleda = getState().tipoviPregleda.tipoviPregleda;
-    if (!tipoviPregleda) {
-      tipoviPregleda = await axios.get(
-        `/api/tipPregleda/getTipoviNaKlinici/${id}`
-      );
-      dispatch(setTipoviPregleda(tipoviPregleda.data));
-    }
+    const tipoviPregleda = await axios.get(
+      `/api/tipPregleda/getTipoviNaKlinici/${id}`
+    );
+    dispatch(setTipoviPregleda(tipoviPregleda.data));
   } catch (err) {
     console.log(err);
   }
@@ -33,6 +30,15 @@ export const addNewTipPregleda = data => async dispatch => {
     console.log(data);
     const tip = await axios.post(`/api/tipovi`, data);
     dispatch(setNewTipPregleda(tip.data));
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const searchTipovi = (id, data) => async dispatch => {
+  try {
+    const tipovi = await axios.post(`/api/tipPregleda/search/${id}`, data);
+    dispatch(setTipoviPregleda(tipovi.data));
   } catch (err) {
     console.log(err);
   }

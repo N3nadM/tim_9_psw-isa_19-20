@@ -9,6 +9,7 @@ import TextField from "@material-ui/core/TextField";
 import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
 import { addNewTipPregleda } from "../../store/actions/tipoviPregleda";
+import PretragaTipovaPregleda from "../Tabs/TipoviPregleda/PretragaTipovaPregleda";
 
 import { connect } from "react-redux";
 function TabPanel(props) {
@@ -160,39 +161,7 @@ const TipoviPregledaTabs = ({
         </form>
       </TabPanel>
       <TabPanel value={value} index={1} dir={theme.direction}>
-        <p>Unesite kriterijume pretrage</p>
-        <form className={classes.form} noValidate>
-          <Grid container spacing={3}>
-            <Grid item xs>
-              <TextField
-                margin="normal"
-                fullWidth
-                name="nazivPretraga"
-                label="Naziv tipa pregleda"
-                type="text"
-                id="nazivPretraga"
-              />
-            </Grid>
-            <Grid item xs>
-              <TextField
-                margin="normal"
-                fullWidth
-                name="cenaPretraga"
-                label="Cena tipa pregleda"
-                type="text"
-                id="cenaPretraga"
-              />
-            </Grid>
-          </Grid>
-          <Button
-            type="submit"
-            variant="contained"
-            color="primary"
-            className={classes.submit}
-          >
-            Pretraga
-          </Button>
-        </form>
+        {value === 1 && <PretragaTipovaPregleda />}
       </TabPanel>
       <TabPanel value={value} index={2} dir={theme.direction}>
         Lista tipova pregleda koji se mogu menjati

@@ -19,4 +19,16 @@ public class TipPregledaService {
     public List<TipPregleda> getAllTipoviPregleda() { return  tipPregledaRepository.findAll(); }
 
     public Optional<TipPregleda> getTipPregledaById(Long id) {return  tipPregledaRepository.findById(id);}
+
+    public List<TipPregleda> searchTipoviNaKlinici(Long id, String naziv, String cena,String trajanje){
+        Integer najvecaCena = Integer.MAX_VALUE;
+        if(!cena.equals("")){
+            najvecaCena = Integer.parseInt(cena);
+        }
+        Integer minimalnoTrajanjeMin = 0;
+        if(!trajanje.equals("")){
+            minimalnoTrajanjeMin= Integer.parseInt(trajanje);
+        }
+        return tipPregledaRepository.findTipByParameters(id, naziv.toUpperCase(), najvecaCena, minimalnoTrajanjeMin);
+    }
 }
