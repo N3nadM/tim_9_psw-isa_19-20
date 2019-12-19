@@ -10,6 +10,7 @@ import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
 import { addNewTipPregleda } from "../../store/actions/tipoviPregleda";
 import PretragaTipovaPregleda from "../Tabs/TipoviPregleda/PretragaTipovaPregleda";
+import IzmenaBrisanjeTipova from "../Tabs/TipoviPregleda/IzmenaBrisanjeTipova";
 
 import { connect } from "react-redux";
 function TabPanel(props) {
@@ -98,12 +99,14 @@ const TipoviPregledaTabs = ({
         indicatorColor="primary"
         textColor="primary"
       >
-        <Tab label="Unos novog tipa pregleda" {...a11yProps(0)} />
-        <Tab label="Pretraga tipova pregleda" {...a11yProps(1)} />
-        <Tab label="Izmena tipa pregleda" {...a11yProps(2)} />
-        <Tab label="Uklanjanje tipa pregleda" {...a11yProps(3)} />
+        <Tab label="Pretraga tipova pregleda" {...a11yProps(0)} />
+        <Tab label="Unos novog tipa pregleda" {...a11yProps(1)} />
+        <Tab label="Izmena i brisanje tipa pregleda" {...a11yProps(2)} />
       </Tabs>
       <TabPanel value={value} index={0} dir={theme.direction}>
+        {value === 0 && <PretragaTipovaPregleda />}
+      </TabPanel>
+      <TabPanel value={value} index={1} dir={theme.direction}>
         <p>Unesite podatke o tipu pregleda</p>
         <form className={classes.form} onSubmit={handleSubmit}>
           <TextField
@@ -160,15 +163,8 @@ const TipoviPregledaTabs = ({
           </Button>
         </form>
       </TabPanel>
-      <TabPanel value={value} index={1} dir={theme.direction}>
-        {value === 1 && <PretragaTipovaPregleda />}
-      </TabPanel>
       <TabPanel value={value} index={2} dir={theme.direction}>
-        Lista tipova pregleda koji se mogu menjati
-      </TabPanel>
-      <TabPanel value={value} index={3} dir={theme.direction}>
-        Lista tipova pregleda koji se mogu obrisati (ukoliko ne postoje pregledi
-        takvog tipa)
+        {value === 2 && <IzmenaBrisanjeTipova />}
       </TabPanel>
     </div>
   );

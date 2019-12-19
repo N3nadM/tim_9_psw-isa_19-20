@@ -15,6 +15,9 @@ public interface TipPregledaRepository extends JpaRepository<TipPregleda, Long> 
     Optional<TipPregleda> findById(Long id);
     List<TipPregleda> findTipPregledasByKlinikaId(Long id);
 
+    @Query("SELECT DISTINCT tp FROM TipPregleda tp LEFT JOIN Pregled p ON p.tipPregleda.id = tp.id WHERE p.tipPregleda.id IS NULL AND tp.klinika.id = :id")
+    List<TipPregleda> findIfNotReserved(@Param("id") Long id);
+
     @Query("SELECT DISTINCT tp FROM TipPregleda tp JOIN Klinika k ON tp.klinika.id = k.id  WHERE k.id = :id AND UPPER(tp.naziv) LIKE %:naziv% AND tp.cenaPregleda < :najvecaCena AND tp.minimalnoTrajanjeMin > :minimalnoTrajanjeMin")
     List<TipPregleda> findTipByParameters(@Param("id") Long id, @Param("naziv") String naziv, @Param("najvecaCena") Integer najvecaCena, @Param("minimalnoTrajanjeMin")Integer minimalnoTrajanjeMin );
 

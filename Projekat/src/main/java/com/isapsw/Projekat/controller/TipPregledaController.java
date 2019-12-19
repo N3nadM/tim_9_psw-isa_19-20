@@ -1,6 +1,7 @@
 package com.isapsw.Projekat.controller;
 
 import com.isapsw.Projekat.domain.TipPregleda;
+import com.isapsw.Projekat.dto.TipPregledaDTO;
 import com.isapsw.Projekat.service.TipPregledaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -35,6 +36,24 @@ public class TipPregledaController {
         catch(Exception e) {
             System.out.println(e.getMessage());
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("/tipoviZaIzmenu/{id}")
+    public ResponseEntity<List<TipPregleda>> getTipoviZaIzmenu(@PathVariable String id){
+        try{
+            return new ResponseEntity<>(tipPregledaService.getTipoviZaIzmenu(id), HttpStatus.OK);
+        }catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PostMapping("/edit")
+    public ResponseEntity<TipPregleda> editTip(@RequestBody TipPregledaDTO tipPregledaDTO){
+        try{
+            return  new ResponseEntity<TipPregleda>(tipPregledaService.editTip(tipPregledaDTO), HttpStatus.OK);
+        }catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
 
