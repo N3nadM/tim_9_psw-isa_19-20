@@ -12,6 +12,7 @@ import { connect } from "react-redux";
 import { addNewSala } from "../../store/actions/sala";
 import IzmenaSala from "../Tabs/IzmenaSala";
 import BrisanjeSalaTab from "./Sala/BrisanjeSalaTab";
+
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
