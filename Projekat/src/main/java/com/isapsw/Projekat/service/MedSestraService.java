@@ -31,6 +31,10 @@ public class MedSestraService {
         return  medSestraRepository.findMedicinskaSestraByKorisnikId(Long.parseLong(id));
     }
 
+    public MedicinskaSestra updateSestra(MedicinskaSestra medicinskaSestra){
+        return medSestraRepository.save(medicinskaSestra);
+    }
+
     public List<MedicinskaSestra> getDostupneSestre(String id, String termin, String trajanje) throws ParseException {
         List<MedicinskaSestra> sestreNaKlinici = medSestraRepository.findMedicinskaSestrasByKlinikaId(Long.parseLong(id));
         Date datum = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss").parse(termin);

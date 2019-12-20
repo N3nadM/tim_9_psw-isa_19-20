@@ -43,6 +43,14 @@ public class Lekar{
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private TipPregleda tipPregleda;
 
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "lekar")
+    @JsonIgnore
+    private List<Odsustvo> odsustvo;
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "lekar")
+    @JsonIgnore
+    private List<Odmor> odmor;
+
     public Lekar(){
         super();
     }
@@ -127,4 +135,19 @@ public class Lekar{
         this.klinika = klinika;
     }
 
+    public List<Odsustvo> getOdsustvo() {
+        return odsustvo;
+    }
+
+    public void setOdsustvo(List<Odsustvo> odsustvo) {
+        this.odsustvo = odsustvo;
+    }
+
+    public List<Odmor> getOdmor() {
+        return odmor;
+    }
+
+    public void setOdmor(List<Odmor> odmor) {
+        this.odmor = odmor;
+    }
 }
