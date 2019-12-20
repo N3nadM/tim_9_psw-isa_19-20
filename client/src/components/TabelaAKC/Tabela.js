@@ -54,7 +54,6 @@ const Tabela = ({
 
   return (
     <div className="Tabela">
-      {console.log(zahtevi)}
       <Table aria-label="simple table">
         <TableHead>
           <TableRow>

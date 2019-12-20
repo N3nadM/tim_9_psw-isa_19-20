@@ -1,6 +1,7 @@
 package com.isapsw.Projekat.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.isapsw.Projekat.dto.LekDTO;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -45,8 +46,26 @@ public class Lek {
     @JsonIgnore
     private List<Recept> recept = new ArrayList<>();
 
-
     public Lek() {
+    }
+
+    public Lek(LekDTO lekDTO){
+        this.naziv = lekDTO.getNaziv();
+        this.sadrzaj = lekDTO.getSadrzaj();
+        this.sifra = lekDTO.getSifra();
+        this.dijagnoze = new ArrayList<>();
+        this.zdrKarton = new ArrayList<>();
+        this.recept = new ArrayList<>();
+    }
+
+    public Lek(Long id, @NotBlank(message = "Neophodno je uneti naziv leka.") String naziv, @NotBlank(message = "Neophodno je uneti sadrzaj leka.") String sadrzaj, @NotBlank(message = "Neophodno je uneti sifru leka.") @Size(min = 3) String sifra, List<Dijagnoza> dijagnoze, List<ZdrKarton> zdrKarton, List<Recept> recept) {
+        this.id = id;
+        this.naziv = naziv;
+        this.sadrzaj = sadrzaj;
+        this.sifra = sifra;
+        this.dijagnoze = dijagnoze;
+        this.zdrKarton = zdrKarton;
+        this.recept = recept;
     }
 
     public List<ZdrKarton> getZdrKarton() {

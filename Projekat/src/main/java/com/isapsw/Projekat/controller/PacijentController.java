@@ -23,9 +23,6 @@ public class PacijentController {
     private PacijentService pacijentService;
 
     @Autowired
-    private KorisnikService korisnikService;
-
-    @Autowired
     private MedSestraService medSestraService;
 
     @Autowired

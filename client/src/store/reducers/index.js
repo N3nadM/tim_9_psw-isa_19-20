@@ -11,6 +11,10 @@ import tipoviPregleda from "./tipoviPregleda";
 import sala from "./sala";
 import pregled from "./pregled";
 import operacija from "./operacija";
+import lek from "./lek";
+import dijagnoza from "./dijagnoza";
+import odmor from "./odmor";
+import odsustvo from "./odsustvo";
 
 const appReducer = combineReducers({
   currentUser,
@@ -24,7 +28,11 @@ const appReducer = combineReducers({
   tipoviPregleda,
   sala,
   pregled,
-  operacija
+  operacija,
+  lek,
+  dijagnoza,
+  odmor,
+  odsustvo
 });
 
 const rootReducer = (state, action) => {

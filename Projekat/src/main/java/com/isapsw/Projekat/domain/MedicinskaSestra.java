@@ -39,6 +39,14 @@ public class MedicinskaSestra{
     @JsonIgnore
     private List<Operacija> operacije = new ArrayList<>();
 
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "medicinskaSestra")
+    @JsonIgnore
+    private List<Odsustvo> odsustvo;
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "medicinskaSestra")
+    @JsonIgnore
+    private List<Odmor> odmor;
+
     public MedicinskaSestra(){
         super();
         this.recepti = new ArrayList<>();
@@ -105,5 +113,21 @@ public class MedicinskaSestra{
 
     public void setKrajRadnogVremena(LocalTime krajRadnogVremena) {
         this.krajRadnogVremena = krajRadnogVremena;
+    }
+
+    public List<Odsustvo> getOdsustvo() {
+        return odsustvo;
+    }
+
+    public void setOdsustvo(List<Odsustvo> odsustvo) {
+        this.odsustvo = odsustvo;
+    }
+
+    public List<Odmor> getOdmor() {
+        return odmor;
+    }
+
+    public void setOdmor(List<Odmor> odmor) {
+        this.odmor = odmor;
     }
 }

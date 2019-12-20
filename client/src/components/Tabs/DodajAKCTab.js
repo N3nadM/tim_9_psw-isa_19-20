@@ -119,11 +119,11 @@ const DodajAKCTab = ({ addNewAdminKC }) => {
             id="telefon"
           />
         </Grid>
-        <Grid container spacing={1}>
-          <Button type="submit" variant="contained" color="primary">
-            Dodaj
-          </Button>
-        </Grid>
+      </Grid>
+      <Grid container spacing={1} sm={3}>
+        <Button type="submit" variant="contained" color="primary">
+          Dodaj
+        </Button>
       </Grid>
     </form>
   );

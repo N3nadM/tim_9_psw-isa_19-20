@@ -43,16 +43,10 @@ const PacijentZdr = ({
   getZdrKarton
 }) => {
   useEffect(() => {
-    getZdrKarton(id);
-    console.log(id);
-  }, [getZdrKarton]);
+    getZdrKarton(pacijent.id);
+  }, []);
 
   const [isEdit, setIsEdit] = React.useState(false);
-
-  {
-    console.log(pacijent);
-    console.log(zdrKarton);
-  }
 
   const classes = useStyles();
 
