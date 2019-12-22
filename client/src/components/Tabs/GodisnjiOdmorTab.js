@@ -11,8 +11,6 @@ import { connect } from "react-redux";
 import { addNewOdmor } from "../../store/actions/odmor";
 import { addNewOdsustvo } from "../../store/actions/odsustvo";
 
-import Autocomplete from "@material-ui/lab/Autocomplete";
-import { addNewDijagnoza } from "../../store/actions/dijagnoza";
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -116,10 +114,6 @@ const OdmorOdsustvoTab = ({ korisnikId, addNewOdsustvo, addNewOdmor }) => {
     setValue(newValue);
   };
 
-  const handleChangeIndex = index => {
-    setValue(index);
-  };
-
   const handleSubmit = e => {
     e.preventDefault();
     addNewOdmor(selectedDate);
@@ -129,10 +123,6 @@ const OdmorOdsustvoTab = ({ korisnikId, addNewOdsustvo, addNewOdmor }) => {
     e.preventDefault();
     addNewOdsustvo(selectedDate2);
   };
-
-  {
-    console.log(selectedDate);
-  }
 
   return (
     <div className={classes.root}>

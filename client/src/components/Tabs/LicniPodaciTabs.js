@@ -59,10 +59,6 @@ export default function FullWidthTabs() {
     setValue(newValue);
   };
 
-  const handleChangeIndex = index => {
-    setValue(index);
-  };
-
   return (
     <div className={classes.root}>
       <Tabs

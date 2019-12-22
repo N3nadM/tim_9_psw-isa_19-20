@@ -1,9 +1,5 @@
 import React, { useEffect } from "react";
-import {
-  MuiPickersUtilsProvider,
-  KeyboardDatePicker
-} from "@material-ui/pickers";
-import DateFnsUtils from "@date-io/date-fns";
+
 import { makeStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -12,24 +8,11 @@ import TableHead from "@material-ui/core/TableHead";
 import TablePagination from "@material-ui/core/TablePagination";
 import TableRow from "@material-ui/core/TableRow";
 import TableSortLabel from "@material-ui/core/TableSortLabel";
-import Toolbar from "@material-ui/core/Toolbar";
-import Typography from "@material-ui/core/Typography";
+
 import Paper from "@material-ui/core/Paper";
-import IconButton from "@material-ui/core/IconButton";
-import Tooltip from "@material-ui/core/Tooltip";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Switch from "@material-ui/core/Switch";
-import FilterListIcon from "@material-ui/icons/FilterList";
-import Button from "@material-ui/core/Button";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import { getLekariKlinike } from "../../../store/actions/lekar";
-import { Grid } from "@material-ui/core";
-import FormControl from "@material-ui/core/FormControl";
-import InputLabel from "@material-ui/core/InputLabel";
-import Select from "@material-ui/core/Select";
-import MenuItem from "@material-ui/core/MenuItem";
-import TextField from "@material-ui/core/TextField";
 import Dijalog from "../../Tabs/BrzoZakazivanjePregleda/Dijalog";
 
 const useStyles = makeStyles(theme => ({
@@ -65,14 +48,13 @@ const useStyles = makeStyles(theme => ({
 
 const PretragaSlobodniLekara = ({
   stariState,
-  setState,
   getLekariKlinike,
   idKlinike,
   lekari
 }) => {
   useEffect(() => {
-    console.log(stariState);
     getLekariKlinike(idKlinike, stariState);
+    //eslint-disable-next-line
   }, []);
   const classes = useStyles();
 
@@ -91,32 +73,10 @@ const PretragaSlobodniLekara = ({
     setPage(0);
   };
 
-  const [selectedDate, setSelectedDate] = React.useState(
-    stariState.datum || null
-  );
-
-  const handleDateChange = date => {
-    setSelectedDate(date);
-  };
-
-  const handleSubmit = e => {
-    e.preventDefault();
-    if (stariState.tip !== "" || selectedDate != null) {
-      getLekariKlinike(idKlinike, {
-        ...stariState,
-        datum: !selectedDate ? "" : selectedDate
-      });
-    }
-  };
-
-  const handleChange = e => {
-    setState({ ...stariState, [e.target.name]: e.target.value });
-  };
-
   const sort = lekari => {
     return lekari.sort((a, b) => {
       if (orderBy === "ime") {
-        return order == "asc"
+        return order === "asc"
           ? a.korisnik.ime < b.korisnik.ime
             ? 1
             : -1
@@ -124,9 +84,9 @@ const PretragaSlobodniLekara = ({
           ? 1
           : -1;
       } else if (orderBy === "ocena") {
-        return order == "asc" ? a.ocena - b.ocena : b.ocena - a.ocena;
+        return order === "asc" ? a.ocena - b.ocena : b.ocena - a.ocena;
       } else {
-        return order == "asc"
+        return order === "asc"
           ? a.korisnik.prezime < b.korisnik.prezime
             ? 1
             : -1

@@ -1,9 +1,4 @@
 import React, { useEffect } from "react";
-import {
-  MuiPickersUtilsProvider,
-  KeyboardDatePicker
-} from "@material-ui/pickers";
-import DateFnsUtils from "@date-io/date-fns";
 import { makeStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -20,7 +15,6 @@ import Tooltip from "@material-ui/core/Tooltip";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Switch from "@material-ui/core/Switch";
 import FilterListIcon from "@material-ui/icons/FilterList";
-import Button from "@material-ui/core/Button";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import DijalogZaBrisanje from "../Lekar/DijalogZaBrisanje";
@@ -111,6 +105,7 @@ const useStyles = makeStyles(theme => ({
 const ListaLekaraZaBrisanje = ({ klinika, lekari, getLekariZaBrisanje }) => {
   useEffect(() => {
     getLekariZaBrisanje(klinika.id);
+    //eslint-disable-next-line
   }, []);
 
   const classes = useStyles();
@@ -120,8 +115,6 @@ const ListaLekaraZaBrisanje = ({ klinika, lekari, getLekariZaBrisanje }) => {
   const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
-
-  const [state, setState] = React.useState({});
 
   const handleRequestSort = (property, event) => {
     const isDesc = orderBy === property && order === "desc";
@@ -140,10 +133,6 @@ const ListaLekaraZaBrisanje = ({ klinika, lekari, getLekariZaBrisanje }) => {
 
   const handleChangeDense = event => {
     setDense(event.target.checked);
-  };
-
-  const handleChange = e => {
-    setState({ ...state, [e.target.name]: e.target.value });
   };
 
   return (

@@ -50,7 +50,7 @@ export default (state = DEFAULT_STATE, action) => {
         ...state,
         obrisanaSala: action.obrisanaSala,
         saleZaBrisanje: state.saleZaBrisanje.filter(
-          s => s.id != action.obrisanaSala.id
+          s => s.id !== action.obrisanaSala.id
         )
       };
     case SET_EDITED_SALA:

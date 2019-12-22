@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import Tabs from "@material-ui/core/Tabs";
@@ -68,9 +68,6 @@ const SaleTabs = ({ adminKlinike: { klinika }, addNewSala }) => {
     setValue(newValue);
   };
 
-  const handleChangeIndex = index => {
-    setValue(index);
-  };
   const handleSubmit = e => {
     e.preventDefault();
     state.klinikaId = klinika.id;

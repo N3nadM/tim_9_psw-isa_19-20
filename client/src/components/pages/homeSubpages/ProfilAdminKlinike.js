@@ -1,8 +1,7 @@
 import React from "react";
 import Divider from "@material-ui/core/Divider";
 import Drawer from "@material-ui/core/Drawer";
-import Typography from "@material-ui/core/Typography";
-import { makeStyles, useTheme } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import PasswordChange from "../../PasswordChange/PasswordChange";
 import LekariTabs from "../../Tabs/LekariTabs";
 import SaleTabs from "../../Tabs/SaleTabs";

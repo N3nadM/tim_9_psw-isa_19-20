@@ -63,11 +63,6 @@ const Pregled_Operacija = ({ match, location }) => {
 
   let obj = location.objekat;
 
-  {
-    console.log(match.params.obj);
-    console.log(location.objekat);
-  }
-
   return (
     <>
       <AppBar pacijentRoute setTab={setValue} handleChange={handleChange} />

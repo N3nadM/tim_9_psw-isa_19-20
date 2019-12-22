@@ -44,6 +44,7 @@ const PacijentZdr = ({
 }) => {
   useEffect(() => {
     getZdrKarton(pacijent.id);
+    //eslint-disable-next-line
   }, []);
 
   const [isEdit, setIsEdit] = React.useState(false);

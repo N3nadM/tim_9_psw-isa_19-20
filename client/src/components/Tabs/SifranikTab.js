@@ -65,21 +65,11 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const SifranikTab = ({
-  lekovi,
-  getAllLekovi,
-  lek,
-  addNewLek,
-  dijagnoza,
-  addNewDijagnoza
-}) => {
+const SifranikTab = ({ lekovi, getAllLekovi, addNewLek, addNewDijagnoza }) => {
   useEffect(() => {
     getAllLekovi();
+    //eslint-disable-next-line
   }, []);
-
-  {
-    console.log(lekovi);
-  }
 
   const classes = useStyles();
   const theme = useTheme();

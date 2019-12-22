@@ -32,6 +32,7 @@ const useStyles = makeStyles(theme => ({
 const ZdrKarton = ({ pacijent: { pacijent }, zdrKarton, getZdrKarton }) => {
   useEffect(() => {
     getZdrKarton(pacijent.id);
+    //eslint-disable-next-line
   }, []);
 
   const classes = useStyles();

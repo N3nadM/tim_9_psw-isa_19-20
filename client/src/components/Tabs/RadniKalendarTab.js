@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from "react";
-import { Paper } from "@material-ui/core";
+import React, { useEffect } from "react";
 import { Calendar, momentLocalizer } from "react-big-calendar";
 import moment from "moment";
 import "react-big-calendar/lib/css/react-big-calendar.css";
@@ -7,8 +6,6 @@ import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import { getAllOsobljePregledi } from "../../store/actions/pregled";
 import { getAllOsobljeOperacije } from "../../store/actions/operacija";
-import LicniPodaciTabs from "../Tabs/LicniPodaciTabs";
-import Pregled_Operacija from "../pages/Pregled_Operacija";
 
 const localizer = momentLocalizer(moment);
 
@@ -24,6 +21,7 @@ const RadniKalendarTab = ({
   useEffect(() => {
     getAllOsobljePregledi(korisnikId);
     getAllOsobljeOperacije(korisnikId);
+    //eslint-disable-next-line
   }, []);
 
   pregledi = pregledi.map((pregled, i) => ({

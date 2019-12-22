@@ -96,13 +96,12 @@ export default function SimplePopover({ klinikaId, lekarId, lekari }) {
     setSubmited(1);
     try {
       if (selected === 1) {
-        console.log(newId);
-        const ocena = await Axios.post(`/api/lekar/oceni`, {
+        await Axios.post(`/api/lekar/oceni`, {
           id: newId,
           ocena: newValue
         });
       } else {
-        const ocena = await Axios.post(`/api/klinika/oceni`, {
+        await Axios.post(`/api/klinika/oceni`, {
           id: klinikaId,
           ocena: newValue
         });
@@ -165,7 +164,7 @@ export default function SimplePopover({ klinikaId, lekarId, lekari }) {
             {lekari && lekari.length > 0 && selected === 1 ? (
               lekari.map((l, i) => (
                 <div key={l.id}>
-                  {i != 0 && <Divider />}
+                  {i !== 0 && <Divider />}
                   <Typography>
                     {l.korisnik.ime} {l.korisnik.prezime}
                   </Typography>

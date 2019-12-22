@@ -1,5 +1,4 @@
 import React from "react";
-import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import DialogTitle from "@material-ui/core/DialogTitle";
@@ -209,7 +208,6 @@ export default function ConfirmationDialog({
         classes={{
           paper: classes.paper
         }}
-        id="ringtone-menu"
         keepMounted
         adresa={adresa}
         naziv={klinika}

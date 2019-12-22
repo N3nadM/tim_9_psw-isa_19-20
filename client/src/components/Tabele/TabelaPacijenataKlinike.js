@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import Button from "@material-ui/core/Button";
 import { Grid } from "@material-ui/core";
 import TextField from "@material-ui/core/TextField";
@@ -14,8 +14,6 @@ import { connect } from "react-redux";
 import { getPacijentiKlinike } from "../../store/actions/pacijent";
 import { searchPacijent } from "../../store/actions/pacijent";
 import { withRouter } from "react-router-dom";
-import Typography from "@material-ui/core/Typography";
-import Toolbar from "@material-ui/core/Toolbar";
 
 function desc(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -127,24 +125,6 @@ const useStyles = makeStyles(theme => ({
     minWidth: 120
   }
 }));
-const EnhancedTableToolbar = ({ pacijent, searchPacijent }) => {
-  const classes = useToolbarStyles();
-
-  return (
-    <div>
-      <Toolbar>
-        <Typography variant="h6" id="tableTitle">
-          Lista pacijenata
-        </Typography>
-      </Toolbar>
-    </div>
-  );
-};
-const useToolbarStyles = makeStyles(theme => ({
-  title: {
-    flex: "1 1 100%"
-  }
-}));
 
 const TabelaPacijenataKlinike = ({
   korisnikId,
@@ -155,6 +135,7 @@ const TabelaPacijenataKlinike = ({
 }) => {
   useEffect(() => {
     getPacijentiKlinike(korisnikId);
+    //eslint-disable-next-line
   }, []);
   const classes = useStyles();
   const [order, setOrder] = React.useState("asc");

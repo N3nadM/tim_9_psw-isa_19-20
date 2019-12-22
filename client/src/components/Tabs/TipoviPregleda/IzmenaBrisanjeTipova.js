@@ -1,9 +1,4 @@
 import React, { useEffect } from "react";
-import {
-  MuiPickersUtilsProvider,
-  KeyboardDatePicker
-} from "@material-ui/pickers";
-import DateFnsUtils from "@date-io/date-fns";
 import { makeStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -110,6 +105,7 @@ const useStyles = makeStyles(theme => ({
 const ListaTipovaZaIzmenu = ({ klinika, tipovi, getTipoviZaIzmenu }) => {
   useEffect(() => {
     getTipoviZaIzmenu(klinika.id);
+    //eslint-disable-next-line
   }, []);
 
   const classes = useStyles();
@@ -142,10 +138,6 @@ const ListaTipovaZaIzmenu = ({ klinika, tipovi, getTipoviZaIzmenu }) => {
 
   const handleChangeDense = event => {
     setDense(event.target.checked);
-  };
-
-  const handleChange = e => {
-    setState({ ...state, [e.target.name]: e.target.value });
   };
 
   return (

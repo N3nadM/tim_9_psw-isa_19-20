@@ -16,7 +16,6 @@ import {
 import DateFnsUtils from "@date-io/date-fns";
 
 import MenuItem from "@material-ui/core/MenuItem";
-import FormHelperText from "@material-ui/core/FormHelperText";
 import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
 import InputLabel from "@material-ui/core/InputLabel";
@@ -24,8 +23,6 @@ import { connect } from "react-redux";
 import Grid from "@material-ui/core/Grid";
 import PretragaSlobodnihLekara from "../BrzoZakazivanjePregleda/PretragaSlobodnihLekara";
 import PretragaSlobodnihSala from "../BrzoZakazivanjePregleda/PretragaSlobodnihSala";
-import Autocomplete from "@material-ui/lab/Autocomplete";
-import { stat } from "fs";
 import { setPregled } from "../../../store/actions/pregled";
 
 import Stepper from "@material-ui/core/Stepper";
@@ -244,12 +241,12 @@ const SlobodniTerminiTabs = ({
       ...state,
       lekarId: lekarZaPregled ? lekarZaPregled : ""
     });
+    //eslint-disable-next-line
   }, []);
   const classes = useStyles();
   const theme = useTheme();
   const [value, setValue] = React.useState(0);
   const [isEdit, setIsEdit] = React.useState(false);
-  const [isSala, setIsSala] = React.useState(false);
 
   const handleNext = () => {
     setActiveStep(prevActiveStep => prevActiveStep + 1);
@@ -271,19 +268,17 @@ const SlobodniTerminiTabs = ({
     setValue(newValue);
   };
   const postaviCenuTrajanje = tip => {
-    {
-      tipoviPregleda &&
-        tipoviPregleda.map(tipoviPregleda => {
-          tipoviPregleda.id === tip &&
-            setState({
-              ...state,
-              cena: tipoviPregleda.cenaPregleda,
-              trajanje: tipoviPregleda.minimalnoTrajanjeMin,
-              tipPregledaId: tip,
-              tip: tipoviPregleda.naziv
-            });
-        });
-    }
+    tipoviPregleda &&
+      tipoviPregleda.map(tipoviPregleda => {
+        tipoviPregleda.id === tip &&
+          setState({
+            ...state,
+            cena: tipoviPregleda.cenaPregleda,
+            trajanje: tipoviPregleda.minimalnoTrajanjeMin,
+            tipPregledaId: tip,
+            tip: tipoviPregleda.naziv
+          });
+      });
   };
   const handleChange1 = e => {
     setState({
@@ -292,13 +287,8 @@ const SlobodniTerminiTabs = ({
       lekarId: lekarZaPregled,
       [e.target.name]: e.target.value
     });
-    {
-      e.target.name === "tipPregledaId" && postaviCenuTrajanje(e.target.value);
-    }
-  };
 
-  const handleChangeIndex = index => {
-    setValue(index);
+    e.target.name === "tipPregledaId" && postaviCenuTrajanje(e.target.value);
   };
 
   const handleSubmit = e => {

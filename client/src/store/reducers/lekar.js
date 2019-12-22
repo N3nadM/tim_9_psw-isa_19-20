@@ -10,7 +10,6 @@ import {
   SET_LEKARI_KOJI_SE_MOGU_OBRISATI,
   SET_OBRISAN_LEKAR
 } from "../actionTypes";
-import { statement } from "@babel/template";
 
 const DEFAULT_STATE = {
   lekar: null,
@@ -77,7 +76,7 @@ export default (state = DEFAULT_STATE, action) => {
         ...state,
         obrisanLekar: action.obrisanLekar,
         lekariZaBrisanje: state.lekariZaBrisanje.filter(
-          l => l.id != action.obrisanLekar.id
+          l => l.id !== action.obrisanLekar.id
         )
       };
     default:
