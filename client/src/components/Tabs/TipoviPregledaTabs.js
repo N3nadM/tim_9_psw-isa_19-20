@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import Tabs from "@material-ui/core/Tabs";
@@ -6,7 +6,7 @@ import Tab from "@material-ui/core/Tab";
 import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
 import TextField from "@material-ui/core/TextField";
-import Grid from "@material-ui/core/Grid";
+
 import Button from "@material-ui/core/Button";
 import { addNewTipPregleda } from "../../store/actions/tipoviPregleda";
 import PretragaTipovaPregleda from "../Tabs/TipoviPregleda/PretragaTipovaPregleda";
@@ -73,12 +73,10 @@ const TipoviPregledaTabs = ({
     setValue(newValue);
   };
 
-  const handleChangeIndex = index => {
-    setValue(index);
-  };
   const handleChange1 = e => {
     setState({ ...state, [e.target.name]: e.target.value });
   };
+
   const handleSubmit = e => {
     e.preventDefault();
     state.klinikaId = klinika.id;
@@ -91,6 +89,7 @@ const TipoviPregledaTabs = ({
       klinikaId: ""
     });
   };
+
   return (
     <div className={classes.root}>
       <Tabs

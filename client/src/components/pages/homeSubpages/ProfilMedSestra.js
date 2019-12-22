@@ -1,23 +1,13 @@
 import React from "react";
-import clsx from "@material-ui/core";
-import CssBaseline from "@material-ui/core/CssBaseline";
 import Divider from "@material-ui/core/Divider";
 import Drawer from "@material-ui/core/Drawer";
-import Typography from "@material-ui/core/Typography";
-import { makeStyles, useTheme } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import PasswordChange from "../../PasswordChange/PasswordChange";
 import TabelaPacijenataKlinike from "../../Tabele/TabelaPacijenataKlinike";
-import SaleTabs from "../../Tabs/SaleTabs";
-import TipoviPregledaTabs from "../../Tabs/TipoviPregledaTabs";
-import SlobodniTerminiTabs from "../../Tabs/BrzoZakazivanjePregleda/SlobodniTerminTabs";
-import LicniPodaciTabs from "../../Tabs/LicniPodaciTabs";
-import PodaciKlinikaTabs from "../../Tabs/PodaciKlinikaTabs";
 import RadniKalendarTab from "../../Tabs/RadniKalendarTab";
 import AppBar from "../../layout/AppBarLogedIn";
 import GodisnjiOdmorTab from "../../Tabs/GodisnjiOdmorTab";
 import MedSestraProfilTab from "../../Tabs/MedSestraProfilTab";
-import Paper from "@material-ui/core/Paper";
-import Grid from "@material-ui/core/Grid";
 import TabPanel from "../../Tabs/TabPanel";
 
 import Tabs from "@material-ui/core/Tabs";

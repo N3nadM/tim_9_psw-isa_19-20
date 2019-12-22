@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 
 import Divider from "@material-ui/core/Divider";
@@ -43,8 +43,6 @@ export default function Pacijent({ match }) {
     setValue(newValue);
   };
   const classes = useStyles();
-
-  console.log(match);
 
   const drawer = (
     <div>

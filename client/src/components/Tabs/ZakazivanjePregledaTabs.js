@@ -55,17 +55,8 @@ export default function FullWidthTabs() {
   const theme = useTheme();
   const [value, setValue] = React.useState(0);
 
-  const [selectedDate, setSelectedDate] = React.useState(new Date());
-
-  const handleDateChange = date => {
-    setSelectedDate(date);
-  };
   const handleChange = (event, newValue) => {
     setValue(newValue);
-  };
-
-  const handleChangeIndex = index => {
-    setValue(index);
   };
 
   return (

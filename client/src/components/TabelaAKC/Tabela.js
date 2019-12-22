@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import Button from "@material-ui/core/Button";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -50,6 +50,7 @@ const Tabela = ({
 
   useEffect(() => {
     getZahtevi();
+    //eslint-disable-next-line
   }, []);
 
   return (

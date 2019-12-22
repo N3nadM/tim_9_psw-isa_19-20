@@ -42,6 +42,7 @@ const TabelaPregleda = ({
 
   React.useEffect(() => {
     getAllPregledi(pacijentId);
+    //eslint-disable-next-line
   }, []);
 
   const handleChangePage = (event, newPage) => {
@@ -66,11 +67,11 @@ const TabelaPregleda = ({
   const sort = sviPregledi => {
     return sviPregledi.concat().sort((a, b) => {
       if (orderBy === "tip") {
-        return order == "asc"
+        return order === "asc"
           ? a.tipPregleda.naziv - b.tipPregleda.naziv
           : b.tipPregleda.naziv - a.tipPregleda.naziv;
       } else {
-        return order == "asc"
+        return order === "asc"
           ? new Date(a.datumPocetka) - new Date(b.datumPocetka)
           : new Date(b.datumPocetka) - new Date(a.datumPocetka);
       }

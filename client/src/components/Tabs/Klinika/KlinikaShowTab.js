@@ -47,6 +47,7 @@ const PodaciKlinikaTabs = ({ getKlinika, klinika, id, state }) => {
 
   useEffect(() => {
     getKlinika(id);
+    //eslint-disable-next-line
   }, []);
 
   return (

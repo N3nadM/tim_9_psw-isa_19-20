@@ -20,6 +20,7 @@ const MedSestraProfilTab = ({
 }) => {
   useEffect(() => {
     getMedSestra(korisnikId);
+    //eslint-disable-next-line
   }, []);
 
   const [isEdit, setIsEdit] = React.useState(false);

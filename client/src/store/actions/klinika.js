@@ -58,7 +58,7 @@ export const addNewKlinika = data => async dispatch => {
 export const getKlinika = id => async (dispatch, getState) => {
   try {
     const klinike = getState().klinika.klinike;
-    const k = klinike !== null && klinike.find(kl => kl.id == id);
+    const k = klinike !== null && klinike.find(kl => kl.id === id);
 
     if (!k) {
       const klinika = await axios.get(`/api/klinika/${id}`);

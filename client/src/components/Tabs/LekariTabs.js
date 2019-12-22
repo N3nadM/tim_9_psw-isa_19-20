@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import PropTypes from "prop-types";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import Tabs from "@material-ui/core/Tabs";
@@ -82,6 +82,7 @@ const LekariTabs = ({
   });
   useEffect(() => {
     getAllTipoviPregleda(klinika.id);
+    //eslint-disable-next-line
   }, []);
   const classes = useStyles();
   const theme = useTheme();
@@ -89,10 +90,6 @@ const LekariTabs = ({
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
-  };
-
-  const handleChangeIndex = index => {
-    setValue(index);
   };
 
   const handleSubmit = e => {
@@ -293,7 +290,7 @@ const LekariTabs = ({
         </form>
       </TabPanel>
       <TabPanel value={value} index={1} dir={theme.direction}>
-        {value == 1 && <PretragLekaraTab klinikaId={klinika.id} />}
+        {value === 1 && <PretragLekaraTab klinikaId={klinika.id} />}
       </TabPanel>
       <TabPanel value={value} index={2} dir={theme.direction}>
         Lista lekara ciji podaci mogu da se menjaju

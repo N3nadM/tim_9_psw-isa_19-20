@@ -1,9 +1,4 @@
 import React, { useEffect } from "react";
-import {
-  MuiPickersUtilsProvider,
-  KeyboardDatePicker
-} from "@material-ui/pickers";
-import DateFnsUtils from "@date-io/date-fns";
 import { makeStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -24,10 +19,6 @@ import Button from "@material-ui/core/Button";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import { Grid } from "@material-ui/core";
-import FormControl from "@material-ui/core/FormControl";
-import InputLabel from "@material-ui/core/InputLabel";
-import Select from "@material-ui/core/Select";
-import MenuItem from "@material-ui/core/MenuItem";
 import TextField from "@material-ui/core/TextField";
 import { getLekariNaKlinici } from "../../store/actions/lekar";
 import { searchLekariNaKlinici } from "../../store/actions/lekar";
@@ -124,6 +115,7 @@ const PretragaLekaraTab = ({
 }) => {
   useEffect(() => {
     getLekariNaKlinici(klinikaId);
+    //eslint-disable-next-line
   }, []);
 
   const classes = useStyles();

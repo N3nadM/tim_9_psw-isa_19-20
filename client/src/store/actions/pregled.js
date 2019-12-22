@@ -56,7 +56,7 @@ export const getAllOsobljePregledi = id => async (dispatch, getState) => {
   }
 };
 
-export const getAllSalaPregledi = id => async (dispatch, getState) => {
+export const getAllSalaPregledi = id => async dispatch => {
   try {
     let preglediZaSalu = await axios.get(`/api/pregled/sala/${id}`);
     dispatch(setPreglediZaSalu(preglediZaSalu.data));
@@ -65,15 +65,15 @@ export const getAllSalaPregledi = id => async (dispatch, getState) => {
   }
 };
 
-export const setPregled = data => async (dispatch, getState) => {
+export const setPregled = data => async () => {
   try {
-    let pregled = await axios.post(`/api/pregled`, data);
+    await axios.post(`/api/pregled`, data);
   } catch (err) {
     console.log(err);
   }
 };
 
-export const getPredefinisaniPregledi = id => async (dispatch, getState) => {
+export const getPredefinisaniPregledi = id => async dispatch => {
   try {
     let pregledi = await axios.get(`/api/pregled/predefinisani/${id}`);
     dispatch(setListaPredefinisanih(pregledi.data));
@@ -97,7 +97,6 @@ export const deletePregled = id => async dispatch => {
 
 export const rezervisiPregled = id => async dispatch => {
   try {
-    console.log(id);
     const res = await axios.post("/api/pregled/zakaziPredefinisani", {
       pregledId: id
     });

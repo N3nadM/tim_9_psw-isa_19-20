@@ -1,5 +1,5 @@
-import React, { useEffect } from "react";
-import { Paper, DialogContent } from "@material-ui/core";
+import React from "react";
+import { DialogContent } from "@material-ui/core";
 import { Calendar, momentLocalizer } from "react-big-calendar";
 import moment from "moment";
 import "react-big-calendar/lib/css/react-big-calendar.css";
@@ -20,25 +20,21 @@ const RadniKalendarTab = ({
   getAllSalaPregledi,
   getAllSalaOperacije
 }) => {
-  {
-    pregledi &&
-      (pregledi = pregledi.map((pregled, i) => ({
-        ...pregled,
-        tip: "Pregled: " + pregled.tipPregleda.naziv,
-        datumZavrsetka: new Date(pregled.datumZavrsetka),
-        datumPocetka: new Date(pregled.datumPocetka)
-      })));
-  }
+  pregledi &&
+    (pregledi = pregledi.map((pregled, i) => ({
+      ...pregled,
+      tip: "Pregled: " + pregled.tipPregleda.naziv,
+      datumZavrsetka: new Date(pregled.datumZavrsetka),
+      datumPocetka: new Date(pregled.datumPocetka)
+    })));
 
-  {
-    operacije &&
-      (operacije = operacije.map((operacija, i) => ({
-        ...operacija,
-        tip: "Operacija: " + operacija.tipPregleda.naziv,
-        datumZavrsetka: new Date(operacija.datumZavrsetka),
-        datumPocetka: new Date(operacija.datumPocetka)
-      })));
-  }
+  operacije &&
+    (operacije = operacije.map((operacija, i) => ({
+      ...operacija,
+      tip: "Operacija: " + operacija.tipPregleda.naziv,
+      datumZavrsetka: new Date(operacija.datumZavrsetka),
+      datumPocetka: new Date(operacija.datumPocetka)
+    })));
 
   const [open, setOpen] = React.useState(false);
 

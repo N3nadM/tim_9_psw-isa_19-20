@@ -68,6 +68,7 @@ const TabelaLekariKlinike = ({
   useEffect(() => {
     getTipoviPrelgeda();
     getLekariKlinike(idKlinike, params);
+    //eslint-disable-next-line
   }, []);
   const classes = useStyles();
 
@@ -116,7 +117,7 @@ const TabelaLekariKlinike = ({
   const sort = lekari => {
     return lekari.sort((a, b) => {
       if (orderBy === "ime") {
-        return order == "asc"
+        return order === "asc"
           ? a.korisnik.ime < b.korisnik.ime
             ? 1
             : -1
@@ -124,9 +125,9 @@ const TabelaLekariKlinike = ({
           ? 1
           : -1;
       } else if (orderBy === "ocena") {
-        return order == "asc" ? a.ocena - b.ocena : b.ocena - a.ocena;
+        return order === "asc" ? a.ocena - b.ocena : b.ocena - a.ocena;
       } else {
-        return order == "asc"
+        return order === "asc"
           ? a.korisnik.prezime < b.korisnik.prezime
             ? 1
             : -1

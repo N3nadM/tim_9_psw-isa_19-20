@@ -22,6 +22,7 @@ const PacijentProfilTab = ({
 }) => {
   useEffect(() => {
     getPacijent(korisnikId);
+    //eslint-disable-next-line
   }, []);
 
   const [isEdit, setIsEdit] = React.useState(false);

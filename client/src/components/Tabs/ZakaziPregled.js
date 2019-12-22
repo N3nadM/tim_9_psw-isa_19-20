@@ -127,6 +127,7 @@ const ZakaziPregled = ({
   useEffect(() => {
     getAllKlinike();
     getTipoviPrelgeda();
+    //eslint-disable-next-line
   }, []);
 
   const classes = useStyles();
@@ -331,9 +332,9 @@ const ZakaziPregled = ({
                           <TableCell align="left">{row.ocena}</TableCell>
                           {!!state.tip.length && (
                             <TableCell align="right">
-                              {row.tipPregleda.find(t => t.naziv == state.tip)
+                              {row.tipPregleda.find(t => t.naziv === state.tip)
                                 ? row.tipPregleda.find(
-                                    t => t.naziv == state.tip
+                                    t => t.naziv === state.tip
                                   ).cenaPregleda
                                 : "Nema"}
                             </TableCell>
