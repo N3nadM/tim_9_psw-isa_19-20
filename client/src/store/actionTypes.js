@@ -89,3 +89,6 @@ export const SET_EDITED_TIP = "SET_EDITED_TIP";
 
 export const SET_ODMOR = "SET_ODMOR";
 export const SET_ODSUSTVO = "SET_ODSUSTVO";
+
+export const SET_ZAHTEV_ODMOR = "SET_ZAHTEV_ODMOR";
+export const SET_ZAHTEV_ODSUSTVO = "SET_ZAHTEV_ODSUSTVO";

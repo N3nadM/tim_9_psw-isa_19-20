@@ -3,6 +3,7 @@ package com.isapsw.Projekat.domain;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.isapsw.Projekat.dto.OdmorDTO;
+import com.isapsw.Projekat.dto.ZahtevOdmorDTO;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -34,12 +35,23 @@ public class ZahtevOdmor {
     private Lekar lekar;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="klinika_id")
+    @JoinColumn(name="klinika_id", updatable = false)
     @JsonIgnore
     private Klinika klinika;
 
-    private boolean verified;
+    private boolean verified = false;
 
+    public ZahtevOdmor() {
+    }
+
+    public ZahtevOdmor(ZahtevOdmorDTO zahtevOdmorDTO) {
+        this.datumOd = zahtevOdmorDTO.getDatumOd();
+        this.datumDo = zahtevOdmorDTO.getDatumDo();
+        this.opis = zahtevOdmorDTO.getOpis();
+        this.medicinskaSestra = null;
+        this.lekar = null;
+        this.klinika = null;
+    }
 
     public Long getId() {
         return id;

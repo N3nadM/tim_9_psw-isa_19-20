@@ -3,13 +3,15 @@ package com.isapsw.Projekat.domain;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.isapsw.Projekat.dto.OdsustvoDTO;
+import com.isapsw.Projekat.dto.ZahtevOdsustvoDTO;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.util.Date;
 
 @Entity
-public class ZahtevOdusustvo {
+public class ZahtevOdsustvo {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -31,14 +33,21 @@ public class ZahtevOdusustvo {
     private Lekar lekar;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="klinika_id", updatable = false, nullable = false)
+    @JoinColumn(name="klinika_id", updatable = false)
     @JsonIgnore
     private Klinika klinika;
 
     private boolean verified = false;
 
-    public ZahtevOdusustvo(){
+    public ZahtevOdsustvo() {
+    }
 
+    public ZahtevOdsustvo(ZahtevOdsustvoDTO zahtevOdsustvoDTO){
+        this.datum = zahtevOdsustvoDTO.getDatum();
+        this.opis = zahtevOdsustvoDTO.getOpis();
+        this.medicinskaSestra = null;
+        this.lekar = null;
+        this.klinika = null;
     }
 
     public Long getId() {
