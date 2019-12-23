@@ -10,4 +10,6 @@ import java.util.List;
 public interface ZahtevOdsustvoRepository extends JpaRepository<ZahtevOdsustvo, Long> {
 
     List<ZahtevOdsustvo> findAll();
+
+    List<ZahtevOdsustvo> findAllByKlinikaId(Long id);
 }

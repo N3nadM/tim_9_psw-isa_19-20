@@ -1,7 +1,11 @@
-import { SET_ZAHTEV_ODSUSTVO } from "../actionTypes";
+import {
+  SET_ZAHTEV_ODSUSTVO,
+  SET_ZAHTEVI_ADMIN_ODSUSTVO
+} from "../actionTypes";
 
 const DEFAULT_STATE = {
-  zahtevOdsustvo: null
+  zahtevOdsustvo: null,
+  listaZahtevaOdsustvo: null
 };
 
 export default (state = DEFAULT_STATE, action) => {
@@ -9,6 +13,10 @@ export default (state = DEFAULT_STATE, action) => {
     case SET_ZAHTEV_ODSUSTVO:
       return {
         zahtevOdsustvo: action.zahtevOdsustvo
+      };
+    case SET_ZAHTEVI_ADMIN_ODSUSTVO:
+      return {
+        listaZahtevaOdsustvo: action.listaZahtevaOdsustvo
       };
     default:
       return state;

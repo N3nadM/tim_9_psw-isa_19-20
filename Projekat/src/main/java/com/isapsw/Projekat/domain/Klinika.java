@@ -57,11 +57,11 @@ public class Klinika {
     private List<Lekar> lekari = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY, mappedBy = "klinika")
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    @JsonIgnore
     private List<ZahtevOdsustvo> zahteviOdsustvo= new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY, mappedBy = "klinika")
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    @JsonIgnore
     private List<ZahtevOdmor> zahteviOdmor= new ArrayList<>();
 
     public Klinika() {

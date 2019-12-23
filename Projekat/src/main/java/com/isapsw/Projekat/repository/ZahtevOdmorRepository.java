@@ -10,4 +10,6 @@ import java.util.List;
 public interface ZahtevOdmorRepository extends JpaRepository<ZahtevOdmor, Long> {
 
     List<ZahtevOdmor> findAll();
+
+    List<ZahtevOdmor> findAllByKlinikaId(Long id);
 }

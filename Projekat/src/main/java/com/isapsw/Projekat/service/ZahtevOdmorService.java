@@ -53,4 +53,8 @@ public class ZahtevOdmorService {
 
         return zahtevOdmorRepository.save(zahtevOdmor);
     }
+
+    public List<ZahtevOdmor> getZahteviNaKlinici(String id){
+        return zahtevOdmorRepository.findAllByKlinikaId(Long.parseLong(id));
+    }
 }

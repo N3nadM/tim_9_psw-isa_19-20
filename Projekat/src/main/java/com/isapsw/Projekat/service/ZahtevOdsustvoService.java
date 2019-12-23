@@ -55,4 +55,8 @@ public class ZahtevOdsustvoService {
 
         return zahtevOdsustvoRepository.save(zahtevOdsustvo);
     }
+
+    public List<ZahtevOdsustvo> getZahteviNaKlinici(String id){
+        return zahtevOdsustvoRepository.findAllByKlinikaId(Long.parseLong(id));
+    }
 }

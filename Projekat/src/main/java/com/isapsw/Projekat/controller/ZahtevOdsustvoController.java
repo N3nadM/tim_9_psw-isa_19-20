@@ -45,4 +45,15 @@ public class ZahtevOdsustvoController {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
     }
+    @GetMapping("/naKlinici/{id}")
+    public ResponseEntity<List<ZahtevOdsustvo>> getZahteviNaKlinici(@PathVariable String id){
+        try {
+
+            List<ZahtevOdsustvo> zahteviOdsustvo = zahtevOdsustvoService.getZahteviNaKlinici(id);
+
+            return new ResponseEntity<>(zahteviOdsustvo, HttpStatus.OK);
+        } catch(Exception e) {
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
+    }
 }
