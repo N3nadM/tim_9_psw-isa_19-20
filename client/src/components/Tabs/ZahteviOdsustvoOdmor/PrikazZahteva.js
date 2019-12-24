@@ -95,9 +95,10 @@ const Tabela = ({
                 {zahtev.lekar === null ? (
                   <TableCell>
                     <PrikazDetaljaOdsustvo
-                      id={zahtev.lekar.id}
+                      id={zahtev.medicinskaSestra.id}
+                      zahtevId={zahtev.id}
                       tekst={zahtev.opis}
-                      uloga={0}
+                      uloga={1}
                       datum={zahtev.datum}
                     />
                   </TableCell>
@@ -105,7 +106,8 @@ const Tabela = ({
                   <TableCell>
                     <PrikazDetaljaOdsustvo
                       id={zahtev.lekar.id}
-                      uloga={1}
+                      zahtevId={zahtev.id}
+                      uloga={0}
                       tekst={zahtev.opis}
                       datum={zahtev.datum}
                     />

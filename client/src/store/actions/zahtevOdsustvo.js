@@ -1,6 +1,7 @@
 import {
   SET_ZAHTEV_ODSUSTVO,
-  SET_ZAHTEVI_ADMIN_ODSUSTVO
+  SET_ZAHTEVI_ADMIN_ODSUSTVO,
+  SET_ODBIJEN_ZAHTEV_ODSUSTVO
 } from "../actionTypes";
 import axios from "axios";
 
@@ -12,6 +13,11 @@ export const setZahtevOdsustvo = zahtevOdsustvo => ({
 export const setListaZahtevaOdsustvo = listaZahtevaOdsustvo => ({
   type: SET_ZAHTEVI_ADMIN_ODSUSTVO,
   listaZahtevaOdsustvo
+});
+
+export const setOdbijenZahtev = odbijenZahtev => ({
+  type: SET_ODBIJEN_ZAHTEV_ODSUSTVO,
+  odbijenZahtev
 });
 
 export const addNewZahtevOdsustvo = data => async (dispatch, getState) => {
@@ -29,6 +35,15 @@ export const getZahteviOdsustvo = id => async (dispatch, getState) => {
       `/api/zahtevOdsustvo/naKlinici/${id}`
     );
     dispatch(setListaZahtevaOdsustvo(zahteviOdsustvo.data));
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const denyZahtev = state => async (dispatch, getState) => {
+  try {
+    const zahtev = await axios.put(`/api/zahtevOdsustvo/deny`, state);
+    dispatch(setOdbijenZahtev(zahtev.data));
   } catch (err) {
     console.log(err);
   }

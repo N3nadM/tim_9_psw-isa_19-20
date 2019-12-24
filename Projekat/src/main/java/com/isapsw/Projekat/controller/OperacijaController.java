@@ -64,4 +64,22 @@ public class OperacijaController {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
     }
+    @GetMapping("/zaSestru/{id}/{datum}")
+    public ResponseEntity<List<Operacija>> getSestraOperacije(@PathVariable String id, @PathVariable String datum) {
+        try {
+            return new ResponseEntity<List<Operacija>>(operacijaService.findOperacijeZaSestru(id, datum), HttpStatus.OK);
+        } catch (Exception e) {
+            System.out.println(e);
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
+    }
+    @GetMapping("/zaLekara/{id}/{datum}")
+    public ResponseEntity<List<Operacija>> getLekarOperacije(@PathVariable String id, @PathVariable String datum) {
+        try {
+            return new ResponseEntity<List<Operacija>>(operacijaService.findOperacijeZaLekara(id, datum), HttpStatus.OK);
+        } catch (Exception e) {
+            System.out.println(e);
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
+    }
 }

@@ -124,4 +124,22 @@ public class PregledController {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
     }
+
+    @GetMapping("/zaSestru/{id}/{datum}")
+    public ResponseEntity<List<Pregled>> getSestraPregledi(@PathVariable String id, @PathVariable String datum) {
+        try {
+            return new ResponseEntity<List<Pregled>>(pregledService.findPreglediZaSestru(id, datum), HttpStatus.OK);
+        } catch (Exception e) {
+            System.out.println(e);
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
+    }
+    @GetMapping("/zaLekara/{id}/{datum}")
+    public ResponseEntity<List<Pregled>> getLekarPregledi(@PathVariable String id, @PathVariable String datum) {
+        try {
+            return new ResponseEntity<List<Pregled>>(pregledService.findPreglediZaLekara(id, datum), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
+    }
 }

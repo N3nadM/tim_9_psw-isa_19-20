@@ -15,13 +15,13 @@ export const setOperacijeZaSalu = operacijeZaSalu => ({
   type: SET_OPERACIJE_ZA_SALU,
   operacijeZaSalu
 });
-export const setOperacijeZaSestru = operacijeZaSestru => ({
+export const setOperacijeZaSestru = operacijeKodSestre => ({
   type: SET_OPERACIJE_SESTRA,
-  operacijeZaSestru
+  operacijeKodSestre
 });
-export const setOperacijeZaLekara = operacijeZaLekara => ({
+export const setOperacijeZaLekara = operacijeKodLekara => ({
   type: SET_OPERACIJE_LEKAR,
-  operacijeZaLekara
+  operacijeKodLekara
 });
 
 export const getAllOperacije = id => async (dispatch, getState) => {

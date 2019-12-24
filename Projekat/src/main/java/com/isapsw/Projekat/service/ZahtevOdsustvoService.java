@@ -1,9 +1,6 @@
 package com.isapsw.Projekat.service;
 
-import com.isapsw.Projekat.domain.Klinika;
-import com.isapsw.Projekat.domain.Lekar;
-import com.isapsw.Projekat.domain.MedicinskaSestra;
-import com.isapsw.Projekat.domain.ZahtevOdsustvo;
+import com.isapsw.Projekat.domain.*;
 import com.isapsw.Projekat.dto.ZahtevOdsustvoDTO;
 import com.isapsw.Projekat.repository.KlinikaRepository;
 import com.isapsw.Projekat.repository.LekarRepository;
@@ -12,6 +9,7 @@ import com.isapsw.Projekat.repository.ZahtevOdsustvoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.mail.MessagingException;
 import java.util.List;
 
 @Service
@@ -28,6 +26,9 @@ public class ZahtevOdsustvoService {
 
     @Autowired
     private KlinikaRepository klinikaRepository;
+
+    @Autowired
+    private EmailService emailService;
 
     public List<ZahtevOdsustvo> getAllZahteviOdsustvo() { return zahtevOdsustvoRepository.findAll(); }
 
@@ -58,5 +59,18 @@ public class ZahtevOdsustvoService {
 
     public List<ZahtevOdsustvo> getZahteviNaKlinici(String id){
         return zahtevOdsustvoRepository.findAllByKlinikaId(Long.parseLong(id));
+    }
+
+    public ZahtevOdsustvo denyZahtev(String id, String message) throws MessagingException, InterruptedException {
+        ZahtevOdsustvo zahtevOdsustvo = zahtevOdsustvoRepository.findById(Long.parseLong(id)).get();
+        String email = "";
+        if(zahtevOdsustvo.getLekar() == null){
+            email = zahtevOdsustvo.getMedicinskaSestra().getKorisnik().getEmail();
+        }else {
+            email = zahtevOdsustvo.getLekar().getKorisnik().getEmail();
+        }
+        emailService.sendOdsustvoOdbijanje(email, message);
+        zahtevOdsustvoRepository.delete(zahtevOdsustvo);
+        return zahtevOdsustvo;
     }
 }

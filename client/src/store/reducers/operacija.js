@@ -28,10 +28,12 @@ export default (state = DEFAULT_STATE, action) => {
       };
     case SET_OPERACIJE_SESTRA:
       return {
+        ...state,
         operacijeKodSestre: action.operacijeKodSestre
       };
     case SET_OPERACIJE_LEKAR:
       return {
+        ...state,
         operacijeKodLekara: action.operacijeKodLekara
       };
     default:

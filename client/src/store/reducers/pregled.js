@@ -20,12 +20,14 @@ export default (state = DEFAULT_STATE, action) => {
   switch (action.type) {
     case SET_PREGLEDI:
       return {
+        ...state,
         pregledi: action.pregledi.sort(
           (a, b) => new Date(b.datum) - new Date(a.datum)
         )
       };
     case SET_PREGLEDI_ZA_SALU:
       return {
+        ...state,
         preglediZaSalu: action.preglediZaSalu.sort(
           (a, b) => new Date(b.datum) - new Date(a.datum)
         )
@@ -50,7 +52,7 @@ export default (state = DEFAULT_STATE, action) => {
     case SET_PREGLEDI_SESTRA:
       return {
         ...state,
-        preglediKodSestre: state.preglediKodSestre
+        preglediKodSestre: action.preglediKodSestre
       };
     case SET_PREGLEDI_LEKAR:
       return {

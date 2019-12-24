@@ -8,7 +8,7 @@ import Typography from "@material-ui/core/Typography";
 import Dialog from "@material-ui/core/Dialog";
 import List from "@material-ui/core/List";
 import ListItemText from "@material-ui/core/ListItemText";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
+import TextField from "@material-ui/core/TextField";
 import Axios from "axios";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
@@ -20,6 +20,8 @@ import {
   getOperacijeZaLekara,
   getOperacijeZaSestru
 } from "../../../store/actions/operacija";
+
+import { denyZahtev } from "../../../store/actions/zahtevOdsustvo";
 import { ListItem } from "@material-ui/core";
 
 const useStyles = makeStyles(theme => ({
@@ -39,6 +41,7 @@ const Dijalog = ({
   datum,
   tekst,
   uloga,
+  zahtevId,
   preglediKodLekara,
   preglediKodSestre,
   operacijeKodLekara,
@@ -46,10 +49,15 @@ const Dijalog = ({
   getOperacijeZaLekara,
   getOperacijeZaSestru,
   getPreglediKodLekara,
-  getPreglediKodSestre
+  getPreglediKodSestre,
+  denyZahtev
 }) => {
   const [value, setValue] = React.useState("");
   const radioGroupRef = React.useRef(null);
+  const [state, setState] = React.useState({
+    id: "",
+    poruka: ""
+  });
 
   React.useEffect(() => {}, []);
 
@@ -67,8 +75,12 @@ const Dijalog = ({
     setOpen(false);
   };
 
-  const handleChange = event => {
-    setValue(event.target.value);
+  const handleChange = e => {
+    const { name, value } = e.target;
+    setState(prevState => ({
+      ...prevState,
+      [name]: value
+    }));
   };
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
@@ -82,10 +94,20 @@ const Dijalog = ({
       getPreglediKodSestre(id, datum);
       getOperacijeZaSestru(id, datum);
     }
+    setState({
+      poruka: "",
+      id: zahtevId
+    });
     setOpen(true);
   };
 
-  const handleClose = () => {
+  const handleDeny = () => {
+    setState({
+      ...state,
+      id: zahtevId
+    });
+    console.log(state);
+    denyZahtev(state);
     setOpen(false);
   };
 
@@ -101,9 +123,10 @@ const Dijalog = ({
         onEntering={handleEntering}
         aria-labelledby="confirmation-dialog-title"
         open={open}
+        maxWidth="xl"
       >
         <DialogTitle id="confirmation-dialog-title">Provera</DialogTitle>
-        <DialogContent dividers>
+        <DialogContent dividers style={{ width: 600 }}>
           <Typography variant="h6" id="tableTitle">
             Opis: {tekst}
           </Typography>
@@ -113,20 +136,24 @@ const Dijalog = ({
                 Lista pregleda i operacije koje lekar ima zakazane tog dana:
               </Typography>
               <List>
-                {preglediKodLekara.map(option => (
-                  <ListItem>
-                    <ListItemText primary={"Pregled " + option.datumPocetka} />
-                  </ListItem>
-                ))}
+                {preglediKodLekara &&
+                  preglediKodLekara.map(option => (
+                    <ListItem key={option.id}>
+                      <ListItemText
+                        primary={"Pregled " + option.datumPocetka}
+                      />
+                    </ListItem>
+                  ))}
               </List>
               <List>
-                {operacijeKodLekara.map(option => (
-                  <ListItem>
-                    <ListItemText
-                      primary={"Operacija " + option.datumPocetka}
-                    />
-                  </ListItem>
-                ))}
+                {operacijeKodLekara &&
+                  operacijeKodLekara.map(option => (
+                    <ListItem key={option.id}>
+                      <ListItemText
+                        primary={"Operacija " + option.datumPocetka}
+                      />
+                    </ListItem>
+                  ))}
               </List>
             </div>
           )}
@@ -137,32 +164,72 @@ const Dijalog = ({
                 tog dana:
               </Typography>
               <List>
-                {preglediKodSestre.map(option => (
-                  <ListItem>
-                    <ListItemText primary={"Pregled " + option.datumPocetka} />
-                  </ListItem>
-                ))}
+                {preglediKodSestre &&
+                  preglediKodSestre.map(option => (
+                    <ListItem key={option.id}>
+                      <ListItemText
+                        primary={"Pregled " + option.datumPocetka}
+                      />
+                    </ListItem>
+                  ))}
               </List>
               <List>
-                {operacijeKodSestre.map(option => (
-                  <ListItem>
-                    <ListItemText
-                      primary={"Operacija " + option.datumPocetka}
-                    />
-                  </ListItem>
-                ))}
+                {operacijeKodSestre &&
+                  operacijeKodSestre.map(option => (
+                    <ListItem key={option.id}>
+                      <ListItemText
+                        primary={"Operacija " + option.datumPocetka}
+                      />
+                    </ListItem>
+                  ))}
               </List>
+              {uloga === 0 &&
+                preglediKodLekara.length === 0 &&
+                operacijeKodLekara.length === 0 && (
+                  <Typography id="tableTitle">
+                    Nema pregleda i operacija u tom danu.
+                  </Typography>
+                )}
+              {uloga === 1 &&
+                preglediKodSestre.length === 0 &&
+                operacijeKodSestre.length === 0 && (
+                  <Typography id="tableTitle">
+                    Nema pregleda i operacija u tom danu.
+                  </Typography>
+                )}
             </div>
           )}
+          <TextField
+            id="standard-multiline-static"
+            label="Obrazloženje odbijanja zahteva"
+            multiline
+            name="poruka"
+            value={state.poruka}
+            onChange={handleChange}
+            rows="4"
+            variant="outlined"
+            style={{ width: 500 }}
+          />
         </DialogContent>
         <DialogActions>
           <Button autoFocus onClick={handleCancel} color="primary">
             Nazad
           </Button>
-          <Button onClick={handleOk} color="primary">
-            Prihvati
-          </Button>
-          <Button onClick={handleCancel} color="primary">
+          {uloga === 0 &&
+            preglediKodLekara.length === 0 &&
+            operacijeKodLekara.length === 0 && (
+              <Button onClick={handleOk} color="primary">
+                Prihvati
+              </Button>
+            )}
+          {uloga === 1 &&
+            preglediKodSestre.length === 0 &&
+            operacijeKodSestre.length === 0 && (
+              <Button onClick={handleOk} color="primary">
+                Prihvati
+              </Button>
+            )}
+          <Button onClick={handleDeny} color="primary">
             Odbij
           </Button>
         </DialogActions>
@@ -182,6 +249,7 @@ export default withRouter(
     getPreglediKodLekara,
     getPreglediKodSestre,
     getOperacijeZaLekara,
-    getOperacijeZaSestru
+    getOperacijeZaSestru,
+    denyZahtev
   })(Dijalog)
 );

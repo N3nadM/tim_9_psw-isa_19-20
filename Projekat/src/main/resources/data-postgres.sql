@@ -61,7 +61,7 @@ INSERT INTO KORISNIK (id, adresa, email, ime, password, prezime, drzava, grad, t
 INSERT INTO USER_AUTHORITY VALUES ('4', '1');
 INSERT INTO PACIJENT VALUES ('1', '2019-11-20', '555333', '4');
 
-INSERT INTO KORISNIK (id, adresa, email, ime, password, prezime, drzava, grad, telefon) VALUES ('5', 'adresa med sestre', 'medsestra@gmail.com', 'Sestra', '$2a$10$feiotRqclqYZ7aJnytCDSedhWmzztzhuwyujbVfVucV4nbmMRNnwa', 'Sestric',  'drzava', 'grad', 'telefon');
+INSERT INTO KORISNIK (id, adresa, email, ime, password, prezime, drzava, grad, telefon) VALUES ('5', 'adresa med sestre', 'kristina.radojevic28@gmail.com', 'Sestra', '$2a$10$feiotRqclqYZ7aJnytCDSedhWmzztzhuwyujbVfVucV4nbmMRNnwa', 'Sestric',  'drzava', 'grad', 'telefon');
 INSERT INTO USER_AUTHORITY VALUES ('5', '5');
 INSERT INTO MEDICINSKA_SESTRA(id, korisnik_id, klinika_id, pocetak_radnog_vremena,  kraj_radnog_vremena) VALUES ('1','5', '1', '08:00', '17:00');
 

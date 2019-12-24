@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
@@ -42,6 +43,7 @@ public class ZahtevOdsustvoController {
 
             return new ResponseEntity<>(zahtevOdsustvo, HttpStatus.OK);
         } catch(Exception e) {
+            System.out.println(e);
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
     }
@@ -53,6 +55,19 @@ public class ZahtevOdsustvoController {
 
             return new ResponseEntity<>(zahteviOdsustvo, HttpStatus.OK);
         } catch(Exception e) {
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PutMapping("/deny")
+    public ResponseEntity<ZahtevOdsustvo> denyZahtev(@RequestBody Map<String,Object> body){
+        try {
+
+            ZahtevOdsustvo zahtevOdsustvo = zahtevOdsustvoService.denyZahtev(body.get("id").toString(), body.get("poruka").toString());
+
+            return new ResponseEntity<ZahtevOdsustvo>(zahtevOdsustvo, HttpStatus.OK);
+        } catch(Exception e) {
+            System.out.println(e);
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
     }
