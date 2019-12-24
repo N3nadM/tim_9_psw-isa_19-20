@@ -1,8 +1,15 @@
-import { SET_OPERACIJE, SET_OPERACIJE_ZA_SALU } from "../actionTypes";
+import {
+  SET_OPERACIJE,
+  SET_OPERACIJE_ZA_SALU,
+  SET_OPERACIJE_LEKAR,
+  SET_OPERACIJE_SESTRA
+} from "../actionTypes";
 
 const DEFAULT_STATE = {
   operacije: [],
-  operacijeZaSalu: []
+  operacijeZaSalu: [],
+  operacijeKodLekara: [],
+  operacijeKodSestre: []
 };
 
 export default (state = DEFAULT_STATE, action) => {
@@ -18,6 +25,14 @@ export default (state = DEFAULT_STATE, action) => {
         operacijeZaSalu: action.operacijeZaSalu.sort(
           (a, b) => new Date(b.datum) - new Date(a.datum)
         )
+      };
+    case SET_OPERACIJE_SESTRA:
+      return {
+        operacijeKodSestre: action.operacijeKodSestre
+      };
+    case SET_OPERACIJE_LEKAR:
+      return {
+        operacijeKodLekara: action.operacijeKodLekara
       };
     default:
       return state;

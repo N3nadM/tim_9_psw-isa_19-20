@@ -3,7 +3,9 @@ import {
   SET_PREGLEDI_ZA_SALU,
   SET_LISTA_PREDEFINISANIH_PREGLEDA,
   SET_FILTERED_PREGLEDI,
-  SET_FILTERED_PREDEFINISANI
+  SET_FILTERED_PREDEFINISANI,
+  SET_PREGLEDI_LEKAR,
+  SET_PREGLEDI_SESTRA
 } from "../actionTypes";
 import axios from "axios";
 
@@ -30,6 +32,14 @@ export const filterPreglediAfterDelete = id => ({
 export const setFilteredPredefinisani = id => ({
   type: SET_FILTERED_PREDEFINISANI,
   id
+});
+export const setPreglediKodLekara = preglediKodLekara => ({
+  type: SET_PREGLEDI_LEKAR,
+  preglediKodLekara
+});
+export const setPreglediKodSestre = preglediKodSestre => ({
+  type: SET_PREGLEDI_SESTRA,
+  preglediKodSestre
 });
 
 export const getAllPregledi = id => async (dispatch, getState) => {
@@ -104,6 +114,24 @@ export const rezervisiPregled = id => async dispatch => {
       console.log("uspesno");
     }
     dispatch(setFilteredPredefinisani(id));
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const getPreglediKodSestre = (id, datum) => async dispatch => {
+  try {
+    let pregledi = await axios.get(`/api/pregled/zaSestru/${id}/${datum}`);
+    dispatch(setPreglediKodSestre(pregledi.data));
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const getPreglediKodLekara = (id, datum) => async dispatch => {
+  try {
+    let pregledi = await axios.get(`/api/pregled/zaLekara/${id}/${datum}`);
+    dispatch(setPreglediKodLekara(pregledi.data));
   } catch (err) {
     console.log(err);
   }

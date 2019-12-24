@@ -3,13 +3,17 @@ import {
   SET_PREGLEDI_ZA_SALU,
   SET_LISTA_PREDEFINISANIH_PREGLEDA,
   SET_FILTERED_PREGLEDI,
-  SET_FILTERED_PREDEFINISANI
+  SET_FILTERED_PREDEFINISANI,
+  SET_PREGLEDI_LEKAR,
+  SET_PREGLEDI_SESTRA
 } from "../actionTypes";
 
 const DEFAULT_STATE = {
   pregledi: [],
   preglediZaSalu: [],
-  listaPredefinisanih: []
+  listaPredefinisanih: [],
+  preglediKodSestre: [],
+  preglediKodLekara: []
 };
 
 export default (state = DEFAULT_STATE, action) => {
@@ -42,6 +46,16 @@ export default (state = DEFAULT_STATE, action) => {
         listaPredefinisanih: state.listaPredefinisanih.filter(
           p => p.id !== action.id
         )
+      };
+    case SET_PREGLEDI_SESTRA:
+      return {
+        ...state,
+        preglediKodSestre: state.preglediKodSestre
+      };
+    case SET_PREGLEDI_LEKAR:
+      return {
+        ...state,
+        preglediKodLekara: action.preglediKodLekara
       };
     default:
       return state;

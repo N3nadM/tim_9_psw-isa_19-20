@@ -15,7 +15,7 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import { connect } from "react-redux";
 import { getZahteviOdsustvo } from "../../../store/actions/zahtevOdsustvo";
 import { getZahteviOdmor } from "../../../store/actions/zahtevOdmor";
-
+import PrikazDetaljaOdsustvo from "../ZahteviOdsustvoOdmor/PrikazDetaljaOdsustvo";
 const Tabela = ({
   klinika,
   listaZahtevaOdsustvo,
@@ -71,7 +71,6 @@ const Tabela = ({
               <b>Datum</b>
             </TableCell>
             <TableCell></TableCell>
-            <TableCell></TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -93,21 +92,25 @@ const Tabela = ({
                 )}
 
                 <TableCell>{zahtev.datum}</TableCell>
-                <TableCell>
-                  <Button variant="contained" color="primary">
-                    Prihvati
-                  </Button>
-                </TableCell>
-                <TableCell>
-                  <Button
-                    variant="contained"
-                    onClick={() => {
-                      handleClickOpen();
-                    }}
-                  >
-                    Odbij
-                  </Button>
-                </TableCell>
+                {zahtev.lekar === null ? (
+                  <TableCell>
+                    <PrikazDetaljaOdsustvo
+                      id={zahtev.lekar.id}
+                      tekst={zahtev.opis}
+                      uloga={0}
+                      datum={zahtev.datum}
+                    />
+                  </TableCell>
+                ) : (
+                  <TableCell>
+                    <PrikazDetaljaOdsustvo
+                      id={zahtev.lekar.id}
+                      uloga={1}
+                      tekst={zahtev.opis}
+                      datum={zahtev.datum}
+                    />
+                  </TableCell>
+                )}
               </TableRow>
             ))}
         </TableBody>
@@ -117,11 +120,11 @@ const Tabela = ({
         onClose={handleClose}
         aria-labelledby="form-dialog-title"
       >
-        <DialogTitle id="form-dialog-title">Subscribe</DialogTitle>
+        <DialogTitle id="form-dialog-title">Obrazloženje</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            Ispisite poruku koja ce biti poslata podnosiocu zahteva za kreiranje
-            korisnickog naloga kojeg odbijate ovim putem.
+            Ispišite poruku koja će biti poslata podnosiocu zahteva za
+            odsustvo/godišnji odmor.
           </DialogContentText>
           <TextField
             autoFocus
@@ -165,6 +168,7 @@ const Tabela = ({
             </TableCell>
             <TableCell></TableCell>
             <TableCell></TableCell>
+            <TableCell></TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -189,8 +193,11 @@ const Tabela = ({
                 <TableCell>{zahtev.datumDo}</TableCell>
                 <TableCell>
                   <Button variant="contained" color="primary">
-                    Prihvati
+                    Provera zauzetosti
                   </Button>
+                </TableCell>
+                <TableCell>
+                  <Button variant="contained">Prihvati</Button>
                 </TableCell>
                 <TableCell>
                   <Button
