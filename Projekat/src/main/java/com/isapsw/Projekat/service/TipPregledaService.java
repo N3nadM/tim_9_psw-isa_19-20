@@ -1,11 +1,16 @@
 package com.isapsw.Projekat.service;
 
+import com.isapsw.Projekat.domain.Pregled;
 import com.isapsw.Projekat.domain.TipPregleda;
 import com.isapsw.Projekat.dto.TipPregledaDTO;
+import com.isapsw.Projekat.repository.PacijentRepository;
+import com.isapsw.Projekat.repository.PregledRepository;
 import com.isapsw.Projekat.repository.TipPregledaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -14,6 +19,8 @@ public class TipPregledaService {
 
     @Autowired
     private TipPregledaRepository tipPregledaRepository;
+
+    private PregledRepository pregledRepository;
 
     public List<TipPregleda> getTipoviSaKlinike(String id) { return  tipPregledaRepository.findTipPregledasByKlinikaId(Long.parseLong(id)); }
 
@@ -34,7 +41,8 @@ public class TipPregledaService {
     }
 
     public List<TipPregleda> getTipoviZaIzmenu(String id){
-        return tipPregledaRepository.findIfNotReserved(Long.parseLong(id));
+        Date date = Calendar.getInstance().getTime();
+        return tipPregledaRepository.findIfNotReserved(Long.parseLong(id), date);
     }
 
     public TipPregleda editTip(TipPregledaDTO tipPregledaDTO){
