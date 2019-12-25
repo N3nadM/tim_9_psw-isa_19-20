@@ -12,6 +12,7 @@ import PacijentProfilTab from "../../Tabs/PacijentProfilTab";
 import ZakaziPregled from "../../Tabs/ZakaziPregled";
 import ZdrKarton from "../../Tabs/ZdrKarton";
 import { connect } from "react-redux";
+import PromeniLozinku from "../../Tabs/Korisnik/PromeniLozinku";
 
 const drawerWidth = 240;
 
@@ -67,6 +68,7 @@ const ProfilPacijent = ({ pacijent }) => {
           {...a11yProps(3)}
         />
         <Tab label="Zakazi pregled" disabled={!pacijent} {...a11yProps(4)} />
+        <Tab label="Promena lozinke" disabled={!pacijent} {...a11yProps(5)} />
       </Tabs>
     </div>
   );
@@ -101,6 +103,9 @@ const ProfilPacijent = ({ pacijent }) => {
           </TabPanel>
           <TabPanel value={value} index={4}>
             {value === 4 && <ZakaziPregled />}
+          </TabPanel>
+          <TabPanel value={value} index={5}>
+            {value === 5 && <PromeniLozinku />}
           </TabPanel>
         </main>
       </div>

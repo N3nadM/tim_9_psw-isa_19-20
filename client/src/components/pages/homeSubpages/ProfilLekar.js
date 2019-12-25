@@ -2,7 +2,6 @@ import React from "react";
 import Divider from "@material-ui/core/Divider";
 import Drawer from "@material-ui/core/Drawer";
 import { makeStyles } from "@material-ui/core/styles";
-import PasswordChange from "../../PasswordChange/PasswordChange";
 import ZakazivanjePregledaTabs from "../../Tabs/ZakazivanjePregledaTabs";
 import AppBar from "../../layout/AppBarLogedIn";
 import GodisnjiOdmorTab from "../../Tabs/GodisnjiOdmorTab";
@@ -13,6 +12,7 @@ import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import LekarProfilTab from "../../Tabs/LekarProfilTab";
 import TabelaPacijenataKlinike from "../../Tabele/TabelaPacijenataKlinike";
+import PromeniLozinku from "../../Tabs/Korisnik/PromeniLozinku";
 
 const drawerWidth = 240;
 
@@ -65,7 +65,7 @@ function ResponsiveDrawer(props) {
         <Tab label="Lični podaci" {...a11yProps(4)} />
         <Tab label="Zakazivanje pregleda" {...a11yProps(5)} />
         <Tab label="Izveštaj o pregledu" {...a11yProps(6)} />
-        <Tab label="Izmena lozinke" {...a11yProps(7)} />
+        <Tab label="Promena lozinke" {...a11yProps(7)} />
       </Tabs>
     </div>
   );
@@ -110,7 +110,7 @@ function ResponsiveDrawer(props) {
             <IzvestajPregledTab />
           </TabPanel>
           <TabPanel value={value} index={7}>
-            <PasswordChange />
+            {value === 7 && <PromeniLozinku />}
           </TabPanel>
         </main>
       </div>
