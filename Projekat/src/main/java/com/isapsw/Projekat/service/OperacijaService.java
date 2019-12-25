@@ -58,5 +58,27 @@ public class OperacijaService {
         return ret;
     }
 
+    public List<Operacija> findOperacijeZaSestruOdmor(String id, String date1, String date2) throws ParseException {
+        Date datum = new SimpleDateFormat("yyyy-MM-dd").parse(date1);
+        Date kraj =new SimpleDateFormat("yyyy-MM-dd").parse(date2);
+        kraj.setTime(kraj.getTime() + (1000 * 60 * 60 * 24));
+        return operacijaRepository.findSestraOperacijeDatum(Long.parseLong(id), datum, kraj);
+    }
+
+    public List<Operacija> findOperacijeZaLekaraOdmor(String id, String date1, String date2) throws ParseException {
+        Date datum = new SimpleDateFormat("yyyy-MM-dd").parse(date1);
+        Date kraj =new SimpleDateFormat("yyyy-MM-dd").parse(date2);
+        kraj.setTime(kraj.getTime() + (1000 * 60 * 60 * 24));
+        List<Operacija> operacijas = operacijaRepository.findOperacijeDatum(datum, kraj);
+        List<Operacija> ret = new ArrayList<>();
+        Lekar l = lekarRepository.findLekarById(Long.parseLong(id));
+        for(Operacija o : operacijas){
+            if(o.getLekari().contains(l)){
+                ret.add(o);
+            }
+        }
+        return ret;
+    }
+
 
 }

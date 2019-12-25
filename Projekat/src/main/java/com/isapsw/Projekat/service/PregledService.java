@@ -180,4 +180,18 @@ public class PregledService {
         tomorrow.setTime(datum.getTime() + (1000 * 60 * 60 * 24));
         return pregledRepository.findLekarPreglediDatum(Long.parseLong(id), datum, tomorrow);
     }
+
+    public List<Pregled> findPreglediZaSestruOdmor(String id, String date1, String date2) throws ParseException {
+        Date datum = new SimpleDateFormat("yyyy-MM-dd").parse(date1);
+        Date kraj =new SimpleDateFormat("yyyy-MM-dd").parse(date2);
+        kraj.setTime(kraj.getTime() + (1000 * 60 * 60 * 24));
+        return pregledRepository.findSestraPreglediDatum(Long.parseLong(id), datum, kraj);
+    }
+
+    public List<Pregled> findPreglediZaLekaraOdmor(String id, String date1, String date2) throws ParseException {
+        Date datum = new SimpleDateFormat("yyyy-MM-dd").parse(date1);
+        Date kraj =new SimpleDateFormat("yyyy-MM-dd").parse(date2);
+        kraj.setTime(kraj.getTime() + (1000 * 60 * 60 * 24));
+        return pregledRepository.findLekarPreglediDatum(Long.parseLong(id), datum, kraj);
+    }
 }

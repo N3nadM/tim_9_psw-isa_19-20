@@ -16,6 +16,7 @@ import { connect } from "react-redux";
 import { getZahteviOdsustvo } from "../../../store/actions/zahtevOdsustvo";
 import { getZahteviOdmor } from "../../../store/actions/zahtevOdmor";
 import PrikazDetaljaOdsustvo from "../ZahteviOdsustvoOdmor/PrikazDetaljaOdsustvo";
+import PrikazDetaljaOdmor from "../ZahteviOdsustvoOdmor/PrikazDetaljaOdmor";
 const Tabela = ({
   klinika,
   listaZahtevaOdsustvo,
@@ -169,8 +170,6 @@ const Tabela = ({
               <b>Do</b>
             </TableCell>
             <TableCell></TableCell>
-            <TableCell></TableCell>
-            <TableCell></TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -193,24 +192,29 @@ const Tabela = ({
 
                 <TableCell>{zahtev.datumOd}</TableCell>
                 <TableCell>{zahtev.datumDo}</TableCell>
-                <TableCell>
-                  <Button variant="contained" color="primary">
-                    Provera zauzetosti
-                  </Button>
-                </TableCell>
-                <TableCell>
-                  <Button variant="contained">Prihvati</Button>
-                </TableCell>
-                <TableCell>
-                  <Button
-                    variant="contained"
-                    onClick={() => {
-                      handleClickOpen();
-                    }}
-                  >
-                    Odbij
-                  </Button>
-                </TableCell>
+                {zahtev.lekar === null ? (
+                  <TableCell>
+                    <PrikazDetaljaOdmor
+                      id={zahtev.medicinskaSestra.id}
+                      zahtevId={zahtev.id}
+                      tekst={zahtev.opis}
+                      uloga={1}
+                      datum1={zahtev.datumOd}
+                      datum2={zahtev.datumDo}
+                    />
+                  </TableCell>
+                ) : (
+                  <TableCell>
+                    <PrikazDetaljaOdmor
+                      id={zahtev.lekar.id}
+                      zahtevId={zahtev.id}
+                      uloga={0}
+                      tekst={zahtev.opis}
+                      datum1={zahtev.datumOd}
+                      datum2={zahtev.datumDo}
+                    />
+                  </TableCell>
+                )}
               </TableRow>
             ))}
         </TableBody>
