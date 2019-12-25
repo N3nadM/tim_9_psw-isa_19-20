@@ -11,6 +11,7 @@ import Tab from "@material-ui/core/Tab";
 import Drawer from "@material-ui/core/Drawer";
 import TabPanel from "../../Tabs/TabPanel";
 import AppBar from "../../layout/AppBarLogedIn";
+import PromeniLozinku from "../../Tabs/Korisnik/PromeniLozinku";
 
 const drawerWidth = 240;
 
@@ -62,6 +63,7 @@ export default function ProfilAKC() {
         <Tab label="Dodaj admina klinike" {...a11yProps(2)} />
         <Tab label="Dodaj admina KC" {...a11yProps(3)} />
         <Tab label="Sifranik" {...a11yProps(4)} />
+        <Tab label="Promeni lozinku" {...a11yProps(5)} />
       </Tabs>
     </div>
   );
@@ -96,6 +98,9 @@ export default function ProfilAKC() {
           </TabPanel>
           <TabPanel value={value} index={4}>
             <SifranikTab />
+          </TabPanel>
+          <TabPanel value={value} index={5}>
+            <PromeniLozinku />
           </TabPanel>
         </main>
       </div>
