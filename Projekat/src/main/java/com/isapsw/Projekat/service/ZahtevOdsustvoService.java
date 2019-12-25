@@ -2,10 +2,7 @@ package com.isapsw.Projekat.service;
 
 import com.isapsw.Projekat.domain.*;
 import com.isapsw.Projekat.dto.ZahtevOdsustvoDTO;
-import com.isapsw.Projekat.repository.KlinikaRepository;
-import com.isapsw.Projekat.repository.LekarRepository;
-import com.isapsw.Projekat.repository.MedSestraRepository;
-import com.isapsw.Projekat.repository.ZahtevOdsustvoRepository;
+import com.isapsw.Projekat.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,6 +26,9 @@ public class ZahtevOdsustvoService {
 
     @Autowired
     private EmailService emailService;
+
+    @Autowired
+    private OdsustvoRepository odsustvoRepository;
 
     public List<ZahtevOdsustvo> getAllZahteviOdsustvo() { return zahtevOdsustvoRepository.findAll(); }
 
@@ -70,6 +70,26 @@ public class ZahtevOdsustvoService {
             email = zahtevOdsustvo.getLekar().getKorisnik().getEmail();
         }
         emailService.sendOdsustvoOdbijanje(email, message);
+        zahtevOdsustvoRepository.delete(zahtevOdsustvo);
+        return zahtevOdsustvo;
+    }
+
+    public ZahtevOdsustvo acceptZahtev(String id) throws MessagingException, InterruptedException {
+        ZahtevOdsustvo zahtevOdsustvo = zahtevOdsustvoRepository.findById(Long.parseLong(id)).get();
+        String email = "";
+        Odsustvo odsustvo = new Odsustvo();
+        odsustvo.setDatum(zahtevOdsustvo.getDatum());
+        odsustvo.setOpis(zahtevOdsustvo.getOpis());
+        if(zahtevOdsustvo.getLekar() == null){
+            email = zahtevOdsustvo.getMedicinskaSestra().getKorisnik().getEmail();
+            odsustvo.setMedicinskaSestra(zahtevOdsustvo.getMedicinskaSestra());
+        }else{
+            email = zahtevOdsustvo.getLekar().getKorisnik().getEmail();
+            odsustvo.setLekar(zahtevOdsustvo.getLekar());
+        }
+        odsustvoRepository.save(odsustvo);
+        String message="Vas zahtev za odsustvo datuma " + zahtevOdsustvo.getDatum() + " je prihvacen.";
+        emailService.sendOdsustvoPrihvatanje(email, message);
         zahtevOdsustvoRepository.delete(zahtevOdsustvo);
         return zahtevOdsustvo;
     }

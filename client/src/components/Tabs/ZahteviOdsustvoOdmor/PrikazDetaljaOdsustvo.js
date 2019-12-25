@@ -21,7 +21,10 @@ import {
   getOperacijeZaSestru
 } from "../../../store/actions/operacija";
 
-import { denyZahtev } from "../../../store/actions/zahtevOdsustvo";
+import {
+  denyZahtev,
+  acceptZahtev
+} from "../../../store/actions/zahtevOdsustvo";
 import { ListItem } from "@material-ui/core";
 
 const useStyles = makeStyles(theme => ({
@@ -50,7 +53,8 @@ const Dijalog = ({
   getOperacijeZaSestru,
   getPreglediKodLekara,
   getPreglediKodSestre,
-  denyZahtev
+  denyZahtev,
+  acceptZahtev
 }) => {
   const [value, setValue] = React.useState("");
   const radioGroupRef = React.useRef(null);
@@ -72,6 +76,7 @@ const Dijalog = ({
   };
 
   const handleOk = () => {
+    acceptZahtev(zahtevId);
     setOpen(false);
   };
 
@@ -102,10 +107,6 @@ const Dijalog = ({
   };
 
   const handleDeny = () => {
-    setState({
-      ...state,
-      id: zahtevId
-    });
     console.log(state);
     denyZahtev(state);
     setOpen(false);
@@ -250,6 +251,7 @@ export default withRouter(
     getPreglediKodSestre,
     getOperacijeZaLekara,
     getOperacijeZaSestru,
-    denyZahtev
+    denyZahtev,
+    acceptZahtev
   })(Dijalog)
 );

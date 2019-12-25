@@ -71,4 +71,16 @@ public class ZahtevOdsustvoController {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
     }
+
+    @PutMapping("/accept/{id}")
+    public ResponseEntity<ZahtevOdsustvo> acceptZahtev(@PathVariable String id){
+        try {
+
+            ZahtevOdsustvo zahtevOdsustvo = zahtevOdsustvoService.acceptZahtev(id);
+            return new ResponseEntity<ZahtevOdsustvo>(zahtevOdsustvo, HttpStatus.OK);
+        } catch(Exception e) {
+            System.out.println(e);
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
+    }
 }

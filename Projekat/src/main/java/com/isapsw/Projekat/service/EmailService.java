@@ -79,4 +79,21 @@ public class EmailService {
 
         System.out.println("Email je poslat");
     }
+
+    @Async
+    public void sendOdsustvoPrihvatanje(String email, String msg) throws MailException, InterruptedException, MessagingException {
+        System.out.println("Saljem email");
+
+        MimeMessage message = javaMailSender.createMimeMessage();
+        MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(message, true);
+
+        message.setContent("<p>" + msg + "</p>", "text/html");
+        mimeMessageHelper.setTo(email);
+        mimeMessageHelper.setSubject("Prihvatanje zahteva za odsustvo");
+        mimeMessageHelper.setFrom("vesna.svrkota997@gmail.com");
+
+        javaMailSender.send(message);
+
+        System.out.println("Email je poslat");
+    }
 }
