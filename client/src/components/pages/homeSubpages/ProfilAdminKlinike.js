@@ -17,6 +17,7 @@ import TabPanel from "../../Tabs/TabPanel";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import PromeniLozinku from "../../Tabs/Korisnik/PromeniLozinku";
+import PrikazZahteva from "../../Tabs/ZahteviOdsustvoOdmor/PrikazZahteva";
 
 const drawerWidth = 240;
 
@@ -108,7 +109,7 @@ function ResponsiveDrawer(props) {
             {value === 0 && <PodaciKlinikaTabs />}
           </TabPanel>
           <TabPanel value={value} index={1}>
-            Inbox
+            {value === 1 && <PrikazZahteva />}
           </TabPanel>
           <TabPanel value={value} index={2}>
             <LicniPodaciTabs />

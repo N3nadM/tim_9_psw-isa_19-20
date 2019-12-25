@@ -24,6 +24,7 @@ public class TipoviPregledaController {
             List<String> tipPregleda = tipoviPregledaService.getAllTipoviPregleda();
             return new ResponseEntity<List<String>>(tipPregleda, HttpStatus.OK);
         } catch (Exception e) {
+            System.out.println(e);
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
     }

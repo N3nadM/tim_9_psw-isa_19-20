@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
@@ -164,5 +165,33 @@ public class PregledService {
         pregledRepository.save(pregled);
 
         return true;
+    }
+
+    public List<Pregled> findPreglediZaSestru(String id, String date) throws ParseException {
+        Date datum = new SimpleDateFormat("yyyy-MM-dd").parse(date);
+        Date tomorrow =new SimpleDateFormat("yyyy-MM-dd").parse(date);
+        tomorrow.setTime(datum.getTime() + (1000 * 60 * 60 * 24));
+        return pregledRepository.findSestraPreglediDatum(Long.parseLong(id), datum, tomorrow);
+    }
+
+    public List<Pregled> findPreglediZaLekara(String id, String date) throws ParseException {
+        Date datum = new SimpleDateFormat("yyyy-MM-dd").parse(date);
+        Date tomorrow =new SimpleDateFormat("yyyy-MM-dd").parse(date);
+        tomorrow.setTime(datum.getTime() + (1000 * 60 * 60 * 24));
+        return pregledRepository.findLekarPreglediDatum(Long.parseLong(id), datum, tomorrow);
+    }
+
+    public List<Pregled> findPreglediZaSestruOdmor(String id, String date1, String date2) throws ParseException {
+        Date datum = new SimpleDateFormat("yyyy-MM-dd").parse(date1);
+        Date kraj =new SimpleDateFormat("yyyy-MM-dd").parse(date2);
+        kraj.setTime(kraj.getTime() + (1000 * 60 * 60 * 24));
+        return pregledRepository.findSestraPreglediDatum(Long.parseLong(id), datum, kraj);
+    }
+
+    public List<Pregled> findPreglediZaLekaraOdmor(String id, String date1, String date2) throws ParseException {
+        Date datum = new SimpleDateFormat("yyyy-MM-dd").parse(date1);
+        Date kraj =new SimpleDateFormat("yyyy-MM-dd").parse(date2);
+        kraj.setTime(kraj.getTime() + (1000 * 60 * 60 * 24));
+        return pregledRepository.findLekarPreglediDatum(Long.parseLong(id), datum, kraj);
     }
 }

@@ -64,4 +64,42 @@ public class OperacijaController {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
     }
+    @GetMapping("/zaSestru/{id}/{datum}")
+    public ResponseEntity<List<Operacija>> getSestraOperacije(@PathVariable String id, @PathVariable String datum) {
+        try {
+            return new ResponseEntity<List<Operacija>>(operacijaService.findOperacijeZaSestru(id, datum), HttpStatus.OK);
+        } catch (Exception e) {
+            System.out.println(e);
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
+    }
+    @GetMapping("/zaLekara/{id}/{datum}")
+    public ResponseEntity<List<Operacija>> getLekarOperacije(@PathVariable String id, @PathVariable String datum) {
+        try {
+            return new ResponseEntity<List<Operacija>>(operacijaService.findOperacijeZaLekara(id, datum), HttpStatus.OK);
+        } catch (Exception e) {
+            System.out.println(e);
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("/zaSestruOdmor/{id}/{datum1}/{datum2}")
+    public ResponseEntity<List<Operacija>> getSestraOperacijeOdmor(@PathVariable String id, @PathVariable String datum1, @PathVariable String datum2) {
+        try {
+            return new ResponseEntity<List<Operacija>>(operacijaService.findOperacijeZaSestruOdmor(id, datum1, datum2), HttpStatus.OK);
+        } catch (Exception e) {
+            System.out.println(e);
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("/zaLekaraOdmor/{id}/{datum1}/{datum2}")
+    public ResponseEntity<List<Operacija>> getLekarOperacijeOdmor(@PathVariable String id, @PathVariable String datum1, @PathVariable String datum2) {
+        try {
+            return new ResponseEntity<List<Operacija>>(operacijaService.findOperacijeZaLekaraOdmor(id, datum1, datum2), HttpStatus.OK);
+        } catch (Exception e) {
+            System.out.println(e);
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
+    }
 }
