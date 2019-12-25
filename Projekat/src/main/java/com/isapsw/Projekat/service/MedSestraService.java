@@ -4,6 +4,8 @@ import com.isapsw.Projekat.domain.MedicinskaSestra;
 import com.isapsw.Projekat.domain.Pregled;
 import com.isapsw.Projekat.domain.Sala;
 import com.isapsw.Projekat.repository.MedSestraRepository;
+import com.isapsw.Projekat.repository.OdmorRepository;
+import com.isapsw.Projekat.repository.OdsustvoRepository;
 import com.isapsw.Projekat.repository.PregledRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,10 +15,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 
 @Service
 public class MedSestraService {
@@ -26,6 +25,12 @@ public class MedSestraService {
 
     @Autowired
     PregledRepository pregledRepository;
+
+    @Autowired
+    OdmorRepository odmorRepository;
+
+    @Autowired
+    OdsustvoRepository odsustvoRepository;
 
     public MedicinskaSestra findMedSestra(String id){
         return  medSestraRepository.findMedicinskaSestraByKorisnikId(Long.parseLong(id));
@@ -64,8 +69,14 @@ public class MedSestraService {
         String kraj = df.format(datum.getTime());
         List<MedicinskaSestra> copy = new ArrayList<>(sestreNaKlinici);
         for(MedicinskaSestra ms: copy){
-            System.out.println("Uslo");
-            if(LocalTime.parse(pocetak).isAfter(ms.getPocetakRadnogVremena()) && LocalTime.parse(kraj).isBefore(ms.getKrajRadnogVremena())){
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(datum);
+            cal.set(Calendar.HOUR_OF_DAY, 0);
+            cal.set(Calendar.MINUTE, 0);
+            cal.set(Calendar.SECOND, 0);
+            cal.set(Calendar.MILLISECOND, 0);
+            Date zaProveru = cal.getTime();
+            if(LocalTime.parse(pocetak).isAfter(ms.getPocetakRadnogVremena()) && LocalTime.parse(kraj).isBefore(ms.getKrajRadnogVremena()) && odmorRepository.proveraZaSestru(ms.getId(), datum) == null && odsustvoRepository.proveraZaSestru(ms.getId(), zaProveru) ==null){
                 //proverava da li se pocetak i kraj  pregleda nalaze u okviru radnog vremena medicinske sestre
                 System.out.println("Nalazi se u radnom vremeneu");
             }else {

@@ -44,10 +44,6 @@ const Tabela = ({
     handleClose();
   };
 
-  {
-    console.log(klinika);
-  }
-
   useEffect(() => {
     getZahteviOdmor(klinika.id);
     getZahteviOdsustvo(klinika.id);

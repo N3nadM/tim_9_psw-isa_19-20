@@ -29,6 +29,12 @@ public class KlinikaService {
     @Autowired
     private OcenaKlinikeRepository ocenaKlinikeRepository;
 
+    @Autowired
+    private OdmorRepository odmorRepository;
+
+    @Autowired
+    private OdsustvoRepository odsustvoRepository;
+
     public List<Klinika> getAllKlinike() {
         return klinikaRepository.findAll();
     }
@@ -162,7 +168,16 @@ public class KlinikaService {
 
         if(!datum.isEmpty()) {
             klinika.getLekari().forEach(lekar -> {
-                if(lekar.getTipPregleda().getNaziv().equals(tip)) {
+
+                Date zaProveru = Date.from(Instant.parse(datum));
+                Calendar cal = Calendar.getInstance();
+                cal.setTime(zaProveru);
+                cal.set(Calendar.HOUR_OF_DAY, 0);
+                cal.set(Calendar.MINUTE, 0);
+                cal.set(Calendar.SECOND, 0);
+                cal.set(Calendar.MILLISECOND, 0);
+                Date zaProveru2 = cal.getTime();
+                if(lekar.getTipPregleda().getNaziv().equals(tip) && odmorRepository.proveraZaLekara(lekar.getId(),zaProveru)==null && odsustvoRepository.proveraZaLekara(lekar.getId(), zaProveru2)==null) {
                     lekar.getPregledi().sort((p, k) -> p.getDatumPocetka().after(k.getDatumPocetka()) ? 1 : -1);
                     List<Pregled> preglediIstogDanaJednogLekara = new ArrayList<>();
                     Date pocetak = makeDateFromDateAndTime(Date.from(Instant.parse(datum)),lekar.getPocetakRadnogVremena());

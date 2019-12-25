@@ -2,6 +2,7 @@ package com.isapsw.Projekat.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+import java.util.Calendar;
 import java.util.Date;
 
 public class ZahtevOdsustvoDTO {
@@ -28,7 +29,13 @@ public class ZahtevOdsustvoDTO {
     }
 
     public void setDatum(Date datum) {
-        this.datum = datum;
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(datum);
+        cal.set(Calendar.HOUR_OF_DAY, 0);
+        cal.set(Calendar.MINUTE, 0);
+        cal.set(Calendar.SECOND, 0);
+        cal.set(Calendar.MILLISECOND, 0);
+        this.datum = cal.getTime();
     }
 
     public String getOpis() {
