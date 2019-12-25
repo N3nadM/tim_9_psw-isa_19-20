@@ -75,6 +75,7 @@ const Informacije = ({
           zdrKarton={zdrKarton}
           editZdrKarton={editZdrKarton}
           setIsEdit={setIsEdit}
+          obj={obj}
         />
       )}
       {!isEdit && (

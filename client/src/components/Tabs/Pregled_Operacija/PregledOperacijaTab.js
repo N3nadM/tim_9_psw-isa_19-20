@@ -7,6 +7,7 @@ import InputLabel from "@material-ui/core/InputLabel";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import ListItemText from "@material-ui/core/ListItemText";
+import Input from "@material-ui/core/Input";
 import { getLekoviByDijagnozaId } from "../../../store/actions/lek";
 import { getAllDijagnoze } from "../../../store/actions/dijagnoza";
 import { connect } from "react-redux";
@@ -63,6 +64,8 @@ const PregledOperacijaTab = ({
             type="text"
             id="visina"
           />
+        </Grid>
+        <Grid item sm={6}>
           <TextField
             margin="normal"
             value={state.tezina}
@@ -75,6 +78,8 @@ const PregledOperacijaTab = ({
             type="text"
             id="tezina"
           />
+        </Grid>
+        <Grid item sm={6}>
           <TextField
             value={state.dioptrija}
             defaultValue={zdrKarton.dioptrija}
@@ -87,6 +92,8 @@ const PregledOperacijaTab = ({
             type="text"
             id="dioptrija"
           />
+        </Grid>
+        <Grid item sm={6}>
           <TextField
             value={state.krvnaGrupa}
             defaultValue={zdrKarton.krvnaGrupa}
@@ -99,13 +106,16 @@ const PregledOperacijaTab = ({
             type="text"
             id="krvnaGrupa"
           />
-          <FormControl>
+        </Grid>
+        <Grid item sm={6}>
+          <FormControl style={{ minWidth: 150 }}>
             <InputLabel id="demo-mutiple-checkbox-label">
               Izaberi dijagnozu
             </InputLabel>
             <Select
-              labelId="demo-mutiple-checkbox-label"
-              id="demo-mutiple-checkbox"
+              labelId="demo-checkbox-label"
+              id="demo-checkbox"
+              input={<Input />}
             >
               {dijagnoze.map(row => (
                 <MenuItem key={row.naziv} value={row.naziv}>
@@ -114,6 +124,24 @@ const PregledOperacijaTab = ({
               ))}
             </Select>
           </FormControl>
+        </Grid>
+        <Grid item sm={6}>
+          <TextField
+            value={state.krvnaGrupa}
+            defaultValue={zdrKarton.krvnaGrupa}
+            onChange={handleChange}
+            margin="normal"
+            required
+            fullWidth
+            name="krvnaGrupa"
+            label="Krvna Grupa"
+            type="text"
+            id="krvnaGrupa"
+          />
+        </Grid>
+      </Grid>
+      <Grid container spacing={3}>
+        <Grid item sm={6}>
           <Button type="submit" variant="contained" color="primary">
             Zavrsi
           </Button>

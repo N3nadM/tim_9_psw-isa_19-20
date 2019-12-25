@@ -37,19 +37,9 @@ public class DijagnozaController {
     public ResponseEntity<Dijagnoza> addDijagnoza(@RequestBody DijagnozaDTO dijagnozaDTO){
         try {
 
-            System.out.println(dijagnozaDTO.getLekovi().toString());
-            List<Lek> lekovi = new ArrayList<>();
-
-            for(String naziv : dijagnozaDTO.getLekovi()){
-                lekovi.add(lekService.getLekByNaziv(naziv));
-            }
-
-            Dijagnoza dijagnoza = new Dijagnoza(dijagnozaDTO, lekovi);
-
-            dijagnozaService.addDijagnoza(dijagnoza);
-
-            return new ResponseEntity<>(dijagnoza, HttpStatus.OK);
+            return new ResponseEntity<>(dijagnozaService.addDijagnoza(dijagnozaDTO), HttpStatus.OK);
         } catch(Exception e) {
+            System.out.println(e);
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
     }
