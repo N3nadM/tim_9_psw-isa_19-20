@@ -115,6 +115,20 @@ public class UserController {
         return new ResponseEntity<String>("Korisnik Odbijen", HttpStatus.OK);
     }
 
+    @PutMapping("/changePassword")
+    public ResponseEntity<Boolean> changePassword(@RequestBody Map<String,Object> body, Authentication authentication) {
+        try {
+            Korisnik korisnik = (Korisnik)authentication.getPrincipal();
+            if (!body.get("newPassword").toString().equals(body.get("confirmedPassword").toString())) {
+                return new ResponseEntity<>(false, HttpStatus.BAD_REQUEST);
+            }
+            return new ResponseEntity<Boolean>(korisnikService.changePassword(korisnik, body.get("newPassword").toString(), body.get("oldPassword").toString()), HttpStatus.OK);
+        } catch(Exception e) {
+            System.out.println(e.getMessage());
+            return new ResponseEntity<>(false, HttpStatus.BAD_REQUEST);
+        }
+    }
+
     @PutMapping("/{id}")
     public ResponseEntity<Korisnik> editAccount(@RequestBody KorisnikDTO korisnik) {
         Korisnik k = korisnikService.editKorisnik(korisnik);
