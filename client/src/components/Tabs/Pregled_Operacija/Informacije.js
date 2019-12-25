@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { connect } from "react-redux";
 
 import List from "@material-ui/core/List";
@@ -6,9 +6,22 @@ import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import Divider from "@material-ui/core/Divider";
 import Typography from "@material-ui/core/Typography";
+import Button from "@material-ui/core/Button";
+import PregledOperacijaTab from "./PregledOperacijaTab";
+import { getZdrKarton, editZdrKarton } from "../../../store/actions/pacijent";
 import { Paper } from "@material-ui/core";
 
-const Informacije = ({ obj }) => {
+const Informacije = ({
+  obj,
+  korisnikId,
+  zdrKarton,
+  getZdrKarton,
+  editZdrKarton
+}) => {
+  useEffect(() => {
+    getZdrKarton(obj.pacijent.id);
+    //eslint-disable-next-line
+  }, []);
   let pacijent = obj.pacijent;
   let tip = obj.tip;
 
@@ -23,6 +36,18 @@ const Informacije = ({ obj }) => {
   let hours = 0;
   let mins = 0;
 
+  let zapocniPregled = false;
+  let danasnjiDan = new Date();
+
+  {
+    if (
+      obj.lekar.korisnik.id.toString() === korisnikId.toString() &&
+      dP.toDateString() === danasnjiDan.toDateString()
+    ) {
+      zapocniPregled = true;
+    }
+  }
+
   var i;
   for (i = 0; i <= 24; i++) {
     if (time > 59) {
@@ -34,6 +59,8 @@ const Informacije = ({ obj }) => {
     }
   }
 
+  const [isEdit, setIsEdit] = React.useState(false);
+
   return (
     <Paper style={{ padding: 50, paddingBottom: 75 }}>
       <Typography
@@ -43,47 +70,72 @@ const Informacije = ({ obj }) => {
       >
         Osnovne informacije
       </Typography>
-      <List disablePadding>
-        <ListItem>
-          <ListItemText primary="Datum i vreme pocetka" />
-          <Typography variant="subtitle1">
-            {obj.datumPocetka.toLocaleString()}
-          </Typography>
-        </ListItem>
-        <ListItem>
-          <ListItemText primary="Trajanje" />
-          <Typography variant="subtitle1">
-            {hours + "h " + mins + "min"}
-          </Typography>
-        </ListItem>
-        <ListItem>
-          <ListItemText primary="Tip" />
-          <Typography variant="subtitle1">{tip}</Typography>
-        </ListItem>
-        <Divider />
-        <ListItem>
-          <ListItemText primary="Ime pacijenta" />
-          <Typography variant="subtitle1">
-            {pacijent ? pacijent.korisnik.ime : "Nema leba"}
-          </Typography>
-        </ListItem>
-        <ListItem>
-          <ListItemText primary="Prezime pacijenta" />
-          <Typography variant="subtitle1">
-            {pacijent ? pacijent.korisnik.prezime : "Nema lebaca"}
-          </Typography>
-        </ListItem>
-        <ListItem>
-          <ListItemText primary="Broj osiguranika" />
-          <Typography variant="subtitle1">
-            {pacijent ? pacijent.jbzo : "Lebac neces jesti"}
-          </Typography>
-        </ListItem>
-      </List>
+      {isEdit && (
+        <PregledOperacijaTab
+          zdrKarton={zdrKarton}
+          editZdrKarton={editZdrKarton}
+          setIsEdit={setIsEdit}
+        />
+      )}
+      {!isEdit && (
+        <List disablePadding>
+          <ListItem>
+            <ListItemText primary="Datum i vreme pocetka" />
+            <Typography variant="subtitle1">
+              {obj.datumPocetka.toLocaleString()}
+            </Typography>
+          </ListItem>
+          <ListItem>
+            <ListItemText primary="Trajanje" />
+            <Typography variant="subtitle1">
+              {hours + "h " + mins + "min"}
+            </Typography>
+          </ListItem>
+          <ListItem>
+            <ListItemText primary="Tip" />
+            <Typography variant="subtitle1">{tip}</Typography>
+          </ListItem>
+          <Divider />
+          <ListItem>
+            <ListItemText primary="Ime pacijenta" />
+            <Typography variant="subtitle1">
+              {pacijent ? pacijent.korisnik.ime : "Nema leba"}
+            </Typography>
+          </ListItem>
+          <ListItem>
+            <ListItemText primary="Prezime pacijenta" />
+            <Typography variant="subtitle1">
+              {pacijent ? pacijent.korisnik.prezime : "Nema lebaca"}
+            </Typography>
+          </ListItem>
+          <ListItem>
+            <ListItemText primary="Broj osiguranika" />
+            <Typography variant="subtitle1">
+              {pacijent ? pacijent.jbzo : "Lebac neces jesti"}
+            </Typography>
+          </ListItem>
+          <ListItem>
+            <Button
+              type="submit"
+              variant="contained"
+              color="primary"
+              disabled={!zapocniPregled}
+              onClick={() => setIsEdit(true)}
+            >
+              Zapocni
+            </Button>
+          </ListItem>
+        </List>
+      )}
     </Paper>
   );
 };
 
-const mapStateToProps = state => ({});
+const mapStateToProps = state => ({
+  korisnikId: state.currentUser.user.id,
+  zdrKarton: state.pacijent.zdrKarton
+});
 
-export default connect(mapStateToProps, {})(Informacije);
+export default connect(mapStateToProps, { getZdrKarton, editZdrKarton })(
+  Informacije
+);

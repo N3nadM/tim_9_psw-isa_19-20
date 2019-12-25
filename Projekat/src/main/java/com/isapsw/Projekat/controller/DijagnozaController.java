@@ -25,6 +25,14 @@ public class DijagnozaController {
     @Autowired
     private LekService lekService;
 
+    @GetMapping
+    public ResponseEntity<List<Dijagnoza>> getAllDijagnoze(){
+
+        List<Dijagnoza> dijagnoze = dijagnozaService.findAllDijagnoze();
+
+        return new ResponseEntity<>(dijagnoze, HttpStatus.OK);
+    }
+
     @PostMapping
     public ResponseEntity<Dijagnoza> addDijagnoza(@RequestBody DijagnozaDTO dijagnozaDTO){
         try {

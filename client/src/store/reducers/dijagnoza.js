@@ -1,7 +1,8 @@
-import { SET_DIJAGNOZA } from "../actionTypes";
+import { SET_DIJAGNOZA, SET_ALL_DIJAGNOZE } from "../actionTypes";
 
 const DEFAULT_STATE = {
-  dijagnoza: null
+  dijagnoza: null,
+  dijagnoze: []
 };
 
 export default (state = DEFAULT_STATE, action) => {
@@ -10,6 +11,11 @@ export default (state = DEFAULT_STATE, action) => {
       return {
         ...state,
         dijagnoza: action.dijagnoza
+      };
+    case SET_ALL_DIJAGNOZE:
+      return {
+        ...state,
+        dijagnoze: action.dijagnoze
       };
     default:
       return state;
