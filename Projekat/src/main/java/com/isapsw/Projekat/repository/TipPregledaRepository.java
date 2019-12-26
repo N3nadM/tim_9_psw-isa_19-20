@@ -12,14 +12,16 @@ import java.util.Optional;
 
 @Repository
 public interface TipPregledaRepository extends JpaRepository<TipPregleda, Long> {
+
+    @Query("SELECT DISTINCT tp FROM TipPregleda tp WHERE tp.aktivan = true")
     List<TipPregleda> findAll();
+
     Optional<TipPregleda> findById(Long id);
-    List<TipPregleda> findTipPregledasByKlinikaId(Long id);
 
-    @Query("SELECT DISTINCT tp FROM TipPregleda tp LEFT JOIN Pregled p ON p.tipPregleda.id = tp.id WHERE  tp.klinika.id = :id AND p.datumPocetka < :date")
-    List<TipPregleda> findIfNotReserved(@Param("id") Long id, @Param("date")Date date);
+    @Query("SELECT DISTINCT tp FROM TipPregleda tp WHERE tp.aktivan = true AND tp.klinika.id = :id")
+    List<TipPregleda> findTipPregledasByKlinikaId(@Param("id") Long id);
 
-    @Query("SELECT DISTINCT tp FROM TipPregleda tp JOIN Klinika k ON tp.klinika.id = k.id  WHERE k.id = :id AND UPPER(tp.naziv) LIKE %:naziv% AND tp.cenaPregleda < :najvecaCena AND tp.minimalnoTrajanjeMin > :minimalnoTrajanjeMin")
+    @Query("SELECT DISTINCT tp FROM TipPregleda tp JOIN Klinika k ON tp.klinika.id = k.id  WHERE k.id = :id AND UPPER(tp.naziv) LIKE %:naziv% AND tp.cenaPregleda < :najvecaCena AND tp.minimalnoTrajanjeMin > :minimalnoTrajanjeMin AND tp.aktivan = true")
     List<TipPregleda> findTipByParameters(@Param("id") Long id, @Param("naziv") String naziv, @Param("najvecaCena") Integer najvecaCena, @Param("minimalnoTrajanjeMin")Integer minimalnoTrajanjeMin );
 
 }

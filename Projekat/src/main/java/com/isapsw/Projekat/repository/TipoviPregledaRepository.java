@@ -10,9 +10,8 @@ import java.util.List;
 @Repository
 public interface TipoviPregledaRepository extends JpaRepository<TipPregleda, Long> {
 
-    @Query("SELECT DISTINCT t.naziv FROM TipPregleda t WHERE t.naziv IN (SELECT DISTINCT tp.naziv FROM TipPregleda tp)")
+    @Query("SELECT DISTINCT t.naziv FROM TipPregleda t WHERE t.naziv IN (SELECT DISTINCT tp.naziv FROM TipPregleda tp) AND t.aktivan = true" )
     List<String> findAllTpString();
 
-    TipPregleda findFirstTipOnePregledaByNaziv(String naziv);
 
 }

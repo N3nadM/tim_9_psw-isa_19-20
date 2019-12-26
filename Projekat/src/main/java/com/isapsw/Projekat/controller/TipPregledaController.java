@@ -58,4 +58,13 @@ public class TipPregledaController {
         }
     }
 
+    @DeleteMapping("delete/{id}")
+    public ResponseEntity<TipPregleda> deleteTip(@PathVariable("id") String id){
+        try{
+            return new ResponseEntity<TipPregleda>(tipPregledaService.deleteTip(id), HttpStatus.OK);
+        }catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
 }

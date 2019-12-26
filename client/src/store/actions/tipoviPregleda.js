@@ -2,7 +2,8 @@ import {
   SET_ALL_TIPOVI_PREGLEDA,
   SET_ADDED_TIP_PREGLEDA,
   SET_TIPOVI_KOJI_SE_MOGU_IZMENITI,
-  SET_EDITED_TIP
+  SET_EDITED_TIP,
+  SET_OBRISAN_TIP
 } from "../actionTypes";
 import axios from "axios";
 
@@ -24,6 +25,10 @@ export const setTipovKojiSeMoguIzmeniti = tipoviZaIzmenu => ({
 export const setEditedTip = editedTip => ({
   type: SET_EDITED_TIP,
   editedTip
+});
+export const setDeletedTip = obrisanTip => ({
+  type: SET_OBRISAN_TIP,
+  obrisanTip
 });
 export const getAllTipoviPregleda = id => async (dispatch, getState) => {
   try {
@@ -70,6 +75,15 @@ export const editTip = data => async dispatch => {
   try {
     const tip = await axios.post(`/api/tipPregleda/edit`, data);
     dispatch(setEditedTip(tip.data));
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const deleteTip = id => async dispatch => {
+  try {
+    const tip = await axios.delete(`/api/tipPregleda/delete/${id}`);
+    dispatch(setDeletedTip(tip.data));
   } catch (err) {
     console.log(err);
   }
