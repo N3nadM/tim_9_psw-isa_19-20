@@ -1,9 +1,11 @@
 package com.isapsw.Projekat.repository;
 
 import com.isapsw.Projekat.domain.Pregled;
+import com.isapsw.Projekat.domain.TipPregleda;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Repository;
 
 import java.util.Date;
@@ -40,5 +42,8 @@ public interface PregledRepository extends JpaRepository<Pregled, Long> {
 
     @Query("SELECT p FROM Pregled p WHERE p.lekar.id = :id AND p.datumPocetka BETWEEN :datum AND :tomorrow")
     List<Pregled> findLekarPreglediDatum(@Param("id") Long id, @Param("datum") Date datum, @Param("tomorrow") Date tomorrow);
+
+    @Query("SELECT DISTINCT p.tipPregleda FROM Pregled p LEFT JOIN TipPregleda tp ON tp.id = p.tipPregleda.id WHERE tp.klinika.id = :id AND p.datumPocetka > :date")
+    List<TipPregleda> findTipoveKojiImajuZakazanePreglede(@Param("id") Long id, @Param("date") Date date);
 
 }

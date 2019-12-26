@@ -9,10 +9,7 @@ import com.isapsw.Projekat.repository.TipPregledaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class TipPregledaService {
@@ -20,6 +17,7 @@ public class TipPregledaService {
     @Autowired
     private TipPregledaRepository tipPregledaRepository;
 
+    @Autowired
     private PregledRepository pregledRepository;
 
     public List<TipPregleda> getTipoviSaKlinike(String id) { return  tipPregledaRepository.findTipPregledasByKlinikaId(Long.parseLong(id)); }
@@ -42,7 +40,19 @@ public class TipPregledaService {
 
     public List<TipPregleda> getTipoviZaIzmenu(String id){
         Date date = Calendar.getInstance().getTime();
-        return tipPregledaRepository.findIfNotReserved(Long.parseLong(id), date);
+        //svi tipovi na klinici
+        List<TipPregleda> sviTipoviNaKlinici = tipPregledaRepository.findTipPregledasByKlinikaId(Long.parseLong(id));
+        System.out.println(sviTipoviNaKlinici.size());
+        //tipovi koji imaju preglede u buducnosti
+        List<TipPregleda> tipovi = pregledRepository.findTipoveKojiImajuZakazanePreglede(Long.parseLong(id), date);
+        System.out.println(tipovi.size());
+        List<TipPregleda> ret = new ArrayList<>();
+        for(TipPregleda t : sviTipoviNaKlinici){
+            if(!tipovi.contains(t)){
+                ret.add(t);
+            }
+        }
+        return ret;
     }
 
     public TipPregleda editTip(TipPregledaDTO tipPregledaDTO){
