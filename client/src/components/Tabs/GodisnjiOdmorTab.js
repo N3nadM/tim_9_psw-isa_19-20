@@ -8,8 +8,8 @@ import Box from "@material-ui/core/Box";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import { connect } from "react-redux";
-import { addNewOdmor } from "../../store/actions/odmor";
-import { addNewOdsustvo } from "../../store/actions/odsustvo";
+import { addNewZahtevOdmor } from "../../store/actions/zahtevOdmor";
+import { addNewZahtevOdsustvo } from "../../store/actions/zahtevOdsustvo";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -52,7 +52,11 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const OdmorOdsustvoTab = ({ korisnikId, addNewOdsustvo, addNewOdmor }) => {
+const OdmorOdsustvoTab = ({
+  korisnikId,
+  addNewZahtevOdsustvo,
+  addNewZahtevOdmor
+}) => {
   const classes = useStyles();
   const theme = useTheme();
   const [value, setValue] = React.useState(0);
@@ -116,12 +120,12 @@ const OdmorOdsustvoTab = ({ korisnikId, addNewOdsustvo, addNewOdmor }) => {
 
   const handleSubmit = e => {
     e.preventDefault();
-    addNewOdmor(selectedDate);
+    addNewZahtevOdmor(selectedDate);
   };
 
   const handleSubmit2 = e => {
     e.preventDefault();
-    addNewOdsustvo(selectedDate2);
+    addNewZahtevOdsustvo(selectedDate2);
   };
 
   return (
@@ -236,6 +240,7 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps, { addNewOdsustvo, addNewOdmor })(
-  OdmorOdsustvoTab
-);
+export default connect(mapStateToProps, {
+  addNewZahtevOdsustvo,
+  addNewZahtevOdmor
+})(OdmorOdsustvoTab);

@@ -11,6 +11,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -49,6 +50,8 @@ public class Korisnik implements UserDetails {
     @NotBlank(message = "Neophodno je uneti telefon.")
     private String telefon;
 
+    private Date dateModified;
+
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(name = "user_authority",
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
@@ -80,6 +83,14 @@ public class Korisnik implements UserDetails {
         this.grad = zahtev.getGrad();
         this.drzava = zahtev.getDrzava();
         this.telefon = zahtev.getTelefon();
+    }
+
+    public Date getDateModified() {
+        return dateModified;
+    }
+
+    public void setDateModified(Date dateModified) {
+        this.dateModified = dateModified;
     }
 
     public void setAuthorities(List<Authority> authorities) {

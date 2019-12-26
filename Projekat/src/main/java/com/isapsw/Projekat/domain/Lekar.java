@@ -51,6 +51,14 @@ public class Lekar{
     @JsonIgnore
     private List<Odmor> odmor;
 
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "lekar")
+    @JsonIgnore
+    private List<ZahtevOdsustvo> zahteviOdsustvo;
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "lekar")
+    @JsonIgnore
+    private List<ZahtevOdmor> zahteviOdmor;
+
     public Lekar(){
         super();
     }
