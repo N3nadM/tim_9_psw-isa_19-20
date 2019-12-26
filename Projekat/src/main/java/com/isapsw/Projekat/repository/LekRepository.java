@@ -13,8 +13,8 @@ public interface LekRepository extends JpaRepository<Lek, Long> {
 
     Lek findLekById(Long id);
 
-//    @Query("SELECT DISTINCT Lek FROM Dijagnoza d WHERE d.id == %:id%")
-//    List<Lek> findByDijagnozasId(@Param("id") Long id);
+    @Query("SELECT d.terapija FROM Dijagnoza d WHERE d.id = :id")
+   List<Lek> findByDijagnozasId(@Param("id") Long id);
 
     Lek findLekByNaziv(String naziv);
 

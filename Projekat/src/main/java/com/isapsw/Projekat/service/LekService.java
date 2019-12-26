@@ -15,9 +15,11 @@ public class LekService {
 
     public List<Lek> getAllLekovi(){ return lekRepository.findAll();}
 
-    //public List<Lek> getLekoviByDijagnozaId(Long id) { return lekRepository.findByDijagnozasId(id);}
+    public List<Lek> getLekoviByDijagnozaId(Long id) { return lekRepository.findByDijagnozasId(id);}
 
     public Lek getLekByNaziv(String naziv){return lekRepository.findLekByNaziv(naziv);}
+
+    public Lek getLekById(Long id){ return lekRepository.findLekById(id);}
 
     public Lek addLek(Lek lek){ return lekRepository.save(lek);}
 }

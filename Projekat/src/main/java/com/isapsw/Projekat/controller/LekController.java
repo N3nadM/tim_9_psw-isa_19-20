@@ -27,11 +27,16 @@ public class LekController {
         return lekService.getAllLekovi();
     }
 
-//    @GetMapping("/dijagnoza/{id}")
-//    public ResponseEntity<List<Lek>> confirmAcount(@PathVariable String id){
-//        List<Lek> lekoviZaDijagnozu = lekService.getLekoviByDijagnozaId(Long.parseLong(id));
-//        return  new ResponseEntity<>(lekoviZaDijagnozu, HttpStatus.OK);
-//    }
+    @GetMapping("/dijagnoza/{id}")
+    public ResponseEntity<List<Lek>> confirmAcount(@PathVariable String id){
+        List<Lek> lekoviZaDijagnozu = lekService.getLekoviByDijagnozaId(Long.parseLong(id));
+        //List<Lek> lekoviZaDijagnozu = new ArrayList<>();
+
+//        for(Long key : lekoviZaDijagnozuId){
+//            lekoviZaDijagnozu.add(lekService.getLekById(key));
+//        }
+        return  new ResponseEntity<>(lekoviZaDijagnozu, HttpStatus.OK);
+    }
 
     @PostMapping
     public ResponseEntity<Lek> addLek(@RequestBody LekDTO lekDTO){

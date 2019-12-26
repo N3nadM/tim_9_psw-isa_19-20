@@ -63,70 +63,82 @@ const Informacije = ({
 
   return (
     <Paper style={{ padding: 50, paddingBottom: 75 }}>
-      <Typography
-        variant="h4"
-        component="h2"
-        style={{ marginBottom: 20, marginLeft: 13 }}
-      >
-        Osnovne informacije
-      </Typography>
       {isEdit && (
-        <PregledOperacijaTab
-          zdrKarton={zdrKarton}
-          editZdrKarton={editZdrKarton}
-          setIsEdit={setIsEdit}
-          obj={obj}
-        />
+        <>
+          <Typography
+            variant="h4"
+            component="h2"
+            style={{ marginBottom: 20, marginLeft: 13 }}
+          >
+            {"U toku... " + obj.tip}
+          </Typography>
+
+          <PregledOperacijaTab
+            zdrKarton={zdrKarton}
+            editZdrKarton={editZdrKarton}
+            setIsEdit={setIsEdit}
+            obj={obj}
+          />
+        </>
       )}
       {!isEdit && (
-        <List disablePadding>
-          <ListItem>
-            <ListItemText primary="Datum i vreme pocetka" />
-            <Typography variant="subtitle1">
-              {obj.datumPocetka.toLocaleString()}
-            </Typography>
-          </ListItem>
-          <ListItem>
-            <ListItemText primary="Trajanje" />
-            <Typography variant="subtitle1">
-              {hours + "h " + mins + "min"}
-            </Typography>
-          </ListItem>
-          <ListItem>
-            <ListItemText primary="Tip" />
-            <Typography variant="subtitle1">{tip}</Typography>
-          </ListItem>
-          <Divider />
-          <ListItem>
-            <ListItemText primary="Ime pacijenta" />
-            <Typography variant="subtitle1">
-              {pacijent ? pacijent.korisnik.ime : "Nema leba"}
-            </Typography>
-          </ListItem>
-          <ListItem>
-            <ListItemText primary="Prezime pacijenta" />
-            <Typography variant="subtitle1">
-              {pacijent ? pacijent.korisnik.prezime : "Nema lebaca"}
-            </Typography>
-          </ListItem>
-          <ListItem>
-            <ListItemText primary="Broj osiguranika" />
-            <Typography variant="subtitle1">
-              {pacijent ? pacijent.jbzo : "Lebac neces jesti"}
-            </Typography>
-          </ListItem>
-          <ListItem>
-            <Button
-              type="submit"
-              variant="contained"
-              color="primary"
-              disabled={!zapocniPregled}
-              onClick={() => setIsEdit(true)}
-            >
-              Zapocni
-            </Button>
-          </ListItem>
-        </List>
+        <>
+          <Typography
+            variant="h4"
+            component="h2"
+            style={{ marginBottom: 20, marginLeft: 13 }}
+          >
+            Osnovne informacije
+          </Typography>
+          <List disablePadding>
+            <ListItem>
+              <ListItemText primary="Datum i vreme pocetka" />
+              <Typography variant="subtitle1">
+                {obj.datumPocetka.toLocaleString()}
+              </Typography>
+            </ListItem>
+            <ListItem>
+              <ListItemText primary="Trajanje" />
+              <Typography variant="subtitle1">
+                {hours + "h " + mins + "min"}
+              </Typography>
+            </ListItem>
+            <ListItem>
+              <ListItemText primary="Tip" />
+              <Typography variant="subtitle1">{tip}</Typography>
+            </ListItem>
+            <Divider />
+            <ListItem>
+              <ListItemText primary="Ime pacijenta" />
+              <Typography variant="subtitle1">
+                {pacijent ? pacijent.korisnik.ime : "Nema leba"}
+              </Typography>
+            </ListItem>
+            <ListItem>
+              <ListItemText primary="Prezime pacijenta" />
+              <Typography variant="subtitle1">
+                {pacijent ? pacijent.korisnik.prezime : "Nema lebaca"}
+              </Typography>
+            </ListItem>
+            <ListItem>
+              <ListItemText primary="Broj osiguranika" />
+              <Typography variant="subtitle1">
+                {pacijent ? pacijent.jbzo : "Lebac neces jesti"}
+              </Typography>
+            </ListItem>
+            <ListItem>
+              <Button
+                type="submit"
+                variant="contained"
+                color="primary"
+                disabled={!zapocniPregled}
+                onClick={() => setIsEdit(true)}
+              >
+                Zapocni
+              </Button>
+            </ListItem>
+          </List>
+        </>
       )}
     </Paper>
   );
