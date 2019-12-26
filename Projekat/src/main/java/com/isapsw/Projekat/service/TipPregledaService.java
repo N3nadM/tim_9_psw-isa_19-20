@@ -3,16 +3,14 @@ package com.isapsw.Projekat.service;
 import com.isapsw.Projekat.domain.Pregled;
 import com.isapsw.Projekat.domain.TipPregleda;
 import com.isapsw.Projekat.dto.TipPregledaDTO;
+import com.isapsw.Projekat.repository.OperacijaRepository;
 import com.isapsw.Projekat.repository.PacijentRepository;
 import com.isapsw.Projekat.repository.PregledRepository;
 import com.isapsw.Projekat.repository.TipPregledaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class TipPregledaService {
@@ -20,7 +18,11 @@ public class TipPregledaService {
     @Autowired
     private TipPregledaRepository tipPregledaRepository;
 
+    @Autowired
     private PregledRepository pregledRepository;
+
+    @Autowired
+    private OperacijaRepository operacijaRepository;
 
     public List<TipPregleda> getTipoviSaKlinike(String id) { return  tipPregledaRepository.findTipPregledasByKlinikaId(Long.parseLong(id)); }
 
@@ -42,7 +44,19 @@ public class TipPregledaService {
 
     public List<TipPregleda> getTipoviZaIzmenu(String id){
         Date date = Calendar.getInstance().getTime();
-        return tipPregledaRepository.findIfNotReserved(Long.parseLong(id), date);
+        //svi tipovi na klinici
+        List<TipPregleda> sviTipoviNaKlinici = tipPregledaRepository.findTipPregledasByKlinikaId(Long.parseLong(id));
+        //tipovi koji imaju preglede u buducnosti
+        List<TipPregleda> tipovi = pregledRepository.findTipoveKojiImajuZakazanePreglede(Long.parseLong(id), date);
+        //tipovi koji imaju operacije u buducnosti
+        List<TipPregleda> tipoviOp = operacijaRepository.findTipoveKojiImajuZakazaneOperacije(Long.parseLong(id), date);
+        List<TipPregleda> ret = new ArrayList<>();
+        for(TipPregleda t : sviTipoviNaKlinici){
+            if(!tipovi.contains(t) && !tipoviOp.contains(t)){
+                ret.add(t);
+            }
+        }
+        return ret;
     }
 
     public TipPregleda editTip(TipPregledaDTO tipPregledaDTO){
@@ -51,6 +65,12 @@ public class TipPregledaService {
         tp.setMinimalnoTrajanjeMin(Integer.parseInt(tipPregledaDTO.getMinimalnoTrajanjeMin()));
         tp.setCenaPregleda(Integer.parseInt(tipPregledaDTO.getCenaPregleda()));
         tp.setCenaOperacije(Integer.parseInt(tipPregledaDTO.getCenaOperacije()));
+        return tipPregledaRepository.save(tp);
+    }
+
+    public TipPregleda deleteTip(String id){
+        TipPregleda tp = tipPregledaRepository.findById(Long.parseLong(id)).get();
+        tp.setAktivan(false);
         return tipPregledaRepository.save(tp);
     }
 }

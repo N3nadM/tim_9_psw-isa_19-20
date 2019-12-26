@@ -33,6 +33,8 @@ public class TipPregleda {
     @JsonIgnore
     private Klinika klinika;
 
+    private boolean aktivan;
+
     public TipPregleda() {
     }
 
@@ -86,5 +88,13 @@ public class TipPregleda {
 
     public void setNaziv(String naziv) {
         this.naziv = naziv;
+    }
+
+    public boolean isAktivan() {
+        return aktivan;
+    }
+
+    public void setAktivan(boolean aktivan) {
+        this.aktivan = aktivan;
     }
 }
