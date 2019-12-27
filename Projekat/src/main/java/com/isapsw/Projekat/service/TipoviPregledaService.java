@@ -25,6 +25,7 @@ public class TipoviPregledaService {
 
     public TipPregleda addTipPregleda(TipPregledaDTO tipPregledaDTO){
         TipPregleda t = new TipPregleda();
+        t.setAktivan(true);
         t.setNaziv(tipPregledaDTO.getNaziv());
         t.setCenaOperacije(Integer.parseInt(tipPregledaDTO.getCenaOperacije()));
         t.setCenaPregleda(Integer.parseInt(tipPregledaDTO.getCenaPregleda()));

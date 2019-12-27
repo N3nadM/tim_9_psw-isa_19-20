@@ -2,6 +2,7 @@ package com.isapsw.Projekat.repository;
 
 import com.isapsw.Projekat.domain.Operacija;
 import com.isapsw.Projekat.domain.Pregled;
+import com.isapsw.Projekat.domain.TipPregleda;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -29,4 +30,7 @@ public interface OperacijaRepository extends JpaRepository<Operacija, Long> {
 
     @Query("SELECT o FROM Operacija o WHERE o.datumPocetka BETWEEN :datum AND :tomorrow")
     List<Operacija> findOperacijeDatum(@Param("datum") Date datum, @Param("tomorrow") Date tomorrow);
+
+    @Query("SELECT DISTINCT o.tipPregleda FROM Operacija o LEFT JOIN TipPregleda tp ON tp.id = o.tipPregleda.id WHERE tp.klinika.id = :id AND o.datumPocetka > :date")
+    List<TipPregleda> findTipoveKojiImajuZakazaneOperacije(@Param("id") Long id, @Param("date") Date date);
 }

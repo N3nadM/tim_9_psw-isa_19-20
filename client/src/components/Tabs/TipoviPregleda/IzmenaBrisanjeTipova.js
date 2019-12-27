@@ -20,6 +20,7 @@ import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import { getTipoviZaIzmenu } from "../../../store/actions/tipoviPregleda";
 import IzmenaPodatakaTip from "../TipoviPregleda/IzmenaPodatakaTip";
+import DijalogBrisanjeTipova from "../TipoviPregleda/DijalogBrisanjeTipova";
 
 function desc(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -211,10 +212,10 @@ const ListaTipovaZaIzmenu = ({ klinika, tipovi, getTipoviZaIzmenu }) => {
                             </Button>
                           </TableCell>
                           <TableCell align="right">
-                            <Button variant="contained" color="primary">
-                              {" "}
-                              Ukloni{" "}
-                            </Button>
+                            <DijalogBrisanjeTipova
+                              id={row.id}
+                              naziv={row.naziv}
+                            />
                           </TableCell>
                         </TableRow>
                       );
