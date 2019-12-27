@@ -17,6 +17,8 @@ import Switch from "@material-ui/core/Switch";
 import FilterListIcon from "@material-ui/icons/FilterList";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
+import IzmenaPodatakSala from "../Sala/IzmenaPodatakaSala";
+import Button from "@material-ui/core/Button";
 
 import { getSaleZaBrisanje } from "../../../store/actions/sala";
 import DijalogZaBrisanjeSala from "../Sala/DijalogZaBrisanjeSala";
@@ -115,6 +117,13 @@ const ListaSalaZaBrisanje = ({ klinika, sale, getSaleZaBrisanje }) => {
   const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [isEdit, setIsEdit] = React.useState(false);
+
+  const [state, setState] = React.useState({
+    zaIzmenu: "",
+    broj: "",
+    naziv: ""
+  });
 
   const handleRequestSort = (property, event) => {
     const isDesc = orderBy === property && order === "desc";
@@ -137,107 +146,131 @@ const ListaSalaZaBrisanje = ({ klinika, sale, getSaleZaBrisanje }) => {
 
   return (
     <div className={classes.root}>
-      <Paper className={classes.paper}>
-        <EnhancedTableToolbar />
-        <div className={classes.tableWrapper}>
-          <Table
-            className={classes.table}
-            aria-labelledby="tableTitle"
-            size={dense ? "small" : "medium"}
-            aria-label="enhanced table"
-          >
-            <TableHead>
-              <TableRow>
-                <TableCell align="left">
-                  <TableSortLabel
-                    active={orderBy === "termini.datum"}
-                    direction={order}
-                    onClick={() => handleRequestSort("termini.datum")}
-                  >
-                    Broj
-                  </TableSortLabel>
-                </TableCell>
-                <TableCell align="left">
-                  <TableSortLabel
-                    active={orderBy === "termini.tipPregleda.naziv"}
-                    direction={order}
-                    onClick={() =>
-                      handleRequestSort("termini.tipPregleda.naziv")
-                    }
-                  >
-                    Naziv
-                  </TableSortLabel>
-                </TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {sale &&
-                stableSort(sale, getSorting(order, orderBy))
-                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                  .map((row, index) => {
-                    return (
-                      <TableRow
-                        hover
-                        role="checkbox"
-                        tabIndex={-1}
-                        key={row.id}
+      {isEdit && (
+        <IzmenaPodatakSala sala={state.zaIzmenu} setIsEdit={setIsEdit} />
+      )}
+      {!isEdit && (
+        <div>
+          <Paper className={classes.paper}>
+            <EnhancedTableToolbar />
+            <div className={classes.tableWrapper}>
+              <Table
+                className={classes.table}
+                aria-labelledby="tableTitle"
+                size={dense ? "small" : "medium"}
+                aria-label="enhanced table"
+              >
+                <TableHead>
+                  <TableRow>
+                    <TableCell align="left">
+                      <TableSortLabel
+                        active={orderBy === "termini.datum"}
+                        direction={order}
+                        onClick={() => handleRequestSort("termini.datum")}
                       >
-                        <TableCell component="th" allign="left">
-                          {row.salaIdentifier}
-                        </TableCell>
-                        <TableCell align="left">{row.naziv}</TableCell>
-                        <TableCell align="right">
-                          <DijalogZaBrisanjeSala
-                            id={row.id}
-                            broj={row.salaIdentifier}
-                          />
-                        </TableCell>
-                      </TableRow>
-                    );
-                  })}
-              {sale &&
-                rowsPerPage -
-                  Math.min(rowsPerPage, sale.length - page * rowsPerPage) >
-                  0 && (
-                  <TableRow
-                    style={{
-                      height:
-                        (dense ? 33 : 53) *
-                        (rowsPerPage -
-                          Math.min(
-                            rowsPerPage,
-                            sale.length - page * rowsPerPage
-                          ))
-                    }}
-                  >
-                    <TableCell colSpan={6} />
+                        Broj
+                      </TableSortLabel>
+                    </TableCell>
+                    <TableCell align="left">
+                      <TableSortLabel
+                        active={orderBy === "termini.tipPregleda.naziv"}
+                        direction={order}
+                        onClick={() =>
+                          handleRequestSort("termini.tipPregleda.naziv")
+                        }
+                      >
+                        Naziv
+                      </TableSortLabel>
+                    </TableCell>
+                    <TableCell></TableCell>
+                    <TableCell></TableCell>
                   </TableRow>
-                )}
-            </TableBody>
-          </Table>
-        </div>
-        {sale && (
-          <TablePagination
-            rowsPerPageOptions={[5, 10, 25]}
-            component="div"
-            count={sale.length}
-            rowsPerPage={rowsPerPage}
-            page={page}
-            backIconButtonProps={{
-              "aria-label": "previous page"
-            }}
-            nextIconButtonProps={{
-              "aria-label": "next page"
-            }}
-            onChangePage={handleChangePage}
-            onChangeRowsPerPage={handleChangeRowsPerPage}
+                </TableHead>
+                <TableBody>
+                  {sale &&
+                    stableSort(sale, getSorting(order, orderBy))
+                      .slice(
+                        page * rowsPerPage,
+                        page * rowsPerPage + rowsPerPage
+                      )
+                      .map((row, index) => {
+                        return (
+                          <TableRow
+                            hover
+                            role="checkbox"
+                            tabIndex={-1}
+                            key={row.id}
+                          >
+                            <TableCell component="th" allign="left">
+                              {row.salaIdentifier}
+                            </TableCell>
+                            <TableCell align="left">{row.naziv}</TableCell>
+                            <TableCell align="right">
+                              <Button
+                                variant="outlined"
+                                color="primary"
+                                onClick={() => {
+                                  state.zaIzmenu = row;
+                                  setIsEdit(true);
+                                }}
+                              >
+                                Izmeni
+                              </Button>
+                            </TableCell>
+                            <TableCell align="right">
+                              <DijalogZaBrisanjeSala
+                                id={row.id}
+                                broj={row.salaIdentifier}
+                              />
+                            </TableCell>
+                          </TableRow>
+                        );
+                      })}
+                  {sale &&
+                    rowsPerPage -
+                      Math.min(rowsPerPage, sale.length - page * rowsPerPage) >
+                      0 && (
+                      <TableRow
+                        style={{
+                          height:
+                            (dense ? 33 : 53) *
+                            (rowsPerPage -
+                              Math.min(
+                                rowsPerPage,
+                                sale.length - page * rowsPerPage
+                              ))
+                        }}
+                      >
+                        <TableCell colSpan={6} />
+                      </TableRow>
+                    )}
+                </TableBody>
+              </Table>
+            </div>
+            {sale && (
+              <TablePagination
+                rowsPerPageOptions={[5, 10, 25]}
+                component="div"
+                count={sale.length}
+                rowsPerPage={rowsPerPage}
+                page={page}
+                backIconButtonProps={{
+                  "aria-label": "previous page"
+                }}
+                nextIconButtonProps={{
+                  "aria-label": "next page"
+                }}
+                onChangePage={handleChangePage}
+                onChangeRowsPerPage={handleChangeRowsPerPage}
+              />
+            )}
+          </Paper>
+          <FormControlLabel
+            control={<Switch checked={dense} onChange={handleChangeDense} />}
+            label="Smanji pading"
           />
-        )}
-      </Paper>
-      <FormControlLabel
-        control={<Switch checked={dense} onChange={handleChangeDense} />}
-        label="Smanji pading"
-      />
+        </div>
+      )}
     </div>
   );
 };

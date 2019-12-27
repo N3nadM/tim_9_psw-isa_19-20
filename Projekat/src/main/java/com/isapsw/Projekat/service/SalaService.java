@@ -5,6 +5,7 @@ import com.isapsw.Projekat.domain.Pregled;
 import com.isapsw.Projekat.domain.Sala;
 import com.isapsw.Projekat.dto.SalaDTO;
 import com.isapsw.Projekat.repository.KlinikaRepository;
+import com.isapsw.Projekat.repository.OperacijaRepository;
 import com.isapsw.Projekat.repository.PregledRepository;
 import com.isapsw.Projekat.repository.SalaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,8 +30,12 @@ public class SalaService {
     @Autowired
     private PregledRepository pregledRepository;
 
+    @Autowired
+    private OperacijaRepository operacijaRepository;
+
     public Sala addSala(SalaDTO salaDTO){
         Sala s = new Sala();
+        s.setAktivna(true);
         s.setKlinika(klinikaRepository.findById(salaDTO.getKlinikaId()).get());
         s.setSalaIdentifier(salaDTO.getSalaIdentifier());
         s.setNaziv(salaDTO.getNaziv());
@@ -81,9 +86,14 @@ public class SalaService {
 
     public List<Sala> getSaleKojeSeMoguObrisati(String id){
         List<Sala> salas = salaRepository.findByKlinikaId(Long.parseLong(id));
+        Date date = Calendar.getInstance().getTime();
+        //lista sala u kojima ima zakazanih pregleda u buducnosti
+        List<Sala> salePregled = pregledRepository.findSaleUKojimaImaZakazanihPregleda(Long.parseLong(id), date);
+        //lista sala u kojima ima zakazanih operacija u buducnosti
+        List<Sala> saleOperacija = operacijaRepository.findSaleUKojimaImaZakazanihOperacija(Long.parseLong(id), date);
         List<Sala> ret = new ArrayList<>();
         for(Sala s: salas){
-            if(s.getPregled().isEmpty() && s.getOperacija().isEmpty()){
+            if(!salePregled.contains(s) && !saleOperacija.contains(s)){
                 ret.add(s);
             }
         }
@@ -92,8 +102,8 @@ public class SalaService {
 
     public Sala obrisiSalu(String id){
         Sala sala = salaRepository.findById(Long.parseLong(id)).get();
-        salaRepository.delete(sala);
-        return sala;
+        sala.setAktivna(false);
+        return salaRepository.save(sala);
     }
 
 

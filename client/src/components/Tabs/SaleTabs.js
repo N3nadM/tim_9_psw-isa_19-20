@@ -10,7 +10,7 @@ import Button from "@material-ui/core/Button";
 import { getKlinikaAdmin } from "../../store/actions/adminKlinike";
 import { connect } from "react-redux";
 import { addNewSala } from "../../store/actions/sala";
-import IzmenaSala from "../Tabs/IzmenaSala";
+import PretragaSala from "./PretragaSala";
 import BrisanjeSalaTab from "./Sala/BrisanjeSalaTab";
 
 function TabPanel(props) {
@@ -91,7 +91,7 @@ const SaleTabs = ({ adminKlinike: { klinika }, addNewSala }) => {
         <Tab label="Uklanjanje sale" {...a11yProps(2)} />
       </Tabs>
       <TabPanel value={value} index={0} dir={theme.direction}>
-        {value === 0 && <IzmenaSala klinikaId={klinika.id} />}
+        {value === 0 && <PretragaSala klinikaId={klinika.id} />}
       </TabPanel>
       <TabPanel value={value} index={1} dir={theme.direction}>
         <form className={classes.form} onSubmit={handleSubmit}>

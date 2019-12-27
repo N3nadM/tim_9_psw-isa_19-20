@@ -1,6 +1,7 @@
 package com.isapsw.Projekat.repository;
 
 import com.isapsw.Projekat.domain.Pregled;
+import com.isapsw.Projekat.domain.Sala;
 import com.isapsw.Projekat.domain.TipPregleda;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -45,5 +46,8 @@ public interface PregledRepository extends JpaRepository<Pregled, Long> {
 
     @Query("SELECT DISTINCT p.tipPregleda FROM Pregled p LEFT JOIN TipPregleda tp ON tp.id = p.tipPregleda.id WHERE tp.klinika.id = :id AND p.datumPocetka > :date")
     List<TipPregleda> findTipoveKojiImajuZakazanePreglede(@Param("id") Long id, @Param("date") Date date);
+
+    @Query("SELECT DISTINCT p.sala FROM Pregled p LEFT JOIN Sala s ON s.id = p.sala.id WHERE s.klinika.id = :id AND p.datumPocetka > :date")
+    List<Sala> findSaleUKojimaImaZakazanihPregleda(@Param("id") Long id, @Param("date") Date date);
 
 }
