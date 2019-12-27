@@ -11,6 +11,7 @@ import ListItemText from "@material-ui/core/ListItemText";
 import Input from "@material-ui/core/Input";
 import Checkbox from "@material-ui/core/Checkbox";
 import { getLekoviByDijagnozaId } from "../../../store/actions/lek";
+import { zavrsenPregledOperacija } from "../../../store/actions/pregledOperacija";
 import { getAllDijagnoze } from "../../../store/actions/dijagnoza";
 import { connect } from "react-redux";
 
@@ -37,27 +38,27 @@ const PregledOperacijaTab = ({
   getAllDijagnoze,
   editZdrKarton,
   setIsEdit,
-  obj
+  obj,
+  zavrsenPregledOperacija
 }) => {
+  const [lekName, setLekName] = React.useState([]);
   const [state, setState] = React.useState({
     id: zdrKarton.id,
     visina: zdrKarton.visina,
     tezina: zdrKarton.tezina,
     dioptrija: zdrKarton.dioptrija,
     krvnaGrupa: zdrKarton.krvnaGrupa,
-    izvestaj: obj.izvestaj
+    izvestaj: obj.izvestaj,
+    dijagnoza: "",
+    lekovi: lekName,
+    medSestraId: obj.medicinskaSestra.id
   });
-
-  const [lekName, setLekName] = React.useState([]);
 
   useEffect(() => {
     getAllDijagnoze();
     //eslint-disable-next-line
   }, []);
 
-  {
-    console.log(obj);
-  }
   const classes = useStyles();
   const handleChange = e => {
     const { name, value } = e.target;
@@ -65,21 +66,26 @@ const PregledOperacijaTab = ({
       ...prevState,
       [name]: value
     }));
+    console.log(state);
   };
 
   const handleSubmit = e => {
     e.preventDefault();
     editZdrKarton(state);
+    zavrsenPregledOperacija(state);
     setIsEdit(false);
   };
 
   const handleChangeSelectDijagnoza = (event, child) => {
-    console.log(child.key);
     getLekoviByDijagnozaId(child.key);
+    state.dijagnoza = child.key;
+    console.log(state);
   };
 
   const handleChangeSelect = event => {
     setLekName(event.target.value);
+    state.lekovi = event.target.value;
+    console.log(state);
   };
 
   return (
@@ -179,9 +185,12 @@ const PregledOperacijaTab = ({
           </FormControl>
         </Grid>
         <Grid item sm={4}>
-          <FormControl className={classes.formControl}>
+          <FormControl
+            className={classes.formControl}
+            style={{ minWidth: 150 }}
+          >
             <InputLabel id="demo-mutiple-checkbox-label">
-              Izaberi lekove
+              Izaberi lek/lekove
             </InputLabel>
             <Select
               labelId="demo-mutiple-checkbox-label"
@@ -220,5 +229,6 @@ const mapStateToProps = state => ({
 
 export default connect(mapStateToProps, {
   getLekoviByDijagnozaId,
-  getAllDijagnoze
+  getAllDijagnoze,
+  zavrsenPregledOperacija
 })(PregledOperacijaTab);

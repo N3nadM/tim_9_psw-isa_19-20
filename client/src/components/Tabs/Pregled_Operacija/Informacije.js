@@ -38,15 +38,8 @@ const Informacije = ({
 
   let zapocniPregled = false;
   let danasnjiDan = new Date();
-
-  {
-    if (
-      obj.lekar.korisnik.id.toString() === korisnikId.toString() &&
-      dP.toDateString() === danasnjiDan.toDateString()
-    ) {
-      zapocniPregled = true;
-    }
-  }
+  let danasnjiDanVreme =
+    dZTime - (danasnjiDan.getHours() * 60 + danasnjiDan.getMinutes());
 
   var i;
   for (i = 0; i <= 24; i++) {
@@ -56,6 +49,14 @@ const Informacije = ({
     } else {
       mins = time;
       break;
+    }
+  }
+
+  {
+    if (dP.toDateString() === danasnjiDan.toDateString()) {
+      if (danasnjiDanVreme >= 0 && danasnjiDanVreme <= dZTime - dPTime + 30) {
+        zapocniPregled = true;
+      }
     }
   }
 
