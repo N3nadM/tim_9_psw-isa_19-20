@@ -2,6 +2,7 @@ package com.isapsw.Projekat.controller;
 
 import com.isapsw.Projekat.domain.Dijagnoza;
 import com.isapsw.Projekat.domain.Lek;
+import com.isapsw.Projekat.domain.Lekar;
 import com.isapsw.Projekat.dto.DijagnozaDTO;
 import com.isapsw.Projekat.dto.LekDTO;
 import com.isapsw.Projekat.service.LekService;
@@ -24,6 +25,17 @@ public class LekController {
     @GetMapping
     public List<Lek> getAllLekovi(){
         return lekService.getAllLekovi();
+    }
+
+    @GetMapping("/dijagnoza/{id}")
+    public ResponseEntity<List<Lek>> confirmAcount(@PathVariable String id){
+        List<Lek> lekoviZaDijagnozu = lekService.getLekoviByDijagnozaId(Long.parseLong(id));
+        //List<Lek> lekoviZaDijagnozu = new ArrayList<>();
+
+//        for(Long key : lekoviZaDijagnozuId){
+//            lekoviZaDijagnozu.add(lekService.getLekById(key));
+//        }
+        return  new ResponseEntity<>(lekoviZaDijagnozu, HttpStatus.OK);
     }
 
     @PostMapping

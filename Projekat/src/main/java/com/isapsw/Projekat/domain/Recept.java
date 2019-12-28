@@ -18,11 +18,10 @@ public class Recept {
 
     private boolean overen = false;
 
-    @JsonFormat(pattern = "yyyy-mm-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     @Column(updatable = false)
     private Date datumIzdavanja;
 
-    @NotBlank
     @JsonFormat(pattern = "yyyy-MM-dd")
     private Date datumIsticanja;
 

@@ -36,7 +36,6 @@ public class ZdrKartonController {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
 
-        System.out.println(zdrKarton.getPacijent().getId());
         return new ResponseEntity<ZdrKarton>(zdrKarton, HttpStatus.OK);
     }
 
