@@ -167,7 +167,7 @@ public class KlinikaService {
         Set<Lekar> lekars = new HashSet<>();
 
         if(!datum.isEmpty()) {
-            klinika.getLekari().forEach(lekar -> {
+            lekarRepository.findLekarsByKlinikaId(klinika.getId()).forEach(lekar -> {
 
                 Date zaProveru = Date.from(Instant.parse(datum));
                 Calendar cal = Calendar.getInstance();
@@ -206,30 +206,29 @@ public class KlinikaService {
                 }
             });
         } else if (!tip.isEmpty()) {
-            for (Lekar lekar : klinika.getLekari()) {
-                if (lekar.getTipPregleda().getNaziv().equals(tip)) {
+            for (Lekar lekar : lekarRepository.findLekarsByKlinikaId(klinika.getId())) {
+                if (lekar.getTipPregleda().getNaziv().equals(tip) ) {
                     lekars.add(lekar);
                 }
             }
         }
         else {
-            return klinika.getLekari();
+            return lekarRepository.findLekarsByKlinikaId(klinika.getId());
         }
 
         return new ArrayList<>(lekars);
     }
 
     public List<Lekar> getLekariNaKlinici(Long id) {
-        Klinika k = klinikaRepository.findKlinikaById(id);
-        return k.getLekari();
+        return lekarRepository.findLekarsByKlinikaId(id);
     }
 
     public List<Lekar> searchLekariNaKlinici(Long id, String ime, String prezime, String email) {
         Klinika k = klinikaRepository.findKlinikaById(id);
         List<Long> lekariId = lekarRepository.findLekarByParameters(ime.toUpperCase(),prezime.toUpperCase(),email.toUpperCase());
         List<Lekar> ret = new ArrayList<>();
-
-        k.getLekari().forEach(lekar -> {
+        List<Lekar> lekars = lekarRepository.findLekarsByKlinikaId(id);
+        lekars.forEach(lekar -> {
             if(lekariId.contains(lekar.getKorisnik().getId())){
                 ret.add(lekar);
             }

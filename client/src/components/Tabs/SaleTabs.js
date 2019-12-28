@@ -88,7 +88,7 @@ const SaleTabs = ({ adminKlinike: { klinika }, addNewSala }) => {
       >
         <Tab label="Lista sala na klinici" {...a11yProps(0)} />
         <Tab label="Unos nove sale" {...a11yProps(1)} />
-        <Tab label="Uklanjanje sale" {...a11yProps(2)} />
+        <Tab label="Izmena i uklanjanje sale" {...a11yProps(2)} />
       </Tabs>
       <TabPanel value={value} index={0} dir={theme.direction}>
         {value === 0 && <PretragaSala klinikaId={klinika.id} />}

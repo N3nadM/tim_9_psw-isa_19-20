@@ -34,27 +34,27 @@ INSERT INTO ADMIN_KLINIKE VALUES ('1', '1', '1', '2');
 
 INSERT INTO KORISNIK (id, adresa, email, ime, password, prezime, drzava, grad, telefon) VALUES ('3', 'adresa lekara', 'lekar@gmail.com', 'Lekar', '$2a$10$feiotRqclqYZ7aJnytCDSedhWmzztzhuwyujbVfVucV4nbmMRNnwa', 'Lekaric',  'drzava', 'grad', 'telefon');
 INSERT INTO USER_AUTHORITY VALUES ('3', '2');
-INSERT INTO LEKAR(id, tip_pregleda_id, korisnik_id, klinika_id, pocetak_radnog_vremena,  kraj_radnog_vremena, ocena) VALUES ('1', '1', '3', '1', '07:30', '20:00', 3.4);
+INSERT INTO LEKAR(id, tip_pregleda_id, korisnik_id, klinika_id, pocetak_radnog_vremena,  kraj_radnog_vremena, ocena, aktivan) VALUES ('1', '1', '3', '1', '07:30', '20:00', 3.4, true);
 
 INSERT INTO KORISNIK (id, adresa, email, ime, password, prezime, drzava, grad, telefon) VALUES (12, 'lekariceva 12', 'lekar123@gmail.com', 'Mile', '$2a$10$feiotRqclqYZ7aJnytCDSedhWmzztzhuwyujbVfVucV4nbmMRNnwa', 'Lekaricccccacca',  'drzava', 'grad', 'telefon');
 INSERT INTO USER_AUTHORITY VALUES ('12', '2');
-INSERT INTO LEKAR(id, tip_pregleda_id, korisnik_id, klinika_id, pocetak_radnog_vremena,  kraj_radnog_vremena, ocena) VALUES ('2', '2', '12', '1', '07:00', '21:00', 4.5);
+INSERT INTO LEKAR(id, tip_pregleda_id, korisnik_id, klinika_id, pocetak_radnog_vremena,  kraj_radnog_vremena, ocena, aktivan) VALUES ('2', '2', '12', '1', '07:00', '21:00', 4.5, true );
 
 INSERT INTO KORISNIK (id, adresa, email, ime, password, prezime, drzava, grad, telefon) VALUES (13, 'lekariceva 12', 'lekar1235@gmail.com', 'Micko', '$2a$10$feiotRqclqYZ7aJnytCDSedhWmzztzhuwyujbVfVucV4nbmMRNnwa', 'Lekaricccccacca',  'drzava', 'grad', 'telefon');
 INSERT INTO USER_AUTHORITY VALUES ('13', '2');
-INSERT INTO LEKAR(id, tip_pregleda_id, korisnik_id, klinika_id, pocetak_radnog_vremena,  kraj_radnog_vremena, ocena) VALUES ('3', '5', '13', '9', '08:00', '21:00', 4.0);
+INSERT INTO LEKAR(id, tip_pregleda_id, korisnik_id, klinika_id, pocetak_radnog_vremena,  kraj_radnog_vremena, ocena, aktivan) VALUES ('3', '5', '13', '9', '08:00', '21:00', 4.0, true);
 
 INSERT INTO KORISNIK (id, adresa, email, ime, password, prezime, drzava, grad, telefon) VALUES (14, 'lekariceva 12', 'lekarMicko@gmail.com', 'Micko', '$2a$10$feiotRqclqYZ7aJnytCDSedhWmzztzhuwyujbVfVucV4nbmMRNnwa', 'Lekaricccccacca',  'drzava', 'grad', 'telefon');
 INSERT INTO USER_AUTHORITY VALUES ('14', '2');
-INSERT INTO LEKAR(id, tip_pregleda_id, korisnik_id, klinika_id, pocetak_radnog_vremena,  kraj_radnog_vremena, ocena) VALUES ('4', '2', '14', '2', '08:00', '17:00', 5.0);
+INSERT INTO LEKAR(id, tip_pregleda_id, korisnik_id, klinika_id, pocetak_radnog_vremena,  kraj_radnog_vremena, ocena, aktivan) VALUES ('4', '2', '14', '2', '08:00', '17:00', 5.0, true );
 
 INSERT INTO KORISNIK (id, adresa, email, ime, password, prezime, drzava, grad, telefon) VALUES (15, 'lekariceva 12', 'lekarMilivoje@gmail.com', 'Milivoje', '$2a$10$feiotRqclqYZ7aJnytCDSedhWmzztzhuwyujbVfVucV4nbmMRNnwa', 'Lekaricccccacca',  'drzava', 'grad', 'telefon');
 INSERT INTO USER_AUTHORITY VALUES ('15', '2');
-INSERT INTO LEKAR(id, tip_pregleda_id, korisnik_id, klinika_id, pocetak_radnog_vremena,  kraj_radnog_vremena, ocena) VALUES ('5', '4', '15', '3', '08:00', '17:00', 2.1);
+INSERT INTO LEKAR(id, tip_pregleda_id, korisnik_id, klinika_id, pocetak_radnog_vremena,  kraj_radnog_vremena, ocena, aktivan) VALUES ('5', '4', '15', '3', '08:00', '17:00', 2.1, true);
 
 INSERT INTO KORISNIK (id, adresa, email, ime, password, prezime, drzava, grad, telefon) VALUES (16, 'lekariceva 12', 'lekarrrMilivoje@gmail.com', 'Milivojee1', '$2a$10$feiotRqclqYZ7aJnytCDSedhWmzztzhuwyujbVfVucV4nbmMRNnwa', 'Lekaricccccacca',  'drzava', 'grad', 'telefon');
 INSERT INTO USER_AUTHORITY VALUES ('16', '2');
-INSERT INTO LEKAR(id, tip_pregleda_id, korisnik_id, klinika_id, pocetak_radnog_vremena,  kraj_radnog_vremena, ocena) VALUES ('6', '2', '16', '1', '08:00', '17:00', 2.1);
+INSERT INTO LEKAR(id, tip_pregleda_id, korisnik_id, klinika_id, pocetak_radnog_vremena,  kraj_radnog_vremena, ocena, aktivan) VALUES ('6', '2', '16', '1', '08:00', '17:00', 2.1, true);
 
 
 INSERT INTO KORISNIK (id, adresa, email, ime, password, prezime, drzava, grad, telefon) VALUES ('4', 'adresa pacijenta', 'pacijent@gmail.com', 'Pacijent', '$2a$10$feiotRqclqYZ7aJnytCDSedhWmzztzhuwyujbVfVucV4nbmMRNnwa', 'Pacijentic',  'drzava', 'grad', 'telefon');
@@ -114,7 +114,7 @@ INSERT INTO USER_AUTHORITY VALUES ('11', '1');
 INSERT INTO PACIJENT VALUES ('5', '2019-12-20', '123123', '11');
 
 INSERT INTO PREGLED (izvestaj, datum_pocetka, datum_zavrsetka, tip_pregleda_id, lekar_id, medicinska_sestra_id, sala_id, pacijent_id, popust, datum_kreiranja) VALUES ('Odlicno ste bolesni', '2019-12-12 15:50:00', '2019-12-12 16:50:00', '2', '2', '2', '2', '1', '0', '2019-11-30');
-INSERT INTO PREGLED (izvestaj, datum_pocetka, datum_zavrsetka, tip_pregleda_id, lekar_id, medicinska_sestra_id, sala_id, pacijent_id, popust, datum_kreiranja) VALUES ('Bit ces unet', '2019-12-29 15:50:00', '2019-12-29 16:50:00','1', '2', '1', '2', '2', '0', '2019-11-30');
+INSERT INTO PREGLED (izvestaj, datum_pocetka, datum_zavrsetka, tip_pregleda_id, lekar_id, medicinska_sestra_id, sala_id, pacijent_id, popust, datum_kreiranja) VALUES ('Bit ces unet', '2019-12-29 15:50:00', '2019-12-29 16:50:00','2', '2', '1', '2', '2', '0', '2019-11-30');
 INSERT INTO PREGLED (izvestaj, datum_pocetka, datum_zavrsetka, tip_pregleda_id, lekar_id, medicinska_sestra_id, sala_id, pacijent_id, popust, datum_kreiranja) VALUES ('Odlicno ste bolesni', '2019-11-12 15:51:00', '2019-11-12 16:51:00', '2', '2', '2', '2', '1', '0', '2019-11-6');
 INSERT INTO PREGLED (izvestaj, datum_pocetka, datum_zavrsetka, tip_pregleda_id, lekar_id, medicinska_sestra_id, sala_id, pacijent_id, popust, datum_kreiranja) VALUES ('Svaka cast', '2019-11-11 07:10:00', '2019-11-11 16:52:00', '2', '2', '1', '2', '1', '0', '2019-11-6');
 INSERT INTO PREGLED (izvestaj, datum_pocetka, datum_zavrsetka, tip_pregleda_id, lekar_id, medicinska_sestra_id, sala_id, pacijent_id, popust, datum_kreiranja) VALUES ('Bit ce unet', '2019-12-1 15:51:00', '2019-12-1 16:31:00','2', '2', '2', '2', '1', '0', '2019-11-6');

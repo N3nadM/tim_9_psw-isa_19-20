@@ -123,12 +123,11 @@ const LekariTabs = ({
         indicatorColor="primary"
         textColor="primary"
       >
-        <Tab label="Unos novog lekara" {...a11yProps(0)} />
-        <Tab label="Pretraga lekara" {...a11yProps(1)} />
-        <Tab label="Izmena lekara" {...a11yProps(2)} />
-        <Tab label="Uklanjanje lekara" {...a11yProps(3)} />
+        <Tab label="Pretraga lekara" {...a11yProps(0)} />
+        <Tab label="Unos novog lekara" {...a11yProps(1)} />
+        <Tab label="Uklanjanje lekara" {...a11yProps(2)} />
       </Tabs>
-      <TabPanel value={value} index={0} dir={theme.direction}>
+      <TabPanel value={value} index={1} dir={theme.direction}>
         <form className={classes.form} onSubmit={handleSubmit}>
           <Grid container spacing={10}>
             <Grid item sm={6}>
@@ -289,14 +288,11 @@ const LekariTabs = ({
           </Grid>
         </form>
       </TabPanel>
-      <TabPanel value={value} index={1} dir={theme.direction}>
-        {value === 1 && <PretragLekaraTab klinikaId={klinika.id} />}
+      <TabPanel value={value} index={0} dir={theme.direction}>
+        {value === 0 && <PretragLekaraTab klinikaId={klinika.id} />}
       </TabPanel>
       <TabPanel value={value} index={2} dir={theme.direction}>
-        Lista lekara ciji podaci mogu da se menjaju
-      </TabPanel>
-      <TabPanel value={value} index={3} dir={theme.direction}>
-        {value === 3 && <BrisanjeLekaraTab />}
+        {value === 2 && <BrisanjeLekaraTab />}
       </TabPanel>
     </div>
   );

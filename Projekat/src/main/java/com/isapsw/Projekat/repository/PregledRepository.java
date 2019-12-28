@@ -1,5 +1,6 @@
 package com.isapsw.Projekat.repository;
 
+import com.isapsw.Projekat.domain.Lekar;
 import com.isapsw.Projekat.domain.Pregled;
 import com.isapsw.Projekat.domain.Sala;
 import com.isapsw.Projekat.domain.TipPregleda;
@@ -49,5 +50,8 @@ public interface PregledRepository extends JpaRepository<Pregled, Long> {
 
     @Query("SELECT DISTINCT p.sala FROM Pregled p LEFT JOIN Sala s ON s.id = p.sala.id WHERE s.klinika.id = :id AND p.datumPocetka > :date")
     List<Sala> findSaleUKojimaImaZakazanihPregleda(@Param("id") Long id, @Param("date") Date date);
+
+    @Query("SELECT DISTINCT p.lekar FROM Pregled p LEFT JOIN Lekar l ON l.id = p.lekar.id WHERE l.klinika.id = :id AND p.datumPocetka > :date")
+    List<Lekar> findLekareKodKojihImaZakazanihPregleda(@Param("id") Long id, @Param("date") Date date);
 
 }
