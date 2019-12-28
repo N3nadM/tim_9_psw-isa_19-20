@@ -7,6 +7,7 @@ import com.isapsw.Projekat.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,7 +16,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
 @RequestMapping(value = "/api/pacijent")
 public class PacijentController {
@@ -32,6 +32,7 @@ public class PacijentController {
     private KlinikaService klinikaService;
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasRole('PACIJENT')")
     public ResponseEntity<Pacijent> confirmAccount(@PathVariable String id) {
 
         Pacijent pacijent = pacijentService.findPacijent(id);

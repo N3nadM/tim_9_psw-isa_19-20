@@ -13,7 +13,6 @@ import javax.net.ssl.HttpsURLConnection;
 import java.util.List;
 import java.util.Map;
 
-@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
 @RequestMapping(value = "/api/sala")
 public class SalaController {
