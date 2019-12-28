@@ -25,7 +25,6 @@ import java.util.Map;
 
 import static com.isapsw.Projekat.security.Konstante.TOKEN_BEARER_PREFIX;
 
-@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
 @RequestMapping(value = "/api/users")
 public class UserController {
@@ -81,7 +80,6 @@ public class UserController {
 
     @PostMapping("/register/{email}")
     public ResponseEntity<?> registerUser(@PathVariable String email) {
-        System.out.println("Tu samm");
         try {
             emailService.sendConfirmationAsync(email);
         } catch(NullPointerException e) {

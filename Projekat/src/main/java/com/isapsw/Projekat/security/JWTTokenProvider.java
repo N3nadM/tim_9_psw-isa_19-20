@@ -58,10 +58,13 @@ public class JWTTokenProvider {
     }
 
     public String getUserUsernameFromJWT(String token){
-        Claims claims = Jwts.parser().setSigningKey(SECRET).parseClaimsJws(token).getBody();
-        String username = (String)claims.get("username");
-
-        return username;
+        try {
+            Claims claims = Jwts.parser().setSigningKey(SECRET).parseClaimsJws(token).getBody();
+            String username = (String)claims.get("username");
+            return username;
+        } catch (Exception e) {
+            return null;
+        }
     }
 
 }
