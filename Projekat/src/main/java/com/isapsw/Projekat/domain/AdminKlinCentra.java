@@ -18,18 +18,13 @@ public class AdminKlinCentra{
     private Korisnik korisnik;
 
 
-    @OneToMany(mappedBy = "adminKlinCentra", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<AdminKlinike> administratori = new ArrayList<>();
-
     public AdminKlinCentra(){
         super();
-        this.administratori = new ArrayList<>();
     }
 
     public AdminKlinCentra( Korisnik korisnik, Dijagnoza dijagnoze, Lek lekovi,  List<AdminKlinike> administratori, List<Pacijent> zahteviPacijenata) {
         super();
         this.korisnik = korisnik;
-        this.administratori = new ArrayList<>();
     }
 
     public Long getId() {
@@ -47,14 +42,4 @@ public class AdminKlinCentra{
     public void setKorisnik(Korisnik korisnik) {
         this.korisnik = korisnik;
     }
-
-
-    public List<AdminKlinike> getAdministratori() {
-        return administratori;
-    }
-
-    public void setAdministratori(List<AdminKlinike> administratori) {
-        this.administratori = administratori;
-    }
-
 }

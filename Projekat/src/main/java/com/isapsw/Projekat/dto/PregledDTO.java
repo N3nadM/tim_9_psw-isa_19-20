@@ -9,6 +9,10 @@ public class PregledDTO {
     private String medSestraId;
     private String datum;
 
+    public PregledDTO(){
+
+    }
+
     public String getDatum() {
         return datum;
     }
