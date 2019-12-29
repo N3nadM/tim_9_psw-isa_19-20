@@ -22,11 +22,6 @@ public class AdminKlinike{
     @JsonIgnore
     private Klinika klinika;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="adminKlinCentra_id", updatable = false)
-    @JsonIgnore
-    private AdminKlinCentra adminKlinCentra;
-
     public AdminKlinike(){
     }
 
@@ -36,15 +31,6 @@ public class AdminKlinike{
         super();
         this.korisnik = korisnik;
         this.klinika = klinika;
-        this.adminKlinCentra = adminKlinCentra;
-    }
-
-    public AdminKlinCentra getAdminKlinCentra() {
-        return adminKlinCentra;
-    }
-
-    public void setAdminKlinCentra(AdminKlinCentra adminKlinCentra) {
-        this.adminKlinCentra = adminKlinCentra;
     }
 
     public Klinika getKlinika() {
