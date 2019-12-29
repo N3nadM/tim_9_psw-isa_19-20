@@ -38,6 +38,8 @@ public class Sala {
     @Column(updatable = false)
     private Date datumKreiranja;
 
+    private boolean aktivna;
+
     public Sala() {
     }
 
@@ -111,5 +113,13 @@ public class Sala {
     @PrePersist
     protected void onCreate(){
         this.datumKreiranja = new Date();
+    }
+
+    public boolean isAktivna() {
+        return aktivna;
+    }
+
+    public void setAktivna(boolean aktivna) {
+        this.aktivna = aktivna;
     }
 }
