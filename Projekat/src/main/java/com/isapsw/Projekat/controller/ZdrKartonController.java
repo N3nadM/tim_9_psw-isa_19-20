@@ -11,7 +11,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
 @RequestMapping(value = "/api/karton")
 public class ZdrKartonController {
@@ -36,7 +35,6 @@ public class ZdrKartonController {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
 
-        System.out.println(zdrKarton.getPacijent().getId());
         return new ResponseEntity<ZdrKarton>(zdrKarton, HttpStatus.OK);
     }
 

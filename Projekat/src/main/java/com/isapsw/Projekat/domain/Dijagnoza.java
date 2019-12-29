@@ -100,4 +100,12 @@ public class Dijagnoza {
     public void setDatumKreiranja(Date datumKreiranja) {
         this.datumKreiranja = datumKreiranja;
     }
+
+    public List<ZdrKarton> getZdrKarton() {
+        return zdrKarton;
+    }
+
+    public void setZdrKarton(List<ZdrKarton> zdrKarton) {
+        this.zdrKarton = zdrKarton;
+    }
 }

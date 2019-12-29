@@ -20,6 +20,15 @@ export const getAllLekovi = id => async dispatch => {
   }
 };
 
+export const getLekoviByDijagnozaId = id => async dispatch => {
+  try {
+    const lekovi = await axios.get(`/api/lek/dijagnoza/${id}`);
+    dispatch(setLekovi(lekovi.data));
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 export const addNewLek = data => async dispatch => {
   try {
     const lek = await axios.post("/api/lek", data);

@@ -10,6 +10,10 @@ public class TipPregledaDTO {
     private String minimalnoTrajanjeMin;
     private Long klinikaId;
 
+    public TipPregledaDTO(){
+
+    }
+
     public TipPregledaDTO( String naziv,String cenaPregleda, String cenaOperacije, String minimalnoTrajanjeMin, Long klinikaId) {
         this.cenaPregleda = cenaPregleda;
         this.cenaOperacije = cenaOperacije;

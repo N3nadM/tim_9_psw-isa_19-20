@@ -1,12 +1,9 @@
 package com.isapsw.Projekat.security;
 
-import com.isapsw.Projekat.domain.Korisnik;
 import com.isapsw.Projekat.service.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -15,7 +12,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Collections;
 
 import static com.isapsw.Projekat.security.Konstante.HEADER_BEARER_TOKEN;
 import static com.isapsw.Projekat.security.Konstante.TOKEN_BEARER_PREFIX;
@@ -34,12 +30,13 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
 
         if(StringUtils.hasText(authToken) && tokenProvider.validate(authToken)) {
             String username = tokenProvider.getUserUsernameFromJWT(authToken);
-            UserDetails korisnikDetails = customUserDetailsService.loadUserByUsername(username);
+            if(username != null) {
+                UserDetails korisnikDetails = customUserDetailsService.loadUserByUsername(username);
 
-            TokenBasedAuthentication authentication = new TokenBasedAuthentication(korisnikDetails);
-            authentication.setToken(authToken);
-//            authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(httpServletRequest));
-            SecurityContextHolder.getContext().setAuthentication(authentication);
+                TokenBasedAuthentication authentication = new TokenBasedAuthentication(korisnikDetails);
+                authentication.setToken(authToken);
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+            }
         }
 
         filterChain.doFilter(httpServletRequest, httpServletResponse);
@@ -48,8 +45,8 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
     private String getJWTFromRequest(HttpServletRequest request){
         String bearerToken = request.getHeader(HEADER_BEARER_TOKEN);
 
-        if(StringUtils.hasText(bearerToken)&&bearerToken.startsWith(TOKEN_BEARER_PREFIX)){
-            return bearerToken.substring(7, bearerToken.length());
+        if(StringUtils.hasText(bearerToken) && bearerToken.startsWith(TOKEN_BEARER_PREFIX)){
+            return bearerToken.substring(7);
         }
 
         return null;

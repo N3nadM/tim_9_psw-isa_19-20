@@ -127,7 +127,6 @@ const TabelaPregleda = ({ operacije, getAllOperacije, pacijentId }) => {
                     </TableCell>
                     <TableCell align="right">Cena</TableCell>
                     <TableCell align="right">Datum Zakazivanja</TableCell>
-                    <TableCell align="right">Otkaži Operaciju</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -162,30 +161,6 @@ const TabelaPregleda = ({ operacije, getAllOperacije, pacijentId }) => {
                             </TableCell>
                             <TableCell align="right">
                               {row.datumKreiranja}
-                            </TableCell>
-                            <TableCell align="right">
-                              <Tooltip
-                                title={
-                                  new Date() - new Date(row.datumPocetka) >
-                                  -86400000
-                                    ? "Otkazivanje nije moguce u periodu od 24 sata pre pregleda"
-                                    : "Otkaži zakazani pregled"
-                                }
-                                leaveDelay={200}
-                              >
-                                <span>
-                                  <Button
-                                    color="secondary"
-                                    variant="outlined"
-                                    disabled={
-                                      new Date() - new Date(row.datumPocetka) >
-                                      -86400000
-                                    }
-                                  >
-                                    Otkaži
-                                  </Button>
-                                </span>
-                              </Tooltip>
                             </TableCell>
                           </TableRow>
                         );
