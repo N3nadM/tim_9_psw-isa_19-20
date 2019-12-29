@@ -6,6 +6,8 @@ public class SalaDTO {
     private String naziv;
     private Long klinikaId;
 
+    public SalaDTO(){}
+
     public SalaDTO( String salaIdentifier, Long klinikaId) {
         this.salaIdentifier = salaIdentifier;
         this.klinikaId = klinikaId;
