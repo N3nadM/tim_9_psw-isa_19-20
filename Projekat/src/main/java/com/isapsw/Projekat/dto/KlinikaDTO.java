@@ -13,6 +13,10 @@ public class KlinikaDTO {
         this.adresa = adresa;
     }
 
+    public KlinikaDTO(){
+
+    }
+
     public Long getId() {
         return id;
     }

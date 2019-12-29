@@ -119,6 +119,7 @@ public class LekarService {
         korisnikService.addKorisnik(k);
 
         Lekar l = new Lekar();
+        l.setAktivan(true);
         l.setKorisnik(k);
         l.setPocetakRadnogVremena(LocalTime.parse(lekarDTO.getPocetakRadnogVremena()));
         l.setKrajRadnogVremena(LocalTime.parse(lekarDTO.getKrajRadnogVremena()));
@@ -221,23 +222,28 @@ public class LekarService {
 
     public List<Lekar> getLekartKojiSeMeoguObrisati(String klinikaId){
         List<Lekar> lekars = lekarRepository.findLekarsByKlinikaId(Long.parseLong(klinikaId));
+        Date date = Calendar.getInstance().getTime();
+        //lekari koji imaju zakazane preglede u buducnosti
+        List<Lekar> lekariPregled = pregledRepository.findLekareKodKojihImaZakazanihPregleda(Long.parseLong(klinikaId), date);
+        //operacije koje ce se u buducnosti odrzati na klinici
+        List<Operacija> operacijas = operacijaRepository.findBuduceOperacijeNaKlinici(Long.parseLong(klinikaId), date);
         List<Lekar> ret = new ArrayList<>(lekars);
-        for (Lekar l : lekars){
-            if(!l.getPregledi().isEmpty()){
-                ret.remove(l);
-            }else {
-                //dodati proveri da se mogu obrisati i lekari koji su imali zakazane preglede ali nemaju buduce preglede
+        lekars.forEach(lekar -> {
+            operacijas.forEach(operacija -> {
+                if(operacija.getLekari().contains(lekar)){
+                    ret.remove(lekar);
+                }
+            });
+            if(ret.contains(lekar) && lekariPregled.contains(lekar)){
+                ret.remove(lekar);
             }
-        }
+        });
         return ret;
     }
 
     public Lekar obrisiLekara(String id){
         Lekar l = lekarRepository.findLekarById(Long.parseLong(id));
-        lekarRepository.delete(l);
-        l.getKorisnik().setAuthorities(null);
-        korisnikRepository.delete(l.getKorisnik());
-
-        return l;
+        l.setAktivan(false);
+        return lekarRepository.save(l);
     }
 }

@@ -57,7 +57,7 @@ export default (state = DEFAULT_STATE, action) => {
       return {
         ...state,
         editedSala: action.editedSala,
-        listaSala: state.listaSala.map(l =>
+        saleZaBrisanje: state.saleZaBrisanje.map(l =>
           l.id === action.editedSala.id ? action.editedSala : l
         )
       };

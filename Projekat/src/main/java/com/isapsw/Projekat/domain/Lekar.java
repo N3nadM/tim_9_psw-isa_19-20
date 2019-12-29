@@ -59,6 +59,8 @@ public class Lekar{
     @JsonIgnore
     private List<ZahtevOdmor> zahteviOdmor;
 
+    private boolean aktivan;
+
     public Lekar(){
         super();
     }
@@ -157,5 +159,13 @@ public class Lekar{
 
     public void setOdmor(List<Odmor> odmor) {
         this.odmor = odmor;
+    }
+
+    public boolean isAktivan() {
+        return aktivan;
+    }
+
+    public void setAktivan(boolean aktivan) {
+        this.aktivan = aktivan;
     }
 }
