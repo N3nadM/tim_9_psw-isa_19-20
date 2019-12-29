@@ -19,8 +19,9 @@ public interface LekarRepository extends JpaRepository<Lekar, Long> {
 
     Lekar findLekarById(Long id);
 
-    List<Lekar> findLekarsByKlinikaId(Long id);
+    @Query("SELECT DISTINCT l FROM Lekar l WHERE l.klinika.id = :id AND l.aktivan = true")
+    List<Lekar> findLekarsByKlinikaId(@Param("id") Long id);
 
-    @Query("SELECT DISTINCT k.id FROM Lekar l JOIN Korisnik k ON l.korisnik.id = k.id WHERE UPPER(k.ime) LIKE %:ime% AND UPPER(k.prezime) LIKE %:prezime% AND UPPER(k.email) LIKE %:email%")
+    @Query("SELECT DISTINCT k.id FROM Lekar l JOIN Korisnik k ON l.korisnik.id = k.id WHERE UPPER(k.ime) LIKE %:ime% AND UPPER(k.prezime) LIKE %:prezime% AND UPPER(k.email) LIKE %:email% AND l.aktivan = true")
     List<Long> findLekarByParameters(@Param("ime") String ime, @Param("prezime") String prezime, @Param("email") String email);
 }

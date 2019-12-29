@@ -13,6 +13,10 @@ public class SalaDTO {
         this.klinikaId = klinikaId;
     }
 
+    public SalaDTO(){
+
+    }
+
     public Long getId() {
         return id;
     }
