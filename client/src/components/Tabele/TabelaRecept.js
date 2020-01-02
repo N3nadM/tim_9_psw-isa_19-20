@@ -34,6 +34,8 @@ export default function TabelaRecept({ items }) {
     setPage(0);
   };
 
+  console.log(items);
+
   return (
     <>
       <Paper className={classes.root}>
@@ -58,7 +60,7 @@ export default function TabelaRecept({ items }) {
                         key={row.id}
                       >
                         <TableCell align="left">
-                          {row.lek.overen ? (
+                          {row.overen ? (
                             <CheckCircleOutlineIcon
                               style={{
                                 position: "relative",

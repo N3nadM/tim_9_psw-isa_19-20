@@ -18,6 +18,7 @@ import odsustvo from "./odsustvo";
 import zahtevOdsustvo from "./zahtevOdsustvo";
 import zahtevOdmor from "./zahtevOdmor";
 import pregledOperacija from "./pregledOperacija";
+import recept from "./recept";
 
 const appReducer = combineReducers({
   currentUser,
@@ -38,7 +39,8 @@ const appReducer = combineReducers({
   odsustvo,
   zahtevOdsustvo,
   zahtevOdmor,
-  pregledOperacija
+  pregledOperacija,
+  recept
 });
 
 const rootReducer = (state, action) => {

@@ -16,6 +16,7 @@ public class Recept {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column
     private boolean overen = false;
 
     @JsonFormat(pattern = "yyyy-MM-dd")
@@ -25,13 +26,10 @@ public class Recept {
     @JsonFormat(pattern = "yyyy-MM-dd")
     private Date datumIsticanja;
 
-    @ManyToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
-    @JoinTable(
-            name = "recepti_pacijenta",
-            joinColumns = @JoinColumn(name = "recept_id"),
-            inverseJoinColumns = @JoinColumn(name = "zdrKarton_id"))
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="zdrKarton_id", updatable = false, nullable = false)
     @JsonIgnore
-    private List<ZdrKarton> zdrKarton = new ArrayList<>();
+    private ZdrKarton zdrKarton;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="medicinskaSestra_id", updatable = false, nullable = false)
@@ -82,11 +80,11 @@ public class Recept {
         this.datumIsticanja = datumIsticanja;
     }
 
-    public List<ZdrKarton> getZdrKarton() {
+    public ZdrKarton getZdrKarton() {
         return zdrKarton;
     }
 
-    public void setZdrKarton(List<ZdrKarton> zdrKarton) {
+    public void setZdrKarton(ZdrKarton zdrKarton) {
         this.zdrKarton = zdrKarton;
     }
 
