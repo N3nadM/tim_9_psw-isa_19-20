@@ -168,4 +168,20 @@ public class Lekar{
     public void setAktivan(boolean aktivan) {
         this.aktivan = aktivan;
     }
+
+    public List<ZahtevOdsustvo> getZahteviOdsustvo() {
+        return zahteviOdsustvo;
+    }
+
+    public void setZahteviOdsustvo(List<ZahtevOdsustvo> zahteviOdsustvo) {
+        this.zahteviOdsustvo = zahteviOdsustvo;
+    }
+
+    public List<ZahtevOdmor> getZahteviOdmor() {
+        return zahteviOdmor;
+    }
+
+    public void setZahteviOdmor(List<ZahtevOdmor> zahteviOdmor) {
+        this.zahteviOdmor = zahteviOdmor;
+    }
 }

@@ -25,7 +25,7 @@ public class ZdrKarton {
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "zdrKarton")
     private List<Dijagnoza> istorijaBolesti = new ArrayList<>();
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "zdrKarton")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "zdrKarton")
     private List<Recept> izdatiRecepti = new ArrayList<>();
 
     private Integer visina;

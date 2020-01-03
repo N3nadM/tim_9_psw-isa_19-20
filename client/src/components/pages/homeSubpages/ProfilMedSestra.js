@@ -7,6 +7,7 @@ import RadniKalendarTab from "../../Tabs/RadniKalendarTab";
 import AppBar from "../../layout/AppBarLogedIn";
 import GodisnjiOdmorTab from "../../Tabs/GodisnjiOdmorTab";
 import MedSestraProfilTab from "../../Tabs/MedSestraProfilTab";
+import ReceptiZaOveru from "../../Tabs/ReceptiZaOveru";
 import TabPanel from "../../Tabs/TabPanel";
 
 import Tabs from "@material-ui/core/Tabs";
@@ -102,7 +103,7 @@ function ResponsiveDrawer(props) {
             <MedSestraProfilTab />
           </TabPanel>
           <TabPanel value={value} index={5}>
-            Recepti za overu
+            <ReceptiZaOveru />
           </TabPanel>
           <TabPanel value={value} index={6}>
             {value === 6 && <PromeniLozinku />}

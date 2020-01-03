@@ -63,7 +63,7 @@ public class PregledOperacijaService {
             recept.setLek(lek);
             recept.setMedicinskaSestra(medicinskaSestra);
             recept.setDatumIsticanja(inActiveDate);
-            recept.getZdrKarton().add(zdrKarton);
+            recept.setZdrKarton(zdrKarton);
             receptRepository.save(recept);
 
             zdrKarton.getIzdatiRecepti().add(recept);
