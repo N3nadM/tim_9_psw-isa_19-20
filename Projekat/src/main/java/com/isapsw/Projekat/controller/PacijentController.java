@@ -100,4 +100,15 @@ public class PacijentController {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
     }
+    @GetMapping(value = "/proveraPregledan/{idLekar}/{idPacijent}")
+    public ResponseEntity<Pacijent> getZdrKarton(@PathVariable String idLekar, @PathVariable String idPacijent){
+
+        Pacijent pacijent = pacijentService.proveraPregledOperacija(idLekar, idPacijent);
+        try{
+            return new ResponseEntity<Pacijent>(pacijent, HttpStatus.OK);
+        }
+        catch(Exception e) {
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
+    }
 }

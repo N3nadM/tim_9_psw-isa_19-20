@@ -94,6 +94,11 @@ const Pacijent = ({
             {value === 1 && pregledanPacijent && (
               <PacijentZdr id={match.params.objekat} />
             )}
+            {value === 1 && !pregledanPacijent && (
+              <div>
+                Nemate pravo pristupa zdravstvenom kartonu ovog pacijenta.
+              </div>
+            )}
           </TabPanel>
         </main>
       </div>

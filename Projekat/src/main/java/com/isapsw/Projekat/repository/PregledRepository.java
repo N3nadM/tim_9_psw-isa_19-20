@@ -1,14 +1,12 @@
 package com.isapsw.Projekat.repository;
 
-import com.isapsw.Projekat.domain.Lekar;
-import com.isapsw.Projekat.domain.Pregled;
-import com.isapsw.Projekat.domain.Sala;
-import com.isapsw.Projekat.domain.TipPregleda;
+import com.isapsw.Projekat.domain.*;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.Date;
 import java.util.List;
@@ -53,5 +51,8 @@ public interface PregledRepository extends JpaRepository<Pregled, Long> {
 
     @Query("SELECT DISTINCT p.lekar FROM Pregled p LEFT JOIN Lekar l ON l.id = p.lekar.id WHERE l.klinika.id = :id AND p.datumPocetka > :date")
     List<Lekar> findLekareKodKojihImaZakazanihPregleda(@Param("id") Long id, @Param("date") Date date);
+
+    @Query("SELECT DISTINCT p.pacijent FROM Pregled p WHERE p.lekar.korisnik.id = :idLekar AND p.pacijent.korisnik.id = :idPacijent AND p.datumPocetka<:date")
+    List<Pacijent> proveraPregled(@Param("idLekar") Long idLekar, @Param("idPacijent") Long idPacijent, @Param("date") Date date);
 
 }

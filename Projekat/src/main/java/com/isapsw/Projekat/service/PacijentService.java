@@ -4,10 +4,13 @@ import com.isapsw.Projekat.domain.Pacijent;
 import com.isapsw.Projekat.dto.PacijentDTO;
 import com.isapsw.Projekat.repository.KorisnikRepository;
 import com.isapsw.Projekat.repository.PacijentRepository;
+import com.isapsw.Projekat.repository.PregledRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -18,6 +21,9 @@ public class PacijentService {
 
     @Autowired
     private KorisnikRepository korisnikRepository;
+
+    @Autowired
+    private PregledRepository pregledRepository;
 
     public Pacijent savePacijent(Pacijent pacijent) {
         return pacijentRepository.save(pacijent);
@@ -49,5 +55,16 @@ public class PacijentService {
         }
 
         return pacijenti;
+    }
+
+    public Pacijent proveraPregledOperacija(String idLekar, String idPacijent){
+        Date date = Calendar.getInstance().getTime();
+        List<Pacijent> pac = pregledRepository.proveraPregled(Long.parseLong(idLekar), Long.parseLong(idPacijent), date);
+        System.out.println(pac.size());
+        if(pac.isEmpty() || pac == null){
+            return null;
+        }else{
+            return pac.get(0);
+        }
     }
 }
