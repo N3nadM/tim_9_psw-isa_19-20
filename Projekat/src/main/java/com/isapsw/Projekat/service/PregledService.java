@@ -34,6 +34,10 @@ public class PregledService {
     @Autowired
     private PacijentRepository pacijentRepository;
 
+    public Pregled getPregledById(Long id){
+        return pregledRepository.findById(id).get();
+    }
+
     public List<Pregled> getPreglediByPacijentId(Long id) {
         return pregledRepository.findPregledByPacijentIdWhereSalaIdIsNotNull(id);
     }

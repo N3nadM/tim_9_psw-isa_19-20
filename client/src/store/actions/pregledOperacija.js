@@ -34,3 +34,11 @@ export const zapocniPregledOperaciju = data => async dispatch => {
     console.log(err);
   }
 };
+
+export const izmeniIzvestaj = data => async dispatch => {
+  try {
+    const res = await axios.put("/api/pregled_operacija/izvestaj", data);
+  } catch (err) {
+    console.log(err);
+  }
+};

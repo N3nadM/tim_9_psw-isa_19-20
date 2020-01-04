@@ -64,7 +64,7 @@ function ResponsiveDrawer(props) {
         <Tab label="Godišnji odmor ili odsustvo" {...a11yProps(3)} />
         <Tab label="Lični podaci" {...a11yProps(4)} />
         <Tab label="Zakazivanje pregleda" {...a11yProps(5)} />
-        <Tab label="Zavrseni pregledi" {...a11yProps(6)} />
+        <Tab label="Zavrseni pregledi i operacije" {...a11yProps(6)} />
         <Tab label="Promena lozinke" {...a11yProps(7)} />
       </Tabs>
     </div>

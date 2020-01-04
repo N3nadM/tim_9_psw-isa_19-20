@@ -3,7 +3,10 @@ package com.isapsw.Projekat.service;
 import com.isapsw.Projekat.domain.*;
 import com.isapsw.Projekat.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -32,6 +35,27 @@ public class PregledOperacijaService {
 
     @Autowired
     private OperacijaRepository operacijaRepository;
+
+    public Object izmeniIzvestaj(@RequestBody Map<String,Object> body){
+
+            int vrsta = (int) body.get("vrsta");
+
+            if(vrsta == 0){
+                Pregled pregled = pregledRepository.findById(Long.parseLong(body.get("id").toString())).get();
+
+                pregled.setIzvestaj(body.get("izvestaj").toString());
+                pregledRepository.save(pregled);
+                return pregled;
+            }else if(vrsta == 1){
+                Operacija operacija = operacijaRepository.findById(Long.parseLong(body.get("id").toString())).get();
+
+                operacija.setIzvestaj(body.get("izvestaj").toString());
+                operacijaRepository.save(operacija);
+                return operacija;
+            }
+
+            return null;
+    }
 
     public String zapocniPregledOperaciju(Map<String,Object> body){
         int vrsta = (int) body.get("vrsta");
