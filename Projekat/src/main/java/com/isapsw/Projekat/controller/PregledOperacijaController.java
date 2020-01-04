@@ -17,10 +17,22 @@ public class PregledOperacijaController {
     private PregledOperacijaService pregledOperacijaService;
 
     @PostMapping
-    public ResponseEntity<String> zavrsiPregled(@RequestBody Map<String,Object> body){
+    public ResponseEntity<String> zavrsiPregledOperaciju(@RequestBody Map<String,Object> body){
         try {
 
-            String ret = pregledOperacijaService.zavrsiPregled(body);
+            String ret = pregledOperacijaService.zavrsiPregledOperaciju(body);
+
+            return new ResponseEntity<>(ret, HttpStatus.OK);
+        } catch(Exception e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PutMapping
+    public ResponseEntity<String> zapocniPregledOperaciju(@RequestBody Map<String,Object> body){
+        try {
+
+            String ret = pregledOperacijaService.zapocniPregledOperaciju(body);
 
             return new ResponseEntity<>(ret, HttpStatus.OK);
         } catch(Exception e) {

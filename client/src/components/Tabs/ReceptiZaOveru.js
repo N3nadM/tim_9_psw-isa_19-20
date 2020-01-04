@@ -42,6 +42,10 @@ const ReceptiZaOveru = ({
             <TableCell>
               <b>Sifra</b>
             </TableCell>
+            <TableCell>
+              <b>Datum izdavanja</b>
+            </TableCell>
+            <TableCell></TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -51,8 +55,8 @@ const ReceptiZaOveru = ({
               <TableRow key={recept.lek.id}>
                 <TableCell>{recept.lek.naziv}</TableCell>
                 <TableCell>{recept.lek.sadrzaj}</TableCell>
-
                 <TableCell>{recept.lek.sifra}</TableCell>
+                <TableCell>{recept.datumIzdavanja}</TableCell>
                 <TableCell>
                   <Button
                     variant="contained"

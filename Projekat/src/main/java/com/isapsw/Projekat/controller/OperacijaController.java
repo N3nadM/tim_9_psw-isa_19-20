@@ -55,6 +55,19 @@ public class OperacijaController {
         }
     }
 
+    @GetMapping("/osoblje/zavrseni/{id}")
+    public ResponseEntity<List<Operacija>> getZavrseneOperacijeByLekarId(@PathVariable String id) {
+        try {
+
+            Lekar lekar = lekarService.findLekar(id);
+            List<Operacija> operacije = operacijaService.getZavrseneOperacijeByLekarIdAndStanje(lekar.getId(), 2);
+
+            return new ResponseEntity<>(operacije, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
+    }
+
     @GetMapping("/sala/{id}")
     public ResponseEntity<List<Operacija>> findOperacijeBySalaId(@PathVariable String id) {
         try {

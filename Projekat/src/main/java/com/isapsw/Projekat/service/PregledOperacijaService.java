@@ -27,11 +27,31 @@ public class PregledOperacijaService {
     @Autowired
     private ReceptRepository receptRepository;
 
-    public String zavrsiPregled(Map<String,Object> body){
+    @Autowired
+    private PregledRepository pregledRepository;
 
-        for(String s : body.keySet()){
-            System.out.println(body.get(s).toString());
+    @Autowired
+    private OperacijaRepository operacijaRepository;
+
+    public String zapocniPregledOperaciju(Map<String,Object> body){
+        int vrsta = (int) body.get("vrsta");
+
+        if(vrsta == 0){
+            Pregled pregled = pregledRepository.findById(Long.parseLong(body.get("idPregledOperacija").toString())).get();
+
+            pregled.setStanje(1);
+            pregledRepository.save(pregled);
+        }else if(vrsta == 1){
+            Operacija operacija = operacijaRepository.findById(Long.parseLong(body.get("idPregledOperacija").toString())).get();
+
+            operacija.setStanje(1);
+            operacijaRepository.save(operacija);
         }
+
+        return "zapocet";
+    }
+
+    public String zavrsiPregledOperaciju(Map<String,Object> body){
 
         Calendar cal = Calendar.getInstance();
         cal.add(Calendar.DATE, 1);
@@ -43,6 +63,20 @@ public class PregledOperacijaService {
             inActiveDate = format1.parse(date1);
         } catch (ParseException e1) {
             e1.printStackTrace();
+        }
+
+        int vrsta = (int) body.get("vrsta");
+
+        if(vrsta == 0){
+            Pregled pregled = pregledRepository.findById(Long.parseLong(body.get("idPregledOperacija").toString())).get();
+            pregled.setIzvestaj(body.get("izvestaj").toString());
+            pregled.setStanje(2);
+            pregledRepository.save(pregled);
+        }else if(vrsta == 1){
+            Operacija operacija = operacijaRepository.findById(Long.parseLong(body.get("idPregledOperacija").toString())).get();
+            operacija.setIzvestaj(body.get("izvestaj").toString());
+            operacija.setStanje(2);
+            operacijaRepository.save(operacija);
         }
 
 

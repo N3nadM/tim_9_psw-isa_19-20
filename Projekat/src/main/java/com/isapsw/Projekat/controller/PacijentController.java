@@ -32,7 +32,6 @@ public class PacijentController {
     private KlinikaService klinikaService;
 
     @GetMapping("/{id}")
-    //@PreAuthorize("hasRole('PACIJENT')")
     public ResponseEntity<Pacijent> confirmAccount(@PathVariable String id) {
 
         Pacijent pacijent = pacijentService.findPacijent(id);

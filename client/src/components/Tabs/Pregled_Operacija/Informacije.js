@@ -19,7 +19,9 @@ const Informacije = ({
   editZdrKarton
 }) => {
   useEffect(() => {
-    getZdrKarton(obj.pacijent.id);
+    {
+      obj.pacijent && getZdrKarton(obj.pacijent.id);
+    }
     //eslint-disable-next-line
   }, []);
   let pacijent = obj.pacijent;
@@ -36,7 +38,6 @@ const Informacije = ({
   let hours = 0;
   let mins = 0;
 
-  let zapocniPregled = false;
   let danasnjiDan = new Date();
   let danasnjiDanVreme =
     dZTime - (danasnjiDan.getHours() * 60 + danasnjiDan.getMinutes());
@@ -52,9 +53,14 @@ const Informacije = ({
     }
   }
 
-  {
-    if (dP.toDateString() === danasnjiDan.toDateString()) {
-      if (danasnjiDanVreme >= 0 && danasnjiDanVreme <= dZTime - dPTime + 30) {
+  let zapocniPregled = false;
+
+  console.log("med sestra id: " + obj.medicinskaSestra.korisnik.id);
+  console.log("korisnik id: " + korisnikId);
+
+  if (dP.toDateString() === danasnjiDan.toDateString() && obj.stanje === 0) {
+    if (danasnjiDanVreme >= 0 && danasnjiDanVreme <= dZTime - dPTime + 30) {
+      if (obj.medicinskaSestra.korisnik.id != korisnikId) {
         zapocniPregled = true;
       }
     }

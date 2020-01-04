@@ -29,6 +29,8 @@ public class Pregled extends Pregled_Operacija{
 
     public Pregled() {
         super();
+        setStanje(0);
+        setVrsta(0);
     }
 
     public Integer getPopust() {

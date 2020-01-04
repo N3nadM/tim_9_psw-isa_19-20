@@ -194,4 +194,11 @@ public class PregledService {
         kraj.setTime(kraj.getTime() + (1000 * 60 * 60 * 24));
         return pregledRepository.findLekarPreglediDatum(Long.parseLong(id), datum, kraj);
     }
+
+    public List<Pregled> getZavrseniPreglediByLekarId(Long id) {
+
+        List<Pregled> pregledi = pregledRepository.findPregledsByLekarIdAndStanje(id, 2);
+
+        return pregledi;
+    }
 }

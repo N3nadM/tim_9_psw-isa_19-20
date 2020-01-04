@@ -26,6 +26,8 @@ public interface PregledRepository extends JpaRepository<Pregled, Long> {
 
     List<Pregled> findPregledByLekarId(Long id);
 
+    List<Pregled> findPregledsByLekarIdAndStanje(Long id, int stanje);
+
     List<Pregled> findPregledsByMedicinskaSestraId(Long id);
 
     List<Pregled> findPregledBySalaId(Long id);

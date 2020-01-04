@@ -7,7 +7,8 @@ import {
   SET_PREGLEDI_LEKAR,
   SET_PREGLEDI_SESTRA,
   SET_PREGLEDI_LEKAR_ODMOR,
-  SET_PREGLEDI_SESTRA_ODMOR
+  SET_PREGLEDI_SESTRA_ODMOR,
+  SET_ZAVRSENI_PREGLEDI
 } from "../actionTypes";
 
 const DEFAULT_STATE = {
@@ -17,7 +18,8 @@ const DEFAULT_STATE = {
   preglediKodSestre: [],
   preglediKodLekara: [],
   preglediKodLekaraOdmor: [],
-  preglediKodSestreOdmor: []
+  preglediKodSestreOdmor: [],
+  zavrseniPregledi: []
 };
 
 export default (state = DEFAULT_STATE, action) => {
@@ -72,6 +74,11 @@ export default (state = DEFAULT_STATE, action) => {
       return {
         ...state,
         preglediKodSestreOdmor: action.preglediKodSestreOdmor
+      };
+    case SET_ZAVRSENI_PREGLEDI:
+      return {
+        ...state,
+        zavrseniPregledi: action.zavrseniPregledi
       };
     default:
       return state;

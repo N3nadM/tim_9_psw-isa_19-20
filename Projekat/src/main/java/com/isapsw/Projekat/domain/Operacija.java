@@ -35,6 +35,8 @@ public class Operacija extends Pregled_Operacija {
 
     public Operacija() {
         super();
+        setStanje(0);
+        setVrsta(1);
     }
 
     public String getTipOperacije() {

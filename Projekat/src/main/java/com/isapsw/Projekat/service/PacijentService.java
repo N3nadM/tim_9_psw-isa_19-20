@@ -29,6 +29,8 @@ public class PacijentService {
 
     public Pacijent findPacijentById(String id) {return pacijentRepository.findPacijentById(Long.parseLong(id)); }
 
+    public Pacijent findPacijentByZdrKartonId(String id) { return pacijentRepository.findPacijentByZdrKartonId(Long.parseLong(id));}
+
     public List<PacijentDTO> searchPacijent(List<PacijentDTO> pacijentiKl, String ime, String prezime, String jbzo){
 
         List<Long> pacijentId = pacijentRepository.findPacijentByParameters(ime.toUpperCase(), prezime.toUpperCase(), jbzo.toUpperCase());
