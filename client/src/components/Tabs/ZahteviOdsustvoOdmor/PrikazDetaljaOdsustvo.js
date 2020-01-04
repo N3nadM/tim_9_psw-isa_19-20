@@ -9,7 +9,6 @@ import Dialog from "@material-ui/core/Dialog";
 import List from "@material-ui/core/List";
 import ListItemText from "@material-ui/core/ListItemText";
 import TextField from "@material-ui/core/TextField";
-import Axios from "axios";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import {
@@ -56,7 +55,6 @@ const Dijalog = ({
   denyZahtev,
   acceptZahtev
 }) => {
-  const [value, setValue] = React.useState("");
   const radioGroupRef = React.useRef(null);
   const [state, setState] = React.useState({
     id: "",
@@ -87,9 +85,7 @@ const Dijalog = ({
       [name]: value
     }));
   };
-  const classes = useStyles();
   const [open, setOpen] = React.useState(false);
-  const [options, setOptions] = React.useState([]);
 
   const handleClickListItem = async () => {
     if (uloga === 0) {

@@ -119,7 +119,7 @@ const ListaSalaZaBrisanje = ({ klinika, sale, getSaleZaBrisanje }) => {
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [isEdit, setIsEdit] = React.useState(false);
 
-  const [state, setState] = React.useState({
+  const [state] = React.useState({
     zaIzmenu: "",
     broj: "",
     naziv: ""

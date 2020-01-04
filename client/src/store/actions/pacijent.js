@@ -1,7 +1,8 @@
 import {
   SET_PACIJENT_PROFILE,
   SET_EDIT_PACIJENT,
-  SET_PACIJENT_ZDR
+  SET_PACIJENT_ZDR,
+  SET_PREGLEDAO_PACIJENTA
 } from "../actionTypes";
 import axios from "axios";
 import { setRealKorisnik } from "./auth";
@@ -19,6 +20,11 @@ export const setNewPacijentKorisnik = korisnik => ({
 export const setPacijentZdr = zdrKarton => ({
   type: SET_PACIJENT_ZDR,
   zdrKarton
+});
+
+export const setPregledanPacijent = pregledanPacijent => ({
+  type: SET_PREGLEDAO_PACIJENTA,
+  pregledanPacijent
 });
 
 export const getPacijent = id => async (dispatch, getState) => {
@@ -72,6 +78,20 @@ export const editZdrKarton = zdrKarton => async dispatch => {
   try {
     const zdr = await axios.put(`/api/karton/edit/${zdrKarton.id}`, zdrKarton);
     dispatch(setPacijentZdr(zdr.data));
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const proveraPregledanPacijent = (idLekar, idPacijent) => async (
+  dispatch,
+  getState
+) => {
+  try {
+    const pacijent = await axios.get(
+      `/api/pacijent/proveraPregledan/${idLekar}/${idPacijent}`
+    );
+    dispatch(setPregledanPacijent(pacijent.data));
   } catch (err) {
     console.log(err);
   }

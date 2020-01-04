@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-
+import { connect } from "react-redux";
 import Divider from "@material-ui/core/Divider";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
@@ -9,6 +9,7 @@ import TabPanel from "../Tabs/TabPanel";
 import AppBar from "../layout/AppBarLogedIn";
 import PacijentZdr from "../Tabs/Pacijent/PacijentZdr";
 import ProfilPacijentaTab from "../Tabs/Pacijent/ProfilPacijentaTab";
+import { proveraPregledanPacijent } from "../../store/actions/pacijent";
 
 const drawerWidth = 240;
 
@@ -37,7 +38,16 @@ function a11yProps(index) {
   };
 }
 
-export default function Pacijent({ match }) {
+const Pacijent = ({
+  match,
+  korisnikId,
+  pregledanPacijent,
+  proveraPregledanPacijent
+}) => {
+  useEffect(() => {
+    console.log("ima effect");
+    proveraPregledanPacijent(korisnikId, match.params.id);
+  }, [korisnikId, match.params.id, proveraPregledanPacijent]);
   const [value, setValue] = React.useState(0);
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -81,10 +91,25 @@ export default function Pacijent({ match }) {
             {value === 0 && <ProfilPacijentaTab id={match.params.id} />}
           </TabPanel>
           <TabPanel value={value} index={1}>
-            {value === 1 && <PacijentZdr id={match.params.objekat} />}
+            {value === 1 && pregledanPacijent && (
+              <PacijentZdr id={match.params.objekat} />
+            )}
+            {value === 1 && !pregledanPacijent && (
+              <div>
+                Nemate pravo pristupa zdravstvenom kartonu ovog pacijenta.
+              </div>
+            )}
           </TabPanel>
         </main>
       </div>
     </>
   );
-}
+};
+const mapStateToProps = state => ({
+  korisnikId: state.currentUser.user.id,
+  pregledanPacijent: state.pacijent.pregledanPacijent
+});
+
+export default connect(mapStateToProps, {
+  proveraPregledanPacijent
+})(Pacijent);

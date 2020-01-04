@@ -55,9 +55,6 @@ const Informacije = ({
 
   let zapocniPregled = false;
 
-  console.log("med sestra id: " + obj.medicinskaSestra.korisnik.id);
-  console.log("korisnik id: " + korisnikId);
-
   if (dP.toDateString() === danasnjiDan.toDateString() && obj.stanje === 0) {
     if (danasnjiDanVreme >= 0 && danasnjiDanVreme <= dZTime - dPTime + 30) {
       if (obj.medicinskaSestra.korisnik.id != korisnikId) {
