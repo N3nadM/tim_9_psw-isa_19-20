@@ -91,7 +91,6 @@ public class PacijentController {
     public ResponseEntity<ZdrKarton> getZdrKarton(@PathVariable String id){
 
         Pacijent pacijent = pacijentService.findPacijentById(id);
-        System.out.println(pacijent.getJbzo());
         ZdrKarton zdrKarton = pacijent.getZdrKarton();
         try{
             return new ResponseEntity<ZdrKarton>(zdrKarton, HttpStatus.OK);

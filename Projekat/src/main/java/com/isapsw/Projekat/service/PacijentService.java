@@ -1,5 +1,6 @@
 package com.isapsw.Projekat.service;
 
+import com.isapsw.Projekat.domain.Korisnik;
 import com.isapsw.Projekat.domain.Pacijent;
 import com.isapsw.Projekat.dto.PacijentDTO;
 import com.isapsw.Projekat.repository.KorisnikRepository;
@@ -57,10 +58,15 @@ public class PacijentService {
         return pacijenti;
     }
 
-    public Pacijent proveraPregledOperacija(String idLekar, String idPacijent){
+    public Pacijent proveraPregledOperacija(String idKorisnik, String idPacijent){
         Date date = Calendar.getInstance().getTime();
-        List<Pacijent> pac = pregledRepository.proveraPregled(Long.parseLong(idLekar), Long.parseLong(idPacijent), date);
-        System.out.println(pac.size());
+        Korisnik k = korisnikRepository.findKorisnikById(Long.parseLong(idKorisnik));
+        List<Pacijent> pac = new ArrayList<>();
+        if(k.getAuthorityList().get(0).getId().equals(Long.parseLong("2"))){
+            pac = pregledRepository.proveraPregled(Long.parseLong(idKorisnik), Long.parseLong(idPacijent), date);
+        }else if(k.getAuthorityList().get(0).getId().equals(Long.parseLong("5"))){
+            pac = pregledRepository.proveraPregledSestra(Long.parseLong(idKorisnik), Long.parseLong(idPacijent), date);
+        }
         if(pac.isEmpty() || pac == null){
             return null;
         }else{

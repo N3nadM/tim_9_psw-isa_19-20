@@ -47,7 +47,7 @@ const Pacijent = ({
   useEffect(() => {
     console.log("ima effect");
     proveraPregledanPacijent(korisnikId, match.params.id);
-  }, []);
+  }, [korisnikId, match.params.id, proveraPregledanPacijent]);
   const [value, setValue] = React.useState(0);
   const handleChange = (event, newValue) => {
     setValue(newValue);
