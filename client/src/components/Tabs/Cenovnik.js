@@ -15,12 +15,9 @@ import Tooltip from "@material-ui/core/Tooltip";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Switch from "@material-ui/core/Switch";
 import FilterListIcon from "@material-ui/icons/FilterList";
-import Button from "@material-ui/core/Button";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
-import { getTipoviZaIzmenu } from "../../../store/actions/tipoviPregleda";
-import IzmenaPodatakaTip from "../TipoviPregleda/IzmenaPodatakaTip";
-import DijalogBrisanjeTipova from "../TipoviPregleda/DijalogBrisanjeTipova";
+import { getAllTipoviPregleda } from "../../store/actions/tipoviPregleda";
 
 function desc(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -60,7 +57,7 @@ const EnhancedTableToolbar = () => {
   return (
     <Toolbar>
       <Typography className={classes.title} variant="h6" id="tableTitle">
-        Prikazani su tipovi pregleda koji se mogu izmeniti
+        Cenovnik
       </Typography>
 
       <Tooltip title="Filter list">
@@ -103,10 +100,9 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const ListaTipovaZaIzmenu = ({ klinika, tipovi, getTipoviZaIzmenu }) => {
+const Cenovnik = ({ klinika, tipovi, getAllTipoviPregleda }) => {
   useEffect(() => {
-    getTipoviZaIzmenu(klinika.id);
-    //eslint-disable-next-line
+    getAllTipoviPregleda(klinika.id);
   }, []);
 
   const classes = useStyles();
@@ -116,11 +112,6 @@ const ListaTipovaZaIzmenu = ({ klinika, tipovi, getTipoviZaIzmenu }) => {
   const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
-
-  const [state] = React.useState({
-    zaIzmenu: ""
-  });
-  const [isEdit, setIsEdit] = React.useState(false);
 
   const handleRequestSort = (property, event) => {
     const isDesc = orderBy === property && order === "desc";
@@ -143,10 +134,7 @@ const ListaTipovaZaIzmenu = ({ klinika, tipovi, getTipoviZaIzmenu }) => {
 
   return (
     <div className={classes.root}>
-      {isEdit && (
-        <IzmenaPodatakaTip tip={state.zaIzmenu} setIsEdit={setIsEdit} />
-      )}
-      {!isEdit && (
+      {tipovi && !!tipovi.length && (
         <Paper className={classes.paper}>
           <EnhancedTableToolbar />
           <div className={classes.tableWrapper}>
@@ -160,24 +148,32 @@ const ListaTipovaZaIzmenu = ({ klinika, tipovi, getTipoviZaIzmenu }) => {
                 <TableRow>
                   <TableCell align="left">
                     <TableSortLabel
-                      active={orderBy === "termini.datum"}
+                      active={orderBy === "korisnik.ime"}
                       direction={order}
-                      onClick={() => handleRequestSort("termini.datum")}
+                      onClick={() => handleRequestSort("korisnik.ime")}
                     >
                       Naziv
                     </TableSortLabel>
                   </TableCell>
                   <TableCell align="left">
                     <TableSortLabel
-                      active={orderBy === "termini.tipPregleda.naziv"}
+                      active={orderBy === "korisnik.prezime"}
                       direction={order}
-                      onClick={() =>
-                        handleRequestSort("termini.tipPregleda.naziv")
-                      }
+                      onClick={() => handleRequestSort("korisnik.prezime")}
                     >
-                      Minimalno trajanje
+                      Cena pregleda
                     </TableSortLabel>
                   </TableCell>
+                  <TableCell align="left">
+                    <TableSortLabel
+                      active={orderBy === "korisnik.email"}
+                      direction={order}
+                      onClick={() => handleRequestSort("korisnik.email")}
+                    >
+                      Cena operacije
+                    </TableSortLabel>
+                  </TableCell>
+                  <TableCell align="right"></TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -195,88 +191,65 @@ const ListaTipovaZaIzmenu = ({ klinika, tipovi, getTipoviZaIzmenu }) => {
                           <TableCell component="th" allign="left">
                             {row.naziv}
                           </TableCell>
+                          <TableCell align="left">{row.cenaPregleda}</TableCell>
                           <TableCell align="left">
-                            {row.minimalnoTrajanjeMin}
-                          </TableCell>
-                          <TableCell align="right">
-                            <Button
-                              variant="contained"
-                              onClick={() => {
-                                state.zaIzmenu = row;
-                                setIsEdit(true);
-                              }}
-                              color="primary"
-                            >
-                              {" "}
-                              Izmeni{" "}
-                            </Button>
-                          </TableCell>
-                          <TableCell align="right">
-                            <DijalogBrisanjeTipova
-                              id={row.id}
-                              naziv={row.naziv}
-                            />
+                            {row.cenaOperacije}
                           </TableCell>
                         </TableRow>
                       );
                     })}
-                {tipovi &&
-                  rowsPerPage -
-                    Math.min(rowsPerPage, tipovi.length - page * rowsPerPage) >
-                    0 && (
-                    <TableRow
-                      style={{
-                        height:
-                          (dense ? 33 : 53) *
-                          (rowsPerPage -
-                            Math.min(
-                              rowsPerPage,
-                              tipovi.length - page * rowsPerPage
-                            ))
-                      }}
-                    >
-                      <TableCell colSpan={6} />
-                    </TableRow>
-                  )}
+                {rowsPerPage -
+                  Math.min(rowsPerPage, tipovi.length - page * rowsPerPage) >
+                  0 && (
+                  <TableRow
+                    style={{
+                      height:
+                        (dense ? 33 : 53) *
+                        (rowsPerPage -
+                          Math.min(
+                            rowsPerPage,
+                            tipovi.length - page * rowsPerPage
+                          ))
+                    }}
+                  >
+                    <TableCell colSpan={6} />
+                  </TableRow>
+                )}
               </TableBody>
             </Table>
           </div>
-          {tipovi && (
-            <TablePagination
-              rowsPerPageOptions={[5, 10, 25]}
-              component="div"
-              count={tipovi.length}
-              rowsPerPage={rowsPerPage}
-              page={page}
-              backIconButtonProps={{
-                "aria-label": "previous page"
-              }}
-              nextIconButtonProps={{
-                "aria-label": "next page"
-              }}
-              onChangePage={handleChangePage}
-              onChangeRowsPerPage={handleChangeRowsPerPage}
-            />
-          )}
+          <TablePagination
+            rowsPerPageOptions={[5, 10, 25]}
+            component="div"
+            count={tipovi.length}
+            rowsPerPage={rowsPerPage}
+            page={page}
+            backIconButtonProps={{
+              "aria-label": "previous page"
+            }}
+            nextIconButtonProps={{
+              "aria-label": "next page"
+            }}
+            onChangePage={handleChangePage}
+            onChangeRowsPerPage={handleChangeRowsPerPage}
+          />
         </Paper>
       )}
-      {!isEdit && (
-        <FormControlLabel
-          control={<Switch checked={dense} onChange={handleChangeDense} />}
-          label="Smanji pading"
-        />
-      )}
+      <FormControlLabel
+        control={<Switch checked={dense} onChange={handleChangeDense} />}
+        label="Smanji pading"
+      />
     </div>
   );
 };
 
 const mapStateToProps = state => ({
   klinika: state.adminKlinike.klinika,
-  tipovi: state.tipoviPregleda.tipoviZaIzmenu
+  tipovi: state.tipoviPregleda.tipoviPregleda
 });
 
 export default withRouter(
   connect(mapStateToProps, {
-    getTipoviZaIzmenu
-  })(ListaTipovaZaIzmenu)
+    getAllTipoviPregleda
+  })(Cenovnik)
 );

@@ -1,13 +1,15 @@
 import {
   SET_PACIJENT_PROFILE,
   SET_EDIT_PACIJENT,
-  SET_PACIJENT_ZDR
+  SET_PACIJENT_ZDR,
+  SET_PREGLEDAO_PACIJENTA
 } from "../actionTypes";
 
 const DEFAULT_STATE = {
   pacijent: null,
   pacijenti: null,
-  zdrKarton: null
+  zdrKarton: null,
+  pregledanPacijent: null
 };
 
 export default (state = DEFAULT_STATE, action) => {
@@ -26,6 +28,11 @@ export default (state = DEFAULT_STATE, action) => {
       return {
         ...state,
         zdrKarton: action.zdrKarton
+      };
+    case SET_PREGLEDAO_PACIJENTA:
+      return {
+        ...state,
+        pregledanPacijent: action.pregledanPacijent
       };
 
     default:

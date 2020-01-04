@@ -18,6 +18,7 @@ import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import PromeniLozinku from "../../Tabs/Korisnik/PromeniLozinku";
 import PrikazZahteva from "../../Tabs/ZahteviOdsustvoOdmor/PrikazZahteva";
+import Cenovnik from "../../Tabs/Cenovnik";
 
 const drawerWidth = 240;
 
@@ -83,6 +84,7 @@ function ResponsiveDrawer(props) {
         <Tab label="Sale" {...a11yProps(6)} />
         <Tab label="Tipovi pregleda" {...a11yProps(7)} />
         <Tab label="Izveštaj o poslovanju klinike" {...a11yProps(8)} />
+        <Tab label="Cenovnik" {...a11yProps(9)} />
       </Tabs>
     </div>
   );
@@ -146,6 +148,9 @@ function ResponsiveDrawer(props) {
                 </Paper>
               </Grid>
             </Grid>
+          </TabPanel>
+          <TabPanel value={value} index={9}>
+            {value === 9 && <Cenovnik />}
           </TabPanel>
         </main>
       </div>

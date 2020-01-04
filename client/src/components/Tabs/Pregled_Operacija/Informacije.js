@@ -52,11 +52,9 @@ const Informacije = ({
     }
   }
 
-  {
-    if (dP.toDateString() === danasnjiDan.toDateString()) {
-      if (danasnjiDanVreme >= 0 && danasnjiDanVreme <= dZTime - dPTime + 30) {
-        zapocniPregled = true;
-      }
+  if (dP.toDateString() === danasnjiDan.toDateString()) {
+    if (danasnjiDanVreme >= 0 && danasnjiDanVreme <= dZTime - dPTime + 30) {
+      zapocniPregled = true;
     }
   }
 
