@@ -4,9 +4,15 @@ import {
   SET_OPERACIJE_SESTRA,
   SET_OPERACIJE_LEKAR,
   SET_OPERACIJE_LEKAR_ODMOR,
-  SET_OPERACIJE_SESTRA_ODMOR
+  SET_OPERACIJE_SESTRA_ODMOR,
+  SET_ZAVRSENE_OPERACIJE
 } from "../actionTypes";
 import axios from "axios";
+
+export const setZavrseneOperacije = zavrseneOperacije => ({
+  type: SET_ZAVRSENE_OPERACIJE,
+  zavrseneOperacije
+});
 
 export const setOperacije = operacije => ({
   type: SET_OPERACIJE,
@@ -42,6 +48,17 @@ export const getAllOperacije = id => async (dispatch, getState) => {
       operacije = await axios.get(`/api/operacija/${id}`);
       dispatch(setOperacije(operacije.data));
     }
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const getZavrseneOperacije = id => async (dispatch, getState) => {
+  try {
+    let zavrseneOperacije = await axios.get(
+      `/api/operacija/osoblje/zavrseni/${id}`
+    );
+    dispatch(setZavrseneOperacije(zavrseneOperacije.data));
   } catch (err) {
     console.log(err);
   }

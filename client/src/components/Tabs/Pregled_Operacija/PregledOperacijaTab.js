@@ -11,7 +11,10 @@ import ListItemText from "@material-ui/core/ListItemText";
 import Input from "@material-ui/core/Input";
 import Checkbox from "@material-ui/core/Checkbox";
 import { getLekoviByDijagnozaId } from "../../../store/actions/lek";
-import { zavrsenPregledOperacija } from "../../../store/actions/pregledOperacija";
+import {
+  zavrsenPregledOperacija,
+  zapocniPregledOperaciju
+} from "../../../store/actions/pregledOperacija";
 import { getAllDijagnoze } from "../../../store/actions/dijagnoza";
 import { connect } from "react-redux";
 
@@ -39,7 +42,8 @@ const PregledOperacijaTab = ({
   editZdrKarton,
   setIsEdit,
   obj,
-  zavrsenPregledOperacija
+  zavrsenPregledOperacija,
+  zapocniPregledOperaciju
 }) => {
   const [lekName, setLekName] = React.useState([]);
   const [state, setState] = React.useState({
@@ -51,10 +55,13 @@ const PregledOperacijaTab = ({
     izvestaj: obj.izvestaj,
     dijagnoza: "",
     lekovi: lekName,
-    medSestraId: obj.medicinskaSestra.id
+    medSestraId: obj.medicinskaSestra.id,
+    vrsta: obj.vrsta,
+    idPregledOperacija: obj.id
   });
 
   useEffect(() => {
+    zapocniPregledOperaciju(state);
     getAllDijagnoze();
     //eslint-disable-next-line
   }, []);
@@ -73,6 +80,7 @@ const PregledOperacijaTab = ({
     e.preventDefault();
     editZdrKarton(state);
     zavrsenPregledOperacija(state);
+    obj.stanje = 2;
     setIsEdit(false);
   };
 
@@ -230,5 +238,6 @@ const mapStateToProps = state => ({
 export default connect(mapStateToProps, {
   getLekoviByDijagnozaId,
   getAllDijagnoze,
-  zavrsenPregledOperacija
+  zavrsenPregledOperacija,
+  zapocniPregledOperaciju
 })(PregledOperacijaTab);

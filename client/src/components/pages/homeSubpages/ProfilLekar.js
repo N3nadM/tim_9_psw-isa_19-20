@@ -5,7 +5,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import ZakazivanjePregledaTabs from "../../Tabs/ZakazivanjePregledaTabs";
 import AppBar from "../../layout/AppBarLogedIn";
 import GodisnjiOdmorTab from "../../Tabs/GodisnjiOdmorTab";
-import IzvestajPregledTab from "../../Tabs/IzvestajPregledTab";
+import TabelaZavrsenihPregledaOperacija from "../../Tabele/TabelaZavrsenihPregledaOperacija";
 import TabPanel from "../../Tabs/TabPanel";
 import RadniKalendarTab from "../../Tabs/RadniKalendarTab";
 import Tabs from "@material-ui/core/Tabs";
@@ -64,7 +64,7 @@ function ResponsiveDrawer(props) {
         <Tab label="Godišnji odmor ili odsustvo" {...a11yProps(3)} />
         <Tab label="Lični podaci" {...a11yProps(4)} />
         <Tab label="Zakazivanje pregleda" {...a11yProps(5)} />
-        <Tab label="Izveštaj o pregledu" {...a11yProps(6)} />
+        <Tab label="Zavrseni pregledi i operacije" {...a11yProps(6)} />
         <Tab label="Promena lozinke" {...a11yProps(7)} />
       </Tabs>
     </div>
@@ -107,7 +107,7 @@ function ResponsiveDrawer(props) {
             <ZakazivanjePregledaTabs />
           </TabPanel>
           <TabPanel value={value} index={6}>
-            <IzvestajPregledTab />
+            <TabelaZavrsenihPregledaOperacija />
           </TabPanel>
           <TabPanel value={value} index={7}>
             {value === 7 && <PromeniLozinku />}

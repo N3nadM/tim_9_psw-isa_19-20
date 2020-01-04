@@ -19,6 +19,12 @@ public class Pregled_Operacija {
 
     private String izvestaj;
 
+    @JoinColumn(name="stanje", updatable = true)
+    private int stanje = 0;
+
+    @JoinColumn(name="vrsta", updatable = true)
+    private int vrsta = -1;
+
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Europe/Belgrade")
     private Date datumPocetka;
 
@@ -67,6 +73,22 @@ public class Pregled_Operacija {
 
     public void setIzvestaj(String izvestaj) {
         this.izvestaj = izvestaj;
+    }
+
+    public int getStanje() {
+        return stanje;
+    }
+
+    public void setStanje(int stanje) {
+        this.stanje = stanje;
+    }
+
+    public int getVrsta() {
+        return vrsta;
+    }
+
+    public void setVrsta(int vrsta) {
+        this.vrsta = vrsta;
     }
 
     public Date getDatumPocetka() {

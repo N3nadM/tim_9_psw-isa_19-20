@@ -1,7 +1,11 @@
-import { SET_ZAVRSEN_PREGLED_OPERACIJA } from "../actionTypes";
+import {
+  SET_ZAVRSEN_PREGLED_OPERACIJA,
+  SET_ZAPOCET_PREGLED_OPERACIJA
+} from "../actionTypes";
 
 const DEFAULT_STATE = {
-  pregledOperacija: null
+  pregledOperacija: null,
+  zapocetPregledOperacija: null
 };
 
 export default (state = DEFAULT_STATE, action) => {
@@ -10,6 +14,11 @@ export default (state = DEFAULT_STATE, action) => {
       return {
         ...state,
         pregledOperacija: action.pregledOperacija
+      };
+    case SET_ZAPOCET_PREGLED_OPERACIJA:
+      return {
+        ...state,
+        zapocetPregledOperacija: action.zapocetPregledOperacija
       };
     default:
       return state;

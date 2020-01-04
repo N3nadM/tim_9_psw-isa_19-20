@@ -37,6 +37,7 @@ const useStyles = makeStyles(theme => ({
 
 const PacijentZdr = ({
   id,
+  korisnik,
   pacijent,
   zdrKarton,
   editZdrKarton,
@@ -50,6 +51,8 @@ const PacijentZdr = ({
   const [isEdit, setIsEdit] = React.useState(false);
 
   const classes = useStyles();
+
+  console.log(korisnik);
 
   return (
     <Paper style={{ padding: 50 }}>
@@ -117,14 +120,16 @@ const PacijentZdr = ({
             </ListItem>
 
             <Divider />
-            <Button
-              variant="contained"
-              color="primary"
-              style={{ float: "right", marginTop: 19 }}
-              onClick={() => setIsEdit(true)}
-            >
-              Izmeni
-            </Button>
+            {korisnik.authority != "ROLE_MED_SESTRA" && (
+              <Button
+                variant="contained"
+                color="primary"
+                style={{ float: "right", marginTop: 19 }}
+                onClick={() => setIsEdit(true)}
+              >
+                Izmeni
+              </Button>
+            )}
           </List>
           <Grid container spacing={3} className={classes.tables}>
             <Grid item md={12} lg={6} xl={4}>
@@ -150,6 +155,7 @@ const PacijentZdr = ({
 };
 
 const mapStateToProps = state => ({
+  korisnik: state.currentUser.user.role[0],
   zdrKarton: state.pacijent.zdrKarton,
   pacijent: state.pacijent.pacijent
 });

@@ -36,6 +36,8 @@ public class PacijentService {
 
     public Pacijent findPacijentById(String id) {return pacijentRepository.findPacijentById(Long.parseLong(id)); }
 
+    public Pacijent findPacijentByZdrKartonId(String id) { return pacijentRepository.findPacijentByZdrKartonId(Long.parseLong(id));}
+
     public List<PacijentDTO> searchPacijent(List<PacijentDTO> pacijentiKl, String ime, String prezime, String jbzo){
 
         List<Long> pacijentId = pacijentRepository.findPacijentByParameters(ime.toUpperCase(), prezime.toUpperCase(), jbzo.toUpperCase());
@@ -59,13 +61,12 @@ public class PacijentService {
     }
 
     public Pacijent proveraPregledOperacija(String idKorisnik, String idPacijent){
-        Date date = Calendar.getInstance().getTime();
         Korisnik k = korisnikRepository.findKorisnikById(Long.parseLong(idKorisnik));
         List<Pacijent> pac = new ArrayList<>();
         if(k.getAuthorityList().get(0).getId().equals(Long.parseLong("2"))){
-            pac = pregledRepository.proveraPregled(Long.parseLong(idKorisnik), Long.parseLong(idPacijent), date);
+            pac = pregledRepository.proveraPregled(Long.parseLong(idKorisnik), Long.parseLong(idPacijent));
         }else if(k.getAuthorityList().get(0).getId().equals(Long.parseLong("5"))){
-            pac = pregledRepository.proveraPregledSestra(Long.parseLong(idKorisnik), Long.parseLong(idPacijent), date);
+            pac = pregledRepository.proveraPregledSestra(Long.parseLong(idKorisnik), Long.parseLong(idPacijent));
         }
         if(pac.isEmpty() || pac == null){
             return null;

@@ -1,6 +1,9 @@
 package com.isapsw.Projekat.controller;
 
+import com.isapsw.Projekat.domain.Pregled;
+import com.isapsw.Projekat.service.OperacijaService;
 import com.isapsw.Projekat.service.PregledOperacijaService;
+import com.isapsw.Projekat.service.PregledService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,12 +20,36 @@ public class PregledOperacijaController {
     private PregledOperacijaService pregledOperacijaService;
 
     @PostMapping
-    public ResponseEntity<String> zavrsiPregled(@RequestBody Map<String,Object> body){
+    public ResponseEntity<String> zavrsiPregledOperaciju(@RequestBody Map<String,Object> body){
         try {
 
-            String ret = pregledOperacijaService.zavrsiPregled(body);
+            String ret = pregledOperacijaService.zavrsiPregledOperaciju(body);
 
             return new ResponseEntity<>(ret, HttpStatus.OK);
+        } catch(Exception e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PutMapping
+    public ResponseEntity<String> zapocniPregledOperaciju(@RequestBody Map<String,Object> body){
+        try {
+
+            String ret = pregledOperacijaService.zapocniPregledOperaciju(body);
+
+            return new ResponseEntity<>(ret, HttpStatus.OK);
+        } catch(Exception e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PutMapping("/izvestaj")
+    public ResponseEntity<Object> izmeniIzvestaj(@RequestBody Map<String,Object> body){
+        try {
+
+            Object object = pregledOperacijaService.izmeniIzvestaj(body);
+
+            return new ResponseEntity<>(object, HttpStatus.OK);
         } catch(Exception e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }

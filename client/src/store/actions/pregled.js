@@ -7,7 +7,8 @@ import {
   SET_PREGLEDI_LEKAR,
   SET_PREGLEDI_SESTRA,
   SET_PREGLEDI_SESTRA_ODMOR,
-  SET_PREGLEDI_LEKAR_ODMOR
+  SET_PREGLEDI_LEKAR_ODMOR,
+  SET_ZAVRSENI_PREGLEDI
 } from "../actionTypes";
 import axios from "axios";
 
@@ -53,6 +54,11 @@ export const setPreglediKodSestreOdmor = preglediKodSestreOdmor => ({
   preglediKodSestreOdmor
 });
 
+export const setZavrseniPregledi = zavrseniPregledi => ({
+  type: SET_ZAVRSENI_PREGLEDI,
+  zavrseniPregledi
+});
+
 export const getAllPregledi = id => async (dispatch, getState) => {
   try {
     let pregledi = getState().pregled.pregledi;
@@ -60,6 +66,17 @@ export const getAllPregledi = id => async (dispatch, getState) => {
       pregledi = await axios.get(`/api/pregled/${id}`);
       dispatch(setPregledi(pregledi.data));
     }
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const getZavrseniPregledi = id => async dispatch => {
+  try {
+    let zavrseniPregledi = await axios.get(
+      `/api/pregled/osoblje/zavrseni/${id}`
+    );
+    dispatch(setZavrseniPregledi(zavrseniPregledi.data));
   } catch (err) {
     console.log(err);
   }

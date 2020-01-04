@@ -30,6 +30,10 @@ public class OperacijaService {
         return operacijaRepository.findOperacijasByLekari(id);
     }
 
+    public List<Operacija> getZavrseneOperacijeByLekarIdAndStanje(Long id, int stanje) {
+        return operacijaRepository.findOperacijasByLekariAndStanje(id, stanje);
+    }
+
     public List<Operacija> getOperacijeByMedSestraId(Long id) {
         return operacijaRepository.findOperacijasByMedicinskaSestraId(id);
     }

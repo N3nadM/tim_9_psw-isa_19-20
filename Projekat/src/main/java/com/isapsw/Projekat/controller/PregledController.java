@@ -12,10 +12,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @RestController
 @RequestMapping(value = "/api/pregled")
@@ -53,6 +52,19 @@ public class PregledController {
 
 
             return new ResponseEntity<List<Pregled>>(pregledi, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("/osoblje/zavrseni/{id}")
+    public ResponseEntity<List<Pregled>> getZavrseniPreglediByLekarId(@PathVariable String id) {
+        try {
+
+            Lekar lekar = lekarService.findLekar(id);
+            List<Pregled> pregledi = pregledService.getZavrseniPreglediByLekarId(lekar.getId());
+
+            return new ResponseEntity<>(pregledi, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
