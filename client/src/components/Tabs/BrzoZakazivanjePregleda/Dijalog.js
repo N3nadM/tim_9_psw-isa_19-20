@@ -120,7 +120,12 @@ const Dijalog = ({ id, datum, setLekarZakazivanje, lekar }) => {
 
   return (
     <>
-      <Button variant="outlined" color="primary" onClick={handleClickListItem}>
+      <Button
+        variant="outlined"
+        style={{ marginTop: 18 }}
+        color="primary"
+        onClick={handleClickListItem}
+      >
         Pogledaj
       </Button>
       <ConfirmationDialogRaw

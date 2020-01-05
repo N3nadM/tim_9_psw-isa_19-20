@@ -130,6 +130,7 @@ INSERT INTO PREGLED (izvestaj, datum_pocetka, datum_zavrsetka, tip_pregleda_id, 
 INSERT INTO PREGLED (izvestaj, datum_pocetka, datum_zavrsetka, tip_pregleda_id, lekar_id, medicinska_sestra_id, sala_id, pacijent_id, popust, stanje, vrsta, datum_kreiranja) VALUES ('Svaka cast', '2019-11-25 07:10:00', '2019-11-25 16:52:00', '2', '2', '1', '2', '2', '0', '2', '0', '2019-11-6');
 INSERT INTO PREGLED (izvestaj, datum_pocetka, datum_zavrsetka, tip_pregleda_id, lekar_id, medicinska_sestra_id, sala_id, pacijent_id, popust, stanje, vrsta, datum_kreiranja) VALUES ('Novi', '2020-01-04 17:53:00', '2020-01-04 18:52:00', '2', '2', '2', '2', '2', '0', '0', '0', '2019-11-6');
 INSERT INTO PREGLED (izvestaj, datum_pocetka, datum_zavrsetka, tip_pregleda_id, lekar_id, medicinska_sestra_id, sala_id, pacijent_id, popust, stanje, vrsta, datum_kreiranja) VALUES ('Novi', '2020-01-04 16:50:00', '2020-01-04 17:52:00', '2', '1', '1', '2', '1', '0', '0', '0', '2019-11-6');
+INSERT INTO PREGLED (izvestaj, datum_pocetka, datum_zavrsetka, tip_pregleda_id, lekar_id, medicinska_sestra_id, sala_id, pacijent_id, popust, stanje, vrsta, datum_kreiranja) VALUES ('', '2020-01-05 16:50:00', '2020-01-05 17:15:00', '1', '1', '1', '1', '1', '0', '0', '0', '2019-11-6');
 
 
 INSERT INTO OPERACIJA (izvestaj, datum_pocetka, datum_zavrsetka, tip_operacije, medicinska_sestra_id, sala_id, pacijent_id, stanje, vrsta, datum_kreiranja, tip_pregleda_id) VALUES ('Bit ce unet', '2019-12-27 16:51:00', '2019-12-27 20:00:00', 'Operacija jea', '1', '1', '1', '2', '1', '2019-11-6', 1);

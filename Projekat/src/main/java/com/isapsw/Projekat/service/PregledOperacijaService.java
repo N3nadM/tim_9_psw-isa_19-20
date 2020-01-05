@@ -57,7 +57,7 @@ public class PregledOperacijaService {
             return null;
     }
 
-    public String zapocniPregledOperaciju(Map<String,Object> body){
+    public Object zapocniPregledOperaciju(Map<String,Object> body){
         int vrsta = (int) body.get("vrsta");
 
         if(vrsta == 0){
@@ -65,17 +65,21 @@ public class PregledOperacijaService {
 
             pregled.setStanje(1);
             pregledRepository.save(pregled);
+            return pregled;
         }else if(vrsta == 1){
             Operacija operacija = operacijaRepository.findById(Long.parseLong(body.get("idPregledOperacija").toString())).get();
 
             operacija.setStanje(1);
             operacijaRepository.save(operacija);
+            return operacija;
         }
 
-        return "zapocet";
+        return null;
     }
 
-    public String zavrsiPregledOperaciju(Map<String,Object> body){
+    public Object zavrsiPregledOperaciju(Map<String,Object> body){
+
+        Object ret = null;
 
         Calendar cal = Calendar.getInstance();
         cal.add(Calendar.DATE, 1);
@@ -96,11 +100,13 @@ public class PregledOperacijaService {
             pregled.setIzvestaj(body.get("izvestaj").toString());
             pregled.setStanje(2);
             pregledRepository.save(pregled);
+            ret = pregled;
         }else if(vrsta == 1){
             Operacija operacija = operacijaRepository.findById(Long.parseLong(body.get("idPregledOperacija").toString())).get();
             operacija.setIzvestaj(body.get("izvestaj").toString());
             operacija.setStanje(2);
             operacijaRepository.save(operacija);
+            ret = operacija;
         }
 
 
@@ -130,6 +136,6 @@ public class PregledOperacijaService {
 
 
 
-        return "zavrseno";
+        return ret;
     }
 }

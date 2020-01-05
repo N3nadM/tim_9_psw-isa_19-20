@@ -10,6 +10,7 @@ import Button from "@material-ui/core/Button";
 import PregledOperacijaTab from "./PregledOperacijaTab";
 import { getZdrKarton, editZdrKarton } from "../../../store/actions/pacijent";
 import { Paper } from "@material-ui/core";
+import ZakazivanjeLekar from "../Pregled_Operacija/ZakazivanjeLekar";
 
 const Informacije = ({
   obj,
@@ -83,6 +84,7 @@ const Informacije = ({
             setIsEdit={setIsEdit}
             obj={obj}
           />
+          <ZakazivanjeLekar obj={obj} />
         </>
       )}
       {!isEdit && (

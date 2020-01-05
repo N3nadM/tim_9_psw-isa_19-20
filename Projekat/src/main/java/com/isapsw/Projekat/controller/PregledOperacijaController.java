@@ -20,10 +20,10 @@ public class PregledOperacijaController {
     private PregledOperacijaService pregledOperacijaService;
 
     @PostMapping
-    public ResponseEntity<String> zavrsiPregledOperaciju(@RequestBody Map<String,Object> body){
+    public ResponseEntity<Object> zavrsiPregledOperaciju(@RequestBody Map<String,Object> body){
         try {
 
-            String ret = pregledOperacijaService.zavrsiPregledOperaciju(body);
+            Object ret = pregledOperacijaService.zavrsiPregledOperaciju(body);
 
             return new ResponseEntity<>(ret, HttpStatus.OK);
         } catch(Exception e) {
@@ -32,10 +32,10 @@ public class PregledOperacijaController {
     }
 
     @PutMapping
-    public ResponseEntity<String> zapocniPregledOperaciju(@RequestBody Map<String,Object> body){
+    public ResponseEntity<Object> zapocniPregledOperaciju(@RequestBody Map<String,Object> body){
         try {
 
-            String ret = pregledOperacijaService.zapocniPregledOperaciju(body);
+            Object ret = pregledOperacijaService.zapocniPregledOperaciju(body);
 
             return new ResponseEntity<>(ret, HttpStatus.OK);
         } catch(Exception e) {
