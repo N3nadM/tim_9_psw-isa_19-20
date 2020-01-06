@@ -3,13 +3,6 @@ import { makeStyles, useTheme } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
-import FormControl from "@material-ui/core/FormControl";
-import InputLabel from "@material-ui/core/InputLabel";
-import Select from "@material-ui/core/Select";
-import MenuItem from "@material-ui/core/MenuItem";
-import ListItemText from "@material-ui/core/ListItemText";
-import Input from "@material-ui/core/Input";
-import Checkbox from "@material-ui/core/Checkbox";
 import { connect } from "react-redux";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
@@ -23,6 +16,7 @@ import {
 import DateFnsUtils from "@date-io/date-fns";
 import { getLekar } from "../../../store/actions/lekar";
 import Dijalog from "../BrzoZakazivanjePregleda/Dijalog";
+import DijalogOperacija from "../BrzoZakazivanjePregleda/DijalogOperacija";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -48,7 +42,10 @@ TabPanel.propTypes = {
 };
 let d = new Date();
 let today = new Date();
+today.setDate(today.getDate() + 1);
 let d1 = new Date();
+d.setDate(today.getDate());
+d1.setDate(today.getDate());
 function a11yProps(index) {
   return {
     id: `full-width-tab-${index}`,
@@ -72,6 +69,8 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const PregledOperacijaTab = ({
+  terminZaPregled,
+  terminZaOperaciju,
   korisnikId,
   lekar,
   obj //pregled
@@ -137,7 +136,7 @@ const PregledOperacijaTab = ({
             format="MM/dd/yyyy"
             minDate={today}
             fullWidth
-            style={{ marginTop: 18 }}
+            style={{ marginTop: 18, width: 765 }}
             value={d}
             onChange={e => handleDateChange(e)}
             KeyboardButtonProps={{
@@ -147,17 +146,34 @@ const PregledOperacijaTab = ({
           <Typography style={{ marginTop: 18 }} component="div" role="tabpanel">
             <Box>Izaberite termin pregleda za izabrani datum</Box>
           </Typography>
-          <Dijalog
-            id={lekar.id}
-            datum={!state.datumZaPregled ? "" : state.datumZaPregled}
-            lekar={lekar}
-          />
+          <Grid container spacing={3}>
+            <Grid item xs={9}>
+              <TextField
+                value={terminZaPregled}
+                margin="normal"
+                required
+                fullWidth
+                disabled
+                name="termin"
+                type="text"
+                id="termin"
+              />
+            </Grid>
+            <Grid item xs={3}>
+              <Dijalog
+                id={lekar.id}
+                datum={!state.datumZaPregled ? "" : state.datumZaPregled}
+                lekar={lekar}
+              />
+            </Grid>
+          </Grid>
           <Button
-            variant="outlined"
+            variant="contained"
+            disabled={terminZaPregled === ""}
             style={{ marginTop: 18, marginLeft: 10 }}
             color="primary"
           >
-            Posalji zahtev
+            Zakazi
           </Button>
         </MuiPickersUtilsProvider>
       </TabPanel>
@@ -171,7 +187,7 @@ const PregledOperacijaTab = ({
             format="MM/dd/yyyy"
             minDate={today}
             fullWidth
-            style={{ marginTop: 18 }}
+            style={{ marginTop: 18, width: 765 }}
             value={d1}
             onChange={e => handleDateChange1(e)}
             KeyboardButtonProps={{
@@ -181,18 +197,35 @@ const PregledOperacijaTab = ({
           <Typography style={{ marginTop: 18 }} component="div" role="tabpanel">
             <Box>Izaberite termin operacije za izabrani datum</Box>
           </Typography>
-          <Dijalog
-            id={lekar.id}
-            datum={!state.datumZaOperaciju ? "" : state.datumZaOperaciju}
-            lekar={lekar}
-          />
+          <Grid container spacing={3}>
+            <Grid item xs={9}>
+              <TextField
+                value={terminZaOperaciju}
+                margin="normal"
+                required
+                fullWidth
+                disabled
+                name="termin"
+                type="text"
+                id="termin"
+              />
+            </Grid>
+            <Grid item xs={3}>
+              <DijalogOperacija
+                id={lekar.id}
+                datum={!state.datumZaOperaciju ? "" : state.datumZaOperaciju}
+                lekar={lekar}
+              />
+            </Grid>
+          </Grid>
         </MuiPickersUtilsProvider>
         <Button
-          variant="outlined"
+          variant="contained"
+          disabled={terminZaOperaciju === ""}
           style={{ marginTop: 18, marginLeft: 10 }}
           color="primary"
         >
-          Posalji zahtev
+          Zakazi
         </Button>
       </TabPanel>
     </div>
@@ -201,7 +234,9 @@ const PregledOperacijaTab = ({
 
 const mapStateToProps = state => ({
   korisnikId: state.currentUser.user.id,
-  lekar: state.lekar.lekar
+  lekar: state.lekar.lekar,
+  terminZaPregled: state.lekar.terminZaPregled,
+  terminZaOperaciju: state.lekar.terminZaOperaciju
 });
 
 export default connect(mapStateToProps, {})(PregledOperacijaTab);

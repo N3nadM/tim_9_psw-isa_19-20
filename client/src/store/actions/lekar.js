@@ -8,7 +8,8 @@ import {
   SET_LEKAR_ZA_PREGLED,
   SET_TERMIN_ZA_PREGLED,
   SET_LEKARI_KOJI_SE_MOGU_OBRISATI,
-  SET_OBRISAN_LEKAR
+  SET_OBRISAN_LEKAR,
+  SET_TERMIN_ZA_OPERACIJU
 } from "../actionTypes";
 import axios from "axios";
 import { setRealKorisnik } from "./auth";
@@ -53,6 +54,11 @@ export const setLekariZaBrisanje = lekariZaBrisanje => ({
 export const setObrisanLekar = obrisanLekar => ({
   type: SET_OBRISAN_LEKAR,
   obrisanLekar
+});
+
+export const setTerminZaOperaciju = terminZaOperaciju => ({
+  type: SET_TERMIN_ZA_OPERACIJU,
+  terminZaOperaciju
 });
 
 export const getLekar = id => async (dispatch, getState) => {
@@ -157,6 +163,18 @@ export const obrisiLekara = id => async dispatch => {
     console.log(id);
     const k = await axios.delete(`/api/lekar/delete/${id}`, id);
     dispatch(setObrisanLekar(k.data));
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const setLekarZakazivanjeOperacija = (
+  lekar,
+  termin
+) => async dispatch => {
+  try {
+    dispatch(setLekarZaPregled(lekar));
+    dispatch(setTerminZaOperaciju(termin));
   } catch (err) {
     console.log(err);
   }
