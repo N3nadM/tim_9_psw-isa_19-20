@@ -89,12 +89,14 @@ public class PregledService {
 
         Date date = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss").parse(datum);
 
+        //ovde bi mozda trebalo staviti upit u bazu umesto for petlje
         for(int i = 0; i < lekar.getPregledi().size(); i++) {
             if(date.getTime() == lekar.getPregledi().get(i).getDatumPocetka().getTime()) {
                 return false;
             }
         }
 
+        //trebala bi da postoji provera i za operacije
         Pacijent pacijent = pacijentRepository.findPacijentByKorisnikId(korisnikId);
         List<Pregled> pregledi = pregledRepository.findPregledByDatumPac(pacijent.getId(), date);
         for (Pregled p: pregledi) {
@@ -120,6 +122,7 @@ public class PregledService {
         pregled.setPopust(0);
         pregled.setPacijent(pacijent);
         pregled.setDatumPocetka(date);
+        pregled.setIzvestaj("");
         pregled.setTipPregleda(lekar.getTipPregleda());
         pregled.setDatumZavrsetka(new Date(date.getTime() + lekar.getTipPregleda().getMinimalnoTrajanjeMin() * 60 * 1000));
 

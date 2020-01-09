@@ -8,7 +8,8 @@ import {
   SET_PREGLEDI_SESTRA,
   SET_PREGLEDI_LEKAR_ODMOR,
   SET_PREGLEDI_SESTRA_ODMOR,
-  SET_ZAVRSENI_PREGLEDI
+  SET_ZAVRSENI_PREGLEDI,
+  SET_ISPRAVI_ZAPOCET_PREGLED
 } from "../actionTypes";
 
 const DEFAULT_STATE = {
@@ -79,6 +80,15 @@ export default (state = DEFAULT_STATE, action) => {
       return {
         ...state,
         zavrseniPregledi: action.zavrseniPregledi
+      };
+    case SET_ISPRAVI_ZAPOCET_PREGLED:
+      return {
+        ...state,
+        pregledi: state.pregledi.map(p =>
+          p.id === action.ispravkaZapocetPregled.id
+            ? action.ispravkaZapocetPregled
+            : p
+        )
       };
     default:
       return state;

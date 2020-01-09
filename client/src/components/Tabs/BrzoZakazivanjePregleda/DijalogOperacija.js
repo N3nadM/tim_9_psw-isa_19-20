@@ -11,7 +11,7 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Axios from "axios";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
-import { setLekarZakazivanje } from "../../../store/actions/lekar";
+import { setLekarZakazivanjeOperacija } from "../../../store/actions/lekar";
 
 function ConfirmationDialogRaw(props) {
   const {
@@ -19,7 +19,7 @@ function ConfirmationDialogRaw(props) {
     open,
     options,
     lekar,
-    setLekarZakazivanje,
+    setLekarZakazivanjeOperacija,
     ...other
   } = props;
   const [value, setValue] = React.useState("");
@@ -38,7 +38,7 @@ function ConfirmationDialogRaw(props) {
   };
 
   const handleOk = () => {
-    setLekarZakazivanje(lekar.id, value);
+    setLekarZakazivanjeOperacija(lekar.id, value);
     onClose();
   };
 
@@ -100,7 +100,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const Dijalog = ({ id, datum, setLekarZakazivanje, lekar }) => {
+const Dijalog = ({ id, datum, setLekarZakazivanjeOperacija, lekar }) => {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
   const [options, setOptions] = React.useState([]);
@@ -138,7 +138,7 @@ const Dijalog = ({ id, datum, setLekarZakazivanje, lekar }) => {
         options={options}
         onClose={handleClose}
         lekar={lekar}
-        setLekarZakazivanje={setLekarZakazivanje}
+        setLekarZakazivanjeOperacija={setLekarZakazivanjeOperacija}
       />
     </>
   );
@@ -146,5 +146,5 @@ const Dijalog = ({ id, datum, setLekarZakazivanje, lekar }) => {
 const mapStateToProps = state => ({});
 
 export default withRouter(
-  connect(mapStateToProps, { setLekarZakazivanje })(Dijalog)
+  connect(mapStateToProps, { setLekarZakazivanjeOperacija })(Dijalog)
 );

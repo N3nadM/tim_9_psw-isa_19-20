@@ -172,4 +172,14 @@ public class PregledController {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
     }
+    @PostMapping("/zakaziPregledByLekar")
+    public ResponseEntity<Boolean> zakaziPregledByLekar(@RequestBody Map<String,String> body, Authentication authentication) {
+        try {
+            return new ResponseEntity(pregledService.zakaziPregled(Long.parseLong(body.get("pacijentKorisnikId").toString()), body.get("lekarId").toString(), body.get("datum").toString()), HttpStatus.OK);
+        }
+        catch(Exception e) {
+            System.out.println(e.getMessage());
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
+    }
 }

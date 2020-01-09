@@ -29,7 +29,7 @@ public class Operacija extends Pregled_Operacija {
     private Pacijent pacijent;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="medicinskaSestra_id", updatable = false, nullable = false)
+    @JoinColumn(name="medicinskaSestra_id", updatable = false, nullable = true)
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private MedicinskaSestra medicinskaSestra;
 

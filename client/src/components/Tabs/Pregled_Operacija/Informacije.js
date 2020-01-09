@@ -10,6 +10,7 @@ import Button from "@material-ui/core/Button";
 import PregledOperacijaTab from "./PregledOperacijaTab";
 import { getZdrKarton, editZdrKarton } from "../../../store/actions/pacijent";
 import { Paper } from "@material-ui/core";
+import ZakazivanjeLekar from "../Pregled_Operacija/ZakazivanjeLekar";
 
 const Informacije = ({
   obj,
@@ -19,9 +20,8 @@ const Informacije = ({
   editZdrKarton
 }) => {
   useEffect(() => {
-    {
-      obj.pacijent && getZdrKarton(obj.pacijent.id);
-    }
+    obj.pacijent && getZdrKarton(obj.pacijent.id);
+
     //eslint-disable-next-line
   }, []);
   let pacijent = obj.pacijent;
@@ -57,7 +57,7 @@ const Informacije = ({
 
   if (dP.toDateString() === danasnjiDan.toDateString() && obj.stanje === 0) {
     if (danasnjiDanVreme >= 0 && danasnjiDanVreme <= dZTime - dPTime + 30) {
-      if (obj.medicinskaSestra.korisnik.id != korisnikId) {
+      if (obj.medicinskaSestra.korisnik.id !== korisnikId) {
         zapocniPregled = true;
       }
     }
@@ -83,6 +83,7 @@ const Informacije = ({
             setIsEdit={setIsEdit}
             obj={obj}
           />
+          <ZakazivanjeLekar obj={obj} />
         </>
       )}
       {!isEdit && (

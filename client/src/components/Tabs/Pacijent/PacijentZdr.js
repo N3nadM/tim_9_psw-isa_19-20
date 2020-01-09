@@ -120,7 +120,7 @@ const PacijentZdr = ({
             </ListItem>
 
             <Divider />
-            {korisnik.authority != "ROLE_MED_SESTRA" && (
+            {korisnik.authority !== "ROLE_MED_SESTRA" && (
               <Button
                 variant="contained"
                 color="primary"
