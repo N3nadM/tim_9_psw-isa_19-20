@@ -2,9 +2,12 @@ package com.isapsw.Projekat.service;
 
 import com.isapsw.Projekat.domain.Lekar;
 import com.isapsw.Projekat.domain.Operacija;
+import com.isapsw.Projekat.domain.Pacijent;
 import com.isapsw.Projekat.domain.Pregled;
 import com.isapsw.Projekat.repository.LekarRepository;
 import com.isapsw.Projekat.repository.OperacijaRepository;
+import com.isapsw.Projekat.repository.PregledRepository;
+import com.isapsw.Projekat.repository.PacijentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +21,12 @@ import java.util.List;
 public class OperacijaService {
     @Autowired
     private OperacijaRepository operacijaRepository;
+
+    @Autowired
+    private PregledRepository pregledRepository;
+
+    @Autowired
+    private PacijentRepository pacijentRepository;
 
     @Autowired
     private LekarRepository lekarRepository;
@@ -84,5 +93,59 @@ public class OperacijaService {
         return ret;
     }
 
+    public Boolean zakaziOperaciju(Long korisnikId, String lekarId, String datum) throws ParseException {
+        Lekar lekar = lekarRepository.findLekarById(Long.parseLong(lekarId));
+
+        Date date = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss").parse(datum);
+
+        //ovde bi mozda trebalo staviti upit u bazu umesto for petlje
+        for(int i = 0; i < lekar.getPregledi().size(); i++) {
+            if(date.getTime() == lekar.getPregledi().get(i).getDatumPocetka().getTime()) {
+                return false;
+            }
+        }
+
+        for(int i = 0; i < lekar.getOperacije().size(); i++) {
+            if(date.getTime() == lekar.getOperacije().get(i).getDatumPocetka().getTime()) {
+                return false;
+            }
+        }
+
+        //trebala bi da postoji provera i za operacije
+        Pacijent pacijent = pacijentRepository.findPacijentByKorisnikId(korisnikId);
+        List<Pregled> pregledi = pregledRepository.findPregledByDatumPac(pacijent.getId(), date);
+        for (Pregled p: pregledi) {
+
+            long pocetakStari = p.getDatumPocetka().getTime();
+            long krajStari = p.getDatumZavrsetka().getTime();
+            long pocetakNovi = date.getTime();
+            long krajNovi = date.getTime() + lekar.getTipPregleda().getMinimalnoTrajanjeMin() * 60 * 1000;
+
+            if(pocetakStari <= pocetakNovi && krajStari >= pocetakNovi) {
+                return false;
+            } else if(pocetakStari >= pocetakNovi && krajStari <= krajNovi) {
+                return false;
+            } else if(pocetakNovi <= pocetakStari && krajNovi >= pocetakStari) {
+                return false;
+            } else if(pocetakStari <= pocetakNovi && krajStari >= krajNovi) {
+                return false;
+            }
+        }
+        Operacija operacija = new Operacija();
+
+        if(operacija.getLekari() == null){
+            operacija.setLekari(new ArrayList<>());
+        }
+        operacija.getLekari().add(lekar);
+        operacija.setPacijent(pacijent);
+        operacija.setDatumPocetka(date);
+        operacija.setIzvestaj("");
+        operacija.setTipPregleda(lekar.getTipPregleda());
+        operacija.setDatumZavrsetka(new Date(date.getTime() + lekar.getTipPregleda().getMinimalnoTrajanjeMin() * 60 * 1000));
+        operacija.setTipOperacije("ovo treba da se izbrise");
+        operacijaRepository.save(operacija);
+
+        return true;
+    }
 
 }

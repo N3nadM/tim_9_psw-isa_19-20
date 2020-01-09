@@ -10,10 +10,12 @@ import com.isapsw.Projekat.service.OperacijaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping(value = "/api/operacija")
@@ -111,6 +113,17 @@ public class OperacijaController {
             return new ResponseEntity<List<Operacija>>(operacijaService.findOperacijeZaLekaraOdmor(id, datum1, datum2), HttpStatus.OK);
         } catch (Exception e) {
             System.out.println(e);
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PostMapping("/zakaziOperacijaByLekar")
+    public ResponseEntity<Boolean> zakaziOperacijaByLekar(@RequestBody Map<String,String> body, Authentication authentication) {
+        try {
+            return new ResponseEntity(operacijaService.zakaziOperaciju(Long.parseLong(body.get("pacijentKorisnikId").toString()), body.get("lekarId").toString(), body.get("datum").toString()), HttpStatus.OK);
+        }
+        catch(Exception e) {
+            System.out.println(e.getMessage());
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
     }

@@ -17,6 +17,12 @@ import DateFnsUtils from "@date-io/date-fns";
 import { getLekar } from "../../../store/actions/lekar";
 import Dijalog from "../BrzoZakazivanjePregleda/Dijalog";
 import DijalogOperacija from "../BrzoZakazivanjePregleda/DijalogOperacija";
+import Axios from "axios";
+import Dialog from "@material-ui/core/Dialog";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogActions from "@material-ui/core/DialogActions";
+import { tr } from "date-fns/locale";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -90,16 +96,54 @@ const PregledOperacijaTab = ({
   const classes = useStyles();
   const theme = useTheme();
   const [value, setValue] = React.useState(0);
+  const [disabled, setDisabled] = React.useState(false);
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
 
-  const handleSubmit = e => {
+  const handleSubmit = async e => {
     e.preventDefault();
-    obj.stanje = 2;
+    setDisabled(true);
+    stanjeZaPregled.datum = terminZaPregled;
+    console.log(stanjeZaPregled);
+    const resp = await Axios.post(
+      "/api/pregled/zakaziPregledByLekar",
+      stanjeZaPregled
+    );
+    setOpen(true);
   };
 
+  const handleSubmit2 = async e => {
+    e.preventDefault();
+    stanjeZaOperaciju.datum = terminZaOperaciju;
+    console.log(stanjeZaOperaciju);
+    const resp = await Axios.post(
+      "/api/operacija/zakaziOperacijaByLekar",
+      stanjeZaOperaciju
+    );
+    setOpen2(true);
+  };
+
+  const [open, setOpen] = React.useState(false);
+  const [open2, setOpen2] = React.useState(false);
+
+  const handleClose = () => {
+    console.log(disabled);
+    setOpen(false);
+    setOpen2(false);
+  };
   const [selectedDate, setSelectedDate] = React.useState(new Date());
+  const [stanjeZaPregled] = React.useState({
+    lekarId: obj.lekar.id,
+    pacijentKorisnikId: obj.pacijent.korisnik.id,
+    datum: ""
+  });
+
+  const [stanjeZaOperaciju] = React.useState({
+    lekarId: obj.lekar.id,
+    pacijentKorisnikId: obj.pacijent.korisnik.id,
+    datum: ""
+  });
 
   const handleDateChange = date => {
     setSelectedDate(date);
@@ -172,6 +216,7 @@ const PregledOperacijaTab = ({
             disabled={terminZaPregled === ""}
             style={{ marginTop: 18, marginLeft: 10 }}
             color="primary"
+            onClick={handleSubmit}
           >
             Zakazi
           </Button>
@@ -221,13 +266,56 @@ const PregledOperacijaTab = ({
         </MuiPickersUtilsProvider>
         <Button
           variant="contained"
-          disabled={terminZaOperaciju === ""}
+          disabled={terminZaOperaciju === "" || disabled}
           style={{ marginTop: 18, marginLeft: 10 }}
           color="primary"
+          onClick={handleSubmit2}
         >
           Zakazi
         </Button>
       </TabPanel>
+      <Dialog
+        onClose={handleClose}
+        aria-labelledby="customized-dialog-title"
+        open={open}
+      >
+        <DialogTitle id="customized-dialog-title" onClose={handleClose}>
+          Poslali ste zahtev za pregled
+        </DialogTitle>
+        <DialogContent dividers>
+          <Typography gutterBottom>
+            Pacijent: {obj.pacijent.korisnik.ime}{" "}
+            {obj.pacijent.korisnik.prezime} <br />
+            Datum: {terminZaPregled}
+          </Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button autoFocus onClick={handleClose} color="primary">
+            OK
+          </Button>
+        </DialogActions>
+      </Dialog>
+      <Dialog
+        onClose={handleClose}
+        aria-labelledby="customized-dialog-title"
+        open={open2}
+      >
+        <DialogTitle id="customized-dialog-title" onClose={handleClose}>
+          Poslali ste zahtev za operaciju
+        </DialogTitle>
+        <DialogContent dividers>
+          <Typography gutterBottom>
+            Pacijent: {obj.pacijent.korisnik.ime}{" "}
+            {obj.pacijent.korisnik.prezime} <br />
+            Datum: {terminZaOperaciju}
+          </Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button autoFocus onClick={handleClose} color="primary">
+            OK
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 };
