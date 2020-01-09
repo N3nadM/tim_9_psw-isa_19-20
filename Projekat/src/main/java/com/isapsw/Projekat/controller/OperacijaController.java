@@ -127,4 +127,12 @@ public class OperacijaController {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
     }
+    @GetMapping("/nemajuSalu/{id}")
+    public ResponseEntity<List<Operacija>> findOperacijeKojeNemajuSalu(@PathVariable String id) {
+        try {
+            return new ResponseEntity<List<Operacija>>(operacijaService.operacijeKojeNemajuSalu(id), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
+    }
 }

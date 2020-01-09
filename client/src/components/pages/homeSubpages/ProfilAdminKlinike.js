@@ -6,7 +6,6 @@ import LekariTabs from "../../Tabs/LekariTabs";
 import SaleTabs from "../../Tabs/SaleTabs";
 import TipoviPregledaTabs from "../../Tabs/TipoviPregledaTabs";
 import SlobodniTerminiTabs from "../../Tabs/BrzoZakazivanjePregleda/SlobodniTerminTabs";
-import LicniPodaciTabs from "../../Tabs/LicniPodaciTabs";
 import PodaciKlinikaTabs from "../../Tabs/PodaciKlinikaTabs";
 import AppBar from "../../layout/AppBarLogedIn";
 
@@ -19,6 +18,7 @@ import Tab from "@material-ui/core/Tab";
 import PromeniLozinku from "../../Tabs/Korisnik/PromeniLozinku";
 import PrikazZahteva from "../../Tabs/ZahteviOdsustvoOdmor/PrikazZahteva";
 import Cenovnik from "../../Tabs/Cenovnik";
+import ZahteviPregledOperacija from "../../Tabs/PronalazenjeSale/ZahteviPregledOperacija";
 
 const drawerWidth = 240;
 
@@ -77,7 +77,7 @@ function ResponsiveDrawer(props) {
       >
         <Tab label="Podaci o klinici" {...a11yProps(0)} />
         <Tab label="Inbox" {...a11yProps(1)} />
-        <Tab label="Lični podaci" {...a11yProps(2)} />
+        <Tab label="Zahtevi za pronalazenje sale" {...a11yProps(2)} />
         <Tab label="Promena lozinke" {...a11yProps(3)} />
         <Tab label="Slobodni termini pregleda" {...a11yProps(4)} />
         <Tab label="Lekari" {...a11yProps(5)} />
@@ -114,7 +114,7 @@ function ResponsiveDrawer(props) {
             {value === 1 && <PrikazZahteva />}
           </TabPanel>
           <TabPanel value={value} index={2}>
-            <LicniPodaciTabs />
+            {value === 2 && <ZahteviPregledOperacija />}
           </TabPanel>
           <TabPanel value={value} index={3}>
             {value === 3 && <PromeniLozinku />}

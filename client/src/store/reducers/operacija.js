@@ -6,7 +6,8 @@ import {
   SET_OPERACIJE_LEKAR_ODMOR,
   SET_OPERACIJE_SESTRA_ODMOR,
   SET_ZAVRSENE_OPERACIJE,
-  SET_ISPRAVI_ZAPOCETA_OPERACIJA
+  SET_ISPRAVI_ZAPOCETA_OPERACIJA,
+  SET_OPERACIJE_PRONALAZENJE_SALE
 } from "../actionTypes";
 
 const DEFAULT_STATE = {
@@ -16,7 +17,8 @@ const DEFAULT_STATE = {
   operacijeKodSestre: [],
   operacijeKodLekaraOdmor: [],
   operacijeKodSestreOdmor: [],
-  zavrseneOperacije: []
+  zavrseneOperacije: [],
+  operacijePronalazenjeSale: []
 };
 
 export default (state = DEFAULT_STATE, action) => {
@@ -66,6 +68,11 @@ export default (state = DEFAULT_STATE, action) => {
             ? action.ispravkaZapocetaOperacija
             : o
         )
+      };
+    case SET_OPERACIJE_PRONALAZENJE_SALE:
+      return {
+        ...state,
+        operacijePronalazenjeSale: action.operacijePronalazenjeSale
       };
     default:
       return state;

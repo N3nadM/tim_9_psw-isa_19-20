@@ -9,7 +9,8 @@ import {
   SET_PREGLEDI_LEKAR_ODMOR,
   SET_PREGLEDI_SESTRA_ODMOR,
   SET_ZAVRSENI_PREGLEDI,
-  SET_ISPRAVI_ZAPOCET_PREGLED
+  SET_ISPRAVI_ZAPOCET_PREGLED,
+  SET_PREGLEDI_PRONALAZENJE_SALE
 } from "../actionTypes";
 
 const DEFAULT_STATE = {
@@ -20,7 +21,8 @@ const DEFAULT_STATE = {
   preglediKodLekara: [],
   preglediKodLekaraOdmor: [],
   preglediKodSestreOdmor: [],
-  zavrseniPregledi: []
+  zavrseniPregledi: [],
+  preglediPronalazenjeSale: []
 };
 
 export default (state = DEFAULT_STATE, action) => {
@@ -89,6 +91,11 @@ export default (state = DEFAULT_STATE, action) => {
             ? action.ispravkaZapocetPregled
             : p
         )
+      };
+    case SET_PREGLEDI_PRONALAZENJE_SALE:
+      return {
+        ...state,
+        preglediPronalazenjeSale: action.preglediPronalazenjeSale
       };
     default:
       return state;

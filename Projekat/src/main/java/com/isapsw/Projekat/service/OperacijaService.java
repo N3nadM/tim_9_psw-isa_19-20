@@ -148,4 +148,8 @@ public class OperacijaService {
         return true;
     }
 
+    public List<Operacija> operacijeKojeNemajuSalu(String id){
+        return operacijaRepository.operacijeKojeNemajuSalu(Long.parseLong(id));
+    }
+
 }

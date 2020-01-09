@@ -208,4 +208,11 @@ public class PregledService {
 
         return pregledi;
     }
+
+    public List<Pregled> getPreglediKojiNemajuSalu(String id) {
+
+        List<Pregled> pregledi = pregledRepository.preglediKojiNemajuSalu(Long.parseLong(id));
+
+        return pregledi;
+    }
 }
