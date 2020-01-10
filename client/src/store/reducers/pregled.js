@@ -1,4 +1,5 @@
 import {
+  SET_PREGLED,
   SET_PREGLEDI,
   SET_PREGLEDI_ZA_SALU,
   SET_LISTA_PREDEFINISANIH_PREGLEDA,
@@ -14,6 +15,7 @@ import {
 } from "../actionTypes";
 
 const DEFAULT_STATE = {
+  pregled: null,
   pregledi: [],
   preglediZaSalu: [],
   listaPredefinisanih: [],
@@ -27,6 +29,11 @@ const DEFAULT_STATE = {
 
 export default (state = DEFAULT_STATE, action) => {
   switch (action.type) {
+    case SET_PREGLED:
+      return {
+        ...state,
+        pregled: action.pregled
+      };
     case SET_PREGLEDI:
       return {
         ...state,

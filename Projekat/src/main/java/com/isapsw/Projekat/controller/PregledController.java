@@ -38,6 +38,16 @@ public class PregledController {
         }
     }
 
+    @GetMapping("/zahtev/{id}")
+    public ResponseEntity<Pregled> getPregledById(@PathVariable String id) {
+        try {
+            Pregled pregled = pregledService.getPregledById(Long.parseLong(id));
+            return new ResponseEntity<>(pregled, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
+    }
+
     @GetMapping("/osoblje/{id}")
     public ResponseEntity<List<Pregled>> getPregledByLekarId(@PathVariable String id) {
         try {

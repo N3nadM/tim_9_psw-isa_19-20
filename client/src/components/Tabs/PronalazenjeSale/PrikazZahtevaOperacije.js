@@ -104,7 +104,8 @@ const useStyles = makeStyles(theme => ({
 const PrikazZahtevaOperacije = ({
   klinika,
   operacije,
-  getOperacijePronalazenjeSale
+  getOperacijePronalazenjeSale,
+  history
 }) => {
   useEffect(() => {
     getOperacijePronalazenjeSale(klinika.id);
@@ -138,8 +139,8 @@ const PrikazZahtevaOperacije = ({
   };
 
   return (
-    <div className={classes.root}>
-      {operacije.length === 0 && (
+    <>
+      {!operacije && (
         <div>Trenutno nema novih zahteva za pronalazenje sale.</div>
       )}
       {operacije && !!operacije.length && (
@@ -194,7 +195,15 @@ const PrikazZahtevaOperacije = ({
                           </TableCell>
                           <TableCell align="left">{row.datumPocetka}</TableCell>
                           <TableCell align="left">
-                            <Button variant="contained" color="primary">
+                            <Button
+                              variant="contained"
+                              color="primary"
+                              onClick={() => {
+                                history.push({
+                                  pathname: `/operacija/${row.id}`
+                                });
+                              }}
+                            >
                               Detalji
                             </Button>
                           </TableCell>
@@ -242,7 +251,7 @@ const PrikazZahtevaOperacije = ({
         control={<Switch checked={dense} onChange={handleChangeDense} />}
         label="Smanji pading"
       />
-    </div>
+    </>
   );
 };
 

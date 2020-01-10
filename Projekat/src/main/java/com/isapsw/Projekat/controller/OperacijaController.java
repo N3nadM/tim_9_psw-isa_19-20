@@ -39,6 +39,16 @@ public class OperacijaController {
         }
     }
 
+    @GetMapping("/zahtev/{id}")
+    public ResponseEntity<Operacija> getOperacijaById(@PathVariable String id) {
+        try {
+            Operacija operacija = operacijaService.getOperacijaById(Long.parseLong(id));
+            return new ResponseEntity<>(operacija, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
+    }
+
     @GetMapping("/osoblje/{id}")
     public ResponseEntity<List<Operacija>> findOperacijeByLekarId(@PathVariable String id) {
         try {

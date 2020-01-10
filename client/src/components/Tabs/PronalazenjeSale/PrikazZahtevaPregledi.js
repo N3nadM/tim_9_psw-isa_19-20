@@ -104,7 +104,8 @@ const useStyles = makeStyles(theme => ({
 const PrikazZahtevaPregled = ({
   klinika,
   pregledi,
-  getPreglediPronalazenjeSale
+  getPreglediPronalazenjeSale,
+  history
 }) => {
   useEffect(() => {
     getPreglediPronalazenjeSale(klinika.id);
@@ -138,8 +139,8 @@ const PrikazZahtevaPregled = ({
   };
 
   return (
-    <div className={classes.root}>
-      {pregledi.length === 0 && (
+    <>
+      {!pregledi && (
         <div>Trenutno nema novih zahteva za pronalazenje sale.</div>
       )}
       {pregledi && !!pregledi.length && (
@@ -208,7 +209,15 @@ const PrikazZahtevaPregled = ({
                           </TableCell>
                           <TableCell align="left">{row.datumPocetka}</TableCell>
                           <TableCell align="left">
-                            <Button variant="contained" color="primary">
+                            <Button
+                              variant="contained"
+                              color="primary"
+                              onClick={() => {
+                                history.push({
+                                  pathname: `/pregled/${row.id}`
+                                });
+                              }}
+                            >
                               Detalji
                             </Button>
                           </TableCell>
@@ -256,7 +265,7 @@ const PrikazZahtevaPregled = ({
         control={<Switch checked={dense} onChange={handleChangeDense} />}
         label="Smanji pading"
       />
-    </div>
+    </>
   );
 };
 

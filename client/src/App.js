@@ -16,6 +16,8 @@ import Home from "./components/pages/Home";
 import Klinika from "./components/pages/Klinika";
 import Pacijent from "./components/pages/Pacijent";
 import Pregled_Operacija from "./components/pages/Pregled_Operacija";
+import Pregled from "./components/pages/SalaZaPregled";
+import Operacija from "./components/pages/SalaZaOperaciju";
 
 const store = configureStore();
 
@@ -54,7 +56,8 @@ function App() {
             <PrivateRoute exact path="/" component={Home} />
             <Route exact path="/ms" component={MedSestra} />
             <PrivateRoute exact path="/klinika/:id" component={Klinika} />
-            <PrivateRoute exact path="/pacijent/:id" component={Pacijent} />
+            <PrivateRoute exact path="/pregled/:id" component={Pregled} />
+            <PrivateRoute exact path="/operacija/:id" component={Operacija} />
             <PrivateRoute
               exact
               path="/pregled_operacija/:obj"

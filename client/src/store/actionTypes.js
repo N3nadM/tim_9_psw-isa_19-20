@@ -40,6 +40,9 @@ export const SET_ADDED_LEKAR = "SET_ADDES_LEKAR";
 export const SET_ADDED_SALA = "SET_ADDED_SALA";
 export const SET_KLINIKA = "SET_KLINIKA";
 
+export const SET_PREGLED = "SET_PREGLED";
+export const SET_OPERACIJA = "SET_OPERACIJA";
+
 export const SET_PREGLEDI = "SET_PREGLEDI";
 export const SET_OPERACIJE = "SET_OPERACIJE";
 

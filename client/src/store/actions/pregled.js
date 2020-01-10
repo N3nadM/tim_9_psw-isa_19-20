@@ -1,4 +1,5 @@
 import {
+  SET_PREGLED,
   SET_PREGLEDI,
   SET_PREGLEDI_ZA_SALU,
   SET_LISTA_PREDEFINISANIH_PREGLEDA,
@@ -16,6 +17,11 @@ import axios from "axios";
 export const setPregledi = pregledi => ({
   type: SET_PREGLEDI,
   pregledi
+});
+
+export const setPregledZahtev = pregled => ({
+  type: SET_PREGLED,
+  pregled
 });
 
 export const setPreglediZaSalu = preglediZaSalu => ({
@@ -71,6 +77,15 @@ export const getAllPregledi = id => async (dispatch, getState) => {
       pregledi = await axios.get(`/api/pregled/${id}`);
       dispatch(setPregledi(pregledi.data));
     }
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const getPregledById = id => async dispatch => {
+  try {
+    let pregled = await axios.get(`/api/pregled/zahtev/${id}`);
+    dispatch(setPregledZahtev(pregled.data));
   } catch (err) {
     console.log(err);
   }

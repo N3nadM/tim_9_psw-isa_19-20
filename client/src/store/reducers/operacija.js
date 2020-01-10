@@ -1,4 +1,5 @@
 import {
+  SET_OPERACIJA,
   SET_OPERACIJE,
   SET_OPERACIJE_ZA_SALU,
   SET_OPERACIJE_LEKAR,
@@ -11,6 +12,7 @@ import {
 } from "../actionTypes";
 
 const DEFAULT_STATE = {
+  operacija: null,
   operacije: [],
   operacijeZaSalu: [],
   operacijeKodLekara: [],
@@ -23,6 +25,10 @@ const DEFAULT_STATE = {
 
 export default (state = DEFAULT_STATE, action) => {
   switch (action.type) {
+    case SET_OPERACIJA:
+      return {
+        operacija: action.operacija
+      };
     case SET_OPERACIJE:
       return {
         operacije: action.operacije.sort(

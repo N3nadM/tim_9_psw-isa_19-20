@@ -31,6 +31,10 @@ public class OperacijaService {
     @Autowired
     private LekarRepository lekarRepository;
 
+    public Operacija getOperacijaById(Long id){
+        return operacijaRepository.findById(id).get();
+    }
+
     public List<Operacija> getOperacijeByPacijentId(Long id) {
         return operacijaRepository.findOperacijeByPacijentId(id);
     }
