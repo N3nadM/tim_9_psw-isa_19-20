@@ -140,7 +140,7 @@ INSERT INTO OPERACIJA (izvestaj, datum_pocetka, datum_zavrsetka, tip_operacije, 
 INSERT INTO OPERACIJA (izvestaj, datum_pocetka, datum_zavrsetka, tip_operacije, medicinska_sestra_id, sala_id, pacijent_id, stanje, vrsta, datum_kreiranja, tip_pregleda_id) VALUES ('Operisan od zivota...', '2020-1-11 15:51:00', '2020-1-11 16:51:00', 'Operacija jea', '1', '1', '1', '0', '1', '2019-11-6', 1);
 INSERT INTO OPERACIJA (izvestaj, datum_pocetka, datum_zavrsetka, tip_operacije, medicinska_sestra_id, sala_id, pacijent_id, stanje, vrsta, datum_kreiranja, tip_pregleda_id) VALUES ('Operisan od zivota...', '2020-1-5 17:30:00', '2020-1-5 17:55:00', 'Operacija jea', '1', '1', '1', '0', '1', '2019-11-6', 1);
 
-INSERT INTO OPERACIJA (izvestaj, datum_pocetka, datum_zavrsetka, tip_operacije, medicinska_sestra_id, pacijent_id, stanje, vrsta, datum_kreiranja, tip_pregleda_id) VALUES ('Operisan od zivota...', '2020-1-10 20:30:00', '2020-1-10 21:55:00', 'Operacija jea', '1', '1', '0', '1', '2019-11-6', 1);
+INSERT INTO OPERACIJA (izvestaj, datum_pocetka, datum_zavrsetka, tip_operacije, medicinska_sestra_id, pacijent_id, stanje, vrsta, datum_kreiranja, tip_pregleda_id) VALUES ('Operisan od zivota...', '2020-1-10 18:30:00', '2020-1-10 18:55:00', 'Operacija jea', '1', '1', '0', '1', '2019-11-6', 1);
 
 INSERT INTO PRISUTNI_LEKARI VALUES (1, 1);
 INSERT INTO PRISUTNI_LEKARI VALUES (1, 2);

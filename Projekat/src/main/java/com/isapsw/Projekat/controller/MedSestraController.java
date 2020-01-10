@@ -34,4 +34,15 @@ public class MedSestraController {
             return  new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
+
+    @GetMapping("/sestraDostupna/{id}/{termin}/{trajanje}")
+    public ResponseEntity<MedicinskaSestra> getDostupnaSestra(@PathVariable String id, @PathVariable String termin, @PathVariable String trajanje){
+        try{
+            return  new ResponseEntity<MedicinskaSestra>(medSestraService.getDostupnaSestra(id, termin, trajanje), HttpStatus.OK);
+
+        }catch(Exception e){
+            System.out.println(e.getMessage());
+            return  new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
 }
