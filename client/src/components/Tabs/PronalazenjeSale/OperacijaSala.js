@@ -15,8 +15,6 @@ const OperacijaSala = ({ id, operacija, getOperacijaById }) => {
     //eslint-disable-next-line
   }, []);
 
-  const [isEdit, setIsEdit] = React.useState(false);
-
   return (
     <Paper style={{ padding: 50, paddingBottom: 75 }}>
       <Typography
