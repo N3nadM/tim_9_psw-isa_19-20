@@ -38,7 +38,7 @@ function a11yProps(index) {
   };
 }
 
-const Pregled_Operacija = ({ match }) => {
+const Pregled_Operacija = ({ match, klinika }) => {
   const [value, setValue] = React.useState(0);
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -80,7 +80,7 @@ const Pregled_Operacija = ({ match }) => {
         </nav>
         <main className={classes.content}>
           <TabPanel value={value} index={0}>
-            {value === 0 && <Pregled id={match.params.id} />}
+            {value === 0 && <Pregled id={match.params.id} klinika={klinika} />}
           </TabPanel>
         </main>
       </div>
@@ -88,6 +88,8 @@ const Pregled_Operacija = ({ match }) => {
   );
 };
 
-const mapStateToProps = state => ({});
+const mapStateToProps = state => ({
+  klinika: state.adminKlinike.klinika
+});
 
 export default withRouter(connect(mapStateToProps, {})(Pregled_Operacija));

@@ -179,3 +179,11 @@ export const setLekarZakazivanjeOperacija = (
     console.log(err);
   }
 };
+
+export const setTerminP = id => async dispatch => {
+  try {
+    dispatch(setTerminZaPregled(id));
+  } catch (err) {
+    console.log(err);
+  }
+};

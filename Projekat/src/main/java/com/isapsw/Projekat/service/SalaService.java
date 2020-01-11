@@ -52,7 +52,12 @@ public class SalaService {
 
     public List<Sala> getDostupneSale(String id, String termin, String trajanje) throws ParseException {
         List<Sala> saleNaKlinici = salaRepository.findByKlinikaId(Long.parseLong(id));
-        Date datum = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss").parse(termin);
+        Date datum;
+        if(!String.valueOf(termin.charAt(4)).equals("-")){
+            datum =  new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss").parse(termin);
+        }else{
+            datum = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(termin);
+        }
         List<Pregled> pregledi = pregledRepository.findByPregledDatumPocetka(datum);
         for(Pregled p : pregledi){
             //brisanje sale iz liste za koju se vrsi provera

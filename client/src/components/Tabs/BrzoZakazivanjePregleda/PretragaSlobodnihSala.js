@@ -111,10 +111,18 @@ const PretragaSalaTab = ({
   klinikaId,
   terminZaPregled,
   trajanje,
-  setSalaZaPregled
+  setSalaZaPregled,
+  termin2
 }) => {
   useEffect(() => {
-    getListaDostupnihSala(klinikaId, terminZaPregled, trajanje);
+    {
+      terminZaPregled !== "" &&
+        getListaDostupnihSala(klinikaId, terminZaPregled, trajanje);
+    }
+    {
+      terminZaPregled === "" &&
+        getListaDostupnihSala(klinikaId, termin2, trajanje);
+    }
     //eslint-disable-next-line
   }, []);
 
