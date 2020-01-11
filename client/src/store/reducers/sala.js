@@ -12,7 +12,7 @@ const DEFAULT_STATE = {
   newSala: null,
   listaSala: null,
   listaDostupnihSala: [],
-  salaZaPregled: null,
+  salaZaPregled: "",
   saleZaBrisanje: null,
   obrisanaSala: null,
   editedSala: null

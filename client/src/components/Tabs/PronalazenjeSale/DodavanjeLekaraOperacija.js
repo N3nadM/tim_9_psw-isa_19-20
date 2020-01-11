@@ -14,11 +14,9 @@ import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import {
   getLekariKlinike,
-  setLekarZaPregled,
   setLekarZakazivanje
 } from "../../../store/actions/lekar";
-import Dijalog from "../../Tabs/BrzoZakazivanjePregleda/Dijalog";
-import { Button } from "@material-ui/core";
+import Checkbox from "@material-ui/core/Checkbox";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -56,9 +54,7 @@ const PretragaSlobodniLekara = ({
   getLekariKlinike,
   idKlinike,
   lekari,
-  lekar,
-  setLekarZakazivanje,
-  setIzbor
+  lekar
 }) => {
   useEffect(() => {
     getLekariKlinike(idKlinike, stariState);
@@ -109,6 +105,9 @@ const PretragaSlobodniLekara = ({
     const isDesc = orderBy === property && order === "desc";
     setOrder(isDesc ? "asc" : "desc");
     setOrderBy(property);
+  };
+  const handleCheck = event => {
+    console.log(event.target.checked);
   };
 
   return (
@@ -162,32 +161,6 @@ const PretragaSlobodniLekara = ({
                     .map((row, index) => {
                       return (
                         <>
-                          {!lekar && (
-                            <TableRow
-                              hover
-                              role="checkbox"
-                              tabIndex={-1}
-                              key={row.korisnik.id}
-                            >
-                              <TableCell component="th" allign="left">
-                                {row.korisnik.ime}
-                              </TableCell>
-                              <TableCell align="left">
-                                {row.korisnik.prezime}
-                              </TableCell>
-                              <TableCell align="left">{row.ocena}</TableCell>
-
-                              <TableCell align="right">
-                                <Dijalog
-                                  id={row.id}
-                                  datum={
-                                    !stariState.datum ? "" : stariState.datum
-                                  }
-                                  lekar={row}
-                                />
-                              </TableCell>
-                            </TableRow>
-                          )}
                           {lekar && lekar.id !== row.id && (
                             <TableRow
                               hover
@@ -204,16 +177,13 @@ const PretragaSlobodniLekara = ({
                               <TableCell align="left">{row.ocena}</TableCell>
 
                               <TableCell align="right">
-                                <Button
-                                  variant="contained"
-                                  color="primary"
-                                  onClick={e => {
-                                    setLekarZakazivanje(row, "");
-                                    setIzbor(0);
+                                <Checkbox
+                                  onChange={handleCheck}
+                                  value="primary"
+                                  inputProps={{
+                                    "aria-label": "primary checkbox"
                                   }}
-                                >
-                                  Izaberi lekara
-                                </Button>
+                                />
                               </TableCell>
                             </TableRow>
                           )}

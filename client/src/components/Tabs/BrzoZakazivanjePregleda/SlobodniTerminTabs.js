@@ -239,7 +239,7 @@ const SlobodniTerminiTabs = ({
     getAllTipoviPregleda(klinika.id);
     setState({
       ...state,
-      lekarId: lekarZaPregled ? lekarZaPregled : ""
+      lekarId: lekarZaPregled ? lekarZaPregled.id : ""
     });
     //eslint-disable-next-line
   }, []);
@@ -284,7 +284,7 @@ const SlobodniTerminiTabs = ({
     setState({
       ...state,
       salaId: salaZaPregled,
-      lekarId: lekarZaPregled,
+      lekarId: lekarZaPregled.id,
       [e.target.name]: e.target.value
     });
 
@@ -293,7 +293,7 @@ const SlobodniTerminiTabs = ({
 
   const handleSubmit = e => {
     const state2 = {
-      lekarId: lekarZaPregled,
+      lekarId: lekarZaPregled.id,
       salaId: salaZaPregled,
       medSestraId: medSestraId,
       datum: termin,

@@ -215,4 +215,25 @@ public class PregledService {
 
         return pregledi;
     }
+
+    public Pregled sacuvajPregled(String pregledId, String salaId, String lekarId, String medSestraId, String termin) throws ParseException {
+        System.out.println(pregledId);
+        System.out.println(salaId);
+        System.out.println(lekarId);
+        System.out.println(medSestraId);
+        Date date = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss").parse(termin);
+        Pregled pregled = pregledRepository.findById(Long.parseLong(pregledId)).get();
+
+        pregled.setDatumPocetka(date);
+        Lekar lekar = lekarRepository.findLekarById(Long.parseLong(lekarId));
+        pregled.setDatumZavrsetka(new Date(date.getTime() + lekar.getTipPregleda().getMinimalnoTrajanjeMin() * 60 * 1000));
+        Sala sala = salaRepository.findById(Long.parseLong(salaId)).get();
+        MedicinskaSestra medicinskaSestra = medSestraRepository.findById(Long.parseLong(medSestraId)).get();
+
+        pregled.setLekar(lekar);
+        pregled.setSala(sala);
+        pregled.setMedicinskaSestra(medicinskaSestra);
+        pregledRepository.save(pregled);
+        return pregled;
+    }
 }

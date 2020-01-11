@@ -12,7 +12,7 @@ public class Pregled extends Pregled_Operacija{
     private Integer popust;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="lekar_id", updatable = false, nullable = false)
+    @JoinColumn(name="lekar_id", updatable = true, nullable = false)
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private Lekar lekar;
 
@@ -23,7 +23,7 @@ public class Pregled extends Pregled_Operacija{
     private Pacijent pacijent;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="medicinskaSestra_id", updatable = false, nullable = true)
+    @JoinColumn(name="medicinskaSestra_id", updatable = true, nullable = true)
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private MedicinskaSestra medicinskaSestra;
 

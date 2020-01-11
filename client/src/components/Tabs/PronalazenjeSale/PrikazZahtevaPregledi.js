@@ -22,6 +22,7 @@ import { Button } from "@material-ui/core";
 import { getListaDostupnihSala } from "../../../store/actions/sala";
 import { setTerminP } from "../../../store/actions/lekar";
 import { setTerminO } from "../../../store/actions/lekar";
+import { setLekarZaPregled } from "../../../store/actions/lekar";
 
 function desc(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -111,7 +112,8 @@ const PrikazZahtevaPregled = ({
   getListaDostupnihSala,
   history,
   setTerminP,
-  setTerminO
+  setTerminO,
+  setLekarZaPregled
 }) => {
   useEffect(() => {
     getPreglediPronalazenjeSale(klinika.id);
@@ -230,6 +232,7 @@ const PrikazZahtevaPregled = ({
                               color="primary"
                               onClick={() => {
                                 handleClick(row);
+                                setLekarZaPregled(row.lekar);
                                 history.push({
                                   pathname: `/pregled/${row.id}`
                                 });
@@ -296,6 +299,7 @@ export default withRouter(
     getPreglediPronalazenjeSale,
     getListaDostupnihSala,
     setTerminP,
-    setTerminO
+    setTerminO,
+    setLekarZaPregled
   })(PrikazZahtevaPregled)
 );

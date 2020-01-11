@@ -33,7 +33,9 @@ const PregledSala = ({
   sale,
   termin,
   getListaDostupnihSala,
-  promenjenLekar
+  promenjenLekar,
+  lekarZaPregled,
+  sala
 }) => {
   useEffect(() => {
     getPregledById(id);
@@ -102,9 +104,21 @@ const PregledSala = ({
     });
   };
 
+  const handleZakazi = async e => {
+    const podaci = {
+      medSestraId: state.medSestraId,
+      salaId: sala,
+      lekarId: lekarZaPregled.id,
+      pregledId: pregled.id,
+      termin: termin
+    };
+    const resp = await Axios.post(`/api/pregled/sacuvajSalu`, podaci);
+    console.log(resp.data);
+  };
+
   return (
     <div>
-      <Paper style={{ margin: 50, padding: 50, paddingBottom: 75 }}>
+      <Paper style={{ padding: 50, paddingBottom: 75 }}>
         <Typography
           variant="h4"
           component="h2"
@@ -148,39 +162,15 @@ const PregledSala = ({
       {console.log(sale.length)}
       {pregled && sale.length === 0 && (
         <Paper style={{ padding: 50, paddingBottom: 75 }}>
+          <Typography
+            variant="h6"
+            component="h2"
+            style={{ marginBottom: 20, marginLeft: 13 }}
+          >
+            Za izabrani termin nema dostupnih sala, mozete promeniti termin ili
+            izabrati drugog lekara
+          </Typography>
           {izbor === 0 && (
-            <>
-              <Typography
-                variant="h6"
-                component="h2"
-                style={{ marginBottom: 20, marginLeft: 13 }}
-              >
-                Za izabrani termin nema dostupnih sala, mozete promeniti termin
-                ili izabrati drugog lekara
-              </Typography>
-              <Grid container spacing={2}>
-                <Grid item sm={6}>
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={handleIzborTermin}
-                  >
-                    Izabor termina
-                  </Button>
-                </Grid>
-                <Grid item sm={6}>
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={handleIzborLekar}
-                  >
-                    Izbor lekara
-                  </Button>
-                </Grid>
-              </Grid>
-            </>
-          )}
-          {izbor === 1 && (
             <>
               <Typography
                 variant="h6"
@@ -208,10 +198,32 @@ const PregledSala = ({
                 </Grid>
                 <Grid item sm={6}>
                   <Dijalog
-                    id={pregled.lekar.id}
+                    id={lekarZaPregled.id}
                     datum={!state.datumZaPregled ? "" : state.datumZaPregled}
-                    lekar={pregled.lekar}
+                    lekar={lekarZaPregled}
                   />
+                </Grid>
+
+                <Grid item sm={12}>
+                  <TextField
+                    variant="outlined"
+                    margin="normal"
+                    value={lekarZaPregled.korisnik.ime}
+                    fullWidth
+                    id="lekar"
+                    label="Lekar"
+                    name="lekar"
+                    autoComplete="off"
+                  />
+                </Grid>
+                <Grid item sm={12}>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={e => handleIzborLekar(e)}
+                  >
+                    Promena lekara
+                  </Button>
                 </Grid>
                 <Grid item sm={12}>
                   <Button
@@ -230,29 +242,32 @@ const PregledSala = ({
                     Pretrazi sale
                   </Button>
                 </Grid>
-              </Grid>
+              </Grid>{" "}
             </>
           )}
-          {izbor === 2 && (
-            <>
-              <Typography
-                variant="h6"
-                component="h2"
-                style={{ marginBottom: 20, marginLeft: 13 }}
-              >
-                Izbor lekara
-              </Typography>
-              <PretragaSlobodnihLekara
-                stariState={zaLekare}
-                idKlinike={klinika.id}
-                lekar={pregled.lekar}
-              />
-            </>
-          )}
+          <>
+            {izbor === 2 && (
+              <>
+                <Typography
+                  variant="h6"
+                  component="h2"
+                  style={{ marginBottom: 20, marginLeft: 13 }}
+                >
+                  Izbor lekara
+                </Typography>
+                <PretragaSlobodnihLekara
+                  stariState={zaLekare}
+                  idKlinike={klinika.id}
+                  lekar={lekarZaPregled}
+                  setIzbor={setIzbor}
+                />
+              </>
+            )}
+          </>
         </Paper>
       )}
       {pregled && (
-        <Paper style={{ margin: 50, padding: 50, paddingBottom: 75 }}>
+        <Paper style={{ padding: 50, paddingBottom: 75 }}>
           <TextField
             variant="outlined"
             margin="normal"
@@ -268,6 +283,16 @@ const PregledSala = ({
           </Button>
         </Paper>
       )}
+      {pregled && (
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={handleZakazi}
+          disabled={state.medSestraId === "" || termin === "" || sala === ""}
+        >
+          Sačuvaj
+        </Button>
+      )}
     </div>
   );
 };
@@ -277,7 +302,9 @@ function mapStateToProps(state) {
     pregled: state.pregled.pregled,
     sale: state.sala.listaDostupnihSala,
     termin: state.lekar.terminZaPregled,
-    promenjenLekar: state.lekar.promenjenLekar
+    promenjenLekar: state.lekar.promenjenLekar,
+    lekarZaPregled: state.lekar.lekarZaPregled,
+    sala: state.sala.salaZaPregled
   };
 }
 

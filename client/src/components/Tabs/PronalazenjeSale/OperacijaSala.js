@@ -19,6 +19,7 @@ import {
 import Dijalog from "../../Tabs/BrzoZakazivanjePregleda/DijalogOperacija";
 import DateFnsUtils from "@date-io/date-fns";
 import { getListaDostupnihSala } from "../../../store/actions/sala";
+import DodavanjeLekaraOperacija from "./DodavanjeLekaraOperacija";
 
 let today = new Date();
 today.setDate(today.getDate() + 1);
@@ -31,7 +32,8 @@ const OperacijaSala = ({
   klinika,
   sale,
   termin,
-  getListaDostupnihSala
+  getListaDostupnihSala,
+  salaZaPregled
 }) => {
   useEffect(() => {
     getOperacijaById(id);
@@ -69,6 +71,19 @@ const OperacijaSala = ({
       ...state,
       datumZaOperaciju: date
     });
+  };
+  const [izbor, setIzbor] = React.useState(0);
+  const [zaLekare, setZaLekare] = React.useState({
+    tip: "",
+    datum: ""
+  });
+
+  const handleIzborLekar = e => {
+    setZaLekare({
+      tip: operacija.tipPregleda.naziv,
+      datum: new Date(operacija.datumPocetka)
+    });
+    setIzbor(2);
   };
 
   return (
@@ -110,7 +125,7 @@ const OperacijaSala = ({
       )}
       {console.log(sale.length)}
       {operacija && sale.length === 0 && (
-        <Paper style={{ margin: 50, padding: 50, paddingBottom: 75 }}>
+        <Paper style={{ padding: 50, paddingBottom: 75 }}>
           <Typography
             variant="h6"
             component="h2"
@@ -163,8 +178,34 @@ const OperacijaSala = ({
           </Grid>
         </Paper>
       )}
+      <Grid item sm={12}>
+        <Button
+          variant="contained"
+          disabled={salaZaPregled === "" || izbor === 2}
+          color="primary"
+          onClick={handleIzborLekar}
+        >
+          Dodavanje lekara
+        </Button>
+      </Grid>
+      {salaZaPregled !== "" && izbor === 2 && (
+        <>
+          <Typography
+            variant="h6"
+            component="h2"
+            style={{ marginBottom: 20, marginLeft: 13 }}
+          >
+            Izbor lekara
+          </Typography>
+          <DodavanjeLekaraOperacija
+            stariState={zaLekare}
+            idKlinike={klinika.id}
+            lekar={operacija.lekari[0]}
+          />
+        </>
+      )}
       {operacija && (
-        <Paper style={{ margin: 50, padding: 50, paddingBottom: 75 }}>
+        <Paper style={{ padding: 50, paddingBottom: 75 }}>
           <TextField
             variant="outlined"
             margin="normal"
@@ -188,7 +229,8 @@ function mapStateToProps(state) {
   return {
     operacija: state.operacija.operacija,
     sale: state.sala.listaDostupnihSala,
-    termin: state.lekar.terminZaOperaciju
+    termin: state.lekar.terminZaOperaciju,
+    salaZaPregled: state.sala.salaZaPregled
   };
 }
 
