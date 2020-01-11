@@ -57,6 +57,8 @@ public class LekarService {
         return lekarRepository.findLekarByKorisnikId(Long.parseLong(id));
     }
 
+    public Lekar getLekarById(String id) { return lekarRepository.findLekarById(Long.parseLong(id));}
+
     public Lekar updateLekar(Lekar lekar){
         return lekarRepository.save(lekar);
     }

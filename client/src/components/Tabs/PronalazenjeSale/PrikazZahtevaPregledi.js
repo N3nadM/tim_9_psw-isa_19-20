@@ -19,6 +19,9 @@ import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import { getPreglediPronalazenjeSale } from "../../../store/actions/pregled";
 import { Button } from "@material-ui/core";
+import { getListaDostupnihSala } from "../../../store/actions/sala";
+import { setTerminP } from "../../../store/actions/lekar";
+import { setTerminO } from "../../../store/actions/lekar";
 
 function desc(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -105,10 +108,15 @@ const PrikazZahtevaPregled = ({
   klinika,
   pregledi,
   getPreglediPronalazenjeSale,
-  history
+  getListaDostupnihSala,
+  history,
+  setTerminP,
+  setTerminO
 }) => {
   useEffect(() => {
     getPreglediPronalazenjeSale(klinika.id);
+    setTerminP("");
+    setTerminO("");
   }, []);
 
   const classes = useStyles();
@@ -136,6 +144,14 @@ const PrikazZahtevaPregled = ({
 
   const handleChangeDense = event => {
     setDense(event.target.checked);
+  };
+
+  const handleClick = pregled => {
+    getListaDostupnihSala(
+      klinika.id,
+      pregled.datumPocetka,
+      pregled.tipPregleda.minimalnoTrajanjeMin
+    );
   };
 
   return (
@@ -213,6 +229,7 @@ const PrikazZahtevaPregled = ({
                               variant="contained"
                               color="primary"
                               onClick={() => {
+                                handleClick(row);
                                 history.push({
                                   pathname: `/pregled/${row.id}`
                                 });
@@ -276,6 +293,9 @@ const mapStateToProps = state => ({
 
 export default withRouter(
   connect(mapStateToProps, {
-    getPreglediPronalazenjeSale
+    getPreglediPronalazenjeSale,
+    getListaDostupnihSala,
+    setTerminP,
+    setTerminO
   })(PrikazZahtevaPregled)
 );

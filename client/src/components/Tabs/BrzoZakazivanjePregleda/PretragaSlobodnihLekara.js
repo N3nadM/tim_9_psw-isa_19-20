@@ -12,8 +12,10 @@ import TableSortLabel from "@material-ui/core/TableSortLabel";
 import Paper from "@material-ui/core/Paper";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
-import { getLekariKlinike } from "../../../store/actions/lekar";
+import { getLekarById, getLekariKlinike } from "../../../store/actions/lekar";
 import Dijalog from "../../Tabs/BrzoZakazivanjePregleda/Dijalog";
+import { ispraviListuLekara } from "../../../store/actions/lekar";
+import { Button } from "@material-ui/core";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -50,7 +52,9 @@ const PretragaSlobodniLekara = ({
   stariState,
   getLekariKlinike,
   idKlinike,
-  lekari
+  lekari,
+  lekar,
+  getLekarById
 }) => {
   useEffect(() => {
     getLekariKlinike(idKlinike, stariState);
@@ -153,28 +157,60 @@ const PretragaSlobodniLekara = ({
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((row, index) => {
                       return (
-                        <TableRow
-                          hover
-                          role="checkbox"
-                          tabIndex={-1}
-                          key={row.id}
-                        >
-                          <TableCell component="th" allign="left">
-                            {row.korisnik.ime}
-                          </TableCell>
-                          <TableCell align="left">
-                            {row.korisnik.prezime}
-                          </TableCell>
-                          <TableCell align="left">{row.ocena}</TableCell>
+                        <>
+                          {!lekar && (
+                            <TableRow
+                              hover
+                              role="checkbox"
+                              tabIndex={-1}
+                              key={row.korisnik.id}
+                            >
+                              <TableCell component="th" allign="left">
+                                {row.korisnik.ime}
+                              </TableCell>
+                              <TableCell align="left">
+                                {row.korisnik.prezime}
+                              </TableCell>
+                              <TableCell align="left">{row.ocena}</TableCell>
 
-                          <TableCell align="right">
-                            <Dijalog
-                              id={row.id}
-                              datum={!stariState.datum ? "" : stariState.datum}
-                              lekar={row}
-                            />
-                          </TableCell>
-                        </TableRow>
+                              <TableCell align="right">
+                                <Dijalog
+                                  id={row.id}
+                                  datum={
+                                    !stariState.datum ? "" : stariState.datum
+                                  }
+                                  lekar={row}
+                                />
+                              </TableCell>
+                            </TableRow>
+                          )}
+                          {lekar && lekar.id !== row.id && (
+                            <TableRow
+                              hover
+                              role="checkbox"
+                              tabIndex={-1}
+                              key={row.korisnik.id}
+                            >
+                              <TableCell component="th" allign="left">
+                                {row.korisnik.ime}
+                              </TableCell>
+                              <TableCell align="left">
+                                {row.korisnik.prezime}
+                              </TableCell>
+                              <TableCell align="left">{row.ocena}</TableCell>
+
+                              <TableCell align="right">
+                                <Button
+                                  variant="contained"
+                                  color="primary"
+                                  onClick={e => getLekarById(row.id)}
+                                >
+                                  Izaberi lekara
+                                </Button>
+                              </TableCell>
+                            </TableRow>
+                          )}
+                        </>
                       );
                     })}
                 {rowsPerPage -
@@ -223,5 +259,8 @@ const mapStateToProps = state => ({
 });
 
 export default withRouter(
-  connect(mapStateToProps, { getLekariKlinike })(PretragaSlobodniLekara)
+  connect(mapStateToProps, {
+    getLekariKlinike,
+    getLekarById
+  })(PretragaSlobodniLekara)
 );

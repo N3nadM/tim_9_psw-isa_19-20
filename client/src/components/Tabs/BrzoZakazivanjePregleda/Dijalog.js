@@ -126,7 +126,7 @@ const Dijalog = ({ id, datum, setLekarZakazivanje, lekar }) => {
         color="primary"
         onClick={handleClickListItem}
       >
-        Pogledaj
+        Pogledaj termine
       </Button>
       <ConfirmationDialogRaw
         classes={{

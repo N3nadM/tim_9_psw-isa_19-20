@@ -30,6 +30,12 @@ public class LekarController {
         return  new ResponseEntity<Lekar>(lekar, HttpStatus.OK);
     }
 
+    @GetMapping("/byId/{id}")
+    public ResponseEntity<Lekar> getLekarById(@PathVariable String id){
+        Lekar lekar = lekarService.getLekarById(id);
+        return  new ResponseEntity<Lekar>(lekar, HttpStatus.OK);
+    }
+
     @PostMapping("/getTermini")
     public ResponseEntity<List<String>> getSlobodniTermini(@RequestBody Map<String,Object> body){
         try {

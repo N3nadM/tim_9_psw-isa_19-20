@@ -11,7 +11,7 @@ import {
 const DEFAULT_STATE = {
   newSala: null,
   listaSala: null,
-  listaDostupnihSala: null,
+  listaDostupnihSala: [],
   salaZaPregled: null,
   saleZaBrisanje: null,
   obrisanaSala: null,
