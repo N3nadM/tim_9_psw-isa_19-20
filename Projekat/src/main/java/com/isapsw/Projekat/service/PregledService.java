@@ -217,22 +217,35 @@ public class PregledService {
     }
 
     public Pregled sacuvajPregled(String pregledId, String salaId, String lekarId, String medSestraId, String termin) throws ParseException {
-        System.out.println(pregledId);
-        System.out.println(salaId);
-        System.out.println(lekarId);
-        System.out.println(medSestraId);
+
         Date date = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss").parse(termin);
         Pregled pregled = pregledRepository.findById(Long.parseLong(pregledId)).get();
-
-        pregled.setDatumPocetka(date);
         Lekar lekar = lekarRepository.findLekarById(Long.parseLong(lekarId));
-        pregled.setDatumZavrsetka(new Date(date.getTime() + lekar.getTipPregleda().getMinimalnoTrajanjeMin() * 60 * 1000));
         Sala sala = salaRepository.findById(Long.parseLong(salaId)).get();
         MedicinskaSestra medicinskaSestra = medSestraRepository.findById(Long.parseLong(medSestraId)).get();
+
+        if(!pregled.getDatumPocetka().equals(date)){
+            pregled.setDatumPocetka(date);
+            pregled.setDatumZavrsetka(new Date(date.getTime() + lekar.getTipPregleda().getMinimalnoTrajanjeMin() * 60 * 1000));
+        }
 
         pregled.setLekar(lekar);
         pregled.setSala(sala);
         pregled.setMedicinskaSestra(medicinskaSestra);
+
+        if(!lekar.getPregledi().contains(pregled)){
+            lekar.getPregledi().add(pregled);
+        }
+        if(!sala.getPregled().contains(pregled)){
+            sala.getPregled().add(pregled);
+        }
+        if(!medicinskaSestra.getPregledi().contains(pregled)){
+            medicinskaSestra.getPregledi().add(pregled);
+        }
+
+        lekarRepository.save(lekar);
+        medSestraRepository.save(medicinskaSestra);
+        salaRepository.save(sala);
         pregledRepository.save(pregled);
         return pregled;
     }

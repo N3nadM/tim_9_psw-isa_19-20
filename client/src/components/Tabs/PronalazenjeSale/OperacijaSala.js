@@ -33,7 +33,8 @@ const OperacijaSala = ({
   sale,
   termin,
   getListaDostupnihSala,
-  salaZaPregled
+  salaZaOperaciju,
+  lekariZaOperaciju
 }) => {
   useEffect(() => {
     getOperacijaById(id);
@@ -84,6 +85,19 @@ const OperacijaSala = ({
       datum: new Date(operacija.datumPocetka)
     });
     setIzbor(2);
+  };
+
+  const handleZakazi = async e => {
+    lekariZaOperaciju.push(operacija.lekari[0].id);
+    const podaci = {
+      medSestraId: state.medSestraId,
+      salaId: salaZaOperaciju,
+      lekariId: lekariZaOperaciju,
+      operacijaId: operacija.id,
+      termin: termin
+    };
+    const resp = await Axios.post(`/api/operacija/sacuvajSalu`, podaci);
+    console.log(resp.data);
   };
 
   return (
@@ -181,14 +195,14 @@ const OperacijaSala = ({
       <Grid item sm={12}>
         <Button
           variant="contained"
-          disabled={salaZaPregled === "" || izbor === 2}
+          disabled={salaZaOperaciju === "" || izbor === 2}
           color="primary"
           onClick={handleIzborLekar}
         >
           Dodavanje lekara
         </Button>
       </Grid>
-      {salaZaPregled !== "" && izbor === 2 && (
+      {salaZaOperaciju !== "" && izbor === 2 && (
         <>
           <Typography
             variant="h6"
@@ -221,6 +235,18 @@ const OperacijaSala = ({
           </Button>
         </Paper>
       )}
+      {operacija && (
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={handleZakazi}
+          disabled={
+            state.medSestraId === "" || termin === "" || salaZaOperaciju === ""
+          }
+        >
+          Sačuvaj
+        </Button>
+      )}
     </div>
   );
 };
@@ -230,7 +256,8 @@ function mapStateToProps(state) {
     operacija: state.operacija.operacija,
     sale: state.sala.listaDostupnihSala,
     termin: state.lekar.terminZaOperaciju,
-    salaZaPregled: state.sala.salaZaPregled
+    salaZaOperaciju: state.sala.salaZaPregled,
+    lekariZaOperaciju: state.lekar.lekariZaOperaciju
   };
 }
 

@@ -10,7 +10,7 @@ import {
   SET_LEKARI_KOJI_SE_MOGU_OBRISATI,
   SET_OBRISAN_LEKAR,
   SET_TERMIN_ZA_OPERACIJU,
-  SET_PROMENA_LEKARA
+  SET_LEKARI_ZA_OPERACIJU
 } from "../actionTypes";
 import axios from "axios";
 import { setRealKorisnik } from "./auth";
@@ -20,9 +20,9 @@ export const setProfile = lekar => ({
   lekar
 });
 
-export const setPromenjenLekar = promenjenLekar => ({
-  type: SET_PROMENA_LEKARA,
-  promenjenLekar
+export const setLekariZaOperaciju = lekariZaOperaciju => ({
+  type: SET_LEKARI_ZA_OPERACIJU,
+  lekariZaOperaciju
 });
 
 export const setNewLekarKorisnik = korisnik => ({
@@ -80,7 +80,7 @@ export const getLekar = id => async dispatch => {
 export const getLekarById = id => async (dispatch, getState) => {
   try {
     const lekar = await axios.get(`/api/lekar/byId/${id}`);
-    dispatch(setPromenjenLekar(lekar.data));
+    dispatch(setLekariZaOperaciju(lekar.data));
   } catch (err) {
     console.log(err);
   }

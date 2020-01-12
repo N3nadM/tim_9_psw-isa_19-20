@@ -145,4 +145,16 @@ public class OperacijaController {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
     }
+
+    @PostMapping("/sacuvajSalu")
+    public ResponseEntity<Operacija> sacuvajSalu(@RequestBody Map<String,Object> body) {
+        try {
+            List<Integer> lekari = new ArrayList<>((List) body.get("lekariId"));
+
+            return new ResponseEntity<Operacija>(operacijaService.sacuvajOperaciju(body.get("operacijaId").toString(), body.get("salaId").toString(), lekari, body.get("medSestraId").toString(), body.get("termin").toString()), HttpStatus.OK);
+        } catch (Exception e) {
+            System.out.println(e);
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
+    }
 }

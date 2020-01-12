@@ -1,13 +1,7 @@
 package com.isapsw.Projekat.service;
 
-import com.isapsw.Projekat.domain.Lekar;
-import com.isapsw.Projekat.domain.Operacija;
-import com.isapsw.Projekat.domain.Pacijent;
-import com.isapsw.Projekat.domain.Pregled;
-import com.isapsw.Projekat.repository.LekarRepository;
-import com.isapsw.Projekat.repository.OperacijaRepository;
-import com.isapsw.Projekat.repository.PregledRepository;
-import com.isapsw.Projekat.repository.PacijentRepository;
+import com.isapsw.Projekat.domain.*;
+import com.isapsw.Projekat.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +10,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class OperacijaService {
@@ -30,6 +25,12 @@ public class OperacijaService {
 
     @Autowired
     private LekarRepository lekarRepository;
+
+    @Autowired
+    private SalaRepository salaRepository;
+
+    @Autowired
+    private MedSestraRepository medSestraRepository;
 
     public Operacija getOperacijaById(Long id){
         return operacijaRepository.findById(id).get();
@@ -156,4 +157,44 @@ public class OperacijaService {
         return operacijaRepository.operacijeKojeNemajuSalu(Long.parseLong(id));
     }
 
+    public Operacija sacuvajOperaciju(String operacijaId, String salaId, List<Integer> lekariId, String medSestraId, String termin) throws ParseException {
+
+        Date date = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss").parse(termin);
+        Operacija operacija = operacijaRepository.findById(Long.parseLong(operacijaId)).get();
+        Sala sala = salaRepository.findById(Long.parseLong(salaId)).get();
+
+        operacija.setSala(sala);
+        if(operacija.getDatumPocetka() != date){
+            operacija.setDatumPocetka(date);
+            Lekar lekarTemp = lekarRepository.findById(lekariId.get(0).longValue()).get();
+            operacija.setDatumZavrsetka(new Date(date.getTime() + lekarTemp.getTipPregleda().getMinimalnoTrajanjeMin() * 60 * 1000));
+        }
+        sala.getOperacija().add(operacija);
+
+        MedicinskaSestra medicinskaSestra = medSestraRepository.findById(Long.parseLong(medSestraId)).get();
+
+        if(!medicinskaSestra.getOperacije().contains(operacija)){
+            medicinskaSestra.getOperacije().add(operacija);
+        }
+        if(operacija.getMedicinskaSestra() == null || !operacija.getMedicinskaSestra().equals(medicinskaSestra)){
+            operacija.setMedicinskaSestra(medicinskaSestra);
+        }
+
+        for(Integer id : lekariId){
+            Lekar lekar = lekarRepository.findById(id.longValue()).get();
+            if(!operacija.getLekari().contains(lekar)){
+                operacija.getLekari().add(lekar);
+            }
+            if(!lekar.getOperacije().contains(operacija)){
+                lekar.getOperacije().add(operacija);
+            }
+            lekarRepository.save(lekar);
+        }
+
+        medSestraRepository.save(medicinskaSestra);
+        salaRepository.save(sala);
+        operacijaRepository.save(operacija);
+
+        return operacija;
+    }
 }

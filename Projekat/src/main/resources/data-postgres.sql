@@ -118,6 +118,12 @@ INSERT INTO KORISNIK (adresa, email, ime, password, prezime, drzava, grad, telef
 INSERT INTO USER_AUTHORITY VALUES ('15', '5');
 INSERT INTO MEDICINSKA_SESTRA(korisnik_id, klinika_id, pocetak_radnog_vremena,  kraj_radnog_vremena) VALUES ('15', '1', '08:00', '20:00');
 
+
+INSERT INTO KORISNIK (adresa, email, ime, password, prezime, drzava, grad, telefon) VALUES ('lekariceva 13', 'lekarcic@gmail.com', 'Lekarcic', '$2a$10$feiotRqclqYZ7aJnytCDSedhWmzztzhuwyujbVfVucV4nbmMRNnwa', 'Lekaricccccacca',  'drzava', 'grad', 'telefon');
+INSERT INTO USER_AUTHORITY VALUES ('16', '2');
+INSERT INTO LEKAR(tip_pregleda_id, korisnik_id, klinika_id, pocetak_radnog_vremena,  kraj_radnog_vremena, ocena, aktivan) VALUES ('2', '16', '1', '08:00', '17:00', 2.1, true);
+
+
 INSERT INTO PREGLED (izvestaj, datum_pocetka, datum_zavrsetka, tip_pregleda_id, lekar_id, medicinska_sestra_id, sala_id, pacijent_id, popust, stanje, vrsta, datum_kreiranja) VALUES ('Odlicno ste bolesni', '2019-12-12 15:50:00', '2019-12-12 16:50:00', '2', '2', '2', '2', '1', '0', '2', '0', '2019-11-30');
 INSERT INTO PREGLED (izvestaj, datum_pocetka, datum_zavrsetka, tip_pregleda_id, lekar_id, medicinska_sestra_id, sala_id, pacijent_id, popust, stanje, vrsta, datum_kreiranja) VALUES ('Bit ces unet', '2019-12-27 15:50:00', '2019-12-27 16:50:00','1', '2', '1', '2', '2', '0', '2', '0', '2019-11-30');
 INSERT INTO PREGLED (izvestaj, datum_pocetka, datum_zavrsetka, tip_pregleda_id, lekar_id, medicinska_sestra_id, sala_id, pacijent_id, popust, stanje, vrsta, datum_kreiranja) VALUES ('Odlicno ste bolesni', '2019-11-12 15:51:00', '2019-11-12 16:51:00', '2', '2', '2', '2', '1', '0', '2', '0', '2019-11-6');
