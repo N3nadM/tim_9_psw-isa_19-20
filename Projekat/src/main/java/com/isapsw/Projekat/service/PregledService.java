@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.mail.MessagingException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -33,6 +34,9 @@ public class PregledService {
 
     @Autowired
     private PacijentRepository pacijentRepository;
+
+    @Autowired
+    private EmailService emailService;
 
     public Pregled getPregledById(Long id){
         return pregledRepository.findById(id).get();
@@ -216,7 +220,7 @@ public class PregledService {
         return pregledi;
     }
 
-    public Pregled sacuvajPregled(String pregledId, String salaId, String lekarId, String medSestraId, String termin) throws ParseException {
+    public Pregled sacuvajPregled(String pregledId, String salaId, String lekarId, String medSestraId, String termin) throws ParseException, MessagingException, InterruptedException {
 
         Date date = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss").parse(termin);
         Pregled pregled = pregledRepository.findById(Long.parseLong(pregledId)).get();
@@ -242,6 +246,12 @@ public class PregledService {
         if(!medicinskaSestra.getPregledi().contains(pregled)){
             medicinskaSestra.getPregledi().add(pregled);
         }
+
+        Klinika klinika = lekar.getKlinika();
+
+        emailService.sendOsobljePregledRezervacijaSale(lekar.getKorisnik().getEmail(), date, sala.getSalaIdentifier());
+        emailService.sendOsobljePregledRezervacijaSale(medicinskaSestra.getKorisnik().getEmail(), date, sala.getSalaIdentifier());
+        emailService.sendPacijentPregledRezervacijaSale(pregled.getPacijent().getKorisnik().getEmail(), date, klinika.getNaziv(), klinika.getAdresa(), sala.getSalaIdentifier());
 
         lekarRepository.save(lekar);
         medSestraRepository.save(medicinskaSestra);

@@ -5,6 +5,7 @@ import com.isapsw.Projekat.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.mail.MessagingException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -31,6 +32,9 @@ public class OperacijaService {
 
     @Autowired
     private MedSestraRepository medSestraRepository;
+
+    @Autowired
+   private EmailService emailService;
 
     public Operacija getOperacijaById(Long id){
         return operacijaRepository.findById(id).get();
@@ -157,7 +161,7 @@ public class OperacijaService {
         return operacijaRepository.operacijeKojeNemajuSalu(Long.parseLong(id));
     }
 
-    public Operacija sacuvajOperaciju(String operacijaId, String salaId, List<Integer> lekariId, String medSestraId, String termin) throws ParseException {
+    public Operacija sacuvajOperaciju(String operacijaId, String salaId, List<Integer> lekariId, String medSestraId, String termin) throws ParseException, MessagingException, InterruptedException {
 
         Date date = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss").parse(termin);
         Operacija operacija = operacijaRepository.findById(Long.parseLong(operacijaId)).get();
@@ -188,8 +192,15 @@ public class OperacijaService {
             if(!lekar.getOperacije().contains(operacija)){
                 lekar.getOperacije().add(operacija);
             }
+
+            emailService.sendOsobljeOperacijaRezervacijaSale(lekar.getKorisnik().getEmail(), date, sala.getSalaIdentifier());
             lekarRepository.save(lekar);
         }
+        Klinika klinika = medicinskaSestra.getKlinika();
+        System.out.println(klinika.getNaziv());
+
+        emailService.sendOsobljeOperacijaRezervacijaSale(medicinskaSestra.getKorisnik().getEmail(), date, sala.getSalaIdentifier());
+        emailService.sendPacijentOperacijaRezervacijaSale(operacija.getPacijent().getKorisnik().getEmail(), date, klinika.getNaziv(), klinika.getAdresa(), sala.getSalaIdentifier());
 
         medSestraRepository.save(medicinskaSestra);
         salaRepository.save(sala);

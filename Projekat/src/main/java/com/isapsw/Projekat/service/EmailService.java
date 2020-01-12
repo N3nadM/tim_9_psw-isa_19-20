@@ -1,5 +1,6 @@
 package com.isapsw.Projekat.service;
 
+import com.isapsw.Projekat.domain.Klinika;
 import com.isapsw.Projekat.domain.Zahtev;
 import com.isapsw.Projekat.repository.ZahtevRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
+import java.util.Date;
 
 @Service
 public class EmailService {
@@ -59,8 +61,74 @@ public class EmailService {
         mimeMessageHelper.setFrom("vesna.svrkota997@gmail.com");
 
         javaMailSender.send(message);
+    }
 
-        System.out.println("Email je poslat");
+    @Async
+    public void sendOsobljePregledRezervacijaSale(String email, Date termin, String nazivSale) throws MailException, InterruptedException, MessagingException {
+
+        MimeMessage message = javaMailSender.createMimeMessage();
+        MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(message, true);
+
+        message.setContent("<p>" + "Novi pregled je dodat u Vas radni kalendar:" + "<br/>" +
+                "Termin: " + termin.toString() + "<br/>" +
+                "Sala: " + nazivSale + "</p>", "text/html");
+        mimeMessageHelper.setTo("neskexx@gmail.com");
+        mimeMessageHelper.setSubject("Rezervisanje sale za Pregled");
+        mimeMessageHelper.setFrom("neskexx@gmail.com");
+
+        javaMailSender.send(message);
+    }
+
+    @Async
+    public void sendPacijentPregledRezervacijaSale(String email, Date termin, String nazivKlinike, String adresaKlinike, String nazivSale) throws MailException, InterruptedException, MessagingException {
+
+        MimeMessage message = javaMailSender.createMimeMessage();
+        MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(message, true);
+
+        message.setContent("<p>" + "Rezervisana je sala za Vas novi pregled:" + "<br/>" +
+                "Klinika: " + nazivKlinike + "<br/>" +
+                "Adresa klinike: " + adresaKlinike + "<br/>" +
+                "Termin: " + termin.toString() + "<br/>" +
+                "Sala: " + nazivSale + "</p>", "text/html");
+        mimeMessageHelper.setTo("neskexx@gmail.com");
+        mimeMessageHelper.setSubject("Rezervisanje sale za Pregled");
+        mimeMessageHelper.setFrom("neskexx@gmail.com");
+
+        javaMailSender.send(message);
+    }
+
+    @Async
+    public void sendOsobljeOperacijaRezervacijaSale(String email, Date termin, String nazivSale) throws MailException, InterruptedException, MessagingException {
+
+        MimeMessage message = javaMailSender.createMimeMessage();
+        MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(message, true);
+
+        message.setContent("<p>" + "Nova operacija je dodata u Vas radni kalendar:" + "<br/>" +
+                "Termin: " + termin.toString() + "<br/>" +
+                "Sala: " + nazivSale + "</p>", "text/html");
+        mimeMessageHelper.setTo("neskexx@gmail.com");
+        mimeMessageHelper.setSubject("Rezervisanje sale za Operaciju");
+        mimeMessageHelper.setFrom("neskexx@gmail.com");
+
+        javaMailSender.send(message);
+    }
+
+    @Async
+    public void sendPacijentOperacijaRezervacijaSale(String email, Date termin, String nazivKlinike, String adresaKlinike, String nazivSale) throws MailException, InterruptedException, MessagingException {
+
+        MimeMessage message = javaMailSender.createMimeMessage();
+        MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(message, true);
+
+        message.setContent("<p>" + "Rezervisana je sala za Vasu operaciju:" + "<br/>" +
+                "Klinika: " + nazivKlinike + "<br/>" +
+                "Adresa klinike: " + adresaKlinike + "<br/>" +
+                "Termin: " + termin.toString() + "<br/>" +
+                "Sala: " + nazivSale + "</p>", "text/html");
+        mimeMessageHelper.setTo("neskexx@gmail.com");
+        mimeMessageHelper.setSubject("Rezervisanje sale za Operaciju");
+        mimeMessageHelper.setFrom("neskexx@gmail.com");
+
+        javaMailSender.send(message);
     }
 
     @Async
