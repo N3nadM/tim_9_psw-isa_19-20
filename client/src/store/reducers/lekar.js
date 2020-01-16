@@ -16,7 +16,7 @@ const DEFAULT_STATE = {
   lekar: null,
   lekarList: null,
   addedLekar: null,
-  listaLekaraNaKlinici: null,
+  listaLekaraNaKlinici: [],
   lekarZaPregled: null,
   terminZaPregled: "",
   lekariZaBrisanje: null,

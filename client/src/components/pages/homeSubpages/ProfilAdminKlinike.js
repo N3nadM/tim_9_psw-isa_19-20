@@ -19,7 +19,7 @@ import PromeniLozinku from "../../Tabs/Korisnik/PromeniLozinku";
 import PrikazZahteva from "../../Tabs/ZahteviOdsustvoOdmor/PrikazZahteva";
 import Cenovnik from "../../Tabs/Cenovnik";
 import ZahteviPregledOperacija from "../../Tabs/PronalazenjeSale/ZahteviPregledOperacija";
-
+import CeoPrikaz from "../../Tabs/PrikazPodatakaPoslovanje/CeoPrikaz";
 const drawerWidth = 240;
 
 const useStyles = makeStyles(theme => ({
@@ -132,22 +132,7 @@ function ResponsiveDrawer(props) {
             {value === 7 && <TipoviPregledaTabs />}
           </TabPanel>
           <TabPanel value={value} index={8}>
-            <Grid container spacing={3}>
-              <Grid item xs>
-                <Paper className={classes.paper}>
-                  Prosecna ocena klinike i ocene lekara
-                </Paper>
-              </Grid>
-              <Grid item xs>
-                <Paper className={classes.paper}>Grafik prihoda klinike</Paper>
-              </Grid>
-              <Grid item xs>
-                <Paper className={classes.paper}>
-                  Grafici odrzanih pregleda na nedeljnom, mesecnom i godisnjem
-                  nivou
-                </Paper>
-              </Grid>
-            </Grid>
+            {value === 8 && <CeoPrikaz />}
           </TabPanel>
           <TabPanel value={value} index={9}>
             {value === 9 && <Cenovnik />}

@@ -270,4 +270,5 @@ public class KlinikaService {
 
         return ocenaKlinike;
     }
+
 }
