@@ -142,6 +142,17 @@ public class KlinikaController {
     }
 
 
+    @PostMapping("/prihod/{id}")
+    public ResponseEntity<Double> getPrihod(@PathVariable String id, @RequestBody Map<String,Object> body) {
+        try {
+            Double prihod = klinikaService.getUkupanPrihod(id, body.get("datumOd").toString(), body.get("datumDo").toString());
+            return new ResponseEntity<>(prihod, HttpStatus.OK);
+        }
+        catch(Exception e) {
+            System.out.println(e.getMessage());
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
+    }
 
 
 }

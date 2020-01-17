@@ -6,6 +6,8 @@ import com.isapsw.Projekat.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalTime;
 import java.time.ZoneId;
@@ -34,6 +36,9 @@ public class KlinikaService {
 
     @Autowired
     private OdsustvoRepository odsustvoRepository;
+
+    @Autowired
+    private OperacijaRepository operacijaRepository;
 
     public List<Klinika> getAllKlinike() {
         return klinikaRepository.findAll();
@@ -269,6 +274,20 @@ public class KlinikaService {
         klinikaRepository.save(klinika);
 
         return ocenaKlinike;
+    }
+
+    public Double getUkupanPrihod(String id, String datumOd, String datumDo) throws ParseException {
+        Klinika klinika = klinikaRepository.findKlinikaById(Long.parseLong(id));
+        Double prihod = 0.0;
+        Date datum1 = Date.from(Instant.parse(datumOd));
+        Date datum2 = Date.from(Instant.parse(datumDo));
+        for(TipPregleda tipPregleda: klinika.getTipPregleda()){
+            List<Pregled> pregleds = pregledRepository.zaRacunanjePrihoda(tipPregleda.getId(), datum1, datum2);
+            List<Operacija> operacijas = operacijaRepository.zaRacunanjePrihoda(tipPregleda.getId(), datum1, datum2);
+            prihod += pregleds.size() * tipPregleda.getCenaPregleda();
+            prihod += operacijas.size() * tipPregleda.getCenaOperacije();
+        }
+        return prihod;
     }
 
 }

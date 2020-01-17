@@ -63,4 +63,7 @@ public interface PregledRepository extends JpaRepository<Pregled, Long> {
     @Query("SELECT DISTINCT p FROM Pregled p WHERE p.lekar.klinika.id = :idKlinika AND p.sala is null AND p.datumPocetka > current_date ")
     List<Pregled> preglediKojiNemajuSalu(@Param("idKlinika") Long idKlinika);
 
+    @Query("SELECT DISTINCT p FROM Pregled p WHERE p.tipPregleda.id = :idTip AND p.datumPocetka BETWEEN :datumOd AND :datumDo")
+    List<Pregled> zaRacunanjePrihoda(@Param("idTip") Long idTip, @Param("datumOd") Date datumOd, @Param("datumDo") Date datumDo);
+
 }

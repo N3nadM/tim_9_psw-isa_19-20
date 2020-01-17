@@ -4,6 +4,7 @@ import { Paper, Grid } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import ProsecnaOcenaKlinike from "../PrikazPodatakaPoslovanje/ProsecnaOcenaKlinike";
 import ProsecneOceneLekara from "../PrikazPodatakaPoslovanje/ProsecneOceneLekara";
+import RacunanjePrihoda from "../PrikazPodatakaPoslovanje/RacunanjePrihoda";
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -17,14 +18,16 @@ const CeoPrikaz = ({ adminKlinike: { klinika } }) => {
   const classes = useStyles();
   return (
     <Grid container spacing={3}>
-      <Grid item>
+      <Grid item xs={12}>
         <Paper className={classes.paper}>
           <ProsecnaOcenaKlinike />
           <ProsecneOceneLekara klinika={klinika} />
         </Paper>
       </Grid>
       <Grid item xs>
-        <Paper className={classes.paper}>Grafik prihoda klinike</Paper>
+        <Paper className={classes.paper}>
+          <RacunanjePrihoda klinika={klinika} />
+        </Paper>
       </Grid>
       <Grid item xs>
         <Paper className={classes.paper}>
