@@ -15,14 +15,12 @@ import Tooltip from "@material-ui/core/Tooltip";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Switch from "@material-ui/core/Switch";
 import FilterListIcon from "@material-ui/icons/FilterList";
-import Button from "@material-ui/core/Button";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
-import TextField from "@material-ui/core/TextField";
-import KalendarSala from "../BrzoZakazivanjePregleda/KalendarSala";
-
+import { getOperacijePronalazenjeSale } from "../../../store/actions/operacija";
 import { getListaDostupnihSala } from "../../../store/actions/sala";
-import { setSalaZaPregled } from "../../../store/actions/sala";
+import { Button } from "@material-ui/core";
+import { setTerminO, setTerminP } from "../../../store/actions/lekar";
 
 function desc(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -62,7 +60,7 @@ const EnhancedTableToolbar = () => {
   return (
     <Toolbar>
       <Typography className={classes.title} variant="h6" id="tableTitle">
-        Sale
+        Zahtevi za pronalazenje sale za operacije
       </Typography>
 
       <Tooltip title="Filter list">
@@ -105,33 +103,19 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const PretragaSalaTab = ({
-  sale,
+const PrikazZahtevaOperacije = ({
+  klinika,
+  operacije,
+  getOperacijePronalazenjeSale,
+  history,
   getListaDostupnihSala,
-  klinikaId,
-  terminZaPregled,
-  trajanje,
-  setSalaZaPregled,
-  termin2,
-  terminZaOperaciju
+  setTerminO,
+  setTerminP
 }) => {
   useEffect(() => {
-    {
-      terminZaPregled !== "" &&
-        terminZaOperaciju === "" &&
-        getListaDostupnihSala(klinikaId, terminZaPregled, trajanje);
-    }
-    {
-      terminZaOperaciju !== "" &&
-        terminZaPregled === "" &&
-        getListaDostupnihSala(klinikaId, terminZaOperaciju, trajanje);
-    }
-    {
-      terminZaPregled === "" &&
-        terminZaOperaciju === "" &&
-        getListaDostupnihSala(klinikaId, termin2, trajanje);
-    }
-    //eslint-disable-next-line
+    getOperacijePronalazenjeSale(klinika.id);
+    setTerminO("");
+    setTerminP("");
   }, []);
 
   const classes = useStyles();
@@ -141,12 +125,6 @@ const PretragaSalaTab = ({
   const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
-
-  const [state, setState] = React.useState({
-    broj: "",
-    naziv: "",
-    termin: ""
-  });
 
   const handleRequestSort = (property, event) => {
     const isDesc = orderBy === property && order === "desc";
@@ -167,80 +145,89 @@ const PretragaSalaTab = ({
     setDense(event.target.checked);
   };
 
+  const handleClick = operacija => {
+    getListaDostupnihSala(
+      klinika.id,
+      operacija.datumPocetka,
+      operacija.tipPregleda.minimalnoTrajanjeMin
+    );
+  };
+
   return (
-    <div className={classes.root}>
-      <Paper className={classes.paper}>
-        <EnhancedTableToolbar />
-        <div className={classes.tableWrapper}>
-          <Table
-            className={classes.table}
-            aria-labelledby="tableTitle"
-            size={dense ? "small" : "medium"}
-            aria-label="enhanced table"
-          >
-            <TableHead>
-              <TableRow>
-                <TableCell align="left">
-                  <TableSortLabel
-                    active={orderBy === "sala.salaIdentifier"}
-                    direction={order}
-                    onClick={() => handleRequestSort("sala.salaIdentifier")}
-                  >
-                    Broj sale
-                  </TableSortLabel>
-                </TableCell>
-                <TableCell align="left">
-                  <TableSortLabel
-                    active={orderBy === "sala.naziv"}
-                    direction={order}
-                    onClick={() => handleRequestSort("sala.naziv")}
-                  >
-                    Naziv sale
-                  </TableSortLabel>
-                </TableCell>
-                <TableCell align="right"></TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {sale &&
-                stableSort(sale, getSorting(order, orderBy))
-                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                  .map((row, index) => {
-                    return (
-                      <TableRow
-                        hover
-                        role="checkbox"
-                        tabIndex={-1}
-                        key={row.id}
-                      >
-                        <TableCell component="th" allign="left">
-                          {row.salaIdentifier}
-                        </TableCell>
-                        <TableCell align="left">{row.naziv}</TableCell>
-                        <TableCell align="right">
-                          <KalendarSala salaId={row.id} />
-                        </TableCell>
-                        <TableCell align="right">
-                          <Button
-                            variant="contained"
-                            color="primary"
-                            name={row.id}
-                            label="Rezervisi"
-                            className={classes.submit}
-                            onClick={() => {
-                              setSalaZaPregled(row.id);
-                              setState({ ...state, broj: row.salaIdentifier });
-                            }}
-                          >
-                            Rezervisi
-                          </Button>
-                        </TableCell>
-                      </TableRow>
-                    );
-                  })}
-              {sale &&
-                rowsPerPage -
-                  Math.min(rowsPerPage, sale.length - page * rowsPerPage) >
+    <>
+      {!operacije && (
+        <div>Trenutno nema novih zahteva za pronalazenje sale.</div>
+      )}
+      {operacije && !!operacije.length && (
+        <Paper className={classes.paper}>
+          <EnhancedTableToolbar />
+          <div className={classes.tableWrapper}>
+            <Table
+              className={classes.table}
+              aria-labelledby="tableTitle"
+              size={dense ? "small" : "medium"}
+              aria-label="enhanced table"
+            >
+              <TableHead>
+                <TableRow>
+                  <TableCell align="left">
+                    <TableSortLabel
+                      active={orderBy === "korisnik.prezime"}
+                      direction={order}
+                      onClick={() => handleRequestSort("korisnik.prezime")}
+                    >
+                      Pacijent
+                    </TableSortLabel>
+                  </TableCell>
+                  <TableCell align="left">
+                    <TableSortLabel
+                      active={orderBy === "korisnik.email"}
+                      direction={order}
+                      onClick={() => handleRequestSort("korisnik.email")}
+                    >
+                      Datum
+                    </TableSortLabel>
+                  </TableCell>
+                  <TableCell align="right"></TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {operacije &&
+                  stableSort(operacije, getSorting(order, orderBy))
+                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                    .map((row, index) => {
+                      return (
+                        <TableRow
+                          hover
+                          role="checkbox"
+                          tabIndex={-1}
+                          key={row.id}
+                        >
+                          <TableCell component="th" align="left">
+                            {row.pacijent.korisnik.ime +
+                              " " +
+                              row.pacijent.korisnik.prezime}
+                          </TableCell>
+                          <TableCell align="left">{row.datumPocetka}</TableCell>
+                          <TableCell align="left">
+                            <Button
+                              variant="contained"
+                              color="primary"
+                              onClick={() => {
+                                handleClick(row);
+                                history.push({
+                                  pathname: `/operacija/${row.id}`
+                                });
+                              }}
+                            >
+                              Detalji
+                            </Button>
+                          </TableCell>
+                        </TableRow>
+                      );
+                    })}
+                {rowsPerPage -
+                  Math.min(rowsPerPage, operacije.length - page * rowsPerPage) >
                   0 && (
                   <TableRow
                     style={{
@@ -249,21 +236,20 @@ const PretragaSalaTab = ({
                         (rowsPerPage -
                           Math.min(
                             rowsPerPage,
-                            sale.length - page * rowsPerPage
+                            operacije.length - page * rowsPerPage
                           ))
                     }}
                   >
                     <TableCell colSpan={6} />
                   </TableRow>
                 )}
-            </TableBody>
-          </Table>
-        </div>
-        {sale && (
+              </TableBody>
+            </Table>
+          </div>
           <TablePagination
             rowsPerPageOptions={[5, 10, 25]}
             component="div"
-            count={sale.length}
+            count={operacije.length}
             rowsPerPage={rowsPerPage}
             page={page}
             backIconButtonProps={{
@@ -275,36 +261,26 @@ const PretragaSalaTab = ({
             onChangePage={handleChangePage}
             onChangeRowsPerPage={handleChangeRowsPerPage}
           />
-        )}
-        <TextField
-          variant="outlined"
-          margin="normal"
-          required
-          value={state.broj}
-          fullWidth
-          id="iza"
-          label="Izabrana sala"
-          name="lekar"
-          autoComplete="off"
-        />
-      </Paper>
+        </Paper>
+      )}
       <FormControlLabel
         control={<Switch checked={dense} onChange={handleChangeDense} />}
         label="Smanji pading"
       />
-    </div>
+    </>
   );
 };
 
 const mapStateToProps = state => ({
-  sale: state.sala.listaDostupnihSala,
-  terminZaPregled: state.lekar.terminZaPregled,
-  terminZaOperaciju: state.lekar.terminZaOperaciju
+  klinika: state.adminKlinike.klinika,
+  operacije: state.operacija.operacijePronalazenjeSale
 });
 
 export default withRouter(
   connect(mapStateToProps, {
+    getOperacijePronalazenjeSale,
     getListaDostupnihSala,
-    setSalaZaPregled
-  })(PretragaSalaTab)
+    setTerminO,
+    setTerminP
+  })(PrikazZahtevaOperacije)
 );

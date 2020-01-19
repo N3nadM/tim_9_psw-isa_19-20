@@ -9,7 +9,8 @@ import {
   SET_TERMIN_ZA_PREGLED,
   SET_LEKARI_KOJI_SE_MOGU_OBRISATI,
   SET_OBRISAN_LEKAR,
-  SET_TERMIN_ZA_OPERACIJU
+  SET_TERMIN_ZA_OPERACIJU,
+  SET_LEKARI_ZA_OPERACIJU
 } from "../actionTypes";
 
 const DEFAULT_STATE = {
@@ -21,7 +22,8 @@ const DEFAULT_STATE = {
   terminZaPregled: "",
   lekariZaBrisanje: null,
   obrisanLekar: null,
-  terminZaOperaciju: ""
+  terminZaOperaciju: "",
+  lekariZaOperaciju: []
 };
 
 export default (state = DEFAULT_STATE, action) => {
@@ -85,6 +87,11 @@ export default (state = DEFAULT_STATE, action) => {
       return {
         ...state,
         terminZaOperaciju: action.terminZaOperaciju
+      };
+    case SET_LEKARI_ZA_OPERACIJU:
+      return {
+        ...state,
+        lekariZaOperaciju: action.lekariZaOperaciju
       };
     default:
       return state;

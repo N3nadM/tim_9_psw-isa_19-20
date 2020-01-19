@@ -38,6 +38,16 @@ public class PregledController {
         }
     }
 
+    @GetMapping("/zahtev/{id}")
+    public ResponseEntity<Pregled> getPregledById(@PathVariable String id) {
+        try {
+            Pregled pregled = pregledService.getPregledById(Long.parseLong(id));
+            return new ResponseEntity<>(pregled, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
+    }
+
     @GetMapping("/osoblje/{id}")
     public ResponseEntity<List<Pregled>> getPregledByLekarId(@PathVariable String id) {
         try {
@@ -179,6 +189,26 @@ public class PregledController {
         }
         catch(Exception e) {
             System.out.println(e.getMessage());
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("/nemajuSalu/{id}")
+    public ResponseEntity<List<Pregled>> getPreglediKojiNemajuSalu(@PathVariable String id) {
+        try {
+            return new ResponseEntity<List<Pregled>>(pregledService.getPreglediKojiNemajuSalu(id), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PostMapping("/sacuvajSalu")
+    public ResponseEntity<Pregled> sacuvajSalu(@RequestBody Map<String,Object> body) {
+        try {
+
+            return new ResponseEntity<Pregled>(pregledService.sacuvajPregled(body.get("pregledId").toString(), body.get("salaId").toString(), body.get("lekarId").toString(), body.get("medSestraId").toString(), body.get("termin").toString()), HttpStatus.OK);
+        } catch (Exception e) {
+            System.out.println(e);
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
     }

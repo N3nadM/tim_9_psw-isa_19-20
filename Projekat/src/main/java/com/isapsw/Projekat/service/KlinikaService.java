@@ -6,6 +6,8 @@ import com.isapsw.Projekat.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalTime;
 import java.time.ZoneId;
@@ -169,7 +171,16 @@ public class KlinikaService {
         if(!datum.isEmpty()) {
             lekarRepository.findLekarsByKlinikaId(klinika.getId()).forEach(lekar -> {
 
-                Date zaProveru = Date.from(Instant.parse(datum));
+                Date zaProveru = new  Date();
+                if(String.valueOf(datum.charAt(10)).equals(" ")){
+                    try {
+                        zaProveru =  new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(datum);
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                }else{
+                    zaProveru = Date.from(Instant.parse(datum));
+                }
                 Calendar cal = Calendar.getInstance();
                 cal.setTime(zaProveru);
                 cal.set(Calendar.HOUR_OF_DAY, 0);
@@ -180,13 +191,14 @@ public class KlinikaService {
                 if(lekar.getTipPregleda().getNaziv().equals(tip) && odmorRepository.proveraZaLekara(lekar.getId(),zaProveru)==null && odsustvoRepository.proveraZaLekara(lekar.getId(), zaProveru2)==null) {
                     lekar.getPregledi().sort((p, k) -> p.getDatumPocetka().after(k.getDatumPocetka()) ? 1 : -1);
                     List<Pregled> preglediIstogDanaJednogLekara = new ArrayList<>();
-                    Date pocetak = makeDateFromDateAndTime(Date.from(Instant.parse(datum)),lekar.getPocetakRadnogVremena());
-                    Date kraj = makeDateFromDateAndTime(Date.from(Instant.parse(datum)),lekar.getKrajRadnogVremena());
+                    Date finalZaProveru = zaProveru;
+                    Date pocetak = makeDateFromDateAndTime(zaProveru,lekar.getPocetakRadnogVremena());
+                    Date kraj = makeDateFromDateAndTime(zaProveru,lekar.getKrajRadnogVremena());
 
                     lekar.getPregledi().forEach(pregled -> {
-                        if (compareDatesOnly(Date.from(Instant.parse(datum)), pregled.getDatumPocetka())) {
-                            preglediIstogDanaJednogLekara.add(pregled);
-                        }
+                            if (compareDatesOnly(finalZaProveru, pregled.getDatumPocetka())) {
+                                preglediIstogDanaJednogLekara.add(pregled);
+                            }
                     });
                     //Ako nema zakazanih pregleda za taj dan dodaj lekara u listu
                     if(preglediIstogDanaJednogLekara.size() == 0) {

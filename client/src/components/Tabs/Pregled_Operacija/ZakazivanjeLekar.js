@@ -97,6 +97,7 @@ const PregledOperacijaTab = ({
   const theme = useTheme();
   const [value, setValue] = React.useState(0);
   const [disabled, setDisabled] = React.useState(false);
+  const [disabled2, setDisabled2] = React.useState(false);
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
@@ -105,7 +106,6 @@ const PregledOperacijaTab = ({
     e.preventDefault();
     setDisabled(true);
     stanjeZaPregled.datum = terminZaPregled;
-    console.log(stanjeZaPregled);
     const resp = await Axios.post(
       "/api/pregled/zakaziPregledByLekar",
       stanjeZaPregled
@@ -115,8 +115,8 @@ const PregledOperacijaTab = ({
 
   const handleSubmit2 = async e => {
     e.preventDefault();
+    setDisabled2(true);
     stanjeZaOperaciju.datum = terminZaOperaciju;
-    console.log(stanjeZaOperaciju);
     const resp = await Axios.post(
       "/api/operacija/zakaziOperacijaByLekar",
       stanjeZaOperaciju
@@ -128,7 +128,6 @@ const PregledOperacijaTab = ({
   const [open2, setOpen2] = React.useState(false);
 
   const handleClose = () => {
-    console.log(disabled);
     setOpen(false);
     setOpen2(false);
   };
@@ -213,7 +212,7 @@ const PregledOperacijaTab = ({
           </Grid>
           <Button
             variant="contained"
-            disabled={terminZaPregled === ""}
+            disabled={terminZaPregled === "" || disabled}
             style={{ marginTop: 18, marginLeft: 10 }}
             color="primary"
             onClick={handleSubmit}
@@ -266,7 +265,7 @@ const PregledOperacijaTab = ({
         </MuiPickersUtilsProvider>
         <Button
           variant="contained"
-          disabled={terminZaOperaciju === "" || disabled}
+          disabled={terminZaOperaciju === "" || disabled2}
           style={{ marginTop: 18, marginLeft: 10 }}
           color="primary"
           onClick={handleSubmit2}

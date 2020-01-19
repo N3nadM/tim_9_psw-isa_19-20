@@ -8,17 +8,17 @@ import TableHead from "@material-ui/core/TableHead";
 import TablePagination from "@material-ui/core/TablePagination";
 import TableRow from "@material-ui/core/TableRow";
 import TableSortLabel from "@material-ui/core/TableSortLabel";
-
+import Button from "@material-ui/core/Button";
 import Paper from "@material-ui/core/Paper";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
+import Axios from "axios";
 import {
   getLekariKlinike,
-  setLekarZaPregled,
-  setLekarZakazivanje
+  setLekarZakazivanje,
+  setLekariZaOperaciju
 } from "../../../store/actions/lekar";
-import Dijalog from "../../Tabs/BrzoZakazivanjePregleda/Dijalog";
-import { Button } from "@material-ui/core";
+import Checkbox from "@material-ui/core/Checkbox";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -57,8 +57,7 @@ const PretragaSlobodniLekara = ({
   idKlinike,
   lekari,
   lekar,
-  setLekarZakazivanje,
-  setIzbor
+  setLekariZaOperaciju
 }) => {
   useEffect(() => {
     getLekariKlinike(idKlinike, stariState);
@@ -71,6 +70,9 @@ const PretragaSlobodniLekara = ({
 
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [state, setState] = React.useState({
+    selektovaniLekari: []
+  });
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -109,6 +111,22 @@ const PretragaSlobodniLekara = ({
     const isDesc = orderBy === property && order === "desc";
     setOrder(isDesc ? "asc" : "desc");
     setOrderBy(property);
+  };
+  const handleCheck = (event, id) => {
+    var index = state.selektovaniLekari.indexOf(id);
+    console.log("id:" + id);
+    console.log("index" + index);
+    if (index > -1) {
+      state.selektovaniLekari.splice(index, 1);
+    } else {
+      state.selektovaniLekari.push(id);
+    }
+    console.log("selektovani: " + state.selektovaniLekari);
+  };
+
+  const handleSubmit = async e => {
+    e.preventDefault();
+    setLekariZaOperaciju(state.selektovaniLekari);
   };
 
   return (
@@ -162,32 +180,6 @@ const PretragaSlobodniLekara = ({
                     .map((row, index) => {
                       return (
                         <>
-                          {!lekar && (
-                            <TableRow
-                              hover
-                              role="checkbox"
-                              tabIndex={-1}
-                              key={row.korisnik.id}
-                            >
-                              <TableCell component="th" allign="left">
-                                {row.korisnik.ime}
-                              </TableCell>
-                              <TableCell align="left">
-                                {row.korisnik.prezime}
-                              </TableCell>
-                              <TableCell align="left">{row.ocena}</TableCell>
-
-                              <TableCell align="right">
-                                <Dijalog
-                                  id={row.id}
-                                  datum={
-                                    !stariState.datum ? "" : stariState.datum
-                                  }
-                                  lekar={row}
-                                />
-                              </TableCell>
-                            </TableRow>
-                          )}
                           {lekar && lekar.id !== row.id && (
                             <TableRow
                               hover
@@ -204,16 +196,13 @@ const PretragaSlobodniLekara = ({
                               <TableCell align="left">{row.ocena}</TableCell>
 
                               <TableCell align="right">
-                                <Button
-                                  variant="contained"
-                                  color="primary"
-                                  onClick={e => {
-                                    setLekarZakazivanje(row, "");
-                                    setIzbor(0);
+                                <Checkbox
+                                  key={row.id}
+                                  onChange={e => handleCheck(e, row.id)}
+                                  inputProps={{
+                                    "aria-label": "primary checkbox"
                                   }}
-                                >
-                                  Izaberi lekara
-                                </Button>
+                                />
                               </TableCell>
                             </TableRow>
                           )}
@@ -239,6 +228,9 @@ const PretragaSlobodniLekara = ({
                 )}
               </TableBody>
             </Table>
+            <Button variant="contained" color="primary" onClick={handleSubmit}>
+              Prihvati
+            </Button>
           </div>
           <TablePagination
             rowsPerPageOptions={[5, 10, 25]}
@@ -262,12 +254,14 @@ const PretragaSlobodniLekara = ({
 };
 
 const mapStateToProps = state => ({
-  lekari: state.lekar.lekarList
+  lekari: state.lekar.lekarList,
+  lekariZaOperaciju: state.lekar.lekariZaOperaciju
 });
 
 export default withRouter(
   connect(mapStateToProps, {
     getLekariKlinike,
-    setLekarZakazivanje
+    setLekarZakazivanje,
+    setLekariZaOperaciju
   })(PretragaSlobodniLekara)
 );

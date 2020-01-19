@@ -39,6 +39,16 @@ public class OperacijaController {
         }
     }
 
+    @GetMapping("/zahtev/{id}")
+    public ResponseEntity<Operacija> getOperacijaById(@PathVariable String id) {
+        try {
+            Operacija operacija = operacijaService.getOperacijaById(Long.parseLong(id));
+            return new ResponseEntity<>(operacija, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
+    }
+
     @GetMapping("/osoblje/{id}")
     public ResponseEntity<List<Operacija>> findOperacijeByLekarId(@PathVariable String id) {
         try {
@@ -124,6 +134,26 @@ public class OperacijaController {
         }
         catch(Exception e) {
             System.out.println(e.getMessage());
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
+    }
+    @GetMapping("/nemajuSalu/{id}")
+    public ResponseEntity<List<Operacija>> findOperacijeKojeNemajuSalu(@PathVariable String id) {
+        try {
+            return new ResponseEntity<List<Operacija>>(operacijaService.operacijeKojeNemajuSalu(id), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PostMapping("/sacuvajSalu")
+    public ResponseEntity<Operacija> sacuvajSalu(@RequestBody Map<String,Object> body) {
+        try {
+            List<Integer> lekari = new ArrayList<>((List) body.get("lekariId"));
+
+            return new ResponseEntity<Operacija>(operacijaService.sacuvajOperaciju(body.get("operacijaId").toString(), body.get("salaId").toString(), lekari, body.get("medSestraId").toString(), body.get("termin").toString()), HttpStatus.OK);
+        } catch (Exception e) {
+            System.out.println(e);
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
     }

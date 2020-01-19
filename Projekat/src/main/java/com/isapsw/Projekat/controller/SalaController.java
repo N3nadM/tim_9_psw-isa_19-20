@@ -42,6 +42,7 @@ public class SalaController {
         try{
             return  new ResponseEntity<List<Sala>>(salaService.getDostupneSale(id, termin, trajanje), HttpStatus.OK);
         }catch(Exception e){
+            System.out.println(e.getMessage());
             return  new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
