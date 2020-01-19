@@ -9,7 +9,8 @@ import {
   SET_TERMIN_ZA_PREGLED,
   SET_LEKARI_KOJI_SE_MOGU_OBRISATI,
   SET_OBRISAN_LEKAR,
-  SET_TERMIN_ZA_OPERACIJU
+  SET_TERMIN_ZA_OPERACIJU,
+  SET_LEKARI_ZA_OPERACIJU
 } from "../actionTypes";
 import axios from "axios";
 import { setRealKorisnik } from "./auth";
@@ -17,6 +18,11 @@ import { setRealKorisnik } from "./auth";
 export const setProfile = lekar => ({
   type: SET_LEKAR_PROFILE,
   lekar
+});
+
+export const setLekariZaOperaciju = lekariZaOperaciju => ({
+  type: SET_LEKARI_ZA_OPERACIJU,
+  lekariZaOperaciju
 });
 
 export const setNewLekarKorisnik = korisnik => ({
@@ -61,11 +67,20 @@ export const setTerminZaOperaciju = terminZaOperaciju => ({
   terminZaOperaciju
 });
 
-export const getLekar = id => async (dispatch, getState) => {
+export const getLekar = id => async dispatch => {
   try {
     const lekar = await axios.get(`/api/lekar/${id}`);
     dispatch(setRealKorisnik(lekar.data.korisnik));
     dispatch(setProfile(lekar.data));
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const getLekarById = id => async (dispatch, getState) => {
+  try {
+    const lekar = await axios.get(`/api/lekar/byId/${id}`);
+    dispatch(setLekariZaOperaciju(lekar.data));
   } catch (err) {
     console.log(err);
   }
@@ -175,6 +190,31 @@ export const setLekarZakazivanjeOperacija = (
   try {
     dispatch(setLekarZaPregled(lekar));
     dispatch(setTerminZaOperaciju(termin));
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const setTerminP = id => async dispatch => {
+  try {
+    dispatch(setTerminZaPregled(id));
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const setTerminO = id => async dispatch => {
+  try {
+    dispatch(setTerminZaOperaciju(id));
+  } catch (err) {
+    console.log(err);
+  }
+};
+export const ispraviListuLekara = (lista, lekar) => dispatch => {
+  try {
+    console.log("uslo");
+    const list = lista.filter(l => l.id !== lekar.id);
+    dispatch(setLekariKlinike(list));
   } catch (err) {
     console.log(err);
   }

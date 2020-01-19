@@ -201,4 +201,15 @@ public class PregledController {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
     }
+
+    @PostMapping("/sacuvajSalu")
+    public ResponseEntity<Pregled> sacuvajSalu(@RequestBody Map<String,Object> body) {
+        try {
+
+            return new ResponseEntity<Pregled>(pregledService.sacuvajPregled(body.get("pregledId").toString(), body.get("salaId").toString(), body.get("lekarId").toString(), body.get("medSestraId").toString(), body.get("termin").toString()), HttpStatus.OK);
+        } catch (Exception e) {
+            System.out.println(e);
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
+    }
 }

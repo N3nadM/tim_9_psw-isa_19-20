@@ -111,10 +111,26 @@ const PretragaSalaTab = ({
   klinikaId,
   terminZaPregled,
   trajanje,
-  setSalaZaPregled
+  setSalaZaPregled,
+  termin2,
+  terminZaOperaciju
 }) => {
   useEffect(() => {
-    getListaDostupnihSala(klinikaId, terminZaPregled, trajanje);
+    {
+      terminZaPregled !== "" &&
+        terminZaOperaciju === "" &&
+        getListaDostupnihSala(klinikaId, terminZaPregled, trajanje);
+    }
+    {
+      terminZaOperaciju !== "" &&
+        terminZaPregled === "" &&
+        getListaDostupnihSala(klinikaId, terminZaOperaciju, trajanje);
+    }
+    {
+      terminZaPregled === "" &&
+        terminZaOperaciju === "" &&
+        getListaDostupnihSala(klinikaId, termin2, trajanje);
+    }
     //eslint-disable-next-line
   }, []);
 
@@ -282,7 +298,8 @@ const PretragaSalaTab = ({
 
 const mapStateToProps = state => ({
   sale: state.sala.listaDostupnihSala,
-  terminZaPregled: state.lekar.terminZaPregled
+  terminZaPregled: state.lekar.terminZaPregled,
+  terminZaOperaciju: state.lekar.terminZaOperaciju
 });
 
 export default withRouter(

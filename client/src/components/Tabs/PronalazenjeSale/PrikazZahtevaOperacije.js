@@ -18,7 +18,9 @@ import FilterListIcon from "@material-ui/icons/FilterList";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import { getOperacijePronalazenjeSale } from "../../../store/actions/operacija";
+import { getListaDostupnihSala } from "../../../store/actions/sala";
 import { Button } from "@material-ui/core";
+import { setTerminO, setTerminP } from "../../../store/actions/lekar";
 
 function desc(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -105,10 +107,15 @@ const PrikazZahtevaOperacije = ({
   klinika,
   operacije,
   getOperacijePronalazenjeSale,
-  history
+  history,
+  getListaDostupnihSala,
+  setTerminO,
+  setTerminP
 }) => {
   useEffect(() => {
     getOperacijePronalazenjeSale(klinika.id);
+    setTerminO("");
+    setTerminP("");
   }, []);
 
   const classes = useStyles();
@@ -136,6 +143,14 @@ const PrikazZahtevaOperacije = ({
 
   const handleChangeDense = event => {
     setDense(event.target.checked);
+  };
+
+  const handleClick = operacija => {
+    getListaDostupnihSala(
+      klinika.id,
+      operacija.datumPocetka,
+      operacija.tipPregleda.minimalnoTrajanjeMin
+    );
   };
 
   return (
@@ -199,6 +214,7 @@ const PrikazZahtevaOperacije = ({
                               variant="contained"
                               color="primary"
                               onClick={() => {
+                                handleClick(row);
                                 history.push({
                                   pathname: `/operacija/${row.id}`
                                 });
@@ -262,6 +278,9 @@ const mapStateToProps = state => ({
 
 export default withRouter(
   connect(mapStateToProps, {
-    getOperacijePronalazenjeSale
+    getOperacijePronalazenjeSale,
+    getListaDostupnihSala,
+    setTerminO,
+    setTerminP
   })(PrikazZahtevaOperacije)
 );
