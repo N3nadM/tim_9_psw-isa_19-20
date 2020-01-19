@@ -1,7 +1,8 @@
 import {
   SET_ALL_ADMINK,
   SET_ADDED_ADMINK,
-  SET_ADMINOVA_KLINIKA
+  SET_ADMINOVA_KLINIKA,
+  SET_GRAFIK
 } from "../actionTypes";
 import axios from "axios";
 
@@ -18,6 +19,10 @@ export const setNewAdmin = newAdmin => ({
 export const setAdminovaKlinika = klinika => ({
   type: SET_ADMINOVA_KLINIKA,
   klinika
+});
+export const setPodaciGrafik = podaciGrafik => ({
+  type: SET_GRAFIK,
+  podaciGrafik
 });
 
 export const getAllAdmins = (sum, rpp) => async dispatch => {
@@ -55,3 +60,20 @@ export const editKlinika = klinika => async dispatch => {
     console.log(err);
   }
 };
+
+export const getPodaciGrafik = (period, id) => async dispatch => {
+  try {
+    console.log("pozvao");
+    const resp = await axios.get(`/api/klinika/grafik/${period}/${id}`);
+    const data = [];
+    for (const entry of Object.entries(resp.data)) {
+      data.push(createData(entry[0], entry[1]));
+    }
+    dispatch(setPodaciGrafik(data));
+  } catch (err) {
+    console.log(err);
+  }
+};
+function createData(time, amount) {
+  return { time, amount };
+}

@@ -152,10 +152,34 @@ public class KlinikaController {
         }
     }
 
-    @PostMapping("/grafik/Dan/{id}")
+    @GetMapping("/grafik/Dan/{id}")
     public ResponseEntity<HashMap<String, Integer>> zaGrafikDan(@PathVariable String id) {
         try {
             HashMap<String,Integer> podaci = klinikaService.preglediGrafikDan(id);
+            return new ResponseEntity<>(podaci, HttpStatus.OK);
+        }
+        catch(Exception e) {
+            System.out.println(e.getMessage());
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("/grafik/Nedelja/{id}")
+    public ResponseEntity<HashMap<String, Integer>> zaGrafikNedelja(@PathVariable String id) {
+        try {
+            HashMap<String,Integer> podaci = klinikaService.preglediGrafikNedelja(id);
+            return new ResponseEntity<>(podaci, HttpStatus.OK);
+        }
+        catch(Exception e) {
+            System.out.println(e.getMessage());
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("/grafik/Mesec/{id}")
+    public ResponseEntity<HashMap<String, Integer>> zaGrafikMesec(@PathVariable String id) {
+        try {
+            HashMap<String,Integer> podaci = klinikaService.preglediGrafikMesec(id);
             return new ResponseEntity<>(podaci, HttpStatus.OK);
         }
         catch(Exception e) {

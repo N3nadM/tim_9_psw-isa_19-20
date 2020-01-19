@@ -1,54 +1,30 @@
 import React, { useEffect } from "react";
 import { useTheme } from "@material-ui/core/styles";
-import {
-  LineChart,
-  Line,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  ResponsiveContainer
-} from "recharts";
+import { LineChart, Line, XAxis, YAxis, CartesianGrid } from "recharts";
 import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import { connect } from "react-redux";
-import Axios from "axios";
+import { getPodaciGrafik } from "../../../store/actions/adminKlinike";
 
-// Generate Sales Data
-function createData(time, amount) {
-  return { time, amount };
-}
-
-const Chart = ({ klinika }) => {
+const Chart = ({ klinika, podaci, getPodaciGrafik }) => {
   useEffect(() => {
-    handleClick("Dan");
+    getPodaciGrafik("Dan", klinika.id);
   }, []);
-  let data = [];
 
-  const handleClick = async period => {
-    const resp = await Axios.post(
-      `/api/klinika/grafik/${period}/${klinika.id}`
-    );
-    promeniPodatke(resp.data);
-  };
   const handleChange = e => {
-    handleClick(e.target.value);
+    setState({
+      ...state,
+      [e.target.name]: e.target.value
+    });
+    getPodaciGrafik(e.target.value, klinika.id);
   };
-  const promeniPodatke = d => {
-    data = [];
-    for (const entry of Object.entries(d)) {
-      data.push(createData(entry[0], entry[1]));
-    }
-    console.log(data);
-    state.kljuc = Math.random();
-    console.log(state.kljuc);
-  };
-  const [state, setState] = React.useState({
-    kljuc: "grafik"
-  });
 
-  const izbor = ["Dan", "Mesec", "Godina"];
+  const izbor = ["Dan", "Nedelja", "Mesec"];
+  const [state, setState] = React.useState({
+    select: "Dan"
+  });
   return (
     <React.Fragment>
       <Grid container space={3}>
@@ -67,9 +43,11 @@ const Chart = ({ klinika }) => {
             style={{ height: 18 }}
             labelId="demo-simple-select-placeholder-label-label"
             id="s"
+            value={state.value}
             fullWidth
             name="select"
             onChange={handleChange}
+            defaultValue="Dan"
           >
             {izbor &&
               izbor.map(izbor => (
@@ -79,19 +57,21 @@ const Chart = ({ klinika }) => {
               ))}
           </Select>
         </Grid>
+        <Grid item xs={12}>
+          <LineChart width={1100} height={300} data={podaci}>
+            <Line type="monotone" dataKey="amount" stroke="#8884d8" />
+            <CartesianGrid stroke="#ccc" />
+            <XAxis dataKey="time" />
+            <YAxis />
+          </LineChart>
+        </Grid>
       </Grid>
-      <ResponsiveContainer key={state.kljuc}>
-        <LineChart width={600} height={300} data={data}>
-          <Line type="monotone" dataKey="amount" stroke="#8884d8" />
-          <CartesianGrid stroke="#ccc" />
-          <XAxis dataKey="time" />
-          <YAxis />
-        </LineChart>
-      </ResponsiveContainer>
     </React.Fragment>
   );
 };
 
-const mapStateToProps = state => ({});
+const mapStateToProps = state => ({
+  podaci: state.adminKlinike.podaciGrafik
+});
 
-export default connect(mapStateToProps, {})(Chart);
+export default connect(mapStateToProps, { getPodaciGrafik })(Chart);
