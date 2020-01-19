@@ -1,9 +1,6 @@
 package com.isapsw.Projekat.controller;
 
-import com.isapsw.Projekat.domain.Klinika;
-import com.isapsw.Projekat.domain.Korisnik;
-import com.isapsw.Projekat.domain.Lekar;
-import com.isapsw.Projekat.domain.OcenaKlinike;
+import com.isapsw.Projekat.domain.*;
 import com.isapsw.Projekat.dto.KlinikaDTO;
 import com.isapsw.Projekat.service.KlinikaService;
 import com.isapsw.Projekat.service.KorisnikService;
@@ -17,6 +14,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -154,5 +152,16 @@ public class KlinikaController {
         }
     }
 
+    @PostMapping("/grafik/Dan/{id}")
+    public ResponseEntity<HashMap<String, Integer>> zaGrafikDan(@PathVariable String id) {
+        try {
+            HashMap<String,Integer> podaci = klinikaService.preglediGrafikDan(id);
+            return new ResponseEntity<>(podaci, HttpStatus.OK);
+        }
+        catch(Exception e) {
+            System.out.println(e.getMessage());
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
+    }
 
 }

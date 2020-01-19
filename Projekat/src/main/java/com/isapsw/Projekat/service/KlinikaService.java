@@ -290,4 +290,38 @@ public class KlinikaService {
         return prihod;
     }
 
+    public HashMap<String, Integer> preglediGrafikDan(String id){
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.HOUR_OF_DAY, 0);
+        cal.set(Calendar.MINUTE, 0);
+        cal.set(Calendar.SECOND, 0);
+        cal.set(Calendar.MILLISECOND, 0);
+        Date date = cal.getTime();
+        cal.set(Calendar.HOUR_OF_DAY, 23);
+        cal.set(Calendar.MINUTE, 59);
+        cal.set(Calendar.SECOND, 59);
+        cal.set(Calendar.MILLISECOND, 99);
+        Date date1 = cal.getTime();
+        System.out.println(date.toString());
+        System.out.println(date1);
+        HashMap<String, Integer> ret = new HashMap<>();
+        List<Pregled> pregleds = pregledRepository.zaRacunanjePrihoda(Long.parseLong(id), date, date1); //iskoriscena metoda iz racunanja prihoda
+        for(Pregled p : pregleds){
+            if( ret.keySet().contains(String.valueOf(p.getDatumPocetka().toInstant().atZone(ZoneId.systemDefault()).getHour()))){
+                Integer i = ret.get(String.valueOf(p.getDatumPocetka().toInstant().atZone(ZoneId.systemDefault()).getHour()));
+                i++;
+                ret.put(String.valueOf(p.getDatumPocetka().toInstant().atZone(ZoneId.systemDefault()).getHour()), i);
+            }else {
+                ret.put(String.valueOf(p.getDatumPocetka().toInstant().atZone(ZoneId.systemDefault()).getHour()), 0);
+            }
+        }
+        for(int i = 0; i<24 ; i++){
+            if(!ret.containsKey(String.valueOf(i))){
+                ret.put(String.valueOf(i), 0);
+            }
+        }
+
+        return ret;
+    }
+
 }

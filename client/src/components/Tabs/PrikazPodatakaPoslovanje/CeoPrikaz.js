@@ -5,6 +5,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import ProsecnaOcenaKlinike from "../PrikazPodatakaPoslovanje/ProsecnaOcenaKlinike";
 import ProsecneOceneLekara from "../PrikazPodatakaPoslovanje/ProsecneOceneLekara";
 import RacunanjePrihoda from "../PrikazPodatakaPoslovanje/RacunanjePrihoda";
+import GrafikPregleda from "../PrikazPodatakaPoslovanje/GrafikPregleda";
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -24,14 +25,14 @@ const CeoPrikaz = ({ adminKlinike: { klinika } }) => {
           <ProsecneOceneLekara klinika={klinika} />
         </Paper>
       </Grid>
-      <Grid item xs>
+      <Grid item xs={12}>
         <Paper className={classes.paper}>
           <RacunanjePrihoda klinika={klinika} />
         </Paper>
       </Grid>
-      <Grid item xs>
+      <Grid item xs={12}>
         <Paper className={classes.paper}>
-          Grafici odrzanih pregleda na nedeljnom, mesecnom i godisnjem nivou
+          <GrafikPregleda klinika={klinika} />
         </Paper>
       </Grid>
     </Grid>
