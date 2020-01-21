@@ -1,5 +1,4 @@
 import React, { useEffect } from "react";
-import { makeStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
@@ -8,20 +7,11 @@ import TableRow from "@material-ui/core/TableRow";
 import { getLekariNaKlinici } from "../../../store/actions/lekar";
 import Typography from "@material-ui/core/Typography";
 import { connect } from "react-redux";
-import FullWidthTabs from "../PronalazenjeSale/ZahteviPregledOperacija";
-
-const useStyles = makeStyles(theme => ({
-  seeMore: {
-    marginTop: theme.spacing(3)
-  }
-}));
 
 const ProsecneOceneLekara = ({ klinika, rows, getLekariNaKlinici }) => {
-  const classes = useStyles();
-
   useEffect(() => {
     getLekariNaKlinici(klinika.id);
-  }, []);
+  }, [getLekariNaKlinici, klinika.id]);
   return (
     <React.Fragment>
       <Typography component="h2" variant="h6" color="primary" gutterBottom>

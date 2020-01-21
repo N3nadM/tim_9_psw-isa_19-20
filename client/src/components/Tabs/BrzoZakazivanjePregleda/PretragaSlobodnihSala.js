@@ -116,21 +116,18 @@ const PretragaSalaTab = ({
   terminZaOperaciju
 }) => {
   useEffect(() => {
-    {
-      terminZaPregled !== "" &&
-        terminZaOperaciju === "" &&
-        getListaDostupnihSala(klinikaId, terminZaPregled, trajanje);
-    }
-    {
-      terminZaOperaciju !== "" &&
-        terminZaPregled === "" &&
-        getListaDostupnihSala(klinikaId, terminZaOperaciju, trajanje);
-    }
-    {
+    terminZaPregled !== "" &&
+      terminZaOperaciju === "" &&
+      getListaDostupnihSala(klinikaId, terminZaPregled, trajanje);
+
+    terminZaOperaciju !== "" &&
       terminZaPregled === "" &&
-        terminZaOperaciju === "" &&
-        getListaDostupnihSala(klinikaId, termin2, trajanje);
-    }
+      getListaDostupnihSala(klinikaId, terminZaOperaciju, trajanje);
+
+    terminZaPregled === "" &&
+      terminZaOperaciju === "" &&
+      getListaDostupnihSala(klinikaId, termin2, trajanje);
+
     //eslint-disable-next-line
   }, []);
 

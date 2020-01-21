@@ -14,7 +14,6 @@ import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import {
   getLekariKlinike,
-  setLekarZaPregled,
   setLekarZakazivanje
 } from "../../../store/actions/lekar";
 import Dijalog from "../../Tabs/BrzoZakazivanjePregleda/Dijalog";

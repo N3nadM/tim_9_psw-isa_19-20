@@ -60,7 +60,7 @@ export const zapocniPregledOperaciju = data => async dispatch => {
 
 export const izmeniIzvestaj = data => async dispatch => {
   try {
-    const res = await axios.put("/api/pregled_operacija/izvestaj", data);
+    await axios.put("/api/pregled_operacija/izvestaj", data);
   } catch (err) {
     console.log(err);
   }

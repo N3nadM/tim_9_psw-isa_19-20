@@ -19,7 +19,7 @@ const CeoPrikaz = ({ adminKlinike: { klinika }, podaci }) => {
   const classes = useStyles();
   useEffect(() => {
     console.log(podaci);
-  }, []);
+  }, [podaci]);
   return (
     <Grid container spacing={3}>
       <Grid item xs={12}>

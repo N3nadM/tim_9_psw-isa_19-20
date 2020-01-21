@@ -1,5 +1,4 @@
 import React, { useEffect } from "react";
-import { useTheme } from "@material-ui/core/styles";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid } from "recharts";
 import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
@@ -11,7 +10,7 @@ import { getPodaciGrafik } from "../../../store/actions/adminKlinike";
 const Chart = ({ klinika, podaci, getPodaciGrafik }) => {
   useEffect(() => {
     getPodaciGrafik("Dan", klinika.id);
-  }, []);
+  }, [getPodaciGrafik, klinika.id]);
 
   const handleChange = e => {
     setState({

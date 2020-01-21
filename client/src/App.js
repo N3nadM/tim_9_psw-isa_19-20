@@ -14,7 +14,6 @@ import MedSestra from "./components/pages/homeSubpages/ProfilMedSestra";
 
 import Home from "./components/pages/Home";
 import Klinika from "./components/pages/Klinika";
-import Pacijent from "./components/pages/Pacijent";
 import Pregled_Operacija from "./components/pages/Pregled_Operacija";
 import Pregled from "./components/pages/SalaZaPregled";
 import Operacija from "./components/pages/SalaZaOperaciju";
