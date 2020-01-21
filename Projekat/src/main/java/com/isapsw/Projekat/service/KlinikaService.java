@@ -6,6 +6,7 @@ import com.isapsw.Projekat.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
@@ -312,20 +313,21 @@ public class KlinikaService {
         System.out.println(date1);
         HashMap<String, Integer> ret = new HashMap<>();
         List<Pregled> pregleds = pregledRepository.zaRacunanjePrihoda(Long.parseLong(id), date, date1); //iskoriscena metoda iz racunanja prihoda
-        for(Pregled p : pregleds){
-            if( ret.keySet().contains(String.valueOf(p.getDatumPocetka().toInstant().atZone(ZoneId.systemDefault()).getHour()))){
-                Integer i = ret.get(String.valueOf(p.getDatumPocetka().toInstant().atZone(ZoneId.systemDefault()).getHour()));
-                i++;
-                ret.put(String.valueOf(p.getDatumPocetka().toInstant().atZone(ZoneId.systemDefault()).getHour()), i);
-            }else {
-                ret.put(String.valueOf(p.getDatumPocetka().toInstant().atZone(ZoneId.systemDefault()).getHour()), 1);
-            }
-        }
         for(int i = 0; i<24 ; i++){
-            if(!ret.containsKey(String.valueOf(i)) ){
                 ret.put(String.valueOf(i), 0);
-            }
         }
+       for(Pregled p : pregleds){
+           Integer i = ret.get(String.valueOf(p.getDatumPocetka().toInstant().atZone(ZoneId.systemDefault()).getHour()));
+           i++;
+           ret.put(String.valueOf(p.getDatumPocetka().toInstant().atZone(ZoneId.systemDefault()).getHour()), i);
+        }
+       for(int i = 2; i<24; i+=3){
+           Integer integer = ret.get(String.valueOf(i))+ret.get(String.valueOf(i-1))+ret.get(String.valueOf(i-2));
+           ret.put(String.valueOf(i), integer);
+           ret.remove(String.valueOf(i-1));
+           ret.remove(String.valueOf(i-2));
+       }
+
 
         return ret;
     }
@@ -339,24 +341,20 @@ public class KlinikaService {
         cal.set(Calendar.SECOND, 0);
         cal.set(Calendar.MILLISECOND, 0);
         Date date = cal.getTime();
-        System.out.println(date.toString());
-        System.out.println(date1);
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         HashMap<String, Integer> ret = new HashMap<>();
         List<Pregled> pregleds = pregledRepository.zaRacunanjePrihoda(Long.parseLong(id), date, date1); //iskoriscena metoda iz racunanja prihoda
-        for(Pregled p : pregleds){
-            if( ret.keySet().contains(String.valueOf(p.getDatumPocetka().toInstant().atZone(ZoneId.systemDefault()).getDayOfMonth()))){
-                Integer i = ret.get(String.valueOf(p.getDatumPocetka().toInstant().atZone(ZoneId.systemDefault()).getDayOfMonth()));
-                i++;
-                ret.put(String.valueOf(p.getDatumPocetka().toInstant().atZone(ZoneId.systemDefault()).getDayOfMonth()), i);
-            }else {
-                ret.put(String.valueOf(p.getDatumPocetka().toInstant().atZone(ZoneId.systemDefault()).getDayOfMonth()), 1);
-            }
+        for(int i =0; i <=6; i++){
+            Calendar calendar = Calendar.getInstance();
+            calendar.add(Calendar.DATE, -i);
+            Date d = calendar.getTime();
+            ret.put(format.format(d),0);
         }
-        /*for(Calendar.D){
-            if(!ret.containsKey(String.valueOf(i)) ){
-                ret.put(String.valueOf(i), 0);
-            }
-        }*/
+        for(Pregled p : pregleds){
+            Integer i = ret.get(format.format(p.getDatumPocetka()));
+            i++;
+            ret.put(format.format(p.getDatumPocetka()), i);
+        }
 
         return ret;
     }

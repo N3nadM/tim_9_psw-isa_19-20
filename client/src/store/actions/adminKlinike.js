@@ -80,7 +80,11 @@ export const getPodaciGrafik = (period, id) => async dispatch => {
     const resp = await axios.get(`/api/klinika/grafik/${period}/${id}`);
     const data = [];
     for (const entry of Object.entries(resp.data)) {
-      data.push(createData(entry[0], entry[1]));
+      if (period === "Dan") {
+        data.push(createData(entry[0] + ":00", entry[1]));
+      } else {
+        data.push(createData(entry[0], entry[1]));
+      }
     }
     dispatch(setPodaciGrafik(data));
   } catch (err) {
