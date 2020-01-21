@@ -28,7 +28,7 @@ INSERT INTO KORISNIK (adresa, email, ime, password, prezime, drzava, grad, telef
 INSERT INTO USER_AUTHORITY VALUES ('1', '4');
 INSERT INTO ADMIN_KLIN_CENTRA VALUES ('1');
 
-INSERT INTO KORISNIK (adresa, email, ime, password, prezime, drzava, grad, telefon) VALUES ('adresa admina', 'adminKlinike@gmail.com', 'Admin', '$2a$10$feiotRqclqYZ7aJnytCDSedhWmzztzhuwyujbVfVucV4nbmMRNnwa', 'Adminic', 'drzava1', 'grad1', 'telefon1');
+INSERT INTO KORISNIK (adresa, email, ime, password, prezime, drzava, grad, telefon) VALUES ('adresa admina', 'kristina.radojevic28@gmail.com', 'Admin', '$2a$10$feiotRqclqYZ7aJnytCDSedhWmzztzhuwyujbVfVucV4nbmMRNnwa', 'Adminic', 'drzava1', 'grad1', 'telefon1');
 INSERT INTO USER_AUTHORITY VALUES ('2', '3');
 INSERT INTO ADMIN_KLINIKE(klinika_id, korisnik_id) VALUES ('1', '2');
 
@@ -136,7 +136,7 @@ INSERT INTO PREGLED (izvestaj, datum_pocetka, datum_zavrsetka, tip_pregleda_id, 
 INSERT INTO PREGLED (izvestaj, datum_pocetka, datum_zavrsetka, tip_pregleda_id, lekar_id, medicinska_sestra_id, sala_id, pacijent_id, popust, stanje, vrsta, datum_kreiranja) VALUES ('Svaka cast', '2019-11-25 07:10:00', '2019-11-25 16:52:00', '2', '2', '1', '2', '2', '0', '2', '0', '2019-11-6');
 INSERT INTO PREGLED (izvestaj, datum_pocetka, datum_zavrsetka, tip_pregleda_id, lekar_id, medicinska_sestra_id, sala_id, pacijent_id, popust, stanje, vrsta, datum_kreiranja) VALUES ('Novi', '2020-01-04 17:53:00', '2020-01-04 18:52:00', '2', '2', '2', '2', '2', '0', '0', '0', '2019-11-6');
 INSERT INTO PREGLED (izvestaj, datum_pocetka, datum_zavrsetka, tip_pregleda_id, lekar_id, medicinska_sestra_id, sala_id, pacijent_id, popust, stanje, vrsta, datum_kreiranja) VALUES ('Novi', '2020-01-04 16:50:00', '2020-01-04 17:52:00', '2', '1', '1', '2', '1', '0', '0', '0', '2019-11-6');
-INSERT INTO PREGLED (izvestaj, datum_pocetka, datum_zavrsetka, tip_pregleda_id, lekar_id, medicinska_sestra_id, sala_id, pacijent_id, popust, stanje, vrsta, datum_kreiranja) VALUES ('Novi',  '2020-01-12 18:10:00', '2020-01-12 19:55:00', '1', '6', '1', '1', '1', '0', '0', '0', '2019-11-6');
+INSERT INTO PREGLED (izvestaj, datum_pocetka, datum_zavrsetka, tip_pregleda_id, lekar_id, medicinska_sestra_id, sala_id, pacijent_id, popust, stanje, vrsta, datum_kreiranja) VALUES ('Novi',  '2020-01-21 18:10:00', '2020-01-21 19:55:00', '1', '6', '1', '1', '1', '0', '0', '0', '2019-11-6');
 
 INSERT INTO PREGLED (izvestaj, datum_pocetka, datum_zavrsetka, tip_pregleda_id, lekar_id, medicinska_sestra_id, sala_id, pacijent_id, popust, stanje, vrsta, datum_kreiranja) VALUES ('Novi',  '2020-01-12 18:10:00', '2020-01-12 19:55:00', '1', '2', '1', '2', '1', '0', '0', '0', '2019-11-6');
 

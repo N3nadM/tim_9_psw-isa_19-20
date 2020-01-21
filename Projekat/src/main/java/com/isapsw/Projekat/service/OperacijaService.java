@@ -36,6 +36,9 @@ public class OperacijaService {
     @Autowired
    private EmailService emailService;
 
+    @Autowired
+    private AdminKlinikeRepository adminKlinikeRepository;
+
     public Operacija getOperacijaById(Long id){
         return operacijaRepository.findById(id).get();
     }
@@ -207,5 +210,64 @@ public class OperacijaService {
         operacijaRepository.save(operacija);
 
         return operacija;
+    }
+
+    public Boolean zakaziOperacijuByLekar(Long korisnikId, String lekarId, String datum) throws ParseException, MessagingException, InterruptedException {
+        Lekar lekar = lekarRepository.findLekarById(Long.parseLong(lekarId));
+
+        Date date = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss").parse(datum);
+
+        //ovde bi mozda trebalo staviti upit u bazu umesto for petlje
+        for(int i = 0; i < lekar.getPregledi().size(); i++) {
+            if(date.getTime() == lekar.getPregledi().get(i).getDatumPocetka().getTime()) {
+                return false;
+            }
+        }
+
+        for(int i = 0; i < lekar.getOperacije().size(); i++) {
+            if(date.getTime() == lekar.getOperacije().get(i).getDatumPocetka().getTime()) {
+                return false;
+            }
+        }
+
+        //trebala bi da postoji provera i za operacije
+        Pacijent pacijent = pacijentRepository.findPacijentByKorisnikId(korisnikId);
+        List<Pregled> pregledi = pregledRepository.findPregledByDatumPac(pacijent.getId(), date);
+        for (Pregled p: pregledi) {
+
+            long pocetakStari = p.getDatumPocetka().getTime();
+            long krajStari = p.getDatumZavrsetka().getTime();
+            long pocetakNovi = date.getTime();
+            long krajNovi = date.getTime() + lekar.getTipPregleda().getMinimalnoTrajanjeMin() * 60 * 1000;
+
+            if(pocetakStari <= pocetakNovi && krajStari >= pocetakNovi) {
+                return false;
+            } else if(pocetakStari >= pocetakNovi && krajStari <= krajNovi) {
+                return false;
+            } else if(pocetakNovi <= pocetakStari && krajNovi >= pocetakStari) {
+                return false;
+            } else if(pocetakStari <= pocetakNovi && krajStari >= krajNovi) {
+                return false;
+            }
+        }
+        Operacija operacija = new Operacija();
+
+        if(operacija.getLekari() == null){
+            operacija.setLekari(new ArrayList<>());
+        }
+        operacija.getLekari().add(lekar);
+        operacija.setPacijent(pacijent);
+        operacija.setDatumPocetka(date);
+        operacija.setIzvestaj("");
+        operacija.setTipPregleda(lekar.getTipPregleda());
+        operacija.setDatumZavrsetka(new Date(date.getTime() + lekar.getTipPregleda().getMinimalnoTrajanjeMin() * 60 * 1000));
+        operacija.setTipOperacije("ovo treba da se izbrise");
+        operacijaRepository.save(operacija);
+        List<AdminKlinike> admini = adminKlinikeRepository.getAdminKlinikesByKlinikaId(lekar.getKlinika().getId());
+        for(AdminKlinike adminKlinike: admini){
+            emailService.sendAdminuZakazivanjePregledaOperacije(adminKlinike.getKorisnik().getEmail(), "Lekar " + lekar.getKorisnik().getIme() + " " + lekar.getKorisnik().getPrezime()+" je poslao novi zahtev za nalazenje sale za operaciju." );
+        }
+
+        return true;
     }
 }

@@ -18,4 +18,6 @@ public interface AdminKlinikeRepository extends JpaRepository<AdminKlinike, Long
     List<AdminKlinike> findAll();
 
     Optional<AdminKlinike> findAdminKlinikeByKorisnikId(Long id);
+
+    List<AdminKlinike> getAdminKlinikesByKlinikaId(Long id);
 }

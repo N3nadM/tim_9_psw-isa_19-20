@@ -130,7 +130,7 @@ public class OperacijaController {
     @PostMapping("/zakaziOperacijaByLekar")
     public ResponseEntity<Boolean> zakaziOperacijaByLekar(@RequestBody Map<String,String> body, Authentication authentication) {
         try {
-            return new ResponseEntity(operacijaService.zakaziOperaciju(Long.parseLong(body.get("pacijentKorisnikId").toString()), body.get("lekarId").toString(), body.get("datum").toString()), HttpStatus.OK);
+            return new ResponseEntity(operacijaService.zakaziOperacijuByLekar(Long.parseLong(body.get("pacijentKorisnikId").toString()), body.get("lekarId").toString(), body.get("datum").toString()), HttpStatus.OK);
         }
         catch(Exception e) {
             System.out.println(e.getMessage());
