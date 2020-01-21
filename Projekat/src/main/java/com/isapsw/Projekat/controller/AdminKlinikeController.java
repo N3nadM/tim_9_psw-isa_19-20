@@ -74,4 +74,17 @@ public class AdminKlinikeController {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
     }
+
+    @GetMapping("/korisnik/{id}")
+    public ResponseEntity<AdminKlinike> getAdminKKorisnikId(@PathVariable Long id){
+
+        AdminKlinike ak = adminKlinikeService.findByKorisnikId(id).get();
+
+        try{
+            return new ResponseEntity<AdminKlinike>(ak, HttpStatus.OK);
+        }
+        catch(Exception e) {
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
+    }
 }

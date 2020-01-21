@@ -2,9 +2,12 @@ import {
   SET_ALL_ADMINK,
   SET_ADDED_ADMINK,
   SET_ADMINOVA_KLINIKA,
-  SET_GRAFIK
+  SET_GRAFIK,
+  SET_ADMIN_KLINIKE,
+  SET_EDIT_ADMIN_KLINIKE
 } from "../actionTypes";
 import axios from "axios";
+import { setRealKorisnik } from "./auth";
 
 export const setAdmins = admins => ({
   type: SET_ALL_ADMINK,
@@ -23,6 +26,16 @@ export const setAdminovaKlinika = klinika => ({
 export const setPodaciGrafik = podaciGrafik => ({
   type: SET_GRAFIK,
   podaciGrafik
+});
+
+export const setAdminKlinike = adminKlinike => ({
+  type: SET_ADMIN_KLINIKE,
+  adminKlinike
+});
+
+export const setNewAdminKorisnik = korisnik => ({
+  type: SET_EDIT_ADMIN_KLINIKE,
+  korisnik
 });
 
 export const getAllAdmins = (sum, rpp) => async dispatch => {
@@ -77,3 +90,23 @@ export const getPodaciGrafik = (period, id) => async dispatch => {
 function createData(time, amount) {
   return { time, amount };
 }
+
+export const getAdminKlinike = id => async dispatch => {
+  try {
+    const k = await axios.get(`/api/adminK/korisnik/${id}`);
+    dispatch(setRealKorisnik(k.data.korisnik));
+    dispatch(setAdminKlinike(k.data));
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const editAdminKlinike = korisnik => async dispatch => {
+  try {
+    const k = await axios.put(`/api/users/${korisnik.id}`, korisnik);
+    dispatch(setRealKorisnik(k.data));
+    dispatch(setNewAdminKorisnik(k.data));
+  } catch (err) {
+    console.log(err);
+  }
+};

@@ -26,7 +26,7 @@ INSERT INTO TIP_PREGLEDA(naziv, cena_pregleda, cena_operacije, minimalno_trajanj
 
 INSERT INTO KORISNIK (adresa, email, ime, password, prezime, drzava, grad, telefon) VALUES ('adresa admina KC', 'adminKC@gmail.com', 'Admin', '$2a$10$feiotRqclqYZ7aJnytCDSedhWmzztzhuwyujbVfVucV4nbmMRNnwa', 'Centric', 'drzava', 'grad', 'telefon');
 INSERT INTO USER_AUTHORITY VALUES ('1', '4');
-INSERT INTO ADMIN_KLIN_CENTRA VALUES ('1');
+INSERT INTO ADMIN_KLIN_CENTRA(korisnik_id) VALUES ('1');
 
 INSERT INTO KORISNIK (adresa, email, ime, password, prezime, drzava, grad, telefon) VALUES ('adresa admina', 'kristina.radojevic28@gmail.com', 'Admin', '$2a$10$feiotRqclqYZ7aJnytCDSedhWmzztzhuwyujbVfVucV4nbmMRNnwa', 'Adminic', 'drzava1', 'grad1', 'telefon1');
 INSERT INTO USER_AUTHORITY VALUES ('2', '3');

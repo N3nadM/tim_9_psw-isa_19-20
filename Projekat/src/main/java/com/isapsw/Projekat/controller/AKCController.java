@@ -42,4 +42,16 @@ public class AKCController {
         }
 
     }
+
+    @GetMapping("/korisnik/{id}")
+    public ResponseEntity<AdminKlinCentra> getAdminKlinickogCentra(@PathVariable String id){
+
+        try{
+            AdminKlinCentra adminKlinCentra = akcService.getAdminByKorisnikId(id);
+            return new ResponseEntity<AdminKlinCentra>(adminKlinCentra, HttpStatus.OK);
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
+    }
 }
