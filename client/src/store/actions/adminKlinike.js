@@ -82,8 +82,16 @@ export const getPodaciGrafik = (period, id) => async dispatch => {
     for (const entry of Object.entries(resp.data)) {
       if (period === "Dan") {
         data.push(createData(entry[0] + ":00", entry[1]));
-      } else {
-        data.push(createData(entry[0], entry[1]));
+      }
+      if (period === "Nedelja") {
+        var date = new Date();
+        date.setDate(date.getDate() + parseInt(entry[0], 10));
+        data.push(createData(date.toLocaleDateString(), entry[1]));
+      }
+      if (period === "Mesec") {
+        var date2 = new Date();
+        date2.setDate(date2.getDate() + parseInt(entry[0], 10));
+        data.push(createData(date2.toLocaleDateString(), entry[1]));
       }
     }
     dispatch(setPodaciGrafik(data));

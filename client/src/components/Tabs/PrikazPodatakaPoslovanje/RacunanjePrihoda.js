@@ -17,7 +17,7 @@ let d1 = new Date();
 const RacunanjePrihoda = ({ klinika }) => {
   const [state, setState] = React.useState({
     datumOd: d,
-    datumDo: "",
+    datumDo: d1,
     prihod: ""
   });
   const [selectedDate, setSelectedDate] = React.useState(new Date());

@@ -57,7 +57,7 @@ const Chart = ({ klinika, podaci, getPodaciGrafik }) => {
           </Select>
         </Grid>
         <Grid item xs={12}>
-          <LineChart width={1100} height={300} data={podaci}>
+          <LineChart width={1100} height={400} data={podaci}>
             <Line type="monotone" dataKey="amount" stroke="#8884d8" />
             <CartesianGrid stroke="#ccc" />
             <XAxis dataKey="time" />

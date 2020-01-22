@@ -341,19 +341,15 @@ public class KlinikaService {
         cal.set(Calendar.SECOND, 0);
         cal.set(Calendar.MILLISECOND, 0);
         Date date = cal.getTime();
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         HashMap<String, Integer> ret = new HashMap<>();
         List<Pregled> pregleds = pregledRepository.zaRacunanjePrihoda(Long.parseLong(id), date, date1); //iskoriscena metoda iz racunanja prihoda
-        for(int i =0; i <=6; i++){
-            Calendar calendar = Calendar.getInstance();
-            calendar.add(Calendar.DATE, -i);
-            Date d = calendar.getTime();
-            ret.put(format.format(d),0);
+        for(int i =-6; i <=0; i++){
+            ret.put(String.valueOf(i),0);
         }
         for(Pregled p : pregleds){
-            Integer i = ret.get(format.format(p.getDatumPocetka()));
+            Integer i = ret.get(String.valueOf(p.getDatumPocetka().toInstant().atZone(ZoneId.systemDefault()).getDayOfYear()-date1.toInstant().atZone(ZoneId.systemDefault()).getDayOfYear()));
             i++;
-            ret.put(format.format(p.getDatumPocetka()), i);
+            ret.put(String.valueOf(p.getDatumPocetka().toInstant().atZone(ZoneId.systemDefault()).getDayOfYear()-date1.toInstant().atZone(ZoneId.systemDefault()).getDayOfYear()), i);
         }
 
         return ret;
@@ -372,20 +368,54 @@ public class KlinikaService {
         System.out.println(date1);
         HashMap<String, Integer> ret = new HashMap<>();
         List<Pregled> pregleds = pregledRepository.zaRacunanjePrihoda(Long.parseLong(id), date, date1); //iskoriscena metoda iz racunanja prihoda
-        for(Pregled p : pregleds){
-            if( ret.keySet().contains(String.valueOf(p.getDatumPocetka().toInstant().atZone(ZoneId.systemDefault()).getDayOfMonth()))){
-                Integer i = ret.get(String.valueOf(p.getDatumPocetka().toInstant().atZone(ZoneId.systemDefault()).getDayOfMonth()));
+        if(date.toInstant().atZone(ZoneId.systemDefault()).getYear() == date1.toInstant().atZone(ZoneId.systemDefault()).getYear()){
+            for(int i =-(date1.toInstant().atZone(ZoneId.systemDefault()).getDayOfYear()-date.toInstant().atZone(ZoneId.systemDefault()).getDayOfYear()); i <=0; i++){
+                ret.put(String.valueOf(i),0);
+            }
+            for(Pregled p : pregleds){
+                Integer i = ret.get(String.valueOf(p.getDatumPocetka().toInstant().atZone(ZoneId.systemDefault()).getDayOfYear()-date1.toInstant().atZone(ZoneId.systemDefault()).getDayOfYear()));
                 i++;
-                ret.put(String.valueOf(p.getDatumPocetka().toInstant().atZone(ZoneId.systemDefault()).getDayOfMonth()), i);
-            }else {
-                ret.put(String.valueOf(p.getDatumPocetka().toInstant().atZone(ZoneId.systemDefault()).getDayOfMonth()), 1);
+                ret.put(String.valueOf(p.getDatumPocetka().toInstant().atZone(ZoneId.systemDefault()).getDayOfYear()-date1.toInstant().atZone(ZoneId.systemDefault()).getDayOfYear()), i);
             }
+        }else {
+            Integer integer = 0;
+            if(date.toInstant().atZone(ZoneId.systemDefault()).getYear()%4==0){
+                integer = date1.toInstant().atZone(ZoneId.systemDefault()).getDayOfYear() + (366-date.toInstant().atZone(ZoneId.systemDefault()).getDayOfYear());
+                for(int i =-integer; i <=0; i++){
+                    ret.put(String.valueOf(i),0);
+                }
+                for(Pregled p : pregleds){
+                    if(p.getDatumPocetka().toInstant().atZone(ZoneId.systemDefault()).getYear() == date1.toInstant().atZone(ZoneId.systemDefault()).getYear()){
+                        Integer i = ret.get(p.getDatumPocetka().toInstant().atZone(ZoneId.systemDefault()).getDayOfYear()-date1.toInstant().atZone(ZoneId.systemDefault()).getDayOfYear());
+                        i++;
+                        ret.put(String.valueOf(p.getDatumPocetka().toInstant().atZone(ZoneId.systemDefault()).getDayOfYear()-date1.toInstant().atZone(ZoneId.systemDefault()).getDayOfYear()), i);
+                    }else{
+                        Integer i = ret.get(String.valueOf(-(date1.toInstant().atZone(ZoneId.systemDefault()).getDayOfYear() + (366-p.getDatumPocetka().toInstant().atZone(ZoneId.systemDefault()).getDayOfYear()))));
+                        i++;
+                        ret.put(String.valueOf(-(date1.toInstant().atZone(ZoneId.systemDefault()).getDayOfYear() + (366-p.getDatumPocetka().toInstant().atZone(ZoneId.systemDefault()).getDayOfYear()))), i);
+                    }
+                }
+            }else{
+                integer = date1.toInstant().atZone(ZoneId.systemDefault()).getDayOfYear() + (365-date.toInstant().atZone(ZoneId.systemDefault()).getDayOfYear());
+                for(int i =-integer; i <=0; i++){
+                    ret.put(String.valueOf(i),0);
+                }
+                for(Pregled p : pregleds){
+                    if(p.getDatumPocetka().toInstant().atZone(ZoneId.systemDefault()).getYear() == date1.toInstant().atZone(ZoneId.systemDefault()).getYear()){
+                        Integer i = ret.get(String.valueOf(p.getDatumPocetka().toInstant().atZone(ZoneId.systemDefault()).getDayOfYear()-date1.toInstant().atZone(ZoneId.systemDefault()).getDayOfYear()));
+                        i++;
+                        ret.put(String.valueOf(p.getDatumPocetka().toInstant().atZone(ZoneId.systemDefault()).getDayOfYear()-date1.toInstant().atZone(ZoneId.systemDefault()).getDayOfYear()), i);
+                    }else{
+                        Integer i = ret.get(String.valueOf(-(date1.toInstant().atZone(ZoneId.systemDefault()).getDayOfYear() + (365-p.getDatumPocetka().toInstant().atZone(ZoneId.systemDefault()).getDayOfYear()))));
+                        i++;
+                        ret.put(String.valueOf(-(date1.toInstant().atZone(ZoneId.systemDefault()).getDayOfYear() + (365-p.getDatumPocetka().toInstant().atZone(ZoneId.systemDefault()).getDayOfYear()))), i);
+                    }
+                }
+            }
+
+
         }
-        /*for(Calendar.D){
-            if(!ret.containsKey(String.valueOf(i)) ){
-                ret.put(String.valueOf(i), 0);
-            }
-        }*/
+
 
         return ret;
     }
