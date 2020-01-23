@@ -116,7 +116,7 @@ const PrikazZahtevaOperacije = ({
     getOperacijePronalazenjeSale(klinika.id);
     setTerminO("");
     setTerminP("");
-  }, []);
+  }, [getOperacijePronalazenjeSale, klinika.id, setTerminO, setTerminP]);
 
   const classes = useStyles();
   const [order, setOrder] = React.useState("asc");

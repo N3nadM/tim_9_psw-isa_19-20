@@ -39,7 +39,7 @@ const PregledSala = ({
 }) => {
   useEffect(() => {
     getPregledById(id);
-  }, []);
+  }, [getPregledById, id]);
 
   const [state, setState] = React.useState({
     medSestraId: "",
@@ -63,10 +63,6 @@ const PregledSala = ({
     );
   }
 
-  const handleIzborTermin = e => {
-    setIzbor(1);
-  };
-
   const handleIzborLekar = e => {
     setZaLekare({
       tip: pregled.tipPregleda.naziv,
@@ -81,7 +77,7 @@ const PregledSala = ({
       `/api/medsestra/sestraDostupna/${klinika.id}/${pregled.datumPocetka}/${pregled.tipPregleda.minimalnoTrajanjeMin}`
     );
     console.log(resp.data);
-    if (resp.data != null && resp.data != "") {
+    if (resp.data != null && resp.data !== "") {
       setState({
         ...state,
         medSestraId: resp.data.id,

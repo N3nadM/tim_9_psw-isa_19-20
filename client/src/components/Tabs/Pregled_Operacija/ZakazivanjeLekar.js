@@ -22,7 +22,6 @@ import Dialog from "@material-ui/core/Dialog";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogActions from "@material-ui/core/DialogActions";
-import { tr } from "date-fns/locale";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -81,7 +80,7 @@ const PregledOperacijaTab = ({
   lekar,
   obj //pregled
 }) => {
-  const [state, setState] = React.useState({
+  const [state] = React.useState({
     medSestraId: obj.medicinskaSestra.id,
     vrsta: obj.vrsta,
     idPregledOperacija: obj.id,
@@ -91,7 +90,7 @@ const PregledOperacijaTab = ({
 
   useEffect(() => {
     getLekar(korisnikId);
-  }, []);
+  }, [korisnikId]);
 
   const classes = useStyles();
   const theme = useTheme();
@@ -106,10 +105,7 @@ const PregledOperacijaTab = ({
     e.preventDefault();
     setDisabled(true);
     stanjeZaPregled.datum = terminZaPregled;
-    const resp = await Axios.post(
-      "/api/pregled/zakaziPregledByLekar",
-      stanjeZaPregled
-    );
+    await Axios.post("/api/pregled/zakaziPregledByLekar", stanjeZaPregled);
     setOpen(true);
   };
 
@@ -117,7 +113,7 @@ const PregledOperacijaTab = ({
     e.preventDefault();
     setDisabled2(true);
     stanjeZaOperaciju.datum = terminZaOperaciju;
-    const resp = await Axios.post(
+    await Axios.post(
       "/api/operacija/zakaziOperacijaByLekar",
       stanjeZaOperaciju
     );

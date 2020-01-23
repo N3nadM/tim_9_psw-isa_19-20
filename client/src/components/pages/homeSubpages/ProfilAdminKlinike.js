@@ -8,9 +8,6 @@ import TipoviPregledaTabs from "../../Tabs/TipoviPregledaTabs";
 import SlobodniTerminiTabs from "../../Tabs/BrzoZakazivanjePregleda/SlobodniTerminTabs";
 import PodaciKlinikaTabs from "../../Tabs/PodaciKlinikaTabs";
 import AppBar from "../../layout/AppBarLogedIn";
-
-import Paper from "@material-ui/core/Paper";
-import Grid from "@material-ui/core/Grid";
 import TabPanel from "../../Tabs/TabPanel";
 
 import Tabs from "@material-ui/core/Tabs";
@@ -19,7 +16,8 @@ import PromeniLozinku from "../../Tabs/Korisnik/PromeniLozinku";
 import PrikazZahteva from "../../Tabs/ZahteviOdsustvoOdmor/PrikazZahteva";
 import Cenovnik from "../../Tabs/Cenovnik";
 import ZahteviPregledOperacija from "../../Tabs/PronalazenjeSale/ZahteviPregledOperacija";
-
+import CeoPrikaz from "../../Tabs/PrikazPodatakaPoslovanje/CeoPrikaz";
+import AdminKlinikeProfilTab from "../../Tabs/AdminKlinikeProfilTab";
 const drawerWidth = 240;
 
 const useStyles = makeStyles(theme => ({
@@ -83,8 +81,9 @@ function ResponsiveDrawer(props) {
         <Tab label="Lekari" {...a11yProps(5)} />
         <Tab label="Sale" {...a11yProps(6)} />
         <Tab label="Tipovi pregleda" {...a11yProps(7)} />
-        <Tab label="Izveštaj o poslovanju klinike" {...a11yProps(8)} />
-        <Tab label="Cenovnik" {...a11yProps(9)} />
+        <Tab label="Lični podaci" {...a11yProps(8)} />
+        <Tab label="Izveštaj o poslovanju klinike" {...a11yProps(9)} />
+        <Tab label="Cenovnik" {...a11yProps(10)} />
       </Tabs>
     </div>
   );
@@ -132,25 +131,13 @@ function ResponsiveDrawer(props) {
             {value === 7 && <TipoviPregledaTabs />}
           </TabPanel>
           <TabPanel value={value} index={8}>
-            <Grid container spacing={3}>
-              <Grid item xs>
-                <Paper className={classes.paper}>
-                  Prosecna ocena klinike i ocene lekara
-                </Paper>
-              </Grid>
-              <Grid item xs>
-                <Paper className={classes.paper}>Grafik prihoda klinike</Paper>
-              </Grid>
-              <Grid item xs>
-                <Paper className={classes.paper}>
-                  Grafici odrzanih pregleda na nedeljnom, mesecnom i godisnjem
-                  nivou
-                </Paper>
-              </Grid>
-            </Grid>
+            {value === 8 && <AdminKlinikeProfilTab />}
           </TabPanel>
           <TabPanel value={value} index={9}>
-            {value === 9 && <Cenovnik />}
+            {value === 9 && <CeoPrikaz />}
+          </TabPanel>
+          <TabPanel value={value} index={10}>
+            {value === 10 && <Cenovnik />}
           </TabPanel>
         </main>
       </div>

@@ -6,6 +6,7 @@ import com.isapsw.Projekat.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
@@ -36,6 +37,9 @@ public class KlinikaService {
 
     @Autowired
     private OdsustvoRepository odsustvoRepository;
+
+    @Autowired
+    private OperacijaRepository operacijaRepository;
 
     public List<Klinika> getAllKlinike() {
         return klinikaRepository.findAll();
@@ -281,5 +285,138 @@ public class KlinikaService {
         klinikaRepository.save(klinika);
 
         return ocenaKlinike;
+    }
+
+    public Double getUkupanPrihod(String id, String datumOd, String datumDo) throws ParseException {
+        Klinika klinika = klinikaRepository.findKlinikaById(Long.parseLong(id));
+        Double prihod = 0.0;
+        Date datum1 = Date.from(Instant.parse(datumOd));
+        Date datum2 = Date.from(Instant.parse(datumDo));
+        for(TipPregleda tipPregleda: klinika.getTipPregleda()){
+            List<Pregled> pregleds = pregledRepository.zaRacunanjePrihoda(tipPregleda.getId(), datum1, datum2);
+            List<Operacija> operacijas = operacijaRepository.zaRacunanjePrihoda(tipPregleda.getId(), datum1, datum2);
+            prihod += pregleds.size() * tipPregleda.getCenaPregleda();
+            prihod += operacijas.size() * tipPregleda.getCenaOperacije();
+        }
+        return prihod;
+    }
+
+    public HashMap<String, Integer> preglediGrafikDan(String id){
+        Calendar cal = Calendar.getInstance();
+        Date date1 = cal.getTime();
+        cal.set(Calendar.HOUR_OF_DAY, 0);
+        cal.set(Calendar.MINUTE, 0);
+        cal.set(Calendar.SECOND, 0);
+        cal.set(Calendar.MILLISECOND, 0);
+        Date date = cal.getTime();
+        System.out.println(date.toString());
+        System.out.println(date1);
+        HashMap<String, Integer> ret = new HashMap<>();
+        List<Pregled> pregleds = pregledRepository.zaRacunanjePrihoda(Long.parseLong(id), date, date1); //iskoriscena metoda iz racunanja prihoda
+        for(int i = 0; i<24 ; i++){
+                ret.put(String.valueOf(i), 0);
+        }
+       for(Pregled p : pregleds){
+           Integer i = ret.get(String.valueOf(p.getDatumPocetka().toInstant().atZone(ZoneId.systemDefault()).getHour()));
+           i++;
+           ret.put(String.valueOf(p.getDatumPocetka().toInstant().atZone(ZoneId.systemDefault()).getHour()), i);
+        }
+       for(int i = 2; i<24; i+=3){
+           Integer integer = ret.get(String.valueOf(i))+ret.get(String.valueOf(i-1))+ret.get(String.valueOf(i-2));
+           ret.put(String.valueOf(i), integer);
+           ret.remove(String.valueOf(i-1));
+           ret.remove(String.valueOf(i-2));
+       }
+
+
+        return ret;
+    }
+
+    public HashMap<String, Integer> preglediGrafikNedelja(String id){
+        Calendar cal = Calendar.getInstance();
+        Date date1 = cal.getTime();
+        cal.add(Calendar.WEEK_OF_MONTH, -1);
+        cal.set(Calendar.HOUR_OF_DAY, 0);
+        cal.set(Calendar.MINUTE, 0);
+        cal.set(Calendar.SECOND, 0);
+        cal.set(Calendar.MILLISECOND, 0);
+        Date date = cal.getTime();
+        HashMap<String, Integer> ret = new HashMap<>();
+        List<Pregled> pregleds = pregledRepository.zaRacunanjePrihoda(Long.parseLong(id), date, date1); //iskoriscena metoda iz racunanja prihoda
+        for(int i =-6; i <=0; i++){
+            ret.put(String.valueOf(i),0);
+        }
+        for(Pregled p : pregleds){
+            Integer i = ret.get(String.valueOf(p.getDatumPocetka().toInstant().atZone(ZoneId.systemDefault()).getDayOfYear()-date1.toInstant().atZone(ZoneId.systemDefault()).getDayOfYear()));
+            i++;
+            ret.put(String.valueOf(p.getDatumPocetka().toInstant().atZone(ZoneId.systemDefault()).getDayOfYear()-date1.toInstant().atZone(ZoneId.systemDefault()).getDayOfYear()), i);
+        }
+
+        return ret;
+    }
+
+    public HashMap<String, Integer> preglediGrafikMesec(String id){
+        Calendar cal = Calendar.getInstance();
+        Date date1 = cal.getTime();
+        cal.add(Calendar.MONTH, -1);
+        cal.set(Calendar.HOUR_OF_DAY, 0);
+        cal.set(Calendar.MINUTE, 0);
+        cal.set(Calendar.SECOND, 0);
+        cal.set(Calendar.MILLISECOND, 0);
+        Date date = cal.getTime();
+        System.out.println(date.toString());
+        System.out.println(date1);
+        HashMap<String, Integer> ret = new HashMap<>();
+        List<Pregled> pregleds = pregledRepository.zaRacunanjePrihoda(Long.parseLong(id), date, date1); //iskoriscena metoda iz racunanja prihoda
+        if(date.toInstant().atZone(ZoneId.systemDefault()).getYear() == date1.toInstant().atZone(ZoneId.systemDefault()).getYear()){
+            for(int i =-(date1.toInstant().atZone(ZoneId.systemDefault()).getDayOfYear()-date.toInstant().atZone(ZoneId.systemDefault()).getDayOfYear()); i <=0; i++){
+                ret.put(String.valueOf(i),0);
+            }
+            for(Pregled p : pregleds){
+                Integer i = ret.get(String.valueOf(p.getDatumPocetka().toInstant().atZone(ZoneId.systemDefault()).getDayOfYear()-date1.toInstant().atZone(ZoneId.systemDefault()).getDayOfYear()));
+                i++;
+                ret.put(String.valueOf(p.getDatumPocetka().toInstant().atZone(ZoneId.systemDefault()).getDayOfYear()-date1.toInstant().atZone(ZoneId.systemDefault()).getDayOfYear()), i);
+            }
+        }else {
+            Integer integer = 0;
+            if(date.toInstant().atZone(ZoneId.systemDefault()).getYear()%4==0){
+                integer = date1.toInstant().atZone(ZoneId.systemDefault()).getDayOfYear() + (366-date.toInstant().atZone(ZoneId.systemDefault()).getDayOfYear());
+                for(int i =-integer; i <=0; i++){
+                    ret.put(String.valueOf(i),0);
+                }
+                for(Pregled p : pregleds){
+                    if(p.getDatumPocetka().toInstant().atZone(ZoneId.systemDefault()).getYear() == date1.toInstant().atZone(ZoneId.systemDefault()).getYear()){
+                        Integer i = ret.get(p.getDatumPocetka().toInstant().atZone(ZoneId.systemDefault()).getDayOfYear()-date1.toInstant().atZone(ZoneId.systemDefault()).getDayOfYear());
+                        i++;
+                        ret.put(String.valueOf(p.getDatumPocetka().toInstant().atZone(ZoneId.systemDefault()).getDayOfYear()-date1.toInstant().atZone(ZoneId.systemDefault()).getDayOfYear()), i);
+                    }else{
+                        Integer i = ret.get(String.valueOf(-(date1.toInstant().atZone(ZoneId.systemDefault()).getDayOfYear() + (366-p.getDatumPocetka().toInstant().atZone(ZoneId.systemDefault()).getDayOfYear()))));
+                        i++;
+                        ret.put(String.valueOf(-(date1.toInstant().atZone(ZoneId.systemDefault()).getDayOfYear() + (366-p.getDatumPocetka().toInstant().atZone(ZoneId.systemDefault()).getDayOfYear()))), i);
+                    }
+                }
+            }else{
+                integer = date1.toInstant().atZone(ZoneId.systemDefault()).getDayOfYear() + (365-date.toInstant().atZone(ZoneId.systemDefault()).getDayOfYear());
+                for(int i =-integer; i <=0; i++){
+                    ret.put(String.valueOf(i),0);
+                }
+                for(Pregled p : pregleds){
+                    if(p.getDatumPocetka().toInstant().atZone(ZoneId.systemDefault()).getYear() == date1.toInstant().atZone(ZoneId.systemDefault()).getYear()){
+                        Integer i = ret.get(String.valueOf(p.getDatumPocetka().toInstant().atZone(ZoneId.systemDefault()).getDayOfYear()-date1.toInstant().atZone(ZoneId.systemDefault()).getDayOfYear()));
+                        i++;
+                        ret.put(String.valueOf(p.getDatumPocetka().toInstant().atZone(ZoneId.systemDefault()).getDayOfYear()-date1.toInstant().atZone(ZoneId.systemDefault()).getDayOfYear()), i);
+                    }else{
+                        Integer i = ret.get(String.valueOf(-(date1.toInstant().atZone(ZoneId.systemDefault()).getDayOfYear() + (365-p.getDatumPocetka().toInstant().atZone(ZoneId.systemDefault()).getDayOfYear()))));
+                        i++;
+                        ret.put(String.valueOf(-(date1.toInstant().atZone(ZoneId.systemDefault()).getDayOfYear() + (365-p.getDatumPocetka().toInstant().atZone(ZoneId.systemDefault()).getDayOfYear()))), i);
+                    }
+                }
+            }
+
+
+        }
+
+
+        return ret;
     }
 }

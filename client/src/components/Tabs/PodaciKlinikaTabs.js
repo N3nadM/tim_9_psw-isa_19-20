@@ -82,6 +82,7 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps, { getKlinikaAdmin, editKlinika })(
-  PodaciKlinikaTabs
-);
+export default connect(mapStateToProps, {
+  getKlinikaAdmin,
+  editKlinika
+})(PodaciKlinikaTabs);

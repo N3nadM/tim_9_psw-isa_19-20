@@ -35,5 +35,4 @@ public interface KlinikaRepository extends JpaRepository<Klinika, Long> {
     @Query("SELECT p FROM Klinika k LEFT JOIN k.pacijenti p WHERE k.id = :klinikaId AND p.id = :pacijentId")
     Pacijent findPacijentInKlinika(@Param("klinikaId") Long klinikaId, @Param("pacijentId") Long pacijentId);
 
-
 }

@@ -1,5 +1,4 @@
 import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogContent from "@material-ui/core/DialogContent";
@@ -25,18 +24,6 @@ import {
   acceptZahtev
 } from "../../../store/actions/zahtevOdsustvo";
 import { ListItem } from "@material-ui/core";
-
-const useStyles = makeStyles(theme => ({
-  root: {
-    width: "100%",
-    maxWidth: 360,
-    backgroundColor: theme.palette.background.paper
-  },
-  paper: {
-    width: "80%",
-    maxHeight: 435
-  }
-}));
 
 const Dijalog = ({
   id,

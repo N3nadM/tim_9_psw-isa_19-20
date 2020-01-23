@@ -7,5 +7,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface AKCRepository extends JpaRepository<AdminKlinCentra, Long> {
 
-
+    AdminKlinCentra findAdminKlinCentraByKorisnikId(Long id);
 }

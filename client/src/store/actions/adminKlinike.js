@@ -1,9 +1,13 @@
 import {
   SET_ALL_ADMINK,
   SET_ADDED_ADMINK,
-  SET_ADMINOVA_KLINIKA
+  SET_ADMINOVA_KLINIKA,
+  SET_GRAFIK,
+  SET_ADMIN_KLINIKE,
+  SET_EDIT_ADMIN_KLINIKE
 } from "../actionTypes";
 import axios from "axios";
+import { setRealKorisnik } from "./auth";
 
 export const setAdmins = admins => ({
   type: SET_ALL_ADMINK,
@@ -18,6 +22,20 @@ export const setNewAdmin = newAdmin => ({
 export const setAdminovaKlinika = klinika => ({
   type: SET_ADMINOVA_KLINIKA,
   klinika
+});
+export const setPodaciGrafik = podaciGrafik => ({
+  type: SET_GRAFIK,
+  podaciGrafik
+});
+
+export const setAdminKlinike = adminKlinike => ({
+  type: SET_ADMIN_KLINIKE,
+  adminKlinike
+});
+
+export const setNewAdminKorisnik = korisnik => ({
+  type: SET_EDIT_ADMIN_KLINIKE,
+  korisnik
 });
 
 export const getAllAdmins = (sum, rpp) => async dispatch => {
@@ -51,6 +69,55 @@ export const editKlinika = klinika => async dispatch => {
   try {
     const k = await axios.put(`/api/klinika/edit/${klinika.id}`, klinika);
     dispatch(setAdminovaKlinika(k.data));
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const getPodaciGrafik = (period, id) => async dispatch => {
+  try {
+    console.log("pozvao");
+    const resp = await axios.get(`/api/klinika/grafik/${period}/${id}`);
+    const data = [];
+    for (const entry of Object.entries(resp.data)) {
+      if (period === "Dan") {
+        data.push(createData(entry[0] + ":00", entry[1]));
+      }
+      if (period === "Nedelja") {
+        var date = new Date();
+        date.setDate(date.getDate() + parseInt(entry[0], 10));
+        data.push(createData(date.toLocaleDateString(), entry[1]));
+      }
+      if (period === "Mesec") {
+        var date2 = new Date();
+        date2.setDate(date2.getDate() + parseInt(entry[0], 10));
+        data.push(createData(date2.toLocaleDateString(), entry[1]));
+      }
+    }
+    dispatch(setPodaciGrafik(data));
+  } catch (err) {
+    console.log(err);
+  }
+};
+function createData(time, amount) {
+  return { time, amount };
+}
+
+export const getAdminKlinike = id => async dispatch => {
+  try {
+    const k = await axios.get(`/api/adminK/korisnik/${id}`);
+    dispatch(setRealKorisnik(k.data.korisnik));
+    dispatch(setAdminKlinike(k.data));
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const editAdminKlinike = korisnik => async dispatch => {
+  try {
+    const k = await axios.put(`/api/users/${korisnik.id}`, korisnik);
+    dispatch(setRealKorisnik(k.data));
+    dispatch(setNewAdminKorisnik(k.data));
   } catch (err) {
     console.log(err);
   }

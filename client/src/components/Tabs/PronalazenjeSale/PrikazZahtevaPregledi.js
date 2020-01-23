@@ -119,7 +119,7 @@ const PrikazZahtevaPregled = ({
     getPreglediPronalazenjeSale(klinika.id);
     setTerminP("");
     setTerminO("");
-  }, []);
+  }, [getPreglediPronalazenjeSale, klinika.id, setTerminP, setTerminO]);
 
   const classes = useStyles();
   const [order, setOrder] = React.useState("asc");

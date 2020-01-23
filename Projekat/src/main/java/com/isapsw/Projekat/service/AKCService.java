@@ -43,4 +43,8 @@ public class AKCService {
 
         return akcRepository.save(akc);
     }
+
+    public AdminKlinCentra getAdminByKorisnikId(String id){
+        return akcRepository.findAdminKlinCentraByKorisnikId(Long.parseLong(id));
+    }
 }

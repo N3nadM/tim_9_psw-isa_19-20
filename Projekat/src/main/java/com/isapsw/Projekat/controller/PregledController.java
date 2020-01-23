@@ -185,7 +185,7 @@ public class PregledController {
     @PostMapping("/zakaziPregledByLekar")
     public ResponseEntity<Boolean> zakaziPregledByLekar(@RequestBody Map<String,String> body, Authentication authentication) {
         try {
-            return new ResponseEntity(pregledService.zakaziPregled(Long.parseLong(body.get("pacijentKorisnikId").toString()), body.get("lekarId").toString(), body.get("datum").toString()), HttpStatus.OK);
+            return new ResponseEntity(pregledService.zakaziPregledByLekar(Long.parseLong(body.get("pacijentKorisnikId").toString()), body.get("lekarId").toString(), body.get("datum").toString()), HttpStatus.OK);
         }
         catch(Exception e) {
             System.out.println(e.getMessage());

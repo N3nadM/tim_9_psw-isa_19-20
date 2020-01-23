@@ -103,7 +103,7 @@ const useStyles = makeStyles(theme => ({
 const Cenovnik = ({ klinika, tipovi, getAllTipoviPregleda }) => {
   useEffect(() => {
     getAllTipoviPregleda(klinika.id);
-  }, []);
+  }, [getAllTipoviPregleda, klinika.id]);
 
   const classes = useStyles();
   const [order, setOrder] = React.useState("asc");

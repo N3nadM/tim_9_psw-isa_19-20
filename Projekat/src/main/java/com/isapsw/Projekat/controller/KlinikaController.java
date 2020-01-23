@@ -1,9 +1,6 @@
 package com.isapsw.Projekat.controller;
 
-import com.isapsw.Projekat.domain.Klinika;
-import com.isapsw.Projekat.domain.Korisnik;
-import com.isapsw.Projekat.domain.Lekar;
-import com.isapsw.Projekat.domain.OcenaKlinike;
+import com.isapsw.Projekat.domain.*;
 import com.isapsw.Projekat.dto.KlinikaDTO;
 import com.isapsw.Projekat.service.KlinikaService;
 import com.isapsw.Projekat.service.KorisnikService;
@@ -17,6 +14,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -142,5 +140,52 @@ public class KlinikaController {
     }
 
 
+    @PostMapping("/prihod/{id}")
+    public ResponseEntity<Double> getPrihod(@PathVariable String id, @RequestBody Map<String,Object> body) {
+        try {
+            Double prihod = klinikaService.getUkupanPrihod(id, body.get("datumOd").toString(), body.get("datumDo").toString());
+            return new ResponseEntity<>(prihod, HttpStatus.OK);
+        }
+        catch(Exception e) {
+            System.out.println(e.getMessage());
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("/grafik/Dan/{id}")
+    public ResponseEntity<HashMap<String, Integer>> zaGrafikDan(@PathVariable String id) {
+        try {
+            HashMap<String,Integer> podaci = klinikaService.preglediGrafikDan(id);
+            return new ResponseEntity<>(podaci, HttpStatus.OK);
+        }
+        catch(Exception e) {
+            System.out.println(e.getMessage());
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("/grafik/Nedelja/{id}")
+    public ResponseEntity<HashMap<String, Integer>> zaGrafikNedelja(@PathVariable String id) {
+        try {
+            HashMap<String,Integer> podaci = klinikaService.preglediGrafikNedelja(id);
+            return new ResponseEntity<>(podaci, HttpStatus.OK);
+        }
+        catch(Exception e) {
+            System.out.println(e.getMessage());
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("/grafik/Mesec/{id}")
+    public ResponseEntity<HashMap<String, Integer>> zaGrafikMesec(@PathVariable String id) {
+        try {
+            HashMap<String,Integer> podaci = klinikaService.preglediGrafikMesec(id);
+            return new ResponseEntity<>(podaci, HttpStatus.OK);
+        }
+        catch(Exception e) {
+            System.out.println(e.getMessage());
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
+    }
 
 }

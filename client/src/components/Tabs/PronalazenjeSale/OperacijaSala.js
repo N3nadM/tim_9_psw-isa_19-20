@@ -38,7 +38,7 @@ const OperacijaSala = ({
 }) => {
   useEffect(() => {
     getOperacijaById(id);
-  }, []);
+  }, [getOperacijaById, id]);
 
   const [state, setState] = React.useState({
     medSestraId: "",
@@ -51,7 +51,7 @@ const OperacijaSala = ({
       `/api/medsestra/sestraDostupna/${klinika.id}/${operacija.datumPocetka}/${operacija.tipPregleda.minimalnoTrajanjeMin}`
     );
     console.log(resp.data);
-    if (resp.data != null && resp.data != "") {
+    if (resp.data != null && resp.data !== "") {
       setState({
         ...state,
         medSestraId: resp.data.id,

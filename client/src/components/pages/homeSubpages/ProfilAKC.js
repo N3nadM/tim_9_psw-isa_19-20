@@ -12,6 +12,7 @@ import Drawer from "@material-ui/core/Drawer";
 import TabPanel from "../../Tabs/TabPanel";
 import AppBar from "../../layout/AppBarLogedIn";
 import PromeniLozinku from "../../Tabs/Korisnik/PromeniLozinku";
+import AdminKCProfilTab from "../../Tabs/AdminKCProfilTab";
 
 const drawerWidth = 240;
 
@@ -64,6 +65,7 @@ export default function ProfilAKC() {
         <Tab label="Dodaj admina KC" {...a11yProps(3)} />
         <Tab label="Sifranik" {...a11yProps(4)} />
         <Tab label="Promeni lozinku" {...a11yProps(5)} />
+        <Tab label="Lični podaci" {...a11yProps(6)} />
       </Tabs>
     </div>
   );
@@ -85,22 +87,25 @@ export default function ProfilAKC() {
         </nav>
         <main className={classes.content}>
           <TabPanel value={value} index={0}>
-            <Tabela />
+            {value === 0 && <Tabela />}
           </TabPanel>
           <TabPanel value={value} index={1}>
-            <DodajKliniku />
+            {value === 1 && <DodajKliniku />}
           </TabPanel>
           <TabPanel value={value} index={2}>
-            <DodajAK />
+            {value === 2 && <DodajAK />}
           </TabPanel>
           <TabPanel value={value} index={3}>
-            <DodajAKC />
+            {value === 3 && <DodajAKC />}
           </TabPanel>
           <TabPanel value={value} index={4}>
-            <SifranikTab />
+            {value === 4 && <SifranikTab />}
           </TabPanel>
           <TabPanel value={value} index={5}>
-            <PromeniLozinku />
+            {value === 5 && <PromeniLozinku />}
+          </TabPanel>
+          <TabPanel value={value} index={6}>
+            {value === 6 && <AdminKCProfilTab />}
           </TabPanel>
         </main>
       </div>

@@ -12,7 +12,6 @@ import Button from "@material-ui/core/Button";
 import Paper from "@material-ui/core/Paper";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
-import Axios from "axios";
 import {
   getLekariKlinike,
   setLekarZakazivanje,
@@ -70,7 +69,7 @@ const PretragaSlobodniLekara = ({
 
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
-  const [state, setState] = React.useState({
+  const [state] = React.useState({
     selektovaniLekari: []
   });
 

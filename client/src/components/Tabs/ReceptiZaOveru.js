@@ -24,10 +24,6 @@ const ReceptiZaOveru = ({
     //eslint-disable-next-line
   }, []);
 
-  {
-    console.log(receptiZaOveru);
-  }
-
   return (
     <div className="Tabela">
       <Table aria-label="simple table">
