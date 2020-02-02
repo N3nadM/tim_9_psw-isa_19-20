@@ -39,7 +39,7 @@ INSERT INTO LEKAR(tip_pregleda_id, korisnik_id, klinika_id, pocetak_radnog_vreme
 INSERT INTO KORISNIK (adresa, email, ime, password, prezime, drzava, grad, telefon) VALUES ('adresa pacijenta', 'pacijent@gmail.com', 'Pacijent', '$2a$10$feiotRqclqYZ7aJnytCDSedhWmzztzhuwyujbVfVucV4nbmMRNnwa', 'Pacijentic',  'drzava', 'grad', 'telefon');
 INSERT INTO USER_AUTHORITY VALUES ('4', '1');
 INSERT INTO PACIJENT(datum_kreiranja, jbzo, korisnik_id) VALUES ('2019-11-20', '555333', '4');
-INSERT INTO ZDR_KARTON(pacijent_id, dioptrija, visina, tezina, krvna_grupa) VALUES ('1', '-1.5', '193', '80', '0+');
+INSERT INTO ZDR_KARTON(pacijent_id, dioptrija, visina, tezina, krvna_grupa, version) VALUES ('1', '-1.5', '193', '80', '0+', 0);
 
 INSERT INTO KORISNIK (adresa, email, ime, password, prezime, drzava, grad, telefon) VALUES ('adresa med sestre', 'medsestra@gmail.com', 'Sestra', '$2a$10$feiotRqclqYZ7aJnytCDSedhWmzztzhuwyujbVfVucV4nbmMRNnwa', 'Sestric',  'drzava', 'grad', 'telefon');
 INSERT INTO USER_AUTHORITY VALUES ('5', '5');
@@ -66,7 +66,7 @@ INSERT INTO ALERGIJE_PACIJENATA VALUES('1','1');
 INSERT INTO KORISNIK (adresa, email, ime, password, prezime, drzava, grad, telefon) VALUES ('neka adresa', 'peraperic@gmail.com', 'Pera', '$2a$10$feiotRqclqYZ7aJnytCDSedhWmzztzhuwyujbVfVucV4nbmMRNnwa', 'Pacijent',  'drzava', 'Beograd', '33333213');
 INSERT INTO USER_AUTHORITY VALUES ('6', '1');
 INSERT INTO PACIJENT(datum_kreiranja, jbzo, korisnik_id) VALUES ('2019-11-22', '666777', '6');
-INSERT INTO ZDR_KARTON(pacijent_id, dioptrija, visina, tezina, krvna_grupa) VALUES ('2', '-1.35', '153', '40', '0+');
+INSERT INTO ZDR_KARTON(pacijent_id, dioptrija, visina, tezina, krvna_grupa, version) VALUES ('2', '-1.35', '153', '40', '0+', 0);
 
 INSERT INTO LEK(naziv, sadrzaj, sifra) VALUES('Alergen 600mg', 'bitces alergican', 'Al234');
 INSERT INTO ALERGIJE_PACIJENATA VALUES('2','2');
@@ -82,17 +82,17 @@ INSERT INTO RECEPTI_PACIJENTA VALUES ('1','1');
 INSERT INTO KORISNIK (adresa, email, ime, password, prezime, drzava, grad, telefon) VALUES ('tamo daleko', 'email@gmail.com', 'Email', '$2a$10$feiotRqclqYZ7aJnytCDSedhWmzztzhuwyujbVfVucV4nbmMRNnwa', 'emajil',  'drzava', 'Novi Sad', '543543543');
 INSERT INTO USER_AUTHORITY VALUES ('7', '1');
 INSERT INTO PACIJENT(datum_kreiranja, jbzo, korisnik_id) VALUES ('2019-04-13', '654654', '7');
-INSERT INTO ZDR_KARTON(pacijent_id, dioptrija, visina, tezina, krvna_grupa) VALUES ('3', '-1.5', '193', '80', '0+');
+INSERT INTO ZDR_KARTON(pacijent_id, dioptrija, visina, tezina, krvna_grupa, version) VALUES ('3', '-1.5', '193', '80', '0+', 0);
 
 INSERT INTO KORISNIK (adresa, email, ime, password, prezime, drzava, grad, telefon) VALUES ('ulica 54', 'trtrtr@gmail.com', 'Trtrtr', '$2a$10$feiotRqclqYZ7aJnytCDSedhWmzztzhuwyujbVfVucV4nbmMRNnwa', 'rttrt',  'drzava', 'Nis', '7864554');
 INSERT INTO USER_AUTHORITY VALUES ('8', '1');
 INSERT INTO PACIJENT(datum_kreiranja, jbzo, korisnik_id) VALUES ('2019-11-07', '543543', '8');
-INSERT INTO ZDR_KARTON(pacijent_id, dioptrija, visina, tezina, krvna_grupa) VALUES ('4', '-1.35', '153', '40', '0+');
+INSERT INTO ZDR_KARTON(pacijent_id, dioptrija, visina, tezina, krvna_grupa, version) VALUES ('4', '-1.35', '153', '40', '0+', 0);
 
 INSERT INTO KORISNIK (adresa, email, ime, password, prezime, drzava, grad, telefon) VALUES ('adresaaaa', 'ijasam@gmail.com', 'IJaSamPacijent', '$2a$10$feiotRqclqYZ7aJnytCDSedhWmzztzhuwyujbVfVucV4nbmMRNnwa', 'IJaSamPrezime',  'drzava', 'Subotica', '654765');
 INSERT INTO USER_AUTHORITY VALUES ('9', '1');
 INSERT INTO PACIJENT(datum_kreiranja, jbzo, korisnik_id) VALUES ('2019-12-20', '123123', '9');
-INSERT INTO ZDR_KARTON(pacijent_id, dioptrija, visina, tezina, krvna_grupa) VALUES ('5', '-1.35', '153', '40', '0+');
+INSERT INTO ZDR_KARTON(pacijent_id, dioptrija, visina, tezina, krvna_grupa, version) VALUES ('5', '-1.35', '153', '40', '0+', 0);
 
 INSERT INTO KORISNIK (adresa, email, ime, password, prezime, drzava, grad, telefon) VALUES ('lekariceva 12', 'lekar123@gmail.com', 'Mile', '$2a$10$feiotRqclqYZ7aJnytCDSedhWmzztzhuwyujbVfVucV4nbmMRNnwa', 'Lekaricccccacca',  'drzava', 'grad', 'telefon');
 INSERT INTO USER_AUTHORITY VALUES ('10', '2');
