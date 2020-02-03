@@ -153,10 +153,11 @@ export const deletePregled = id => async dispatch => {
   }
 };
 
-export const rezervisiPregled = id => async dispatch => {
+export const rezervisiPregled = (id, v) => async dispatch => {
   try {
     const res = await axios.post("/api/pregled/zakaziPredefinisani", {
-      pregledId: id
+      pregledId: id,
+      version: v
     });
     if (res.data) {
       console.log("uspesno");

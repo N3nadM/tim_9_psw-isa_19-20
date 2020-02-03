@@ -13,7 +13,8 @@ export default function EditZdrKartonTab({
     visina: zdrKarton.visina,
     tezina: zdrKarton.tezina,
     dioptrija: zdrKarton.dioptrija,
-    krvnaGrupa: zdrKarton.krvnaGrupa
+    krvnaGrupa: zdrKarton.krvnaGrupa,
+    version: zdrKarton.version
   });
 
   const handleChange = e => {

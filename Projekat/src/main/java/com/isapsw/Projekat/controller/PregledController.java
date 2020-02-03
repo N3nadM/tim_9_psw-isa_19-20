@@ -138,7 +138,7 @@ public class PregledController {
     public ResponseEntity<Boolean> zakaziPredefinisani(@RequestBody Map<String,String> body, Authentication authentication) {
         try {
             Korisnik korisnik = (Korisnik)authentication.getPrincipal();
-            return new ResponseEntity(pregledService.zakaziPredefinisaniPregled(korisnik.getId(), body.get("pregledId").toString()), HttpStatus.OK);
+            return new ResponseEntity(pregledService.zakaziPredefinisaniPregled(korisnik.getId(), body.get("pregledId").toString(), body.get("version").toString()), HttpStatus.OK);
         }
         catch(Exception e) {
             System.out.println(e.getMessage());

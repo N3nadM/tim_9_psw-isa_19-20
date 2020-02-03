@@ -72,8 +72,8 @@ const UnapredDefinisaniPregledi = ({
     setOrderBy(property);
   };
 
-  const handleRequest = (id, e) => {
-    rezervisiPregled(id);
+  const handleRequest = (id, version, e) => {
+    rezervisiPregled(id, version);
   };
 
   return (
@@ -158,7 +158,9 @@ const UnapredDefinisaniPregledi = ({
                                   <Button
                                     color="primary"
                                     variant="outlined"
-                                    onClick={() => handleRequest(row.id)}
+                                    onClick={() =>
+                                      handleRequest(row.id, row.version)
+                                    }
                                   >
                                     Zakazi
                                   </Button>

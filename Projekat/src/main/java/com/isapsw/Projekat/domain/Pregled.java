@@ -33,6 +33,9 @@ public class Pregled extends Pregled_Operacija{
         setVrsta(0);
     }
 
+    @Version
+    private Long version;
+
     public Integer getPopust() {
         return popust;
     }
@@ -65,4 +68,11 @@ public class Pregled extends Pregled_Operacija{
         this.medicinskaSestra = medicinskaSestra;
     }
 
+    public Long getVersion() {
+        return version;
+    }
+
+    public void setVersion(Long version) {
+        this.version = version;
+    }
 }
