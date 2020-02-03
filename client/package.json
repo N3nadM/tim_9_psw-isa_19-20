@@ -12,6 +12,8 @@
     "date-fns": "^2.8.0",
     "jwt-decode": "^2.2.0",
     "moment": "^2.24.0",
+    "pigeon-maps": "^0.14.0",
+    "pigeon-marker": "^0.3.4",
     "react": "^16.11.0",
     "react-big-calendar": "^0.23.0",
     "react-dom": "^16.11.0",

@@ -12,6 +12,7 @@ import Typography from "@material-ui/core/Typography";
 import { Paper } from "@material-ui/core";
 import Skeleton from "@material-ui/lab/Skeleton";
 import EditKlinikaTab from "../Tabs/EditKlinikaTab";
+import Lokacija from "../Tabs/Lokacija";
 
 const PodaciKlinikaTabs = ({
   adminKlinike: { klinika },
@@ -69,6 +70,7 @@ const PodaciKlinikaTabs = ({
           >
             Izmeni
           </Button>
+          <Lokacija />
         </>
       )}
     </Paper>
