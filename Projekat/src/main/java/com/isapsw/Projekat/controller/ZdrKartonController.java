@@ -29,13 +29,13 @@ public class ZdrKartonController {
     }
 
     @PutMapping("/edit/{id}")
-    public ResponseEntity<ZdrKarton> editAccount(@RequestBody ZdrKartonDTO zdrKartonDTO) {
-        ZdrKarton zdrKarton = zdrKartonService.editZdrKarton(zdrKartonDTO);
-        if(zdrKarton == null) {
+    public ResponseEntity<ZdrKarton> editZdrKarton(@RequestBody ZdrKartonDTO zdrKartonDTO) {
+        try{
+            ZdrKarton zdrKarton = zdrKartonService.editZdrKarton(zdrKartonDTO);
+            return new ResponseEntity<ZdrKarton>(zdrKarton, HttpStatus.OK);
+        }catch(Exception e) {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
-
-        return new ResponseEntity<ZdrKarton>(zdrKarton, HttpStatus.OK);
     }
 
 }

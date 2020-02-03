@@ -7,16 +7,18 @@ public class ZdrKartonDTO {
     private Integer visina;
     private float dioptrija;
     private String krvnaGrupa;
+    private Long version;
 
     public ZdrKartonDTO() {
     }
 
-    public ZdrKartonDTO(Long id, Integer tezina, Integer visina, float dioptrija, String krvnaGrupa) {
+    public ZdrKartonDTO(Long id, Integer tezina, Integer visina, float dioptrija, String krvnaGrupa, Long version) {
         this.id = id;
         this.tezina = tezina;
         this.visina = visina;
         this.dioptrija = dioptrija;
         this.krvnaGrupa = krvnaGrupa;
+        this.version = version;
     }
 
     public Long getId() {
@@ -57,5 +59,13 @@ public class ZdrKartonDTO {
 
     public void setKrvnaGrupa(String krvnaKrupa) {
         this.krvnaGrupa = krvnaKrupa;
+    }
+
+    public Long getVersion() {
+        return version;
+    }
+
+    public void setVersion(Long version) {
+        this.version = version;
     }
 }

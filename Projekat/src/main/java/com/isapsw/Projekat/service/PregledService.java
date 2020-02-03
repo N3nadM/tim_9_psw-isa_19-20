@@ -153,10 +153,13 @@ public class PregledService {
         return true;
     }
 
-    @Transactional
-    public Boolean zakaziPredefinisaniPregled(Long kId, String pregledId) {
+    @Transactional(readOnly = false)
+    public Boolean zakaziPredefinisaniPregled(Long kId, String pregledId, String version) {
         Pacijent pacijent = pacijentRepository.findPacijentByKorisnikId(kId);
         Pregled pregled = pregledRepository.getOne(Long.parseLong(pregledId));
+        if(pregled.getVersion()!= Long.parseLong(version)){
+            return false;
+        }
 
         for (Pregled p: pacijent.getPregledi()) {
 
