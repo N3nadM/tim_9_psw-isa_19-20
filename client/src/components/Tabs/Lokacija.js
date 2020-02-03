@@ -2,35 +2,25 @@
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { Paper } from "@material-ui/core";
-import Map from "pigeon-maps";
-import Marker from "pigeon-marker";
 
-let poz = "";
-
-/*function nadjiLokaciju() {
-  Geolocation.getCurrentPosition(
-    position => {
-      console.log(position);
-    },
-    error => {
-      // See error code charts below.
-      console.log(error.code, error.message);
-    },
-    { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
-  );
-}*/
-
-const Mapa = ({}) => {
-  //nadjiLokaciju();
+const Mapa = ({ adresa }) => {
   return (
     <Paper style={{ padding: 50, paddingBottom: 75 }}>
-      <Map center={[45.2393885, 19.887316]} zoom={12} height={400}>
-        <Marker
-          anchor={[45.2393885, 19.887316]}
-          payload={1}
-          onClick={({ event, anchor, payload }) => {}}
+      <div
+        id="map-container"
+        className="rounded z-depth-1-half map-container"
+        style={{ height: "400px" }}
+      >
+        <iframe
+          src={`https://www.google.com/maps/embed/v1/place?key=AIzaSyC-QqGOI8Del5pUKi9k37ofcQxxeZfUDCw&q=${adresa}`}
+          style={{ height: "100%" }}
+          width="100%"
+          height="100%"
+          title="Mapa gde se nalazimo"
+          frameBorder="0"
+          style={{ border: 0 }}
         />
-      </Map>
+      </div>
     </Paper>
   );
 };

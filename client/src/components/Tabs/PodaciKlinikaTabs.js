@@ -70,7 +70,7 @@ const PodaciKlinikaTabs = ({
           >
             Izmeni
           </Button>
-          <Lokacija />
+          <Lokacija adresa={klinika.adresa} />
         </>
       )}
     </Paper>
