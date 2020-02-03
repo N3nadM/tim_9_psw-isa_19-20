@@ -4,16 +4,16 @@ INSERT INTO AUTHORITY VALUES ('3', 'ROLE_AK');
 INSERT INTO AUTHORITY VALUES ('4', 'ROLE_AKC');
 INSERT INTO AUTHORITY VALUES ('5', 'ROLE_MED_SESTRA');
 
-INSERT INTO KLINIKA (adresa, naziv, opis, ocena) VALUES ('Novi Sad, Zmajognjenavuka', 'Nikako ovde', 'opis klinike', '1.0');
-INSERT INTO KLINIKA (adresa, naziv, opis, ocena) VALUES ('Beograd, Nusiceva 3', 'Pravo mesto', 'opis klinike', '2.0');
-INSERT INTO KLINIKA (adresa, naziv, opis, ocena) VALUES ('Novi Sad, Jablanicka 22', 'Haha lose fore', 'opis klinike', '2.0');
-INSERT INTO KLINIKA (adresa, naziv, opis, ocena) VALUES ('Begec, jama 01', 'Samo nogama napred', 'opis klinike', '3.0');
-INSERT INTO KLINIKA (adresa, naziv, opis, ocena) VALUES ('James Bond, 007', 'Jednom udjes nikad ne izadjes', 'opis klinike', '3.0');
-INSERT INTO KLINIKA (adresa, naziv, opis, ocena) VALUES ('Paracin, Puskinova 32', 'Crveni krst', 'opis klinike', '4.0');
-INSERT INTO KLINIKA (adresa, naziv, opis, ocena) VALUES ('Zmajevo, kod semafora', 'Sve naj', 'opis klinike', '4.0');
-INSERT INTO KLINIKA (adresa, naziv, opis, ocena) VALUES ('Venac, toranj 1', 'Carna', 'opis klinike', '5.0');
-INSERT INTO KLINIKA (adresa, naziv, opis, ocena) VALUES ('Bogojevo, Radnicka 104', 'Sjajna', 'opis klinike', '5.0');
-INSERT INTO KLINIKA (adresa, naziv, opis, ocena) VALUES ('Knić, Narodnog Fronta 2', 'Lepa klinika', 'opis klinike', '5.0');
+INSERT INTO KLINIKA (adresa, naziv, opis, ocena) VALUES ('Novi Sad, Zmaj Ognjena Vuka', 'Nikako ovde', 'opis klinike', '1.0');
+INSERT INTO KLINIKA (adresa, naziv, opis, ocena) VALUES ('Beograd, Dzordza Vasingtona 17', 'Pravo mesto', 'opis klinike', '2.0');
+INSERT INTO KLINIKA (adresa, naziv, opis, ocena) VALUES ('Novi Sad, Bulevar cara Lazara 77', 'Haha lose fore', 'opis klinike', '2.0');
+INSERT INTO KLINIKA (adresa, naziv, opis, ocena) VALUES ('Novi Sad, Bulevar Slobodana Jovanovica 13', 'Samo nogama napred', 'opis klinike', '3.0');
+INSERT INTO KLINIKA (adresa, naziv, opis, ocena) VALUES ('Beograd, Omladinskih brigada 104', 'Jednom udjes nikad ne izadjes', 'opis klinike', '3.0');
+INSERT INTO KLINIKA (adresa, naziv, opis, ocena) VALUES ('Beograd, Nehruova 53', 'Crveni krst', 'opis klinike', '4.0');
+INSERT INTO KLINIKA (adresa, naziv, opis, ocena) VALUES ('Beograd, Ustanicka 16a', 'Sve naj', 'opis klinike', '4.0');
+INSERT INTO KLINIKA (adresa, naziv, opis, ocena) VALUES ('Beograd, Kraljice Jelene 22', 'Carna', 'opis klinike', '5.0');
+INSERT INTO KLINIKA (adresa, naziv, opis, ocena) VALUES ('Beograd, Bojanska 16', 'Sjajna', 'opis klinike', '5.0');
+INSERT INTO KLINIKA (adresa, naziv, opis, ocena) VALUES ('Novi Sad, Cara Dusana 26', 'Lepa klinika', 'opis klinike', '5.0');
 
 INSERT INTO SALA (datum_kreiranja, sala_identifier, naziv, klinika_id, aktivna) VALUES ('2019-11-30','1 - 1', 'Sala za preglede 1', '1', true);
 INSERT INTO SALA (datum_kreiranja, sala_identifier, naziv, klinika_id, aktivna) VALUES ('2019-11-30','1 - 2', 'Sala za preglede 2', '1', true);
