@@ -24,7 +24,9 @@ public class ZdrKartonService {
         if(zdrKarton == null){
             return  zdrKarton;
         }
-
+        if(zdrKarton.getVersion() != zdrKarton.getVersion()){
+            return null;
+        }
         zdrKarton.setTezina(zdrKartonDTO.getTezina());
         zdrKarton.setVisina(zdrKartonDTO.getVisina());
         zdrKarton.setDioptrija(zdrKartonDTO.getDioptrija());
