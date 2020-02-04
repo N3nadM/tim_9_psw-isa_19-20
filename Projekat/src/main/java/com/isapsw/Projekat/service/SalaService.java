@@ -1,13 +1,12 @@
 package com.isapsw.Projekat.service;
 
-import com.isapsw.Projekat.domain.Klinika;
-import com.isapsw.Projekat.domain.Pregled;
-import com.isapsw.Projekat.domain.Sala;
+import com.isapsw.Projekat.domain.*;
 import com.isapsw.Projekat.dto.SalaDTO;
 import com.isapsw.Projekat.repository.KlinikaRepository;
 import com.isapsw.Projekat.repository.OperacijaRepository;
 import com.isapsw.Projekat.repository.PregledRepository;
 import com.isapsw.Projekat.repository.SalaRepository;
+import com.isapsw.Projekat.repository.TipPregledaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
@@ -16,6 +15,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalTime;
+import java.time.ZoneId;
 import java.util.*;
 
 @Service
@@ -32,6 +32,9 @@ public class SalaService {
 
     @Autowired
     private OperacijaRepository operacijaRepository;
+
+    @Autowired
+    private TipPregledaRepository tipPregledaRepository;
 
     public Sala addSala(SalaDTO salaDTO){
         Sala s = new Sala();
@@ -66,7 +69,7 @@ public class SalaService {
                 System.out.println("Nasao pregled koji se odrzava o sali");
                 if(datum.getTime() > p.getDatumPocetka().getTime() && datum.getTime() <p.getDatumZavrsetka().getTime() ){
                     //proverava da li se vreme pocetka novog pregleda nalazi izmedju pocetka i zavrsetka vec rezervisanog pregleda u toj sali
-                }else if((datum.getTime() + Integer.parseInt(trajanje)*60*100) >p.getDatumPocetka().getTime() && (datum.getTime() + Integer.parseInt(trajanje) *60 * 100) <p.getDatumZavrsetka().getTime()){
+                }else if((datum.getTime() + Integer.parseInt(trajanje)*60*1000) >p.getDatumPocetka().getTime() && (datum.getTime() + Integer.parseInt(trajanje) *60 * 1000) <p.getDatumZavrsetka().getTime()){
                     //proverava da li se vreme zavrsetka novog pregleda nalazi izmedju pocetka i zavrsetka vec rezervisanog pregleda u toj sali
                 }else{
                     //ako nije nijedan od prethodnih uslova ispunjen ta sala je dostupna i ubacije se u listu
@@ -77,6 +80,45 @@ public class SalaService {
 
         return  saleNaKlinici;
     }
+
+    public HashMap<Long, String> prviSlobodniTerminiSala(String id, String termin, String trajanje) throws ParseException {
+        HashMap<Long, String> ret = new HashMap<>();
+        List<Sala> saleNaKlinici = salaRepository.findByKlinikaId(Long.parseLong(id));
+
+        for(Sala s: saleNaKlinici){
+            Date datum;
+            Date zaRacunanjeKrajTermina;
+            SimpleDateFormat formatter;
+            if(!String.valueOf(termin.charAt(4)).equals("-")){
+                datum =  new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss").parse(termin);
+                zaRacunanjeKrajTermina =  new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss").parse(termin);
+                formatter = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss");
+            }else{
+                datum = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(termin);
+                zaRacunanjeKrajTermina = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(termin);
+                formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            }
+            datum.setTime(datum.getTime() + Integer.parseInt(trajanje)*60*1000);
+            zaRacunanjeKrajTermina.setTime(zaRacunanjeKrajTermina.getTime() + Integer.parseInt(trajanje)*60*1000);
+            while(!ret.containsKey(s.getId())){
+                zaRacunanjeKrajTermina.setTime(datum.getTime() + Integer.parseInt(trajanje)*60*1000);
+                List<Pregled> pregleds = pregledRepository.proveraSlobodniTerminSala(s.getId(), datum, zaRacunanjeKrajTermina);
+                List<Operacija> operacijas = operacijaRepository.proveraSlobodniTerminSala(s.getId(), datum, zaRacunanjeKrajTermina);
+                if((pregleds == null || pregleds.isEmpty()) && (operacijas == null || operacijas.isEmpty())){
+                    String formattedDate = formatter.format(datum);
+                    ret.put(s.getId(), formattedDate);
+                    break;
+                }else {
+                    datum.setTime(datum.getTime() + Integer.parseInt(trajanje)*60*1000);
+                }
+                //trebalo bi dodati neku proveru kad je kraj dana ili pocetak radnog vremena ili tako nesto sta onda bude
+            }
+        }
+
+        return ret;
+    }
+
+
 
     public List<Sala> search(Long id, String broj, String naziv){
         List<Sala> sale = salaRepository.findSalaByParameters(broj, naziv);
