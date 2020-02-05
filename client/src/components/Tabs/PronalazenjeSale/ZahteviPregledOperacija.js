@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import PropTypes from "prop-types";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import Tabs from "@material-ui/core/Tabs";
@@ -7,6 +7,9 @@ import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
 import PrikazZahtevaPregledi from "../PronalazenjeSale/PrikazZahtevaPregledi";
 import PrikazZahtevaOperacije from "../PronalazenjeSale/PrikazZahtevaOperacije";
+import { promeniPregled } from "../../../store/actions/pregled";
+import { connect } from "react-redux";
+import { withRouter } from "react-router-dom";
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -48,7 +51,12 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default function FullWidthTabs() {
+const FullWidthTabs = ({ promeniPregled }) => {
+  useEffect(() => {
+    console.log("uslo");
+    promeniPregled();
+  });
+
   const classes = useStyles();
   const theme = useTheme();
   const [value, setValue] = React.useState(0);
@@ -76,4 +84,11 @@ export default function FullWidthTabs() {
       </TabPanel>
     </div>
   );
-}
+};
+const mapStateToProps = state => ({});
+
+export default withRouter(
+  connect(mapStateToProps, {
+    promeniPregled
+  })(FullWidthTabs)
+);

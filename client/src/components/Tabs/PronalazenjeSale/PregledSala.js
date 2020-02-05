@@ -73,7 +73,6 @@ const PregledSala = ({
 }) => {
   useEffect(() => {
     getPregledById(id);
-    setListaDostupnihSala("");
   }, [getPregledById, id]);
 
   const [state, setState] = React.useState({
