@@ -4,6 +4,7 @@ import com.isapsw.Projekat.domain.*;
 import com.isapsw.Projekat.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.mail.MessagingException;
 import java.text.ParseException;
@@ -164,21 +165,22 @@ public class OperacijaService {
         return operacijaRepository.operacijeKojeNemajuSalu(Long.parseLong(id));
     }
 
+    @Transactional
     public Operacija sacuvajOperaciju(String operacijaId, String salaId, List<Integer> lekariId, String medSestraId, String termin) throws ParseException, MessagingException, InterruptedException {
 
         Date date = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss").parse(termin);
-        Operacija operacija = operacijaRepository.findById(Long.parseLong(operacijaId)).get();
-        Sala sala = salaRepository.findById(Long.parseLong(salaId)).get();
+        Operacija operacija = operacijaRepository.findByIdTransaction(Long.parseLong(operacijaId)).get();
+        Sala sala = salaRepository.findByIdTransaction(Long.parseLong(salaId)).get();
 
         operacija.setSala(sala);
         if(operacija.getDatumPocetka() != date){
             operacija.setDatumPocetka(date);
-            Lekar lekarTemp = lekarRepository.findById(lekariId.get(0).longValue()).get();
+            Lekar lekarTemp = lekarRepository.findByIdTransaction(lekariId.get(0).longValue()).get();
             operacija.setDatumZavrsetka(new Date(date.getTime() + lekarTemp.getTipPregleda().getMinimalnoTrajanjeMin() * 60 * 1000));
         }
         sala.getOperacija().add(operacija);
 
-        MedicinskaSestra medicinskaSestra = medSestraRepository.findById(Long.parseLong(medSestraId)).get();
+        MedicinskaSestra medicinskaSestra = medSestraRepository.findByIdTransaction(Long.parseLong(medSestraId)).get();
 
         if(!medicinskaSestra.getOperacije().contains(operacija)){
             medicinskaSestra.getOperacije().add(operacija);
@@ -188,7 +190,7 @@ public class OperacijaService {
         }
 
         for(Integer id : lekariId){
-            Lekar lekar = lekarRepository.findById(id.longValue()).get();
+            Lekar lekar = lekarRepository.findByIdTransaction(id.longValue()).get();
             if(!operacija.getLekari().contains(lekar)){
                 operacija.getLekari().add(lekar);
             }
