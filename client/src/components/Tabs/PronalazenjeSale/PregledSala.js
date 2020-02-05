@@ -27,6 +27,7 @@ import SaleSaSlobodnimTerminima from "../PronalazenjeSale/SaleSaSlobodnimTermini
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import Box from "@material-ui/core/Box";
+
 let today = new Date();
 today.setDate(today.getDate() + 1);
 let d = new Date();
@@ -63,6 +64,7 @@ const PregledSala = ({
   klinika,
   sale,
   termin,
+  terminZaSalu,
   getListaDostupnihSala,
   promenjenLekar,
   lekarZaPregled,
@@ -106,8 +108,15 @@ const PregledSala = ({
 
   const handleSubmit = async e => {
     e.preventDefault();
+    let odabranTermin;
+    if (terminZaSalu !== null) {
+      odabranTermin = terminZaSalu["_data"]["♠" + sala][1];
+    } else {
+      odabranTermin = pregled.datumPocetka;
+    }
+
     const resp = await Axios.get(
-      `/api/medsestra/sestraDostupna/${klinika.id}/${pregled.datumPocetka}/${pregled.tipPregleda.minimalnoTrajanjeMin}`
+      `/api/medsestra/sestraDostupna/${klinika.id}/${odabranTermin}/${pregled.tipPregleda.minimalnoTrajanjeMin}`
     );
     console.log(resp.data);
     if (resp.data != null && resp.data !== "") {
@@ -134,7 +143,12 @@ const PregledSala = ({
   };
 
   const handleZakazi = async e => {
-    let t = termin != "" ? termin : pregled.datumPocetka;
+    let t;
+    if (terminZaSalu !== null) {
+      t = terminZaSalu["_data"]["♠" + sala][1];
+    } else {
+      t = termin != "" ? termin : pregled.datumPocetka;
+    }
     const podaci = {
       medSestraId: state.medSestraId,
       salaId: sala,
@@ -362,7 +376,8 @@ function mapStateToProps(state) {
     termin: state.lekar.terminZaPregled,
     promenjenLekar: state.lekar.promenjenLekar,
     lekarZaPregled: state.lekar.lekarZaPregled,
-    sala: state.sala.salaZaPregled
+    sala: state.sala.salaZaPregled,
+    terminZaSalu: state.sala.slobodniTerminiSala
   };
 }
 

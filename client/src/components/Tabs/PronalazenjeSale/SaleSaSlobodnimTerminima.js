@@ -297,6 +297,7 @@ const IzmenaSala = ({
                             className={classes.submit}
                             onClick={() => {
                               setSalaZaPregled(row.id);
+
                               setState({
                                 ...state,
                                 brojIspis: row.salaIdentifier

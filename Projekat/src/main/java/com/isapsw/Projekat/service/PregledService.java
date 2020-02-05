@@ -228,7 +228,12 @@ public class PregledService {
 
     public Pregled sacuvajPregled(String pregledId, String salaId, String lekarId, String medSestraId, String termin) throws ParseException, MessagingException, InterruptedException {
 
-        Date date = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss").parse(termin);
+        Date date;
+        if(!String.valueOf(termin.charAt(4)).equals("-")){
+            date =  new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss").parse(termin);
+        }else{
+            date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(termin);
+        }
         Pregled pregled = pregledRepository.findById(Long.parseLong(pregledId)).get();
         Lekar lekar = lekarRepository.findLekarById(Long.parseLong(lekarId));
         Sala sala = salaRepository.findById(Long.parseLong(salaId)).get();

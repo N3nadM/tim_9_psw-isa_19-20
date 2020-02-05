@@ -93,6 +93,7 @@ export const searchSalaNaKlinici = (id, searchData) => async (
     console.log(err);
   }
 };
+
 export const setSalaZakazivanje = sala => async dispatch => {
   try {
     dispatch(setSalaZaPregled(sala));

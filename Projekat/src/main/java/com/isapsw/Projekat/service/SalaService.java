@@ -2,11 +2,7 @@ package com.isapsw.Projekat.service;
 
 import com.isapsw.Projekat.domain.*;
 import com.isapsw.Projekat.dto.SalaDTO;
-import com.isapsw.Projekat.repository.KlinikaRepository;
-import com.isapsw.Projekat.repository.OperacijaRepository;
-import com.isapsw.Projekat.repository.PregledRepository;
-import com.isapsw.Projekat.repository.SalaRepository;
-import com.isapsw.Projekat.repository.TipPregledaRepository;
+import com.isapsw.Projekat.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
@@ -32,6 +28,9 @@ public class SalaService {
 
     @Autowired
     private OperacijaRepository operacijaRepository;
+
+    @Autowired
+    private MedSestraService medSestraService;
 
     @Autowired
     private TipPregledaRepository tipPregledaRepository;
@@ -89,29 +88,59 @@ public class SalaService {
             Date datum;
             Date zaRacunanjeKrajTermina;
             SimpleDateFormat formatter;
+            Date dateTemp;
+            Date pocetakRadnogVremena;
+            Date krajRadnogVremena;
+
             if(!String.valueOf(termin.charAt(4)).equals("-")){
                 datum =  new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss").parse(termin);
                 zaRacunanjeKrajTermina =  new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss").parse(termin);
+                dateTemp =  new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss").parse(termin);
+                pocetakRadnogVremena = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss").parse(termin.split(" ")[0] + " 07:00:00");
+                krajRadnogVremena = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss").parse(termin.split(" ")[0] + " 22:00:00");
                 formatter = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss");
             }else{
                 datum = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(termin);
                 zaRacunanjeKrajTermina = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(termin);
+                dateTemp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(termin);
+                pocetakRadnogVremena = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(termin.split(" ")[0] + " 07:00:00");
+                krajRadnogVremena = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(termin.split(" ")[0] + " 22:00:00");
                 formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             }
+
             datum.setTime(datum.getTime() + Integer.parseInt(trajanje)*60*1000);
             zaRacunanjeKrajTermina.setTime(zaRacunanjeKrajTermina.getTime() + Integer.parseInt(trajanje)*60*1000);
+
             while(!ret.containsKey(s.getId())){
                 zaRacunanjeKrajTermina.setTime(datum.getTime() + Integer.parseInt(trajanje)*60*1000);
-                List<Pregled> pregleds = pregledRepository.proveraSlobodniTerminSala(s.getId(), datum, zaRacunanjeKrajTermina);
-                List<Operacija> operacijas = operacijaRepository.proveraSlobodniTerminSala(s.getId(), datum, zaRacunanjeKrajTermina);
-                if((pregleds == null || pregleds.isEmpty()) && (operacijas == null || operacijas.isEmpty())){
+
+                dateTemp.setTime(datum.getTime() + 60*1000);
+                List<Pregled> pregleds = pregledRepository.proveraSlobodniTerminSala(s.getId(), dateTemp, zaRacunanjeKrajTermina);
+                List<Operacija> operacijas = operacijaRepository.proveraSlobodniTerminSala(s.getId(), dateTemp, zaRacunanjeKrajTermina);
+
+                if(krajRadnogVremena.compareTo(zaRacunanjeKrajTermina) < 0){
+                    //Ako je kraj radnog vremena manji od kraja termina,
+                    // povecaj radno vreme za jedan dan i gledaj za sledeci dan
+                    krajRadnogVremena.setTime(krajRadnogVremena.getTime() + 24*60*60*1000);
+                    pocetakRadnogVremena.setTime(pocetakRadnogVremena.getTime() + 24*60*60*1000);
+                    datum.setTime(datum.getTime() + Integer.parseInt(trajanje)*60*1000);
+                    continue;
+                }else if(krajRadnogVremena.compareTo(zaRacunanjeKrajTermina) > 0){
+                    //Ako je kraj radnog vremena veci od kraja termina, onda smo u dobrom danu za proveru
+                    while(pocetakRadnogVremena.compareTo(datum) > 0){
+                        //Povecavaj pocetak i kraj termina dok ne upadnes u radno vreme klinike
+                        zaRacunanjeKrajTermina.setTime(datum.getTime() + Integer.parseInt(trajanje)*60*1000);
+                        datum.setTime(datum.getTime() + Integer.parseInt(trajanje)*60*1000);
+                    }
+                }
+
+                if((pregleds == null || pregleds.isEmpty()) && (operacijas == null || operacijas.isEmpty()) && (medSestraService.getDostupnaSestra(id, formatter.format(dateTemp), trajanje) != null)){
                     String formattedDate = formatter.format(datum);
                     ret.put(s.getId(), formattedDate);
                     break;
                 }else {
                     datum.setTime(datum.getTime() + Integer.parseInt(trajanje)*60*1000);
                 }
-                //trebalo bi dodati neku proveru kad je kraj dana ili pocetak radnog vremena ili tako nesto sta onda bude
             }
         }
 
