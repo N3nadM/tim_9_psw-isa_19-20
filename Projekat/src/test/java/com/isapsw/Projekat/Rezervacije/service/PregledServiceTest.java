@@ -117,7 +117,7 @@ public class PregledServiceTest {
         pregledService.addPregled(pregledDTO);
         Pregled pr = pregledService.getPregledById((long)1);
 
-        assertEquals(pregledMock.getId(), pr.getId());
+        assertEquals(pregledMock, pr);
         when(pregledRepository.save(any(Pregled.class))).thenReturn(new Pregled());
     }
 
