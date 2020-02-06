@@ -113,6 +113,7 @@ const useStyles = makeStyles(theme => ({
 const IzmenaSala = ({
   sale,
   getListaSala,
+  lekarId,
   klinikaId,
   searchSalaNaKlinici,
   getSlobodniTerminiSala,
@@ -129,12 +130,12 @@ const IzmenaSala = ({
     terminZaOperaciju !== "" &&
       terminZaPregled === "" &&
       daLiTrebaDaSeTrazeTermini &&
-      getSlobodniTerminiSala(klinikaId, terminZaOperaciju, trajanje);
+      getSlobodniTerminiSala(lekarId, klinikaId, terminZaOperaciju, trajanje);
 
     terminZaPregled !== "" &&
       terminZaOperaciju === "" &&
       daLiTrebaDaSeTrazeTermini &&
-      getSlobodniTerminiSala(klinikaId, terminZaPregled, trajanje);
+      getSlobodniTerminiSala(lekarId, klinikaId, terminZaPregled, trajanje);
     //eslint-disable-next-line
   }, []);
   const [state, setState] = React.useState({

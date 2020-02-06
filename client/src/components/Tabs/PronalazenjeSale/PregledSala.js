@@ -216,10 +216,13 @@ const PregledSala = ({
             textColor="primary"
           >
             <Tab label="Prvi slobodni termini za sale" {...a11yProps(0)} />
+
             <Tab label="Izbor novog termina" {...a11yProps(1)} />
           </Tabs>
+
           <TabPanel value={value} index={0} dir={theme.direction}>
             <SaleSaSlobodnimTerminima
+              lekarId={pregled.lekar.korisnik.id}
               klinikaId={klinika.id}
               trajanje={pregled.tipPregleda.minimalnoTrajanjeMin}
               terminZaPregled={pregled.datumPocetka}
@@ -227,6 +230,7 @@ const PregledSala = ({
               terminZaOperaciju={""}
             />
           </TabPanel>
+
           <TabPanel value={value} index={1} dir={theme.direction}>
             <Paper style={{ padding: 50, paddingBottom: 75 }}>
               <Typography

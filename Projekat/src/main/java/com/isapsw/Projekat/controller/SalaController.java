@@ -91,10 +91,10 @@ public class SalaController {
         }
     }
 
-    @GetMapping("/terminiSala/{id}/{termin}/{trajanje}")
-    public ResponseEntity<HashMap<Long, String>> getSlobodniTerminiSala(@PathVariable String id, @PathVariable String termin, @PathVariable String trajanje) {
+    @GetMapping("/terminiSala/{lekarId}/{id}/{termin}/{trajanje}")
+    public ResponseEntity<HashMap<Long, String>> getSlobodniTerminiSala(@PathVariable String lekarId, @PathVariable String id, @PathVariable String termin, @PathVariable String trajanje) {
         try {
-            HashMap<Long, String> termini= salaService.prviSlobodniTerminiSala(id, termin, trajanje);
+            HashMap<Long, String> termini= salaService.prviSlobodniTerminiSala(lekarId, id, termin, trajanje);
             return new ResponseEntity<>(termini, HttpStatus.OK);
         }
         catch(Exception e) {

@@ -1,5 +1,6 @@
 package com.isapsw.Projekat.service;
 
+import ch.qos.logback.core.net.SyslogOutputStream;
 import com.isapsw.Projekat.domain.*;
 import com.isapsw.Projekat.dto.SalaDTO;
 import com.isapsw.Projekat.repository.*;
@@ -31,6 +32,12 @@ public class SalaService {
 
     @Autowired
     private MedSestraService medSestraService;
+
+    @Autowired
+    private LekarRepository lekarRepository;
+
+    @Autowired
+    private LekarService lekarService;
 
     @Autowired
     private TipPregledaRepository tipPregledaRepository;
@@ -80,9 +87,10 @@ public class SalaService {
         return  saleNaKlinici;
     }
 
-    public HashMap<Long, String> prviSlobodniTerminiSala(String id, String termin, String trajanje) throws ParseException {
+    public HashMap<Long, String> prviSlobodniTerminiSala(String lekarId, String id, String termin, String trajanje) throws ParseException {
         HashMap<Long, String> ret = new HashMap<>();
         List<Sala> saleNaKlinici = salaRepository.findByKlinikaId(Long.parseLong(id));
+        Lekar lekar = lekarRepository.findLekarByKorisnikId(Long.parseLong(lekarId));
 
         for(Sala s: saleNaKlinici){
             Date datum;
@@ -96,14 +104,14 @@ public class SalaService {
                 datum =  new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss").parse(termin);
                 zaRacunanjeKrajTermina =  new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss").parse(termin);
                 dateTemp =  new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss").parse(termin);
-                pocetakRadnogVremena = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss").parse(termin.split(" ")[0] + " 07:00:00");
+                pocetakRadnogVremena = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss").parse(termin.split(" ")[0] + " 08:35:00");
                 krajRadnogVremena = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss").parse(termin.split(" ")[0] + " 22:00:00");
                 formatter = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss");
             }else{
                 datum = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(termin);
                 zaRacunanjeKrajTermina = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(termin);
                 dateTemp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(termin);
-                pocetakRadnogVremena = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(termin.split(" ")[0] + " 07:00:00");
+                pocetakRadnogVremena = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(termin.split(" ")[0] + " 08:35:00");
                 krajRadnogVremena = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(termin.split(" ")[0] + " 22:00:00");
                 formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             }
@@ -123,18 +131,47 @@ public class SalaService {
                     // povecaj radno vreme za jedan dan i gledaj za sledeci dan
                     krajRadnogVremena.setTime(krajRadnogVremena.getTime() + 24*60*60*1000);
                     pocetakRadnogVremena.setTime(pocetakRadnogVremena.getTime() + 24*60*60*1000);
-                    datum.setTime(datum.getTime() + Integer.parseInt(trajanje)*60*1000);
+                    datum.setTime(pocetakRadnogVremena.getTime());
+                    zaRacunanjeKrajTermina.setTime(pocetakRadnogVremena.getTime());
                     continue;
-                }else if(krajRadnogVremena.compareTo(zaRacunanjeKrajTermina) > 0){
-                    //Ako je kraj radnog vremena veci od kraja termina, onda smo u dobrom danu za proveru
-                    while(pocetakRadnogVremena.compareTo(datum) > 0){
-                        //Povecavaj pocetak i kraj termina dok ne upadnes u radno vreme klinike
-                        zaRacunanjeKrajTermina.setTime(datum.getTime() + Integer.parseInt(trajanje)*60*1000);
-                        datum.setTime(datum.getTime() + Integer.parseInt(trajanje)*60*1000);
-                    }
                 }
 
                 if((pregleds == null || pregleds.isEmpty()) && (operacijas == null || operacijas.isEmpty()) && (medSestraService.getDostupnaSestra(id, formatter.format(dateTemp), trajanje) != null)){
+                    List<String> slobodniTerminiLekara;
+                    String prepravljenDatum;
+                    SimpleDateFormat format;
+
+                    if(!String.valueOf(termin.charAt(4)).equals("-")){
+                        format = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss");
+                        prepravljenDatum =  format.format(datum);
+                        prepravljenDatum = prepravljenDatum.replace(" ", "T") + ".000Z";
+                    }else{
+                        format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                        prepravljenDatum =  format.format(datum);
+                        prepravljenDatum = prepravljenDatum.replace(" ", "T") + ".000Z";
+                    }
+
+                    slobodniTerminiLekara = lekarService.findSlobodniTermini(lekar.getId(), prepravljenDatum);
+
+                    boolean poklopiloSe = false;
+
+                    for(String pocetakTermina : slobodniTerminiLekara){
+                        Date pocetak = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss").parse(pocetakTermina);
+                        Date kraj = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss").parse(pocetakTermina);
+                        kraj.setTime(kraj.getTime() + lekar.getTipPregleda().getMinimalnoTrajanjeMin()*60*1000);
+                        System.out.println(pocetak);
+                        System.out.println(datum);
+                        if(pocetak.compareTo(datum) == 0){
+                            poklopiloSe = true;
+                            break;
+                        }
+                    }
+
+                    System.out.println(poklopiloSe);
+
+                    if(poklopiloSe == false)
+                        break;
+
                     String formattedDate = formatter.format(datum);
                     ret.put(s.getId(), formattedDate);
                     break;

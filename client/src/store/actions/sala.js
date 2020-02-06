@@ -130,13 +130,14 @@ export const editSala = state => async dispatch => {
 };
 
 export const getSlobodniTerminiSala = (
+  lekarId,
   id,
   termin,
   trajanje
 ) => async dispatch => {
   try {
     const resp = await axios.get(
-      `/api/sala/terminiSala/${id}/${termin}/${trajanje}`
+      `/api/sala/terminiSala/${lekarId}/${id}/${termin}/${trajanje}`
     );
     const data = new HashMap();
     for (const entry of Object.entries(resp.data)) {
