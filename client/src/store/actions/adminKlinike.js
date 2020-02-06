@@ -90,7 +90,7 @@ export const getPodaciGrafik = (period, id) => async dispatch => {
       }
       if (period === "Mesec") {
         var date2 = new Date();
-        date2.setDate(date2.getDate() + parseInt(entry[0], 10));
+        date2.setDate(date2.getDate() + parseInt(entry[0], 10) * 5);
         data.push(createData(date2.toLocaleDateString(), entry[1]));
       }
     }

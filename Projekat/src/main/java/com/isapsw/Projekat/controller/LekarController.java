@@ -42,6 +42,7 @@ public class LekarController {
             List<String> termini = lekarService.findSlobodniTermini(Long.parseLong(body.get("id").toString()), body.get("datum").toString());
             return new ResponseEntity<>(termini, HttpStatus.OK);
         } catch(Exception e) {
+            System.out.println(e.getMessage());
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
