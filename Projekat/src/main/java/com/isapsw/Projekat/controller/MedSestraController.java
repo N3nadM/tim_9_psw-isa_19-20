@@ -31,6 +31,7 @@ public class MedSestraController {
             System.out.println(termin);
             return  new ResponseEntity<List<MedicinskaSestra>>(medSestraService.getDostupneSestre(id, termin, trajanje), HttpStatus.OK);
         }catch(Exception e){
+            System.out.println(e);
             return  new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }

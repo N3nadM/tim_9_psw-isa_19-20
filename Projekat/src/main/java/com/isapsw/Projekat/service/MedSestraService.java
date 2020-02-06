@@ -52,7 +52,7 @@ public class MedSestraService {
                 System.out.println("Nasao sestru koja ima preglede taj dan");
                 if(datum.getTime() > p.getDatumPocetka().getTime() && datum.getTime() <p.getDatumZavrsetka().getTime() ){
                     //proverava da li se vreme pocetka novog pregleda nalazi izmedju pocetka i zavrsetka pregleda koji sestra vec ima zakazano taj dan
-                }else if((datum.getTime() + Integer.parseInt(trajanje)*60*100) >p.getDatumPocetka().getTime() && (datum.getTime() + Integer.parseInt(trajanje) *60 * 100) <p.getDatumZavrsetka().getTime()){
+                }else if((datum.getTime() + Integer.parseInt(trajanje)*60*1000) >p.getDatumPocetka().getTime() && (datum.getTime() + Integer.parseInt(trajanje) *60 * 1000) <p.getDatumZavrsetka().getTime()){
                     //proverava da li se vreme zavrsetka novog pregleda nalazi izmedju pocetka i zavrsetka pregleda koji sestra ima zakazano za taj dan
                 }
                 else{
@@ -65,7 +65,7 @@ public class MedSestraService {
         DateFormat df = new SimpleDateFormat("HH:mm:ss");
         String pocetak = df.format(datum.getTime());
 
-        datum.setTime(datum.getTime() + Integer.parseInt(trajanje)*60*100);
+        datum.setTime(datum.getTime() + Integer.parseInt(trajanje)*60*1000);
         String kraj = df.format(datum.getTime());
         List<MedicinskaSestra> copy = new ArrayList<>(sestreNaKlinici);
         for(MedicinskaSestra ms: copy){
