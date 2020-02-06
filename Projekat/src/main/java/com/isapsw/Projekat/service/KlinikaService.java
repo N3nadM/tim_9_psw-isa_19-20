@@ -413,10 +413,18 @@ public class KlinikaService {
                 }
             }
 
-
+        }
+        HashMap<String, Integer> ret2 = new HashMap<>();
+        Object[] keys = ret.keySet().toArray();
+        for(int i = 0; i<ret.keySet().size(); i ++ ){
+            if(i == 0){
+                ret2.put(Integer.toString(-i), ret.get(Integer.toString(-i)));
+            }
+            if(i % 5 == 0 && i!=0){
+                ret2.put(Integer.toString(-i/5), ret.get(Integer.toString(-i)) + ret.get(Integer.toString(-i+1)) + ret.get(Integer.toString(-i+2)) + ret.get(Integer.toString(-i+3)) + ret.get(Integer.toString(-i+4)));
+            }
         }
 
-
-        return ret;
+        return ret2;
     }
 }
