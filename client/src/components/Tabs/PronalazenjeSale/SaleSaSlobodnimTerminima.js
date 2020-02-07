@@ -391,6 +391,9 @@ const IzmenaSala = ({
             control={<Switch checked={dense} onChange={handleChangeDense} />}
             label="Smanji pading"
           />
+          {console.log(
+            slobodniTermini["_data"]["♠" + slobodniTermini["size"]][1]
+          )}
           {slobodniTermini["_data"]["♠" + slobodniTermini["size"]][1] ===
             "nema" && (
             <>

@@ -25,7 +25,7 @@ public class Lekar{
 
     private Double ocena = 0.0;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "lekar")
+    @OneToMany( fetch = FetchType.LAZY, mappedBy = "lekar")
     @JsonIgnore
     private List<Pregled> pregledi = new ArrayList<>();
 

@@ -42,6 +42,9 @@ public class SalaService {
     @Autowired
     private TipPregledaRepository tipPregledaRepository;
 
+    @Autowired
+    private TipoviPregledaRepository tipoviPregledaRepository;
+
     public Sala addSala(SalaDTO salaDTO){
         Sala s = new Sala();
         s.setAktivna(true);
@@ -91,7 +94,7 @@ public class SalaService {
         HashMap<Long, String> ret = new HashMap<>();
         List<Sala> saleNaKlinici = salaRepository.findByKlinikaId(Long.parseLong(id));
         Lekar lekar = lekarRepository.findLekarByKorisnikId(Long.parseLong(lekarId));
-
+        boolean poklopiloSe = false;
 
         for(Sala s: saleNaKlinici){
             Date datum;
@@ -100,7 +103,7 @@ public class SalaService {
             Date dateTemp;
             Date pocetakRadnogVremena;
             Date krajRadnogVremena;
-            boolean poklopiloSe = false;
+
 
             if(!String.valueOf(termin.charAt(4)).equals("-")){
                 datum =  new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss").parse(termin);
@@ -154,12 +157,12 @@ public class SalaService {
                         prepravljenDatum = prepravljenDatum.replace(" ", "T") + ".000Z";
                     }
 
-                    slobodniTerminiLekara = lekarService.findSlobodniTermini(lekar.getId(), prepravljenDatum);
+                    slobodniTerminiLekara = lekarService.findSlobodniTerminiClone(lekar.getId(), prepravljenDatum);
 
                     for(String pocetakTermina : slobodniTerminiLekara){
                         Date pocetak = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss").parse(pocetakTermina);
                         Date kraj = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss").parse(pocetakTermina);
-                        kraj.setTime(kraj.getTime() + lekar.getTipPregleda().getMinimalnoTrajanjeMin()*60*1000);
+                        kraj.setTime(kraj.getTime() + tipoviPregledaRepository.getMinimalnoTrajanje(lekar.getTipPregleda().getId())*60*1000);
                         System.out.println(pocetak);
                         System.out.println(datum);
                         if(pocetak.compareTo(datum) == 0){
@@ -177,11 +180,12 @@ public class SalaService {
                     datum.setTime(datum.getTime() + Integer.parseInt(trajanje)*60*1000);
                 }
             }
-            if(poklopiloSe == false){
-                continue;
-            }
-        }
 
+        }
+        if(poklopiloSe == false){
+            ret.put(Long.valueOf(ret.size()) + 1L, "nema");
+            return ret;
+        }
 
         return ret;
     }
