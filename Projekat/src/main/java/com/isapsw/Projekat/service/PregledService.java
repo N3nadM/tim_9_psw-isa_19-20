@@ -92,7 +92,7 @@ public class PregledService {
 
     @Transactional
     public Boolean zakaziPregled(Long korisnikId, String lekarId, String datum) throws ParseException {
-        Lekar lekar = lekarRepository.findLekarById(Long.parseLong(lekarId));
+        Lekar lekar = lekarRepository.findByIdTransaction(Long.parseLong(lekarId)).get();
 
         Date date = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss").parse(datum);
 
@@ -226,6 +226,7 @@ public class PregledService {
         return pregledi;
     }
 
+    @Transactional
     public Pregled sacuvajPregled(String pregledId, String salaId, String lekarId, String medSestraId, String termin) throws ParseException, MessagingException, InterruptedException {
 
         Date date;

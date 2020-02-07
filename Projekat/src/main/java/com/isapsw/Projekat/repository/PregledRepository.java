@@ -2,17 +2,29 @@ package com.isapsw.Projekat.repository;
 
 import com.isapsw.Projekat.domain.*;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.jpa.repository.QueryHints;
 import org.springframework.data.repository.query.Param;
 import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import javax.persistence.LockModeType;
+import javax.persistence.QueryHint;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface PregledRepository extends JpaRepository<Pregled, Long> {
+
+    Optional<Pregled> findById(Long id);
+
+    @Lock(LockModeType.PESSIMISTIC_WRITE)
+    @QueryHints({@QueryHint(name = "javax.persistence.lock.timeout", value ="0")})
+    @Query("SELECT p FROM Pregled p WHERE p.id = :id")
+    Optional<Pregled> findByIdTransaction(@Param("id") Long id);
 
     @Query("SELECT p FROM Pregled p WHERE CAST(p.datumPocetka AS date) = CAST(:datum AS date)")
     List<Pregled> findByPregledDatumPocetka(Date datum);

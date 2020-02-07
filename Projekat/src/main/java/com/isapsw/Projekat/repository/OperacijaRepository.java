@@ -5,16 +5,29 @@ import com.isapsw.Projekat.domain.Pregled;
 import com.isapsw.Projekat.domain.Sala;
 import com.isapsw.Projekat.domain.TipPregleda;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.jpa.repository.QueryHints;
 import org.springframework.data.repository.query.Param;
 import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Repository;
 
+import javax.persistence.LockModeType;
+import javax.persistence.QueryHint;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface OperacijaRepository extends JpaRepository<Operacija, Long> {
+
+    Optional<Operacija> findById(Long id);
+
+    @Lock(LockModeType.PESSIMISTIC_WRITE)
+    @QueryHints({@QueryHint(name = "javax.persistence.lock.timeout", value ="0")})
+    @Query("SELECT o FROM Operacija o WHERE o.id = :id")
+    Optional<Operacija> findByIdTransaction(@Param("id") Long id);
+
     List<Operacija> findOperacijeByPacijentId(Long id);
 
     List<Operacija> findOperacijasByMedicinskaSestraId(Long id);

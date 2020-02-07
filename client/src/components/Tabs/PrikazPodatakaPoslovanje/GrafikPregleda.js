@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { LineChart, Line, XAxis, YAxis, CartesianGrid } from "recharts";
+import { XAxis, YAxis, CartesianGrid, Tooltip, BarChart, Bar } from "recharts";
 import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
 import Select from "@material-ui/core/Select";
@@ -57,12 +57,23 @@ const Chart = ({ klinika, podaci, getPodaciGrafik }) => {
           </Select>
         </Grid>
         <Grid item xs={12}>
-          <LineChart width={1100} height={400} data={podaci}>
-            <Line type="monotone" dataKey="amount" stroke="#8884d8" />
+          <BarChart width={1100} height={400} data={podaci}>
             <CartesianGrid stroke="#ccc" />
             <XAxis dataKey="time" />
             <YAxis />
-          </LineChart>
+            <Tooltip />
+            <Bar
+              dataKey="amount"
+              fill="#8884d8"
+              margin={{
+                top: 5,
+                right: 30,
+                left: 20,
+                bottom: 5
+              }}
+            />
+            <Bar />
+          </BarChart>
         </Grid>
       </Grid>
     </React.Fragment>
