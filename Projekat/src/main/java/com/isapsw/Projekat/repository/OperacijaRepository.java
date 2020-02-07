@@ -64,4 +64,6 @@ public interface OperacijaRepository extends JpaRepository<Operacija, Long> {
     @Query("SELECT DISTINCT o FROM Operacija o WHERE o.tipPregleda.id = :tip AND o.datumPocetka BETWEEN :datumOd AND :datumDo")
     List<Operacija> zaRacunanjePrihoda(@Param("tip") Long tip, @Param("datumOd") Date datumOd, @Param("datumDo") Date datumDo);
 
+    @Query("SELECT DISTINCT o FROM Operacija o WHERE o.sala.id = :idSala AND ((o.datumPocetka BETWEEN :datumOd AND :datumDo) OR (o.datumZavrsetka BETWEEN  :datumOd AND :datumDo))")
+    List<Operacija> proveraSlobodniTerminSala(@Param("idSala") Long idSala, @Param("datumOd") Date datumOd, @Param("datumDo") Date datumDo);
 }

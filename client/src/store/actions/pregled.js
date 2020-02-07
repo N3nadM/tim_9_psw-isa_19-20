@@ -224,3 +224,12 @@ export const getPreglediKodLekaraOdmor = (
     console.log(err);
   }
 };
+
+export const promeniPregled = () => dispatch => {
+  console.log("jsjjw");
+  try {
+    dispatch(setPregledZahtev(null));
+  } catch (err) {
+    console.log(err);
+  }
+};

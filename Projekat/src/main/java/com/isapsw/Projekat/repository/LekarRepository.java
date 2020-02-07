@@ -34,4 +34,5 @@ public interface LekarRepository extends JpaRepository<Lekar, Long> {
 
     @Query("SELECT DISTINCT k.id FROM Lekar l JOIN Korisnik k ON l.korisnik.id = k.id WHERE UPPER(k.ime) LIKE %:ime% AND UPPER(k.prezime) LIKE %:prezime% AND UPPER(k.email) LIKE %:email% AND l.aktivan = true")
     List<Long> findLekarByParameters(@Param("ime") String ime, @Param("prezime") String prezime, @Param("email") String email);
+
 }

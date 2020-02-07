@@ -168,7 +168,12 @@ public class OperacijaService {
     @Transactional
     public Operacija sacuvajOperaciju(String operacijaId, String salaId, List<Integer> lekariId, String medSestraId, String termin) throws ParseException, MessagingException, InterruptedException {
 
-        Date date = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss").parse(termin);
+        Date date;
+        if(!String.valueOf(termin.charAt(4)).equals("-")){
+            date =  new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss").parse(termin);
+        }else{
+            date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(termin);
+        }
         Operacija operacija = operacijaRepository.findByIdTransaction(Long.parseLong(operacijaId)).get();
         Sala sala = salaRepository.findByIdTransaction(Long.parseLong(salaId)).get();
 

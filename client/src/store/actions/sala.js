@@ -5,9 +5,11 @@ import {
   SET_SALA_ZA_PREGLED,
   SET_SALE_KOJE_SE_MOGU_OBRISATI,
   SET_OBRISANA_SALA,
-  SET_EDITED_SALA
+  SET_EDITED_SALA,
+  SET_TERMINI_SALA
 } from "../actionTypes";
 import axios from "axios";
+import HashMap from "hashmap";
 
 export const setNewSala = newSala => ({
   type: SET_ADDED_SALA,
@@ -43,6 +45,10 @@ export const setEditedSala = editedSala => ({
   editedSala
 });
 
+export const setSlobodniTerminiSala = slobodniTerminiSala => ({
+  type: SET_TERMINI_SALA,
+  slobodniTerminiSala
+});
 export const addNewSala = data => async dispatch => {
   try {
     const sala = await axios.post("/api/sala", data);
@@ -87,6 +93,7 @@ export const searchSalaNaKlinici = (id, searchData) => async (
     console.log(err);
   }
 };
+
 export const setSalaZakazivanje = sala => async dispatch => {
   try {
     dispatch(setSalaZaPregled(sala));
@@ -117,6 +124,26 @@ export const editSala = state => async dispatch => {
   try {
     const k = await axios.put(`/api/sala/edit`, state);
     dispatch(setEditedSala(k.data));
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const getSlobodniTerminiSala = (
+  lekarId,
+  id,
+  termin,
+  trajanje
+) => async dispatch => {
+  try {
+    const resp = await axios.get(
+      `/api/sala/terminiSala/${lekarId}/${id}/${termin}/${trajanje}`
+    );
+    const data = new HashMap();
+    for (const entry of Object.entries(resp.data)) {
+      data.set(entry[0], entry[1]);
+    }
+    dispatch(setSlobodniTerminiSala(data));
   } catch (err) {
     console.log(err);
   }
