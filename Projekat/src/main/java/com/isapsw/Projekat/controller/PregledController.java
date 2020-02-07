@@ -31,10 +31,10 @@ public class PregledController {
     private MedSestraService medSestraService;
 
 
-    @Scheduled(cron = "30 43 18 * * *")
-    public void AutomatskoBiranjeSala() throws ParseException, InterruptedException, MessagingException {
+    @Scheduled(cron = "0 0 0 * * *")
+    public void AutomatskoBiranjeSalaZaPregled() throws ParseException, InterruptedException, MessagingException {
 
-        pregledService.AutomatskoBiranje();
+        pregledService.AutomatskoBiranjePregledi();
 
     }
 

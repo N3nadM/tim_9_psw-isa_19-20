@@ -75,7 +75,7 @@ public class PregledService {
     }
 
     @Transactional
-    public boolean AutomatskoBiranje() throws ParseException, MessagingException, InterruptedException {
+    public void AutomatskoBiranjePregledi() throws ParseException, MessagingException, InterruptedException {
         List<Klinika> sveKlinike = klinikaRepository.findAll();
 
         for(Klinika klinika : sveKlinike){
@@ -97,6 +97,7 @@ public class PregledService {
                            Sala s = salaRepository.findById(key).get();
                            MedicinskaSestra ms = medSestraService.getDostupnaSestra(klinika.getId().toString(), dostupneSaleSaTerminima.get(key), trajanje.toString());
                            sacuvajPregled(pregled.getId().toString(), s.getId().toString(), pregled.getLekar().getId().toString(),ms.getId().toString(), dostupneSaleSaTerminima.get(key) );
+                           break;
                        }
 
                    }else{
@@ -131,9 +132,7 @@ public class PregledService {
 
                }
             }
-
         }
-        return false;
     }
 
     public Pregled addPregled(PregledDTO pregledDTO) throws ParseException {

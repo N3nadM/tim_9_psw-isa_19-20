@@ -10,9 +10,12 @@ import com.isapsw.Projekat.service.OperacijaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import javax.mail.MessagingException;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -28,6 +31,13 @@ public class OperacijaController {
 
     @Autowired
     private MedSestraService medSestraService;
+
+    @Scheduled(cron = "10 0 0 * * *")
+    public void AutomatskoBiranjeSalaZaOperacije() throws ParseException, InterruptedException, MessagingException {
+
+        operacijaService.AutomatskoBiranjeOperacije();
+
+    }
 
     @GetMapping("/{id}")
     public ResponseEntity<List<Operacija>> confirmAccount(@PathVariable String id) {
