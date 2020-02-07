@@ -77,7 +77,7 @@ INSERT INTO LEK_ZA_DIJAGNOZU(lek_id, dijagnoza_id) VALUES ('1', '1');
 INSERT INTO LEK_ZA_DIJAGNOZU(lek_id, dijagnoza_id) VALUES ('2', '1');
 
 INSERT INTO RECEPT(datum_isticanja, datum_izdavanja, overen, medicinska_sestra_id, lek_id, zdr_karton_id) VALUES ('2019-12-28 11:21:22', '2019-11-28 11:21:22', 'false', '1', '2', '1');
-INSERT INTO RECEPTI_PACIJENTA VALUES ('1','1');
+-- INSERT INTO RECEPTI_PACIJENTA VALUES ('1','1');
 
 INSERT INTO KORISNIK (adresa, email, ime, password, prezime, drzava, grad, telefon) VALUES ('tamo daleko', 'email@gmail.com', 'Email', '$2a$10$feiotRqclqYZ7aJnytCDSedhWmzztzhuwyujbVfVucV4nbmMRNnwa', 'emajil',  'drzava', 'Novi Sad', '543543543');
 INSERT INTO USER_AUTHORITY VALUES ('7', '1');
