@@ -21,7 +21,7 @@ public class Sala {
     @Column(nullable = false)
     private String naziv;
 
-    @OneToMany(mappedBy = "sala", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "sala", fetch = FetchType.LAZY)
     @JsonIgnore
     private List<Pregled> pregled = new ArrayList<>();
 

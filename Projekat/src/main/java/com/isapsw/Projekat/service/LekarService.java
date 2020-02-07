@@ -53,6 +53,9 @@ public class LekarService {
     @Autowired
     private KorisnikRepository korisnikRepository;
 
+    @Autowired
+    private TipoviPregledaRepository tipoviPregledaRepository;
+
     public Lekar findLekar(String id) {
         return lekarRepository.findLekarByKorisnikId(Long.parseLong(id));
     }
@@ -104,6 +107,56 @@ public class LekarService {
                         String stringDate = dateFormat.format(pocetak);
                         termini.add(stringDate);
                         pocetak.setTime(pocetak.getTime() + lekar.getTipPregleda().getMinimalnoTrajanjeMin() * 60 * 1000);
+                    }
+                }
+            }
+        }
+
+        return new ArrayList<>(termini);
+    }
+
+
+    public List<String> findSlobodniTerminiClone(Long id, String datum) {
+        Lekar lekar = lekarRepository.findLekarById(id);
+
+        List<String> termini = new ArrayList<>();
+        List<Pregled> pregledi = lekarRepository.getPregledi(lekar.getId());
+        pregledi.sort((p, k) -> p.getDatumPocetka().after(k.getDatumPocetka()) ? 1 : -1);
+
+        List<Pregled> preglediIstogDanaJednogLekara = new ArrayList<>();
+
+        for(int i = 0; i < pregledi.size(); i++) {
+            if (KlinikaService.compareDatesOnly(Date.from(Instant.parse(datum)), pregledi.get(i).getDatumPocetka())) {
+                preglediIstogDanaJednogLekara.add(pregledi.get(i));
+            }
+        }
+
+
+        Date pocetak = KlinikaService.makeDateFromDateAndTime(Date.from(Instant.parse(datum)),lekar.getPocetakRadnogVremena());
+        Date kraj = KlinikaService.makeDateFromDateAndTime(Date.from(Instant.parse(datum)),lekar.getKrajRadnogVremena());
+
+        if(preglediIstogDanaJednogLekara.size() == 0) {
+            while(pocetak.getTime() < kraj.getTime()) {
+                SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss");
+                String stringDate = dateFormat.format(pocetak);
+                termini.add(stringDate);
+                pocetak.setTime(pocetak.getTime() + tipoviPregledaRepository.getMinimalnoTrajanje(lekar.getTipPregleda().getId()) * 60 * 1000);
+            }
+        } else {
+            for(int i = 0; i < preglediIstogDanaJednogLekara.size(); i++) {
+                while(pocetak.getTime() < kraj.getTime() && pocetak.getTime() + tipoviPregledaRepository.getMinimalnoTrajanje(lekar.getTipPregleda().getId())  * 60 * 1000 <= preglediIstogDanaJednogLekara.get(i).getDatumPocetka().getTime()) {
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss");
+                    String stringDate = dateFormat.format(pocetak);
+                    termini.add(stringDate);
+                    pocetak.setTime(pocetak.getTime() + tipoviPregledaRepository.getMinimalnoTrajanje(lekar.getTipPregleda().getId()) * 60 * 1000);
+                }
+                pocetak.setTime(preglediIstogDanaJednogLekara.get(i).getDatumZavrsetka().getTime());
+                if(i == preglediIstogDanaJednogLekara.size() - 1) {
+                    while(pocetak.getTime() < kraj.getTime()) {
+                        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss");
+                        String stringDate = dateFormat.format(pocetak);
+                        termini.add(stringDate);
+                        pocetak.setTime(pocetak.getTime() + tipoviPregledaRepository.getMinimalnoTrajanje(lekar.getTipPregleda().getId()) * 60 * 1000);
                     }
                 }
             }

@@ -7,7 +7,6 @@ import javax.persistence.*;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 public class Lekar{
@@ -25,7 +24,7 @@ public class Lekar{
 
     private Double ocena = 0.0;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "lekar")
+    @OneToMany( fetch = FetchType.LAZY, mappedBy = "lekar")
     @JsonIgnore
     private List<Pregled> pregledi = new ArrayList<>();
 

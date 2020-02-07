@@ -36,10 +36,22 @@ public class PregledService {
     private PacijentRepository pacijentRepository;
 
     @Autowired
+    private KlinikaRepository klinikaRepository;
+
+    @Autowired
     private EmailService emailService;
 
     @Autowired
     private AdminKlinikeRepository adminKlinikeRepository;
+
+    @Autowired
+    private MedSestraService medSestraService;
+
+    @Autowired
+    private LekarService lekarService;
+
+    @Autowired
+    private SalaService salaService;
 
     public Pregled getPregledById(Long id){
         return pregledRepository.findById(id).get();
@@ -60,6 +72,67 @@ public class PregledService {
     public List<Pregled> getPredefinisaniPregledi(Long id) {
        return pregledRepository.findPregledBySalaKlinikaId(id);
 
+    }
+
+    @Transactional
+    public void AutomatskoBiranjePregledi() throws ParseException, MessagingException, InterruptedException {
+        List<Klinika> sveKlinike = klinikaRepository.findAll();
+
+        for(Klinika klinika : sveKlinike){
+            List<Pregled> zahteviZaPreglede = pregledRepository.preglediKojiNemajuSalu(klinika.getId());
+
+            for(Pregled pregled: zahteviZaPreglede){
+                Integer trajanje = tipoviPregledaRepository.getMinimalnoTrajanje(pregled.getTipPregleda().getId());
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                Date d = simpleDateFormat.parse(pregled.getDatumPocetka().toString());
+               if(medSestraService.getDostupnaSestra(klinika.getId().toString(),simpleDateFormat.format(d), trajanje.toString()) != null && !salaService.getDostupneSale(klinika.getId().toString(), simpleDateFormat.format(d), pregled.getTipPregleda().getMinimalnoTrajanjeMin().toString()).isEmpty()){
+                   MedicinskaSestra ms = medSestraService.getDostupnaSestra(klinika.getId().toString(),simpleDateFormat.format(d), trajanje.toString());
+                   Sala sala = salaService.getDostupneSale(klinika.getId().toString(), simpleDateFormat.format(d), trajanje.toString()).get(0);
+                   sacuvajPregled(pregled.getId().toString(), sala.getId().toString(), pregled.getLekar().getId().toString(),ms.getId().toString(), simpleDateFormat.format(d) );
+               }else {
+                   Long lekarId = lekarRepository.getKorisnikId(pregled.getLekar().getId());
+                   HashMap<Long, String> dostupneSaleSaTerminima = salaService.prviSlobodniTerminiSala(lekarId.toString(), klinika.getId().toString(), simpleDateFormat.format(d), trajanje.toString());
+                   if(dostupneSaleSaTerminima.get(Long.valueOf(dostupneSaleSaTerminima.size())) != "nema"){
+                       for(Long key : dostupneSaleSaTerminima.keySet()){
+                           Sala s = salaRepository.findById(key).get();
+                           MedicinskaSestra ms = medSestraService.getDostupnaSestra(klinika.getId().toString(), dostupneSaleSaTerminima.get(key), trajanje.toString());
+                           sacuvajPregled(pregled.getId().toString(), s.getId().toString(), pregled.getLekar().getId().toString(),ms.getId().toString(), dostupneSaleSaTerminima.get(key) );
+                           break;
+                       }
+
+                   }else{
+                       while(true){
+                           SimpleDateFormat format;
+                           String terminPregleda;
+                           d.setTime(d.getTime() + 24*60*60*1000);
+                           if(!String.valueOf(simpleDateFormat.format(d).charAt(4)).equals("-")){
+                               format = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss");
+                               terminPregleda =  format.format(d);
+                               terminPregleda = terminPregleda.replace(" ", "T") + ".000Z";
+                           }else{
+                               format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                               terminPregleda =  format.format(d);
+                               terminPregleda = terminPregleda.replace(" ", "T") + ".000Z";
+                           }
+
+                           List<String> slobodniTerminiLekara = lekarService.findSlobodniTerminiClone(pregled.getLekar().getId(), terminPregleda);
+                           if(!slobodniTerminiLekara.isEmpty()){
+                               if(medSestraService.getDostupnaSestra(klinika.getId().toString(),slobodniTerminiLekara.get(0), trajanje.toString()) != null && !salaService.getDostupneSale(klinika.getId().toString(),slobodniTerminiLekara.get(0) , trajanje.toString()).isEmpty()){
+                                   MedicinskaSestra ms = medSestraService.getDostupnaSestra(klinika.getId().toString(),slobodniTerminiLekara.get(0), trajanje.toString());
+                                   Sala sala = salaService.getDostupneSale(klinika.getId().toString(),slobodniTerminiLekara.get(0), trajanje.toString()).get(0);
+                                   sacuvajPregled(pregled.getId().toString(), sala.getId().toString(), pregled.getLekar().getId().toString(),ms.getId().toString(), slobodniTerminiLekara.get(0) );
+                                   break;
+                               }
+                           }
+                       }
+
+
+                   }
+
+
+               }
+            }
+        }
     }
 
     public Pregled addPregled(PregledDTO pregledDTO) throws ParseException {
@@ -235,35 +308,42 @@ public class PregledService {
         }else{
             date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(termin);
         }
-        Pregled pregled = pregledRepository.findById(Long.parseLong(pregledId)).get();
+        Pregled pregled = pregledRepository.getOne(Long.parseLong(pregledId));
         Lekar lekar = lekarRepository.findLekarById(Long.parseLong(lekarId));
         Sala sala = salaRepository.findById(Long.parseLong(salaId)).get();
         MedicinskaSestra medicinskaSestra = medSestraRepository.findById(Long.parseLong(medSestraId)).get();
 
         if(!pregled.getDatumPocetka().equals(date)){
             pregled.setDatumPocetka(date);
-            pregled.setDatumZavrsetka(new Date(date.getTime() + lekar.getTipPregleda().getMinimalnoTrajanjeMin() * 60 * 1000));
+            pregled.setDatumZavrsetka(new Date(date.getTime() + tipoviPregledaRepository.getMinimalnoTrajanje(lekar.getTipPregleda().getId()) * 60 * 1000));
         }
 
         pregled.setLekar(lekar);
         pregled.setSala(sala);
         pregled.setMedicinskaSestra(medicinskaSestra);
 
-        if(!lekar.getPregledi().contains(pregled)){
-            lekar.getPregledi().add(pregled);
-        }
-        if(!sala.getPregled().contains(pregled)){
-            sala.getPregled().add(pregled);
-        }
-        if(!medicinskaSestra.getPregledi().contains(pregled)){
-            medicinskaSestra.getPregledi().add(pregled);
+        List<Pregled> pregleds = lekarRepository.getPregledi(lekar.getId());
+        if(!pregleds.contains(pregled)){
+            pregleds.add(pregled);
+            lekar.setPregledi(pregleds);
         }
 
-        Klinika klinika = lekar.getKlinika();
+        List<Pregled> pregleds1 = salaRepository.getPregledi(sala.getId());
+        if(!pregleds1.contains(pregled)){
+            pregleds1.add(pregled);
+            sala.setPregled(pregleds1);
+        }
+        List<Pregled> pregleds2 = medSestraRepository.getPregledi(medicinskaSestra.getId());
+        if(!pregleds2.contains(pregled)){
+            pregleds2.add(pregled);
+            medicinskaSestra.setPregledi(pregleds2);
+        }
+
+        Klinika klinika = lekarRepository.getKlinika(lekar.getId());
 
         emailService.sendOsobljePregledRezervacijaSale(lekar.getKorisnik().getEmail(), date, sala.getSalaIdentifier());
         emailService.sendOsobljePregledRezervacijaSale(medicinskaSestra.getKorisnik().getEmail(), date, sala.getSalaIdentifier());
-        emailService.sendPacijentPregledRezervacijaSale(pregled.getPacijent().getKorisnik().getEmail(), date, klinika.getNaziv(), klinika.getAdresa(), sala.getSalaIdentifier());
+        emailService.sendPacijentPregledRezervacijaSale(pregledRepository.getPacijent(pregled.getId()).getKorisnik().getEmail(), date, klinika.getNaziv(), klinika.getAdresa(), sala.getSalaIdentifier());
 
         lekarRepository.save(lekar);
         medSestraRepository.save(medicinskaSestra);

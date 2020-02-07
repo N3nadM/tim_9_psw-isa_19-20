@@ -81,4 +81,6 @@ public interface PregledRepository extends JpaRepository<Pregled, Long> {
     @Query("SELECT DISTINCT p FROM Pregled p WHERE p.sala.id = :idSala AND ((p.datumPocetka BETWEEN :datumOd AND :datumDo) OR (p.datumZavrsetka BETWEEN  :datumOd AND :datumDo))")
     List<Pregled> proveraSlobodniTerminSala(@Param("idSala") Long idSala, @Param("datumOd") Date datumOd, @Param("datumDo") Date datumDo);
 
+    @Query("SELECT p.pacijent FROM Pregled p WHERE p.id = :id")
+    Pacijent getPacijent(@Param("id") Long id);
 }

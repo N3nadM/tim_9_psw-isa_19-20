@@ -13,6 +13,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import javax.mail.MessagingException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -31,8 +32,10 @@ public class PregledController {
 
 
     @Scheduled(cron = "0 0 0 * * *")
-    public void ponoc(){
-        System.out.println("RADIIIIIIIIIIIIII");
+    public void AutomatskoBiranjeSalaZaPregled() throws ParseException, InterruptedException, MessagingException {
+
+        pregledService.AutomatskoBiranjePregledi();
+
     }
 
 

@@ -9,10 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.mail.MessagingException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class OperacijaService {
@@ -39,6 +36,90 @@ public class OperacijaService {
 
     @Autowired
     private AdminKlinikeRepository adminKlinikeRepository;
+
+    @Autowired
+    private KlinikaRepository klinikaRepository;
+
+    @Autowired
+    private TipoviPregledaRepository tipoviPregledaRepository;
+
+    @Autowired
+    private MedSestraService medSestraService;
+
+    @Autowired
+    private LekarService lekarService;
+
+    @Autowired
+    private SalaService salaService;
+
+    @Transactional
+    public void AutomatskoBiranjeOperacije() throws ParseException, MessagingException, InterruptedException {
+        List<Klinika> sveKlinike = klinikaRepository.findAll();
+
+        for(Klinika klinika : sveKlinike){
+            List<Operacija> zahteviZaOperacije = operacijaRepository.operacijeKojeNemajuSalu(klinika.getId());
+
+            for(Operacija operacija: zahteviZaOperacije){
+                Integer trajanje = tipoviPregledaRepository.getMinimalnoTrajanje(operacija.getTipPregleda().getId());
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                Date d = simpleDateFormat.parse(operacija.getDatumPocetka().toString());
+                if(medSestraService.getDostupnaSestra(klinika.getId().toString(),simpleDateFormat.format(d), trajanje.toString()) != null && !salaService.getDostupneSale(klinika.getId().toString(), simpleDateFormat.format(d), operacija.getTipPregleda().getMinimalnoTrajanjeMin().toString()).isEmpty()){
+                    MedicinskaSestra ms = medSestraService.getDostupnaSestra(klinika.getId().toString(),simpleDateFormat.format(d), trajanje.toString());
+                    Sala sala = salaService.getDostupneSale(klinika.getId().toString(), simpleDateFormat.format(d), trajanje.toString()).get(0);
+                    List<Integer> list = new ArrayList<>();
+                    list.add(Math.toIntExact(operacija.getLekari().get(0).getId()));
+                    sacuvajOperaciju(operacija.getId().toString(), sala.getId().toString(),list,ms.getId().toString(), simpleDateFormat.format(d) );
+                }else {
+                    List<Lekar> lekars = operacijaRepository.getLekari(operacija.getId());
+                    Long lekarId = lekarRepository.getKorisnikId(lekars.get(0).getId());
+                    HashMap<Long, String> dostupneSaleSaTerminima = salaService.prviSlobodniTerminiSala(lekarId.toString(), klinika.getId().toString(), simpleDateFormat.format(d), trajanje.toString());
+                    if(dostupneSaleSaTerminima.get(Long.valueOf(dostupneSaleSaTerminima.size())) != "nema"){
+                        for(Long key : dostupneSaleSaTerminima.keySet()){
+                            Sala s = salaRepository.findById(key).get();
+                            MedicinskaSestra ms = medSestraService.getDostupnaSestra(klinika.getId().toString(), dostupneSaleSaTerminima.get(key), trajanje.toString());
+                            List<Integer> list = new ArrayList<>();
+                            list.add(Math.toIntExact(lekars.get(0).getId()));
+                            sacuvajOperaciju(operacija.getId().toString(), s.getId().toString(), list,ms.getId().toString(), dostupneSaleSaTerminima.get(key) );
+                            break;
+                        }
+
+                    }else{
+                        while(true){
+                            SimpleDateFormat format;
+                            String terminPregleda;
+                            d.setTime(d.getTime() + 24*60*60*1000);
+                            if(!String.valueOf(simpleDateFormat.format(d).charAt(4)).equals("-")){
+                                format = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss");
+                                terminPregleda =  format.format(d);
+                                terminPregleda = terminPregleda.replace(" ", "T") + ".000Z";
+                            }else{
+                                format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                                terminPregleda =  format.format(d);
+                                terminPregleda = terminPregleda.replace(" ", "T") + ".000Z";
+                            }
+
+
+                            List<String> slobodniTerminiLekara = lekarService.findSlobodniTerminiClone(lekars.get(0).getId(), terminPregleda);
+                            if(!slobodniTerminiLekara.isEmpty()){
+                                if(medSestraService.getDostupnaSestra(klinika.getId().toString(),slobodniTerminiLekara.get(0), trajanje.toString()) != null && !salaService.getDostupneSale(klinika.getId().toString(),slobodniTerminiLekara.get(0) , trajanje.toString()).isEmpty()){
+                                    MedicinskaSestra ms = medSestraService.getDostupnaSestra(klinika.getId().toString(),slobodniTerminiLekara.get(0), trajanje.toString());
+                                    Sala sala = salaService.getDostupneSale(klinika.getId().toString(),slobodniTerminiLekara.get(0), trajanje.toString()).get(0);
+                                    List<Integer> list = new ArrayList<>();
+                                    list.add(Math.toIntExact(lekars.get(0).getId()));
+                                    sacuvajOperaciju(operacija.getId().toString(), sala.getId().toString(), list,ms.getId().toString(), slobodniTerminiLekara.get(0) );
+                                    break;
+                                }
+                            }
+                        }
+
+
+                    }
+
+
+                }
+            }
+        }
+    }
 
     public Operacija getOperacijaById(Long id){
         return operacijaRepository.findById(id).get();

@@ -1,11 +1,13 @@
 package com.isapsw.Projekat.repository;
 
+import com.isapsw.Projekat.domain.Pregled;
 import com.isapsw.Projekat.domain.Sala;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.jpa.repository.QueryHints;
 import org.springframework.data.repository.query.Param;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.LockModeType;
@@ -29,5 +31,8 @@ public interface SalaRepository extends JpaRepository<Sala, Long> {
 
     @Query("SELECT DISTINCT s FROM Sala s WHERE UPPER(s.naziv) LIKE %:naziv% AND UPPER(s.salaIdentifier) LIKE %:salaIdentifier% AND s.aktivna = true")
     List<Sala> findSalaByParameters(@Param("salaIdentifier") String salaIdentifier, @Param("naziv") String naziv);
+
+    @Query("SELECT s.pregled FROM Sala s WHERE s.id = :id")
+    List<Pregled> getPregledi(@Param("id") Long id);
 
 }
