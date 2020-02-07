@@ -283,8 +283,8 @@ const SlobodniTerminiTabs = ({
   const handleChange1 = e => {
     setState({
       ...state,
-      salaId: salaZaPregled,
-      lekarId: lekarZaPregled.id,
+      salaId: salaZaPregled ? salaZaPregled : "",
+      lekarId: lekarZaPregled ? lekarZaPregled.id : "",
       [e.target.name]: e.target.value
     });
 

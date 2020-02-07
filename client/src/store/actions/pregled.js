@@ -126,6 +126,7 @@ export const getAllSalaPregledi = id => async dispatch => {
 export const setPregled = data => async () => {
   try {
     await axios.post(`/api/pregled`, data);
+    console.log(data);
   } catch (err) {
     console.log(err);
   }
