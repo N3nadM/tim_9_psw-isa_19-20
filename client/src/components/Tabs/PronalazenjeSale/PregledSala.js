@@ -222,12 +222,13 @@ const PregledSala = ({
 
           <TabPanel value={value} index={0} dir={theme.direction}>
             <SaleSaSlobodnimTerminima
-              lekarId={pregled.lekar.korisnik.id}
-              klinikaId={klinika.id}
+              lekar={pregled.lekar}
+              klinika={klinika}
               trajanje={pregled.tipPregleda.minimalnoTrajanjeMin}
               terminZaPregled={pregled.datumPocetka}
               daLiTrebaDaSeTrazeTermini={true}
               terminZaOperaciju={""}
+              setIzbor={setIzbor}
             />
           </TabPanel>
 
@@ -375,9 +376,9 @@ const PregledSala = ({
 function mapStateToProps(state) {
   return {
     pregled: state.pregled.pregled,
+    promenjenLekar: state.lekar.promenjenLekar,
     sale: state.sala.listaDostupnihSala,
     termin: state.lekar.terminZaPregled,
-    promenjenLekar: state.lekar.promenjenLekar,
     lekarZaPregled: state.lekar.lekarZaPregled,
     sala: state.sala.salaZaPregled,
     terminZaSalu: state.sala.slobodniTerminiSala

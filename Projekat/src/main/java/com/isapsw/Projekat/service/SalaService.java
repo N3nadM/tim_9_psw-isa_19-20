@@ -92,6 +92,7 @@ public class SalaService {
         List<Sala> saleNaKlinici = salaRepository.findByKlinikaId(Long.parseLong(id));
         Lekar lekar = lekarRepository.findLekarByKorisnikId(Long.parseLong(lekarId));
 
+
         for(Sala s: saleNaKlinici){
             Date datum;
             Date zaRacunanjeKrajTermina;
@@ -99,19 +100,20 @@ public class SalaService {
             Date dateTemp;
             Date pocetakRadnogVremena;
             Date krajRadnogVremena;
+            boolean poklopiloSe = false;
 
             if(!String.valueOf(termin.charAt(4)).equals("-")){
                 datum =  new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss").parse(termin);
                 zaRacunanjeKrajTermina =  new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss").parse(termin);
                 dateTemp =  new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss").parse(termin);
-                pocetakRadnogVremena = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss").parse(termin.split(" ")[0] + " 08:35:00");
+                pocetakRadnogVremena = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss").parse(termin.split(" ")[0] + " 07:00:00");
                 krajRadnogVremena = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss").parse(termin.split(" ")[0] + " 22:00:00");
                 formatter = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss");
             }else{
                 datum = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(termin);
                 zaRacunanjeKrajTermina = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(termin);
                 dateTemp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(termin);
-                pocetakRadnogVremena = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(termin.split(" ")[0] + " 08:35:00");
+                pocetakRadnogVremena = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(termin.split(" ")[0] + " 07:00:00");
                 krajRadnogVremena = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(termin.split(" ")[0] + " 22:00:00");
                 formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             }
@@ -120,6 +122,7 @@ public class SalaService {
             zaRacunanjeKrajTermina.setTime(zaRacunanjeKrajTermina.getTime() + Integer.parseInt(trajanje)*60*1000);
 
             while(!ret.containsKey(s.getId())){
+
                 zaRacunanjeKrajTermina.setTime(datum.getTime() + Integer.parseInt(trajanje)*60*1000);
 
                 dateTemp.setTime(datum.getTime() + 60*1000);
@@ -153,8 +156,6 @@ public class SalaService {
 
                     slobodniTerminiLekara = lekarService.findSlobodniTermini(lekar.getId(), prepravljenDatum);
 
-                    boolean poklopiloSe = false;
-
                     for(String pocetakTermina : slobodniTerminiLekara){
                         Date pocetak = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss").parse(pocetakTermina);
                         Date kraj = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss").parse(pocetakTermina);
@@ -167,10 +168,7 @@ public class SalaService {
                         }
                     }
 
-                    System.out.println(poklopiloSe);
 
-                    if(poklopiloSe == false)
-                        break;
 
                     String formattedDate = formatter.format(datum);
                     ret.put(s.getId(), formattedDate);
@@ -179,7 +177,11 @@ public class SalaService {
                     datum.setTime(datum.getTime() + Integer.parseInt(trajanje)*60*1000);
                 }
             }
+            if(poklopiloSe == false){
+                continue;
+            }
         }
+
 
         return ret;
     }
