@@ -27,6 +27,11 @@ import SaleSaSlobodnimTerminima from "../PronalazenjeSale/SaleSaSlobodnimTermini
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import Box from "@material-ui/core/Box";
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import DialogTitle from "@material-ui/core/DialogTitle";
 
 let today = new Date();
 today.setDate(today.getDate() + 1);
@@ -140,6 +145,11 @@ const PregledSala = ({
       datumZaPregled: date
     });
   };
+  const [open, setOpen] = React.useState(false);
+
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   const handleZakazi = async e => {
     let t;
@@ -156,7 +166,7 @@ const PregledSala = ({
       termin: t
     };
     const resp = await Axios.post(`/api/pregled/sacuvajSalu`, podaci);
-    console.log(resp.data);
+    setOpen(true);
   };
   const [value, setValue] = React.useState(0);
 
@@ -349,18 +359,24 @@ const PregledSala = ({
             margin="normal"
             value={state.medSestraImePrezime}
             fullWidth
-            id="iza"
+            id="nadjiS"
             label="Medicinska sestra"
             name="sestra"
             autoComplete="off"
           />
-          <Button variant="contained" color="primary" onClick={handleSubmit}>
+          <Button
+            variant="contained"
+            color="primary"
+            id="nadjiSestru"
+            onClick={handleSubmit}
+          >
             Nadji sestru
           </Button>
         </Paper>
       )}
       {pregled && (
         <Button
+          id="sacuvaj"
           variant="contained"
           color="primary"
           onClick={handleZakazi}
@@ -369,6 +385,26 @@ const PregledSala = ({
           Sačuvaj
         </Button>
       )}
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">
+          {"Biranje sale i medicinske sestre"}
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            Uneti podaci su sacuvani
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose} color="primary" autoFocus>
+            OK
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 };

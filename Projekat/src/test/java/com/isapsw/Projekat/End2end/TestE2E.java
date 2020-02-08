@@ -2,6 +2,7 @@ package com.isapsw.Projekat.End2end;
 
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -35,7 +36,6 @@ public class TestE2E {
         browser.findElement(By.id("submit")).click();
 
         (new WebDriverWait(this.browser, 10L)).until(ExpectedConditions.elementToBeClickable(By.id("zakazi")));
-
         browser.findElement(By.id("zakazi")).click();
         (new WebDriverWait(this.browser, 10L)).until(ExpectedConditions.visibilityOfElementLocated(By.id("lokacija")));
         browser.findElement(By.id("lokacija")).sendKeys("Zmaj");
@@ -43,7 +43,6 @@ public class TestE2E {
 
         (new WebDriverWait(this.browser, 10L)).until(ExpectedConditions.visibilityOfElementLocated(By.id("1")));
         browser.findElement(By.id("1")).click();
-
         (new WebDriverWait(this.browser, 10L)).until(ExpectedConditions.visibilityOfElementLocated(By.id("date-picker-dialog")));
         browser.findElement(By.id("date-picker-dialog")).sendKeys("04012020");
         browser.findElement(By.id("demo-simple-select")).click();
@@ -82,7 +81,13 @@ public class TestE2E {
         (new WebDriverWait(this.browser, 10L)).until(ExpectedConditions.visibilityOfElementLocated(By.id("2020-04-01 07:00:00")));
         browser.findElement(By.id("2020-04-01 07:00:00")).click();
 
-
+        (new WebDriverWait(this.browser, 10L)).until(ExpectedConditions.visibilityOfElementLocated(By.id("1")));
+        browser.findElement(By.id("1")).click();
+        JavascriptExecutor js = (JavascriptExecutor) browser;
+        js.executeScript("window.scrollBy(0,1000)");
+        browser.findElement(By.id("nadjiSestru")).click();
+        (new WebDriverWait(this.browser, 10L)).until(ExpectedConditions.elementToBeClickable(By.id("sacuvaj")));
+        browser.findElement(By.id("sacuvaj")).click();
     }
 
     @AfterMethod

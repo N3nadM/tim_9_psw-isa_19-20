@@ -25,6 +25,11 @@ import SaleSaSlobodnimTerminima from "../PronalazenjeSale/SaleSaSlobodnimTermini
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import Box from "@material-ui/core/Box";
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import DialogTitle from "@material-ui/core/DialogTitle";
 
 let today = new Date();
 today.setDate(today.getDate() + 1);
@@ -127,6 +132,12 @@ const OperacijaSala = ({
     datum: ""
   });
 
+  const [open, setOpen] = React.useState(false);
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
   const handleIzborLekar = e => {
     setZaLekare({
       tip: operacija.tipPregleda.naziv,
@@ -152,6 +163,7 @@ const OperacijaSala = ({
     };
     const resp = await Axios.post(`/api/operacija/sacuvajSalu`, podaci);
     console.log(resp.data);
+    setOpen(true);
   };
 
   return (
@@ -327,6 +339,26 @@ const OperacijaSala = ({
           Sačuvaj
         </Button>
       )}
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">
+          {"Biranje sale i medicinske sestre"}
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            Uneti podaci su sacuvani
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose} color="primary" autoFocus>
+            OK
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 };

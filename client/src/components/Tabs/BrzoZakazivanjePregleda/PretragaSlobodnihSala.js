@@ -222,6 +222,7 @@ const PretragaSalaTab = ({
                             variant="contained"
                             color="primary"
                             name={row.id}
+                            id={row.id}
                             label="Rezervisi"
                             className={classes.submit}
                             onClick={() => {
