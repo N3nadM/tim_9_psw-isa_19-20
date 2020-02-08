@@ -1,8 +1,6 @@
 package com.isapsw.Projekat.Rezervacije.service;
 
 import com.isapsw.Projekat.domain.*;
-import com.isapsw.Projekat.dto.KlinikaDTO;
-import com.isapsw.Projekat.dto.LekarDTO;
 import com.isapsw.Projekat.dto.PregledDTO;
 import com.isapsw.Projekat.repository.*;
 import com.isapsw.Projekat.service.PregledService;
@@ -16,8 +14,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
@@ -49,6 +45,9 @@ public class PregledServiceTest {
     private MedicinskaSestra medSestraMock;
 
     @Mock
+    private Korisnik korisnikMock;
+
+    @Mock
     private Sala salaMock;
 
     @Mock
@@ -62,6 +61,9 @@ public class PregledServiceTest {
 
     @Mock
     private MedSestraRepository medSestraRepository;
+
+    @Mock
+    private KorisnikRepository korisnikRepository;
 
     @Mock
     private PacijentRepository pacijentRepository;
@@ -92,7 +94,7 @@ public class PregledServiceTest {
         klinika.setAdresa("Pasiceva 34, Novi Sad");
         klinika.setOpis("Jako fina klinika");
         when(pregledRepository.getOne((long)1)).thenReturn(pregledMock);
-
+        System.out.println(pregledMock.getId());
         when(klinikaRepository.save(klinika)).thenReturn(klinika);
 
         when(lekarRepository.getOne((long)1)).thenReturn(lekarMock);
@@ -115,10 +117,24 @@ public class PregledServiceTest {
 
         Lekar lekar = new Lekar();
         pregledService.addPregled(pregledDTO);
-        Pregled pr = pregledService.getPregledById((long)1);
 
+
+        Pregled pr = pregledService.getPregledById(1L);
+        System.out.println(pr.getId());
         assertEquals(pregledMock, pr);
         when(pregledRepository.save(any(Pregled.class))).thenReturn(new Pregled());
+    }
+
+    @Test
+    @Transactional
+    @Rollback(true)
+    public void zakaziPregledTest() throws ParseException {
+        when(pregledRepository.getOne((long)1)).thenReturn(pregledMock);
+        when(korisnikRepository.getOne((long)1)).thenReturn(korisnikMock);
+        when(lekarRepository.getOne((long)1)).thenReturn(lekarMock);
+
+        Boolean zakazan = pregledService.zakaziPregled(korisnikMock.getId(),lekarMock.getId().toString(),"06-feb-2020 13:30:00");
+
     }
 
 }

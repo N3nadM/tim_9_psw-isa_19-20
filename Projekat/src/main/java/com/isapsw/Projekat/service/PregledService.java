@@ -63,6 +63,7 @@ public class PregledService {
     }
 
     public Pregled addPregled(PregledDTO pregledDTO) throws ParseException {
+        System.out.println(pregledDTO.getMedSestraId());
         Pregled pregled = new Pregled();
         Sala sala = salaRepository.getOne(Long.parseLong(pregledDTO.getSalaId()));
         pregled.setSala(sala);
@@ -92,6 +93,8 @@ public class PregledService {
 
     @Transactional
     public Boolean zakaziPregled(Long korisnikId, String lekarId, String datum) throws ParseException {
+        System.out.println(korisnikId);
+
         Lekar lekar = lekarRepository.findByIdTransaction(Long.parseLong(lekarId)).get();
 
         Date date = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss").parse(datum);
