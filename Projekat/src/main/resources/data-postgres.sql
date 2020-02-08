@@ -43,7 +43,7 @@ INSERT INTO ZDR_KARTON(pacijent_id, dioptrija, visina, tezina, krvna_grupa, vers
 
 INSERT INTO KORISNIK (adresa, email, ime, password, prezime, drzava, grad, telefon) VALUES ('adresa med sestre', 'medsestra@gmail.com', 'Sestra', '$2a$10$feiotRqclqYZ7aJnytCDSedhWmzztzhuwyujbVfVucV4nbmMRNnwa', 'Sestric',  'drzava', 'grad', 'telefon');
 INSERT INTO USER_AUTHORITY VALUES ('5', '5');
-INSERT INTO MEDICINSKA_SESTRA(korisnik_id, klinika_id, pocetak_radnog_vremena,  kraj_radnog_vremena) VALUES ('5', '1', '08:00', '17:00');
+INSERT INTO MEDICINSKA_SESTRA(korisnik_id, klinika_id, pocetak_radnog_vremena,  kraj_radnog_vremena) VALUES ('5', '1', '06:59', '22:00');
 
 INSERT INTO ZAHTEV(ime, prezime, adresa, grad, drzava, telefon, email, password, jbzo, verified) VALUES ('dsads', 'dssadsa', 'dsadsa', 'dsadffds', 'fsdgdf', 'fdssd', 'fdsfds@gmail.com', '$2a$10$feiotRqclqYZ7aJnytCDSedhWmzztzhuwyujbVfVucV4nbmMRNnwa', '2132131', False);
 
@@ -116,7 +116,7 @@ INSERT INTO LEKAR(tip_pregleda_id, korisnik_id, klinika_id, pocetak_radnog_vreme
 
 INSERT INTO KORISNIK (adresa, email, ime, password, prezime, drzava, grad, telefon) VALUES ('adresa med sestre', 'medsestra2@gmail.com', 'Sestrica', '$2a$10$feiotRqclqYZ7aJnytCDSedhWmzztzhuwyujbVfVucV4nbmMRNnwa', 'Sestricevic',  'drzava', 'grad', 'telefon');
 INSERT INTO USER_AUTHORITY VALUES ('15', '5');
-INSERT INTO MEDICINSKA_SESTRA(korisnik_id, klinika_id, pocetak_radnog_vremena,  kraj_radnog_vremena) VALUES ('15', '1', '08:00', '20:00');
+INSERT INTO MEDICINSKA_SESTRA(korisnik_id, klinika_id, pocetak_radnog_vremena,  kraj_radnog_vremena) VALUES ('15', '1', '07:00', '22:00');
 
 
 INSERT INTO KORISNIK (adresa, email, ime, password, prezime, drzava, grad, telefon) VALUES ('lekariceva 13', 'lekarcic@gmail.com', 'Lekarcic', '$2a$10$feiotRqclqYZ7aJnytCDSedhWmzztzhuwyujbVfVucV4nbmMRNnwa', 'Lekaricccccacca',  'drzava', 'grad', 'telefon');

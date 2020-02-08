@@ -67,7 +67,12 @@ const ProfilPacijent = ({ pacijent }) => {
           disabled={!pacijent}
           {...a11yProps(3)}
         />
-        <Tab label="Zakazi pregled" disabled={!pacijent} {...a11yProps(4)} />
+        <Tab
+          label="Zakazi pregled"
+          disabled={!pacijent}
+          {...a11yProps(4)}
+          id="zakazi"
+        />
         <Tab label="Promena lozinke" disabled={!pacijent} {...a11yProps(5)} />
       </Tabs>
     </div>

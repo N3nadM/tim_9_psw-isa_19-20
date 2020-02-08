@@ -244,7 +244,7 @@ const ZakaziPregled = ({
             <Grid item md={2}>
               <TextField
                 style={{ width: "80%" }}
-                id="standard-basic"
+                id="lokacija"
                 value={state.lokacija}
                 onChange={handleChange}
                 name="lokacija"
@@ -261,7 +261,12 @@ const ZakaziPregled = ({
                 justifyContent: "center"
               }}
             >
-              <Button variant="contained" color="primary" type="submit">
+              <Button
+                variant="contained"
+                color="primary"
+                type="submit"
+                id="pretrazi"
+              >
                 Pretraži
               </Button>
             </Grid>
@@ -343,6 +348,7 @@ const ZakaziPregled = ({
                             <Button
                               variant="outlined"
                               color="primary"
+                              id={row.id}
                               onClick={() => {
                                 history.push({
                                   pathname: `/klinika/${row.id}`,

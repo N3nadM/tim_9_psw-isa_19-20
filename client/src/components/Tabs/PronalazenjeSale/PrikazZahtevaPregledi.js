@@ -228,6 +228,7 @@ const PrikazZahtevaPregled = ({
                           <TableCell align="left">{row.datumPocetka}</TableCell>
                           <TableCell align="left">
                             <Button
+                              id={row.datumPocetka}
                               variant="contained"
                               color="primary"
                               onClick={() => {

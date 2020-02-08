@@ -142,6 +142,7 @@ const PromeniLozinku = ({ currentUser, authUser }) => {
                 id="password"
               />
               <Button
+                id="potvrda"
                 type="submit"
                 fullWidth
                 variant="contained"
