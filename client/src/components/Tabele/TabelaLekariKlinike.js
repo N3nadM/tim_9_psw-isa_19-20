@@ -151,7 +151,7 @@ const TabelaLekariKlinike = ({
           <Grid container spacing={3}>
             {params.datum === "" && (
               <Grid item sm={12} md={6} lg={3}>
-                <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                <MuiPickersUtilsProvider utils={DateFnsUtils} id="datep">
                   <KeyboardDatePicker
                     id="date-picker-dialog"
                     label="Datum pregleda"
@@ -173,7 +173,7 @@ const TabelaLekariKlinike = ({
                 <InputLabel id="demo-simple-select-label">Ocena</InputLabel>
                 <Select
                   labelId="demo-simple-select-label"
-                  id="demo-simple-select"
+                  id="demo-simple-select-d"
                   value={state.ocena}
                   name="ocena"
                   onChange={handleChange}
@@ -200,7 +200,7 @@ const TabelaLekariKlinike = ({
                     onChange={handleChange}
                   >
                     {tipovi.map(t => (
-                      <MenuItem key={t} value={t}>
+                      <MenuItem key={t} value={t} id={t}>
                         {t}
                       </MenuItem>
                     ))}
@@ -229,7 +229,12 @@ const TabelaLekariKlinike = ({
               />
             </Grid>
             <Grid item md={2}>
-              <Button variant="contained" color="primary" type="submit">
+              <Button
+                variant="contained"
+                color="primary"
+                type="submit"
+                id="pretraga"
+              >
                 Pretraži
               </Button>
             </Grid>
@@ -307,7 +312,7 @@ const TabelaLekariKlinike = ({
                           </TableCell>
                           <TableCell align="left">{row.ocena}</TableCell>
 
-                          <TableCell align="right">
+                          <TableCell align="right" id={"dugme " + row.id}>
                             <SlobodniTerminiDialog
                               id={row.id}
                               datum={!selectedDate ? "" : selectedDate}

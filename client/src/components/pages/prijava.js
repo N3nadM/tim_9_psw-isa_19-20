@@ -110,6 +110,7 @@ const SignIn = ({
               variant="contained"
               color="primary"
               className={classes.submit}
+              id="submit"
             >
               Ulogujte se
             </Button>

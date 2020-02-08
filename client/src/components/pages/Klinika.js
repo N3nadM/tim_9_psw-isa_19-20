@@ -58,7 +58,7 @@ export default function Klinika({ match, location }) {
       >
         <Tab label="Pretrazi lekare" {...a11yProps(0)} />
         <Tab label="Profil Klinike" {...a11yProps(1)} />
-        <Tab label="Pregledi" {...a11yProps(2)} />
+        <Tab label="Pregledi" {...a11yProps(2)} id="pregledi" />
       </Tabs>
     </div>
   );

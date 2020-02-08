@@ -75,7 +75,11 @@ function ResponsiveDrawer(props) {
       >
         <Tab label="Podaci o klinici" {...a11yProps(0)} />
         <Tab label="Inbox" {...a11yProps(1)} />
-        <Tab label="Zahtevi za pronalazenje sale" {...a11yProps(2)} />
+        <Tab
+          label="Zahtevi za pronalazenje sale"
+          {...a11yProps(2)}
+          id="zahtevi"
+        />
         <Tab label="Promena lozinke" {...a11yProps(3)} />
         <Tab label="Slobodni termini pregleda" {...a11yProps(4)} />
         <Tab label="Lekari" {...a11yProps(5)} />
