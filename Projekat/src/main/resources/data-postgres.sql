@@ -36,7 +36,7 @@ INSERT INTO KORISNIK (adresa, email, ime, password, prezime, drzava, grad, telef
 INSERT INTO USER_AUTHORITY VALUES ('3', '2');
 INSERT INTO LEKAR(tip_pregleda_id, korisnik_id, klinika_id, pocetak_radnog_vremena,  kraj_radnog_vremena, ocena, aktivan) VALUES ('1', '3', '1', '07:00', '22:00', 3.4, true);
 
-INSERT INTO KORISNIK (adresa, email, ime, password, prezime, drzava, grad, telefon) VALUES ('adresa pacijenta', 'pacijent@gmail.com', 'Pacijent', '$2a$10$feiotRqclqYZ7aJnytCDSedhWmzztzhuwyujbVfVucV4nbmMRNnwa', 'Pacijentic',  'drzava', 'grad', 'telefon');
+INSERT INTO KORISNIK (adresa, email, ime, password, prezime, drzava, grad, telefon) VALUES ('adresa pacijenta', 'vesna.svrkota997@gmail.com', 'Pacijent', '$2a$10$feiotRqclqYZ7aJnytCDSedhWmzztzhuwyujbVfVucV4nbmMRNnwa', 'Pacijentic',  'drzava', 'grad', 'telefon');
 INSERT INTO USER_AUTHORITY VALUES ('4', '1');
 INSERT INTO PACIJENT(datum_kreiranja, jbzo, korisnik_id) VALUES ('2019-11-20', '555333', '4');
 INSERT INTO ZDR_KARTON(pacijent_id, dioptrija, visina, tezina, krvna_grupa, version) VALUES ('1', '-1.5', '193', '80', '0+', 0);
@@ -135,23 +135,23 @@ INSERT INTO PREGLED (izvestaj, datum_pocetka, datum_zavrsetka, tip_pregleda_id, 
 INSERT INTO PREGLED (izvestaj, datum_pocetka, datum_zavrsetka, tip_pregleda_id, lekar_id, medicinska_sestra_id, sala_id, pacijent_id, popust, stanje, vrsta, datum_kreiranja, version) VALUES ('Svaka cast', '2019-12-25 07:10:00', '2019-12-25 16:52:00', '2', '2', '2', '2', '2', '0', '2', '0', '2019-11-6',0);
 INSERT INTO PREGLED (izvestaj, datum_pocetka, datum_zavrsetka, tip_pregleda_id, lekar_id, medicinska_sestra_id, sala_id, pacijent_id, popust, stanje, vrsta, datum_kreiranja, version) VALUES ('Svaka cast', '2019-11-25 07:10:00', '2019-11-25 16:52:00', '2', '2', '1', '2', '2', '0', '2', '0', '2019-11-6',0);
 INSERT INTO PREGLED (izvestaj, datum_pocetka, datum_zavrsetka, tip_pregleda_id, lekar_id, medicinska_sestra_id, sala_id, pacijent_id, popust, stanje, vrsta, datum_kreiranja, version) VALUES ('Novi', '2020-01-04 17:53:00', '2020-01-04 18:52:00', '2', '2', '2', '2', '2', '0', '0', '0', '2019-11-6',0);
-INSERT INTO PREGLED (izvestaj, datum_pocetka, datum_zavrsetka, tip_pregleda_id, lekar_id, medicinska_sestra_id, sala_id, pacijent_id, popust, stanje, vrsta, datum_kreiranja, version) VALUES ('Novi', '2020-01-04 16:50:00', '2020-01-04 17:52:00', '2', '1', '1', '2', '1', '0', '0', '0', '2019-11-6',0);
+INSERT INTO PREGLED (izvestaj, datum_pocetka, datum_zavrsetka, tip_pregleda_id, lekar_id, medicinska_sestra_id, sala_id, pacijent_id, popust, stanje, vrsta, datum_kreiranja, version) VALUES ('Novi', '2020-02-09 18:50:00', '2020-02-09 19:52:00', '1', '1', '1', '2', '1', '0', '0', '0', '2019-11-6',0);
 INSERT INTO PREGLED (izvestaj, datum_pocetka, datum_zavrsetka, tip_pregleda_id, lekar_id, medicinska_sestra_id, sala_id, pacijent_id, popust, stanje, vrsta, datum_kreiranja, version) VALUES ('Novi',  '2020-01-21 18:10:00', '2020-01-21 19:55:00', '1', '6', '1', '1', '1', '0', '0', '0', '2019-11-6',0);
 
-INSERT INTO PREGLED (izvestaj, datum_pocetka, datum_zavrsetka, tip_pregleda_id, lekar_id, medicinska_sestra_id, sala_id, pacijent_id, popust, stanje, vrsta, datum_kreiranja, version) VALUES ('Novi', '2020-02-07 21:00:00', '2020-02-07 22:00:00', '2', '1', '2', '2', '1', '0', '0', '0', '2019-11-6',0);
-INSERT INTO PREGLED (izvestaj, datum_pocetka, datum_zavrsetka, tip_pregleda_id, lekar_id, medicinska_sestra_id, sala_id, pacijent_id, popust, stanje, vrsta, datum_kreiranja, version) VALUES ('Novi', '2020-02-08 08:06:00', '2020-02-08 09:12:00', '2', '2', '2', '2', '1', '0', '0', '0', '2019-11-6', 0);
-INSERT INTO PREGLED (izvestaj, datum_pocetka, datum_zavrsetka, tip_pregleda_id, lekar_id, medicinska_sestra_id, sala_id, pacijent_id, popust, stanje, vrsta, datum_kreiranja, version) VALUES ('Novi', '2020-02-07 21:00:00', '2020-02-07 22:00:00', '2', '3', '1', '1', '2', '0', '0', '0', '2019-11-6',0);
+INSERT INTO PREGLED (izvestaj, datum_pocetka, datum_zavrsetka, tip_pregleda_id, lekar_id, medicinska_sestra_id, sala_id, pacijent_id, popust, stanje, vrsta, datum_kreiranja, version) VALUES ('Novi', '2020-02-10 21:00:00', '2020-02-10 22:00:00', '2', '1', '2', '2', '1', '0', '0', '0', '2019-11-6',0);
+INSERT INTO PREGLED (izvestaj, datum_pocetka, datum_zavrsetka, tip_pregleda_id, lekar_id, medicinska_sestra_id, sala_id, pacijent_id, popust, stanje, vrsta, datum_kreiranja, version) VALUES ('Novi', '2020-02-10 08:06:00', '2020-02-10 09:12:00', '2', '2', '2', '2', '1', '0', '0', '0', '2019-11-6', 0);
+INSERT INTO PREGLED (izvestaj, datum_pocetka, datum_zavrsetka, tip_pregleda_id, lekar_id, medicinska_sestra_id, sala_id, pacijent_id, popust, stanje, vrsta, datum_kreiranja, version) VALUES ('Novi', '2020-02-10 21:00:00', '2020-02-10 22:06:00', '1', '1', '1', '1', '2', '0', '0', '0', '2019-11-6',0);
 
-INSERT INTO PREGLED (izvestaj, datum_pocetka, datum_zavrsetka, tip_pregleda_id, lekar_id, medicinska_sestra_id, pacijent_id, popust, stanje, vrsta, datum_kreiranja, version) VALUES ('Novi', '2020-02-7 21:00:00', '2020-02-7 22:00:00', '2', '2', null, '1', '0', '0', '0', '2019-11-6', 0);
-INSERT INTO PREGLED (izvestaj, datum_pocetka, datum_zavrsetka, tip_pregleda_id, lekar_id, medicinska_sestra_id, pacijent_id, popust, stanje, vrsta, datum_kreiranja, version) VALUES ('Novi', '2020-02-08 07:00:00', '2020-02-08 8:06:00', '2', '2', null, '1', '0', '0', '0', '2019-11-6', 0);
+INSERT INTO PREGLED (izvestaj, datum_pocetka, datum_zavrsetka, tip_pregleda_id, lekar_id, medicinska_sestra_id, pacijent_id, popust, stanje, vrsta, datum_kreiranja, version) VALUES ('Novi', '2020-02-10 21:00:00', '2020-02-10 22:00:00', '2', '2', null, '1', '0', '0', '0', '2019-11-6', 0);
+INSERT INTO PREGLED (izvestaj, datum_pocetka, datum_zavrsetka, tip_pregleda_id, lekar_id, medicinska_sestra_id, pacijent_id, popust, stanje, vrsta, datum_kreiranja, version) VALUES ('Novi', '2020-02-10 07:00:00', '2020-02-10 8:06:00', '2', '2', null, '1', '0', '0', '0', '2019-11-6', 0);
 
 INSERT INTO OPERACIJA (izvestaj, datum_pocetka, datum_zavrsetka, tip_operacije, medicinska_sestra_id, sala_id, pacijent_id, stanje, vrsta, datum_kreiranja, tip_pregleda_id) VALUES ('Bit ce unet', '2019-12-27 16:51:00', '2019-12-27 20:00:00', 'Operacija jea', '1', '1', '1', '2', '1', '2019-11-6', 1);
 INSERT INTO OPERACIJA (izvestaj, datum_pocetka, datum_zavrsetka, tip_operacije, medicinska_sestra_id, sala_id, pacijent_id, stanje, vrsta, datum_kreiranja, tip_pregleda_id) VALUES ('Bit ce unet', '2019-12-27 15:51:00', '2019-12-27 16:41:00', 'Operacija jea', '1', '1', '1', '2', '1', '2019-11-6', 1);
 INSERT INTO OPERACIJA (izvestaj, datum_pocetka, datum_zavrsetka, tip_operacije, medicinska_sestra_id, sala_id, pacijent_id, stanje, vrsta, datum_kreiranja, tip_pregleda_id) VALUES ('Bit ce unet', '2019-12-11 15:51:00', '2019-12-11 17:51:00','Operacija jea', '2', '1', '1', '2', '1', '2019-11-6', 1);
-INSERT INTO OPERACIJA (izvestaj, datum_pocetka, datum_zavrsetka, tip_operacije, medicinska_sestra_id, sala_id, pacijent_id, stanje, vrsta, datum_kreiranja, tip_pregleda_id) VALUES ('Operisan od zivota...', '2020-02-07 21:00:00', '2020-02-07 22:00:00', 'Operacija jea', '1', '1', '1', '0', '1', '2019-11-6', 1);
-INSERT INTO OPERACIJA (izvestaj, datum_pocetka, datum_zavrsetka, tip_operacije, medicinska_sestra_id, sala_id, pacijent_id, stanje, vrsta, datum_kreiranja, tip_pregleda_id) VALUES ('Operisan od zivota...', '2020-02-07 21:00:00', '2020-02-07 22:00:00', 'Operacija jea', '1', '2', '1', '0', '1', '2019-11-6', 1);
+INSERT INTO OPERACIJA (izvestaj, datum_pocetka, datum_zavrsetka, tip_operacije, medicinska_sestra_id, sala_id, pacijent_id, stanje, vrsta, datum_kreiranja, tip_pregleda_id) VALUES ('Operisan od zivota...', '2020-02-10 21:00:00', '2020-02-10 22:00:00', 'Operacija jea', '1', '1', '1', '0', '1', '2019-11-6', 1);
+INSERT INTO OPERACIJA (izvestaj, datum_pocetka, datum_zavrsetka, tip_operacije, medicinska_sestra_id, sala_id, pacijent_id, stanje, vrsta, datum_kreiranja, tip_pregleda_id) VALUES ('Operisan od zivota...', '2020-02-10 21:00:00', '2020-02-10 22:00:00', 'Operacija jea', '1', '2', '1', '0', '1', '2019-11-6', 1);
 
-INSERT INTO OPERACIJA (izvestaj, datum_pocetka, datum_zavrsetka, tip_operacije, medicinska_sestra_id, pacijent_id, stanje, vrsta, datum_kreiranja, tip_pregleda_id) VALUES ('Operisan od zivota...', '2020-02-07 21:00:00', '2020-02-07 22:00:00', 'Operacija jea', null, '1', '0', '1', '2019-11-6', 2);
+INSERT INTO OPERACIJA (izvestaj, datum_pocetka, datum_zavrsetka, tip_operacije, medicinska_sestra_id, pacijent_id, stanje, vrsta, datum_kreiranja, tip_pregleda_id) VALUES ('Operisan od zivota...', '2020-02-10 21:00:00', '2020-02-10 22:00:00', 'Operacija jea', null, '1', '0', '1', '2019-11-6', 2);
 
 INSERT INTO PRISUTNI_LEKARI VALUES (6, 2);
 
@@ -174,3 +174,8 @@ INSERT INTO PACIJENTI_KLINIKE VALUES ('3', '2');
 INSERT INTO PACIJENTI_KLINIKE VALUES ('6', '4');
 INSERT INTO PACIJENTI_KLINIKE VALUES ('1', '1');
 INSERT INTO PACIJENTI_KLINIKE VALUES ('1', '2');
+
+
+INSERT INTO KORISNIK (adresa, email, ime, password, prezime, drzava, grad, telefon) VALUES ('adresa admina', 'neskexx@gmail.com', 'Admin', '$2a$10$feiotRqclqYZ7aJnytCDSedhWmzztzhuwyujbVfVucV4nbmMRNnwa', 'Adminic', 'drzava1', 'grad1', 'telefon1');
+INSERT INTO USER_AUTHORITY VALUES ('17', '3');
+INSERT INTO ADMIN_KLINIKE(klinika_id, korisnik_id) VALUES ('1', '17');

@@ -79,10 +79,10 @@ public class UserController {
         return  new ResponseEntity<Zahtev>(newZahtev, HttpStatus.CREATED);
     }
 
-    @PostMapping("/register/{email}")
-    public ResponseEntity<?> registerUser(@PathVariable String email) {
+    @PostMapping("/register")
+    public ResponseEntity<?> registerUser(@RequestBody Map<String,Object> body) {
         try {
-            emailService.sendConfirmationAsync(email);
+            emailService.sendConfirmationAsync(body.get("email").toString());
         } catch(NullPointerException e) {
             System.out.println("Zahtev ne postoji");
         }
@@ -92,9 +92,8 @@ public class UserController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @GetMapping("/confirm/{email}")
+    @GetMapping("/confirm/{email:.+}")
     public ResponseEntity<String> confirmAccount(@PathVariable String email) {
-
         zahtevService.createKorisnikFromZahtev(email);
 
         return new ResponseEntity<String>("Korisnik kreiran", HttpStatus.OK);
@@ -129,7 +128,11 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Korisnik> editAccount(@RequestBody KorisnikDTO korisnik) {
+    public ResponseEntity<?> editAccount(@RequestBody KorisnikDTO korisnik, Authentication authentication) {
+        Korisnik korisnik1 = (Korisnik)authentication.getPrincipal();
+        if (korisnik.getId() != korisnik1.getId() ) {
+            return new ResponseEntity<>(false, HttpStatus.BAD_REQUEST);
+        }
         Korisnik k = korisnikService.editKorisnik(korisnik);
         if(k == null) {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);

@@ -193,7 +193,7 @@ public class SalaService {
 
 
     public List<Sala> search(Long id, String broj, String naziv){
-        List<Sala> sale = salaRepository.findSalaByParameters(broj, naziv);
+        List<Sala> sale = salaRepository.findSalaByParameters(broj, naziv.toUpperCase());
         List<Sala> ret = new ArrayList<>();
         for(Sala s: sale){
             if(s.getKlinika().getId().equals(id)){

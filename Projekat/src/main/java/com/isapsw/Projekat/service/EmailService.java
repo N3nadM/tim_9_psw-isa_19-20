@@ -1,6 +1,8 @@
 package com.isapsw.Projekat.service;
 
 import com.isapsw.Projekat.domain.Klinika;
+import com.isapsw.Projekat.domain.Korisnik;
+import com.isapsw.Projekat.domain.Pregled;
 import com.isapsw.Projekat.domain.Zahtev;
 import com.isapsw.Projekat.repository.ZahtevRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,9 +25,14 @@ public class EmailService {
     @Autowired
     private JavaMailSender javaMailSender;
 
+    @Autowired
+    private PregledService pregledService;
+
     @Async
     public void sendConfirmationAsync(String email) throws MailException, InterruptedException, MessagingException {
         System.out.println("Saljem email");
+
+        System.out.println(email);
 
         Zahtev zahtev = zahtevRepository.findZahtevByEmail(email);
 
@@ -41,6 +48,25 @@ public class EmailService {
         message.setContent(msgHtml, "text/html");
         mimeMessageHelper.setTo(email);
         mimeMessageHelper.setSubject("Aktivacija korisnickog naloga");
+        mimeMessageHelper.setFrom("vesna.svrkota997@gmail.com");
+
+        javaMailSender.send(message);
+
+        System.out.println("Email je poslat");
+    }
+
+    @Async
+    public void sendEmailPacijentuZakazan(Korisnik korisnik, Pregled pregled) throws  MailException,MessagingException {
+        System.out.println("Saljem email");
+
+        MimeMessage message = javaMailSender.createMimeMessage();
+        MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(message, true);
+
+        String msgHtml = "<h5>Postovani " + korisnik.getIme() + "</h5><p>Zakazan vam je pregled za " + pregled.getDatumPocetka()  + " <p>";
+
+        message.setContent(msgHtml, "text/html");
+        mimeMessageHelper.setTo(korisnik.getEmail());
+        mimeMessageHelper.setSubject("Obavestenje o zakazanom pregledu");
         mimeMessageHelper.setFrom("vesna.svrkota997@gmail.com");
 
         javaMailSender.send(message);
@@ -209,6 +235,23 @@ public class EmailService {
         message.setContent("<p>" + msg + "</p>", "text/html");
         mimeMessageHelper.setTo(email);
         mimeMessageHelper.setSubject("Zakazivanje pregleda/operacije od strane lekara");
+        mimeMessageHelper.setFrom("vesna.svrkota997@gmail.com");
+
+        javaMailSender.send(message);
+
+        System.out.println("Email je poslat");
+    }
+
+    @Async
+    public void sendAdminuZakazivanjePregledaOperacijePacijent(String email, String msg) throws MailException, InterruptedException, MessagingException {
+        System.out.println("Saljem email");
+
+        MimeMessage message = javaMailSender.createMimeMessage();
+        MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(message, true);
+
+        message.setContent("<p>" + msg + "</p>", "text/html");
+        mimeMessageHelper.setTo(email);
+        mimeMessageHelper.setSubject("Zakazivanje pregleda od strane pacijenta");
         mimeMessageHelper.setFrom("vesna.svrkota997@gmail.com");
 
         javaMailSender.send(message);

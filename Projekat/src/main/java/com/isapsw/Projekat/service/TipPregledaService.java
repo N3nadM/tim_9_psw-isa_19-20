@@ -3,10 +3,7 @@ package com.isapsw.Projekat.service;
 import com.isapsw.Projekat.domain.Pregled;
 import com.isapsw.Projekat.domain.TipPregleda;
 import com.isapsw.Projekat.dto.TipPregledaDTO;
-import com.isapsw.Projekat.repository.OperacijaRepository;
-import com.isapsw.Projekat.repository.PacijentRepository;
-import com.isapsw.Projekat.repository.PregledRepository;
-import com.isapsw.Projekat.repository.TipPregledaRepository;
+import com.isapsw.Projekat.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +20,9 @@ public class TipPregledaService {
 
     @Autowired
     private OperacijaRepository operacijaRepository;
+
+    @Autowired
+    private LekarRepository lekarRepository;
 
     public List<TipPregleda> getTipoviSaKlinike(String id) { return  tipPregledaRepository.findTipPregledasByKlinikaId(Long.parseLong(id)); }
 
@@ -50,9 +50,11 @@ public class TipPregledaService {
         List<TipPregleda> tipovi = pregledRepository.findTipoveKojiImajuZakazanePreglede(Long.parseLong(id), date);
         //tipovi koji imaju operacije u buducnosti
         List<TipPregleda> tipoviOp = operacijaRepository.findTipoveKojiImajuZakazaneOperacije(Long.parseLong(id), date);
+
+        List<TipPregleda> tipoviLekari = lekarRepository.getTipoviSvihLekara(Long.parseLong(id));
         List<TipPregleda> ret = new ArrayList<>();
         for(TipPregleda t : sviTipoviNaKlinici){
-            if(!tipovi.contains(t) && !tipoviOp.contains(t)){
+            if(!tipovi.contains(t) && !tipoviOp.contains(t) && !tipoviLekari.contains(t)){
                 ret.add(t);
             }
         }

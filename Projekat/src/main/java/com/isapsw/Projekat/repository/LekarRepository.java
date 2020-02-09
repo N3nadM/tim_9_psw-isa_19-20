@@ -42,4 +42,7 @@ public interface LekarRepository extends JpaRepository<Lekar, Long> {
     @Query("SELECT l.klinika FROM Lekar l WHERE l.id = :id")
     Klinika getKlinika(@Param("id") Long id);
 
+    @Query("SELECT  DISTINCT l.tipPregleda  FROM Lekar l WHERE l.klinika.id = :idKlinika")
+    List<TipPregleda> getTipoviSvihLekara(@Param("idKlinika") Long idKlinika);
+
 }

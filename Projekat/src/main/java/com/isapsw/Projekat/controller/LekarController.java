@@ -61,6 +61,7 @@ public class LekarController {
         try{
             return new ResponseEntity<Lekar>(lekarService.editLekarByAdmin(id,lekar), HttpStatus.OK);
         }catch(Exception e){
+            System.out.println(e);
             return new  ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
