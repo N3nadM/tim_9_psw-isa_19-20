@@ -41,7 +41,9 @@ import java.nio.charset.Charset;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static com.isapsw.Projekat.security.Konstante.TOKEN_BEARER_PREFIX;
 import static org.hamcrest.Matchers.hasItem;
@@ -177,13 +179,6 @@ public class PregledControllerTest {
         System.out.println(content);
     }
 
-    @Test
-    public void testGetPredefinisaniPregledi(){
-        login("neskexx@gmail.com", "admin"); //logovanje pacijnta
-
-
-    }
-
 
     @Test
     public void testZakaziPredefinisaniPregled() throws Exception {
@@ -205,12 +200,21 @@ public class PregledControllerTest {
         Sala sala = new Sala();
         sala.setId(1L);
         pregled.setSala(sala);
+        String version = "0";
 
-        Mockito.when(pregledServiceMock.zakaziPredefinisaniPregled(any(Long.class, String.class, String.class))).thenReturn(pregled);
-        mockMvc.perform(get(URL_PREFIX + "/zakaziPredefinisani").header("Authorization", jwt))
+        Map<String, String> body = new HashMap<>();
+        body.put("pregledId", pregled.getId().toString());
+        body.put("version", version);
+
+        Mockito.when(pregledServiceMock.zakaziPredefinisaniPregled(korisnik.getId(), pregled.getId().toString(), "0")).thenReturn(true);
+        MvcResult result = mockMvc.perform(post(URL_PREFIX + "/zakaziPredefinisani").header("Authorization", jwt)
                 .contentType(contentType)
-                .content(TestUtils.json(pregledDTO)))
+                .content(TestUtils.json(body)))
                 .andExpect(status().isOk())
+                .andReturn();
+
+        String content = result.getResponse().getContentAsString();
+        System.out.println(content);
     }
 
     @Test
@@ -246,15 +250,16 @@ public class PregledControllerTest {
 
         Mockito.when(pregledServiceMock.getPreglediKojiNemajuSalu("1")).thenReturn(pregledi);
 
-//        mockMvc.perform(get(URL_PREFIX + "/nemajuSalu/1").header("Authorization", jwt))
-//                .andExpect(status().isOk())
-//                .andExpect(jsonPath("$.id").value((long)1))
-//                .andExpect(jsonPath("$.izvestaj").value(PregledConst.PREGLED_IZVESTAJ))
-//                .andExpect(jsonPath("$.datumPocetka").value(format.format(PregledConst.PREGLED_DATUMPOCETKA)))
-//                .andExpect(jsonPath("$.sala.id").value(sala.getId()));
+        MvcResult result = mockMvc.perform(get(URL_PREFIX + "/nemajuSalu/1").header("Authorization", jwt))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value((long)1))
+                .andExpect(jsonPath("$.izvestaj").value(PregledConst.PREGLED_IZVESTAJ))
+                .andExpect(jsonPath("$.datumPocetka").value(format.format(PregledConst.PREGLED_DATUMPOCETKA)))
+                .andReturn();
 
 
-
+        String content = result.getResponse().getContentAsString();
+        System.out.println(content);
 
 
     }
