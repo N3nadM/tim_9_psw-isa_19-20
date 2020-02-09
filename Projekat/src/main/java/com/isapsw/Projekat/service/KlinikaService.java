@@ -5,6 +5,7 @@ import com.isapsw.Projekat.dto.KlinikaDTO;
 import com.isapsw.Projekat.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import java.text.ParseException;
@@ -262,8 +263,9 @@ public class KlinikaService {
         }
     }
 
+    @Transactional
     public OcenaKlinike oceniKliniku(String id, String ocena, Korisnik korisnik){
-        OcenaKlinike ocenaKlinike = ocenaKlinikeRepository.findByOcKlinikeIdentifier(id + "-" + korisnik.getId());
+        OcenaKlinike ocenaKlinike = ocenaKlinikeRepository.findByOcKlinikeIdentifierTransaction(id + "-" + korisnik.getId());
         if(ocenaKlinike == null) {
             Pacijent pacijentForSearch = pacijentRepository.findPacijentByKorisnikId(korisnik.getId());
             Pacijent pacijent = klinikaRepository.findPacijentInKlinika(Long.parseLong(id), pacijentForSearch.getId());
@@ -279,7 +281,7 @@ public class KlinikaService {
 
         ocenaKlinikeRepository.save(ocenaKlinike);
 
-        Klinika klinika = klinikaRepository.findKlinikaById(Long.parseLong(id));
+        Klinika klinika = klinikaRepository.findKlinikaByIdTransaction(Long.parseLong(id));
         klinika.setOcena(ocenaKlinikeRepository.calculateAverage(Long.parseLong(id)));
 
         klinikaRepository.save(klinika);

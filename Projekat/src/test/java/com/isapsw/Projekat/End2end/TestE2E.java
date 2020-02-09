@@ -31,7 +31,7 @@ public class TestE2E {
 
 
         //pacijent pronalazi termin pregleda i rezervise ga
-        browser.findElement(By.id("email")).sendKeys("pacijent@gmail.com");
+        browser.findElement(By.id("email")).sendKeys("vesna.svrkota997@gmail.com");
         browser.findElement(By.id("password")).sendKeys("admin");
         browser.findElement(By.id("submit")).click();
 

@@ -5,6 +5,7 @@ import com.isapsw.Projekat.dto.ZahtevOdsustvoDTO;
 import com.isapsw.Projekat.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.mail.MessagingException;
 import java.util.List;
@@ -61,8 +62,9 @@ public class ZahtevOdsustvoService {
         return zahtevOdsustvoRepository.findAllByKlinikaId(Long.parseLong(id));
     }
 
+    @Transactional
     public ZahtevOdsustvo denyZahtev(String id, String message) throws MessagingException, InterruptedException {
-        ZahtevOdsustvo zahtevOdsustvo = zahtevOdsustvoRepository.findById(Long.parseLong(id)).get();
+        ZahtevOdsustvo zahtevOdsustvo = zahtevOdsustvoRepository.findByIdTransaction(Long.parseLong(id)).get();
         String email = "";
         if(zahtevOdsustvo.getLekar() == null){
             email = zahtevOdsustvo.getMedicinskaSestra().getKorisnik().getEmail();
@@ -74,8 +76,9 @@ public class ZahtevOdsustvoService {
         return zahtevOdsustvo;
     }
 
+    @Transactional
     public ZahtevOdsustvo acceptZahtev(String id) throws MessagingException, InterruptedException {
-        ZahtevOdsustvo zahtevOdsustvo = zahtevOdsustvoRepository.findById(Long.parseLong(id)).get();
+        ZahtevOdsustvo zahtevOdsustvo = zahtevOdsustvoRepository.findByIdTransaction(Long.parseLong(id)).get();
         String email = "";
         Odsustvo odsustvo = new Odsustvo();
         odsustvo.setDatum(zahtevOdsustvo.getDatum());
