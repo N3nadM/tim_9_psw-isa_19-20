@@ -8,6 +8,7 @@ import com.isapsw.Projekat.dto.PacijentDTO;
 import com.isapsw.Projekat.dto.PregledDTO;
 import com.isapsw.Projekat.payload.LoginRequest;
 import com.isapsw.Projekat.security.JWTTokenProvider;
+import com.isapsw.Projekat.service.EmailService;
 import com.isapsw.Projekat.service.PregledService;
 import com.isapsw.Projekat.service.ValidationErrorService;
 import org.junit.Test;
@@ -49,6 +50,7 @@ import static com.isapsw.Projekat.security.Konstante.TOKEN_BEARER_PREFIX;
 import static org.hamcrest.Matchers.hasItem;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -89,6 +91,9 @@ public class PregledControllerTest {
     @Autowired
     private AuthenticationManager authenticationManager;
 
+    @MockBean
+    private EmailService emailServiceMock;
+
     @Autowired
     private WebApplicationContext webApplicationContext;
 
@@ -125,7 +130,7 @@ public class PregledControllerTest {
 
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-        Mockito.when(pregledServiceMock.getPregledById((long)1)).thenReturn(pregled);
+        when(pregledServiceMock.getPregledById((long)1)).thenReturn(pregled);
         MvcResult result = mockMvc.perform(get(URL_PREFIX + "/zahtev/1").header("Authorization", jwt))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(PregledConst.PREGLED_ID))
@@ -164,6 +169,7 @@ public class PregledControllerTest {
 
         SimpleDateFormat format2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
+
         Mockito.when(pregledServiceMock.addPregled(any(PregledDTO.class))).thenReturn(pregled);
         MvcResult result = mockMvc.perform(post(URL_PREFIX).header("Authorization", jwt)
                 .contentType(contentType)
@@ -181,6 +187,7 @@ public class PregledControllerTest {
 
 
     @Test
+    @Transactional
     public void testZakaziPredefinisaniPregled() throws Exception {
         login("neskexx@gmail.com", "admin"); //logovanje pacijnta
 
@@ -194,7 +201,6 @@ public class PregledControllerTest {
         Pregled pregled = new Pregled();
 
         pregled.setId(PregledConst.PREGLED_ID);
-        pregled.setIzvestaj(PregledConst.PREGLED_IZVESTAJ);
         pregled.setDatumPocetka(PregledConst.PREGLED_DATUMPOCETKA);
 
         Sala sala = new Sala();
@@ -206,6 +212,7 @@ public class PregledControllerTest {
         body.put("pregledId", pregled.getId().toString());
         body.put("version", version);
 
+        Mockito.when(pregledServiceMock.getPregledById((long)1)).thenReturn(pregled);
         Mockito.when(pregledServiceMock.zakaziPredefinisaniPregled(korisnik.getId(), pregled.getId().toString(), "0")).thenReturn(true);
         MvcResult result = mockMvc.perform(post(URL_PREFIX + "/zakaziPredefinisani").header("Authorization", jwt)
                 .contentType(contentType)
@@ -248,13 +255,13 @@ public class PregledControllerTest {
 
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-        Mockito.when(pregledServiceMock.getPreglediKojiNemajuSalu("1")).thenReturn(pregledi);
+        when(pregledServiceMock.getPreglediKojiNemajuSalu("1")).thenReturn(pregledi);
 
         MvcResult result = mockMvc.perform(get(URL_PREFIX + "/nemajuSalu/1").header("Authorization", jwt))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").value((long)1))
-                .andExpect(jsonPath("$.izvestaj").value(PregledConst.PREGLED_IZVESTAJ))
-                .andExpect(jsonPath("$.datumPocetka").value(format.format(PregledConst.PREGLED_DATUMPOCETKA)))
+                .andExpect(jsonPath("$.[*].id").value(hasItem(1)))
+                .andExpect(jsonPath("$.[*].izvestaj").value(hasItem(PregledConst.PREGLED_IZVESTAJ + "1")))
+                .andExpect(jsonPath("$.[*].datumPocetka").value(hasItem(format.format(PregledConst.PREGLED_DATUMPOCETKA))))
                 .andReturn();
 
 
