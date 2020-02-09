@@ -53,7 +53,7 @@ public class KlinikaController {
 
     @PostMapping("/oceni")
     @PreAuthorize("hasRole('ROLE_PACIJENT')")
-    public ResponseEntity<OcenaKlinike> oceniLekara(@RequestBody Map<String,Object> body, Authentication authentication) {
+    public ResponseEntity<OcenaKlinike> oceniKliniku(@RequestBody Map<String,Object> body, Authentication authentication) {
         try{
             Korisnik korisnik = (Korisnik)authentication.getPrincipal();
             return new ResponseEntity<OcenaKlinike>(klinikaService.oceniKliniku(body.get("id").toString(),body.get("ocena").toString(), korisnik), HttpStatus.OK);

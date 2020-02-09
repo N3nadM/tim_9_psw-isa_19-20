@@ -129,12 +129,6 @@ const TabelaPregleda = ({
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {console.log(
-                    sort(pregledi).slice(
-                      page * rowsPerPage,
-                      page * rowsPerPage + rowsPerPage
-                    )
-                  )}
                   {pregledi && pregledi.length > 0 ? (
                     sort(pregledi)
                       .slice(

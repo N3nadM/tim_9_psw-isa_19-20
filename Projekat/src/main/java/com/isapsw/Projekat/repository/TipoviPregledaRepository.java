@@ -14,7 +14,11 @@ public interface TipoviPregledaRepository extends JpaRepository<TipPregleda, Lon
     @Query("SELECT DISTINCT t.naziv FROM TipPregleda t WHERE t.naziv IN (SELECT DISTINCT tp.naziv FROM TipPregleda tp) AND t.aktivan = true" )
     List<String> findAllTpString();
 
+
+    TipPregleda findTipPregledaByMinimalnoTrajanjeMin(int trajanje);
+
     @Query("SELECT tp.minimalnoTrajanjeMin FROM TipPregleda tp WHERE tp.id = :id")
     Integer getMinimalnoTrajanje(@Param("id") Long id);
+
 
 }

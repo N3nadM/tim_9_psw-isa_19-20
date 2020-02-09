@@ -14,6 +14,7 @@ import Box from "@material-ui/core/Box";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import { green } from "@material-ui/core/colors";
 import CircularProgress from "@material-ui/core/CircularProgress";
+import Axios from "axios";
 
 const useStyles = makeStyles(theme => ({
   wrapper: {
@@ -47,8 +48,22 @@ const PodaciKlinikaTabs = ({ getKlinika, klinika, id, state }) => {
 
   useEffect(() => {
     getKlinika(id);
+
     //eslint-disable-next-line
   }, []);
+
+  useEffect(() => {
+    (async () => {
+      if (klinika) {
+        const res = await Axios.get(
+          `/api/klinika/ocenaPacijenta/${klinika.id}`
+        );
+        setValue(res.data);
+      }
+    })();
+
+    //eslint-disable-next-line
+  }, [klinika]);
 
   return (
     <>
@@ -125,7 +140,18 @@ const PodaciKlinikaTabs = ({ getKlinika, klinika, id, state }) => {
                 <Button
                   disabled={submited}
                   color="secondary"
-                  onClick={() => setSubmited(true)}
+                  onClick={async () => {
+                    setSubmited(true);
+                    try {
+                      await Axios.post("/api/klinika/oceni", {
+                        id: klinika.id,
+                        ocena: value
+                      });
+                    } catch (err) {
+                      console.log(err);
+                    }
+                    setSubmited(false);
+                  }}
                 >
                   Potvrdi
                 </Button>

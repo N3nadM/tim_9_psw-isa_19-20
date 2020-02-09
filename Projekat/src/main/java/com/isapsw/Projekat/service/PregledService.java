@@ -54,7 +54,7 @@ public class PregledService {
     private SalaService salaService;
 
     public Pregled getPregledById(Long id){
-        return pregledRepository.findById(id).get();
+        return pregledRepository.getOne(id);
     }
 
     public List<Pregled> getPreglediByPacijentId(Long id) {
@@ -136,23 +136,24 @@ public class PregledService {
     }
 
     public Pregled addPregled(PregledDTO pregledDTO) throws ParseException {
+        System.out.println(pregledDTO.getMedSestraId());
         Pregled pregled = new Pregled();
-        Optional<Sala> sala = salaRepository.findById(Long.parseLong(pregledDTO.getSalaId()));
-        pregled.setSala(sala.get());
+        Sala sala = salaRepository.getOne(Long.parseLong(pregledDTO.getSalaId()));
+        pregled.setSala(sala);
         Lekar lekar = lekarRepository.findLekarById(Long.parseLong(pregledDTO.getLekarId()));
         pregled.setLekar(lekar);
 
-        Optional<TipPregleda> tp = tipoviPregledaRepository.findById(Long.parseLong(pregledDTO.getTipPregledaId()));
-        pregled.setTipPregleda(tp.get());
+        TipPregleda tp = tipoviPregledaRepository.getOne(Long.parseLong(pregledDTO.getTipPregledaId()));
+        pregled.setTipPregleda(tp);
 
-        pregled.setMedicinskaSestra(medSestraRepository.findById(Long.parseLong(pregledDTO.getMedSestraId())).get());
+        pregled.setMedicinskaSestra(medSestraRepository.getOne(Long.parseLong(pregledDTO.getMedSestraId())));
         pregled.setPacijent(null);
 
         Date datum = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss").parse(pregledDTO.getDatum());
         Date d2 = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss").parse(pregledDTO.getDatum());
         pregled.setDatumPocetka(datum);
 
-        d2.setTime(d2.getTime() + tp.get().getMinimalnoTrajanjeMin() * 60 * 1000);
+        d2.setTime(d2.getTime() + tp.getMinimalnoTrajanjeMin() * 60 * 1000);
         pregled.setDatumZavrsetka(d2);
 
         Date date = Calendar.getInstance().getTime();
@@ -165,6 +166,8 @@ public class PregledService {
 
     @Transactional
     public Boolean zakaziPregled(Long korisnikId, String lekarId, String datum) throws ParseException {
+        System.out.println(korisnikId);
+
         Lekar lekar = lekarRepository.findByIdTransaction(Long.parseLong(lekarId)).get();
 
         Date date = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss").parse(datum);

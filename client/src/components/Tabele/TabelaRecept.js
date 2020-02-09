@@ -34,8 +34,6 @@ export default function TabelaRecept({ items }) {
     setPage(0);
   };
 
-  console.log(items);
-
   return (
     <>
       <Paper className={classes.root}>

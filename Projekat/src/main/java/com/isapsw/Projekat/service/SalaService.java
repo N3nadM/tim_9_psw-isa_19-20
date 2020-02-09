@@ -49,7 +49,7 @@ public class SalaService {
         Sala s = new Sala();
         s.setAktivna(true);
         s.setKlinika(klinikaRepository.findById(salaDTO.getKlinikaId()).get());
-        s.setSalaIdentifier(salaDTO.getSalaIdentifier());
+        s.setSalaIdentifier(salaDTO.getKlinikaId() + " - " + salaDTO.getSalaIdentifier());
         s.setNaziv(salaDTO.getNaziv());
         DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd");
         Date d = new Date();
@@ -229,7 +229,7 @@ public class SalaService {
     public Sala editSala(SalaDTO salaDTO){
         Sala sala = salaRepository.findById(salaDTO.getId()).get();
         sala.setNaziv(salaDTO.getNaziv());
-        sala.setSalaIdentifier(salaDTO.getSalaIdentifier());
+        sala.setSalaIdentifier(salaDTO.getKlinikaId() + " - " + salaDTO.getSalaIdentifier());
         return salaRepository.save(sala);
     }
 

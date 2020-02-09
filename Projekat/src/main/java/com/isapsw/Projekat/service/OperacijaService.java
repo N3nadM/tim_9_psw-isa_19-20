@@ -126,7 +126,7 @@ public class OperacijaService {
     }
 
     public List<Operacija> getOperacijeByPacijentId(Long id) {
-        return operacijaRepository.findOperacijeByPacijentId(id);
+        return operacijaRepository.findOperacijeByPacijentIdAndSalaIsNotNull(id);
     }
 
     public List<Operacija> getOperacijeByLekarId(Long id) {
