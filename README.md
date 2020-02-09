@@ -14,7 +14,7 @@ Za pokretanje aplikacije potrebno je:
 9) Otvoriti browser i u url navesti localhost:3000
 
 
-## Tvorci Remekdela
+## Tvorci
 *Igor Gligorevic* **(RA 99/2016)**
 *Kristina Radojevic* **(RA 223/2016)**
 *Nenad Marin* **(RA 221/2016)**
