@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.net.ssl.HttpsURLConnection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -87,6 +88,18 @@ public class SalaController {
             return new ResponseEntity<Sala>(salaService.editSala(salaDTO), HttpStatus.OK);
         }catch (Exception e){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("/terminiSala/{lekarId}/{id}/{termin}/{trajanje}")
+    public ResponseEntity<HashMap<Long, String>> getSlobodniTerminiSala(@PathVariable String lekarId, @PathVariable String id, @PathVariable String termin, @PathVariable String trajanje) {
+        try {
+            HashMap<Long, String> termini= salaService.prviSlobodniTerminiSala(lekarId, id, termin, trajanje);
+            return new ResponseEntity<>(termini, HttpStatus.OK);
+        }
+        catch(Exception e) {
+            System.out.println(e.getMessage());
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
     }
 

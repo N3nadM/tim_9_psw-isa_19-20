@@ -1,8 +1,6 @@
 package com.isapsw.Projekat.repository;
 
-import com.isapsw.Projekat.domain.Authority;
-import com.isapsw.Projekat.domain.Korisnik;
-import com.isapsw.Projekat.domain.Lekar;
+import com.isapsw.Projekat.domain.*;
 import com.isapsw.Projekat.dto.KorisnikDTO;
 import com.isapsw.Projekat.dto.LekarDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -34,4 +32,14 @@ public interface LekarRepository extends JpaRepository<Lekar, Long> {
 
     @Query("SELECT DISTINCT k.id FROM Lekar l JOIN Korisnik k ON l.korisnik.id = k.id WHERE UPPER(k.ime) LIKE %:ime% AND UPPER(k.prezime) LIKE %:prezime% AND UPPER(k.email) LIKE %:email% AND l.aktivan = true")
     List<Long> findLekarByParameters(@Param("ime") String ime, @Param("prezime") String prezime, @Param("email") String email);
+
+    @Query("SELECT l.korisnik.id FROM Lekar l WHERE l.id = :idLekar")
+    Long getKorisnikId(@Param("idLekar") Long idLekar);
+
+    @Query("SELECT l.pregledi FROM Lekar l WHERE l.id = :id")
+    List<Pregled> getPregledi(@Param("id") Long id);
+
+    @Query("SELECT l.klinika FROM Lekar l WHERE l.id = :id")
+    Klinika getKlinika(@Param("id") Long id);
+
 }

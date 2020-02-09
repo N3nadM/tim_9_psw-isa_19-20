@@ -59,7 +59,7 @@ export const getListaDostupnihSestara = (
     );
     dispatch(setListaDostupnihSestara(sestre.data));
   } catch (err) {
-    console.log(err);
+    console.log(err.response);
   }
 };
 

@@ -126,6 +126,7 @@ export const getAllSalaPregledi = id => async dispatch => {
 export const setPregled = data => async () => {
   try {
     await axios.post(`/api/pregled`, data);
+    console.log(data);
   } catch (err) {
     console.log(err);
   }
@@ -220,6 +221,15 @@ export const getPreglediKodLekaraOdmor = (
       `/api/pregled/zaLekaraOdmor/${id}/${datum1}/${datum2}`
     );
     dispatch(setPreglediKodLekaraOdmor(pregledi.data));
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const promeniPregled = () => dispatch => {
+  console.log("jsjjw");
+  try {
+    dispatch(setPregledZahtev(null));
   } catch (err) {
     console.log(err);
   }

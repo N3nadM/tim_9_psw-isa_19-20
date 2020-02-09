@@ -72,6 +72,7 @@ const AppBarLogedIn = ({
               </Link>
             )}
             <IconButton
+              id="dugmeLog"
               edge="end"
               aria-label="account of current user"
               aria-controls={menuId}
@@ -102,6 +103,7 @@ const AppBarLogedIn = ({
           <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
         )}
         <MenuItem
+          id="logout"
           onClick={() => {
             handleMenuClose();
             logout();

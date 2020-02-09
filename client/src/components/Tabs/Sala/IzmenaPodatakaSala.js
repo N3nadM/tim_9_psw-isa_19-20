@@ -11,7 +11,8 @@ const IzmenaPodatakaSala = ({ sala, editSala, setIsEdit }) => {
   const [state, setState] = React.useState({
     id: sala.id,
     naziv: sala.naziv,
-    salaIdentifier: sala.salaIdentifier
+    salaIdentifier: sala.salaIdentifier.substring(4),
+    klinikaId: sala.salaIdentifier.substring(0, 1)
   });
 
   const handleChange = e => {

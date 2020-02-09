@@ -4,6 +4,7 @@ import { getOperacijaById } from "../../../store/actions/operacija";
 
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
+import { useTheme } from "@material-ui/core/styles";
 import ListItemText from "@material-ui/core/ListItemText";
 import Typography from "@material-ui/core/Typography";
 import { Paper, TextField } from "@material-ui/core";
@@ -20,11 +21,45 @@ import Dijalog from "../../Tabs/BrzoZakazivanjePregleda/DijalogOperacija";
 import DateFnsUtils from "@date-io/date-fns";
 import { getListaDostupnihSala } from "../../../store/actions/sala";
 import DodavanjeLekaraOperacija from "./DodavanjeLekaraOperacija";
+import SaleSaSlobodnimTerminima from "../PronalazenjeSale/SaleSaSlobodnimTerminima";
+import Tabs from "@material-ui/core/Tabs";
+import Tab from "@material-ui/core/Tab";
+import Box from "@material-ui/core/Box";
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import DialogTitle from "@material-ui/core/DialogTitle";
 
 let today = new Date();
 today.setDate(today.getDate() + 1);
 let d = new Date();
 d.setDate(today.getDate());
+
+function TabPanel(props) {
+  const { children, value, index, ...other } = props;
+
+  return (
+    <Typography
+      component="div"
+      role="tabpanel"
+      hidden={value !== index}
+      id={`full-width-tabpanel-${index}`}
+      aria-labelledby={`full-width-tab-${index}`}
+      {...other}
+    >
+      <Box p={3}>{children}</Box>
+    </Typography>
+  );
+}
+
+function a11yProps(index) {
+  return {
+    id: `full-width-tab-${index}`,
+    "aria-controls": `full-width-tabpanel-${index}`
+  };
+}
+
 const OperacijaSala = ({
   id,
   operacija,
@@ -34,7 +69,8 @@ const OperacijaSala = ({
   termin,
   getListaDostupnihSala,
   salaZaOperaciju,
-  lekariZaOperaciju
+  lekariZaOperaciju,
+  terminZaSalu
 }) => {
   useEffect(() => {
     getOperacijaById(id);
@@ -45,10 +81,21 @@ const OperacijaSala = ({
     medSestraImePrezime: "",
     datumZaOperaciju: ""
   });
+
+  const theme = useTheme();
+
   const handleSubmit = async e => {
     e.preventDefault();
+
+    let odabranTermin;
+    if (terminZaSalu !== null) {
+      odabranTermin = terminZaSalu["_data"]["♠" + salaZaOperaciju][1];
+    } else {
+      odabranTermin = operacija.datumPocetka;
+    }
+
     const resp = await Axios.get(
-      `/api/medsestra/sestraDostupna/${klinika.id}/${operacija.datumPocetka}/${operacija.tipPregleda.minimalnoTrajanjeMin}`
+      `/api/medsestra/sestraDostupna/${klinika.id}/${odabranTermin}/${operacija.tipPregleda.minimalnoTrajanjeMin}`
     );
     console.log(resp.data);
     if (resp.data != null && resp.data !== "") {
@@ -66,6 +113,12 @@ const OperacijaSala = ({
     }
   };
 
+  const [value, setValue] = React.useState(0);
+
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+  };
+
   const handleDateChange = date => {
     d = date;
     setState({
@@ -79,6 +132,12 @@ const OperacijaSala = ({
     datum: ""
   });
 
+  const [open, setOpen] = React.useState(false);
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
   const handleIzborLekar = e => {
     setZaLekare({
       tip: operacija.tipPregleda.naziv,
@@ -88,16 +147,23 @@ const OperacijaSala = ({
   };
 
   const handleZakazi = async e => {
+    let t;
+    if (terminZaSalu !== null) {
+      t = terminZaSalu["_data"]["♠" + salaZaOperaciju][1];
+    } else {
+      t = termin != "" ? termin : operacija.datumPocetka;
+    }
     lekariZaOperaciju.push(operacija.lekari[0].id);
     const podaci = {
       medSestraId: state.medSestraId,
       salaId: salaZaOperaciju,
       lekariId: lekariZaOperaciju,
       operacijaId: operacija.id,
-      termin: termin
+      termin: t
     };
     const resp = await Axios.post(`/api/operacija/sacuvajSalu`, podaci);
     console.log(resp.data);
+    setOpen(true);
   };
 
   return (
@@ -137,60 +203,88 @@ const OperacijaSala = ({
           termin2={operacija.datumPocetka}
         />
       )}
-      {console.log(sale.length)}
+
       {operacija && sale.length === 0 && (
-        <Paper style={{ padding: 50, paddingBottom: 75 }}>
-          <Typography
-            variant="h6"
-            component="h2"
-            style={{ marginBottom: 20, marginLeft: 13 }}
+        <>
+          <Tabs
+            value={value}
+            onChange={handleChange}
+            indicatorColor="primary"
+            textColor="primary"
           >
-            Za izabrani termin nema dostupnih sala, mozete promeniti termin ili
-            izabrati druge lekare
-          </Typography>
-          <Grid container spacing={3}>
-            <Grid item sm={6}>
-              <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                <KeyboardDatePicker
-                  id="date-picker"
-                  format="MM/dd/yyyy"
-                  minDate={today}
-                  fullWidth
-                  style={{ marginTop: 18, width: 300 }}
-                  value={d}
-                  onChange={e => handleDateChange(e)}
-                  KeyboardButtonProps={{
-                    "aria-label": "change date"
-                  }}
-                />
-              </MuiPickersUtilsProvider>
-            </Grid>
-            <Grid item sm={6}>
-              <Dijalog
-                id={operacija.lekari[0].id}
-                datum={!state.datumZaOperaciju ? "" : state.datumZaOperaciju}
-                lekar={operacija.lekari[0]}
-              />
-            </Grid>
-            <Grid item sm={12}>
-              <Button
-                variant="contained"
-                disabled={termin === ""}
-                color="primary"
-                onClick={e => {
-                  e.preventDefault();
-                  getListaDostupnihSala(
-                    klinika.id,
-                    termin,
-                    operacija.tipPregleda.minimalnoTrajanjeMin
-                  );
-                }}
+            <Tab label="Prvi slobodni termini za sale" {...a11yProps(0)} />
+
+            <Tab label="Izbor novog termina" {...a11yProps(1)} />
+          </Tabs>
+          <TabPanel value={value} index={0} dir={theme.direction}>
+            <SaleSaSlobodnimTerminima
+              lekar={operacija.lekari[0]}
+              klinika={klinika}
+              trajanje={operacija.tipPregleda.minimalnoTrajanjeMin}
+              terminZaPregled={""}
+              daLiTrebaDaSeTrazeTermini={true}
+              terminZaOperaciju={operacija.datumPocetka}
+              setIzbor={setIzbor}
+            />
+          </TabPanel>
+
+          <TabPanel value={value} index={1} dir={theme.direction}>
+            <Paper style={{ padding: 50, paddingBottom: 75 }}>
+              <Typography
+                variant="h6"
+                component="h2"
+                style={{ marginBottom: 20, marginLeft: 13 }}
               >
-                Pretrazi sale
-              </Button>
-            </Grid>
-          </Grid>
-        </Paper>
+                Za izabrani termin nema dostupnih sala, mozete promeniti termin
+                ili izabrati druge lekare
+              </Typography>
+              <Grid container spacing={3}>
+                <Grid item sm={6}>
+                  <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                    <KeyboardDatePicker
+                      id="date-picker"
+                      format="MM/dd/yyyy"
+                      minDate={today}
+                      fullWidth
+                      style={{ marginTop: 18, width: 300 }}
+                      value={d}
+                      onChange={e => handleDateChange(e)}
+                      KeyboardButtonProps={{
+                        "aria-label": "change date"
+                      }}
+                    />
+                  </MuiPickersUtilsProvider>
+                </Grid>
+                <Grid item sm={6}>
+                  <Dijalog
+                    id={operacija.lekari[0].id}
+                    datum={
+                      !state.datumZaOperaciju ? "" : state.datumZaOperaciju
+                    }
+                    lekar={operacija.lekari[0]}
+                  />
+                </Grid>
+                <Grid item sm={12}>
+                  <Button
+                    variant="contained"
+                    disabled={termin === ""}
+                    color="primary"
+                    onClick={e => {
+                      e.preventDefault();
+                      getListaDostupnihSala(
+                        klinika.id,
+                        termin,
+                        operacija.tipPregleda.minimalnoTrajanjeMin
+                      );
+                    }}
+                  >
+                    Pretrazi sale
+                  </Button>
+                </Grid>
+              </Grid>
+            </Paper>
+          </TabPanel>
+        </>
       )}
       <Grid item sm={12}>
         <Button
@@ -240,13 +334,31 @@ const OperacijaSala = ({
           variant="contained"
           color="primary"
           onClick={handleZakazi}
-          disabled={
-            state.medSestraId === "" || termin === "" || salaZaOperaciju === ""
-          }
+          disabled={state.medSestraId === "" || salaZaOperaciju === ""}
         >
           Sačuvaj
         </Button>
       )}
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">
+          {"Biranje sale i medicinske sestre"}
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            Uneti podaci su sacuvani
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose} color="primary" autoFocus>
+            OK
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 };
@@ -257,7 +369,8 @@ function mapStateToProps(state) {
     sale: state.sala.listaDostupnihSala,
     termin: state.lekar.terminZaOperaciju,
     salaZaOperaciju: state.sala.salaZaPregled,
-    lekariZaOperaciju: state.lekar.lekariZaOperaciju
+    lekariZaOperaciju: state.lekar.lekariZaOperaciju,
+    terminZaSalu: state.sala.slobodniTerminiSala
   };
 }
 

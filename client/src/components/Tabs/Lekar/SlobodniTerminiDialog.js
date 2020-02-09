@@ -15,6 +15,7 @@ import ListItemText from "@material-ui/core/ListItemText";
 import Divider from "@material-ui/core/Divider";
 import Axios from "axios";
 
+let i = 1;
 function ConfirmationDialogRaw(props) {
   const {
     onClose,
@@ -86,6 +87,7 @@ function ConfirmationDialogRaw(props) {
           >
             {options.map(option => (
               <FormControlLabel
+                id={option}
                 value={option}
                 key={option}
                 control={<Radio />}
@@ -145,15 +147,15 @@ function ConfirmationDialogRaw(props) {
           </Button>
         )}
         {!ok ? (
-          <Button onClick={handleOk} color="primary">
+          <Button onClick={handleOk} color="primary" id="zakaziPregled">
             Zakaži Pregled
           </Button>
         ) : success === 0 ? (
-          <Button onClick={handleReservation} color="primary">
+          <Button onClick={handleReservation} color="primary" id="potvrdi">
             Potvrdi
           </Button>
         ) : (
-          <Button onClick={handleCancel} color="secondary">
+          <Button onClick={handleCancel} color="secondary" id="zatvori">
             Zatvori
           </Button>
         )}
@@ -201,7 +203,12 @@ export default function ConfirmationDialog({
 
   return (
     <>
-      <Button variant="outlined" color="primary" onClick={handleClickListItem}>
+      <Button
+        variant="outlined"
+        color="primary"
+        id={id}
+        onClick={handleClickListItem}
+      >
         Pogledaj
       </Button>
       <ConfirmationDialogRaw
