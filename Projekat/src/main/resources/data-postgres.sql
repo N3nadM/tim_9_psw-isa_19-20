@@ -36,7 +36,7 @@ INSERT INTO KORISNIK (adresa, email, ime, password, prezime, drzava, grad, telef
 INSERT INTO USER_AUTHORITY VALUES ('3', '2');
 INSERT INTO LEKAR(tip_pregleda_id, korisnik_id, klinika_id, pocetak_radnog_vremena,  kraj_radnog_vremena, ocena, aktivan) VALUES ('1', '3', '1', '07:00', '22:00', 3.4, true);
 
-INSERT INTO KORISNIK (adresa, email, ime, password, prezime, drzava, grad, telefon) VALUES ('adresa pacijenta', 'vesna.svrkota997@gmail.com', 'Pacijent', '$2a$10$feiotRqclqYZ7aJnytCDSedhWmzztzhuwyujbVfVucV4nbmMRNnwa', 'Pacijentic',  'drzava', 'grad', 'telefon');
+INSERT INTO KORISNIK (adresa, email, ime, password, prezime, drzava, grad, telefon) VALUES ('adresa pacijenta', 'neskexx@gmail.com', 'Pacijent', '$2a$10$feiotRqclqYZ7aJnytCDSedhWmzztzhuwyujbVfVucV4nbmMRNnwa', 'Pacijentic',  'drzava', 'grad', 'telefon');
 INSERT INTO USER_AUTHORITY VALUES ('4', '1');
 INSERT INTO PACIJENT(datum_kreiranja, jbzo, korisnik_id) VALUES ('2019-11-20', '555333', '4');
 INSERT INTO ZDR_KARTON(pacijent_id, dioptrija, visina, tezina, krvna_grupa, version) VALUES ('1', '-1.5', '193', '80', '0+', 0);

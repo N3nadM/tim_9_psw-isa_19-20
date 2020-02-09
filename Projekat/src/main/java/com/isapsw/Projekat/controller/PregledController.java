@@ -110,8 +110,6 @@ public class PregledController {
     public ResponseEntity<Pregled> addPregled(@RequestBody PregledDTO pregledDTO) {
         try {
 
-            System.out.println(pregledDTO.getDatum());
-
             return new ResponseEntity<Pregled>(pregledService.addPregled(pregledDTO), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);

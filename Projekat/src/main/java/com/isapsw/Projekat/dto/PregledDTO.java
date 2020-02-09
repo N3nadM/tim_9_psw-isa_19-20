@@ -13,6 +13,16 @@ public class PregledDTO {
 
     }
 
+    public PregledDTO(Long id, String popust, String lekarId, String salaId, String tipPregledaId, String medSestraId, String datum) {
+        this.id = id;
+        this.popust = popust;
+        this.lekarId = lekarId;
+        this.salaId = salaId;
+        this.tipPregledaId = tipPregledaId;
+        this.medSestraId = medSestraId;
+        this.datum = datum;
+    }
+
     public String getDatum() {
         return datum;
     }
