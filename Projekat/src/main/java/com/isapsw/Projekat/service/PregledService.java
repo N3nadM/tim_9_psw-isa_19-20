@@ -316,8 +316,8 @@ public class PregledService {
             date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(termin);
         }
         Pregled pregled = pregledRepository.getOne(Long.parseLong(pregledId));
-        Lekar lekar = lekarRepository.findLekarById(Long.parseLong(lekarId));
-        Sala sala = salaRepository.findById(Long.parseLong(salaId)).get();
+        Lekar lekar = lekarRepository.findByIdTransaction(Long.parseLong(lekarId)).get();
+        Sala sala = salaRepository.findByIdTransaction(Long.parseLong(salaId)).get();
         MedicinskaSestra medicinskaSestra = medSestraRepository.findById(Long.parseLong(medSestraId)).get();
 
         if(!pregled.getDatumPocetka().equals(date)){
