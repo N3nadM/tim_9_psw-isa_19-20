@@ -20,7 +20,15 @@ public class PregledConst {
         }
     }
 
-    public static final String PREGLED_DATUMZAVRSETKA = "2019-12-12 16:50:00";
+    public static Date PREGLED_DATUMZAVRSETKA;
+
+    static {
+        try {
+            PREGLED_DATUMZAVRSETKA = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse("2019-12-12 16:50:00");
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+    }
 
     public static final String PREGLED_LEKAR_IME = "Mile";
 
