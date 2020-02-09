@@ -165,10 +165,14 @@ public class PregledService {
     }
 
     @Transactional
-    public Boolean zakaziPregled(Long korisnikId, String lekarId, String datum) throws ParseException {
+    public Boolean zakaziPregled(Long korisnikId, String lekarId, String datum) throws ParseException, MessagingException, InterruptedException {
         System.out.println(korisnikId);
 
         Lekar lekar = lekarRepository.findByIdTransaction(Long.parseLong(lekarId)).get();
+
+        for(int i = 0; i < lekar.getKlinika().getAdminiKlinike().size(); i++) {
+            emailService.sendAdminuZakazivanjePregledaOperacijePacijent(lekar.getKlinika().getAdminiKlinike().get(i).getKorisnik().getEmail(), "Upit za zakazivanje pregleda" + datum + ".");
+        }
 
         Date date = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss").parse(datum);
 

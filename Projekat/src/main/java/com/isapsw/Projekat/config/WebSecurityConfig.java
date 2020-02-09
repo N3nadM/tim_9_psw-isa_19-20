@@ -60,6 +60,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         "/**/*.css",
                         "/**/*.js"
                 ).permitAll()
+                .antMatchers("/api/users/confirm/*").permitAll()
                 .anyRequest().authenticated().and()
                 .cors().and()
                 .addFilterBefore(jwtAuthenticationFilter(), BasicAuthenticationFilter.class);

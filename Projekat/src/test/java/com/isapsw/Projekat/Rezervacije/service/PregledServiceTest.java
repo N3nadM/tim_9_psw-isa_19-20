@@ -13,6 +13,7 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.mail.MessagingException;
 import java.text.ParseException;
 
 import static org.junit.Assert.assertEquals;
@@ -128,7 +129,7 @@ public class PregledServiceTest {
     @Test
     @Transactional
     @Rollback(true)
-    public void zakaziPregledTest() throws ParseException {
+    public void zakaziPregledTest() throws ParseException, MessagingException, InterruptedException {
         when(pregledRepository.getOne((long)1)).thenReturn(pregledMock);
         when(korisnikRepository.getOne((long)1)).thenReturn(korisnikMock);
         when(lekarRepository.getOne((long)1)).thenReturn(lekarMock);

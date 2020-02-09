@@ -2,7 +2,9 @@ import {
   SET_ZAVRSEN_PREGLED_OPERACIJA,
   SET_ZAPOCET_PREGLED_OPERACIJA,
   SET_ISPRAVI_ZAPOCET_PREGLED,
-  SET_ISPRAVI_ZAPOCETA_OPERACIJA
+  SET_ISPRAVI_ZAPOCETA_OPERACIJA,
+  SET_EDIT,
+  SET_EDIT_OPERACIJA
 } from "../actionTypes";
 import axios from "axios";
 
@@ -24,6 +26,11 @@ export const setIspravkaZapocetPregled = ispravkaZapocetPregled => ({
 export const setIspravkaZapocetaOperacija = ispravkaZapocetaOperacija => ({
   type: SET_ISPRAVI_ZAPOCETA_OPERACIJA,
   ispravkaZapocetaOperacija
+});
+
+export const setIzmenjeni = data => ({
+  type: SET_EDIT,
+  data
 });
 
 export const zavrsenPregledOperacija = data => async dispatch => {
@@ -58,9 +65,17 @@ export const zapocniPregledOperaciju = data => async dispatch => {
   }
 };
 
+export const setIzmenjeniOper = data => ({
+  type: SET_EDIT_OPERACIJA,
+  data
+});
+
 export const izmeniIzvestaj = data => async dispatch => {
   try {
     await axios.put("/api/pregled_operacija/izvestaj", data);
+    data.vrsta === 0
+      ? dispatch(setIzmenjeni(data))
+      : dispatch(setIzmenjeniOper(data));
   } catch (err) {
     console.log(err);
   }

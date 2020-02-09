@@ -15,6 +15,7 @@ const DodajKlinikuTab = ({ klinika, addNewKlinika }) => {
   const handleSubmit = e => {
     e.preventDefault();
     addNewKlinika(state);
+    setState({ naziv: "", opis: "", adresa: "" });
   };
 
   return (

@@ -3,6 +3,7 @@ package com.isapsw.Projekat.service;
 import com.isapsw.Projekat.domain.*;
 import com.isapsw.Projekat.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,7 +33,8 @@ public class OperacijaService {
     private MedSestraRepository medSestraRepository;
 
     @Autowired
-   private EmailService emailService;
+    @Lazy
+    private EmailService emailService;
 
     @Autowired
     private AdminKlinikeRepository adminKlinikeRepository;

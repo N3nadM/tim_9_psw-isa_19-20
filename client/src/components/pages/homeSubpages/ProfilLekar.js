@@ -63,9 +63,8 @@ function ResponsiveDrawer(props) {
         <Tab label="Radni kalendar" {...a11yProps(2)} />
         <Tab label="Godišnji odmor ili odsustvo" {...a11yProps(3)} />
         <Tab label="Lični podaci" {...a11yProps(4)} />
-        <Tab label="Zakazivanje pregleda" {...a11yProps(5)} />
-        <Tab label="Zavrseni pregledi i operacije" {...a11yProps(6)} />
-        <Tab label="Promena lozinke" {...a11yProps(7)} />
+        <Tab label="Zavrseni pregledi i operacije" {...a11yProps(5)} />
+        <Tab label="Promena lozinke" {...a11yProps(6)} />
       </Tabs>
     </div>
   );
@@ -104,13 +103,10 @@ function ResponsiveDrawer(props) {
             <LekarProfilTab />
           </TabPanel>
           <TabPanel value={value} index={5}>
-            <ZakazivanjePregledaTabs />
-          </TabPanel>
-          <TabPanel value={value} index={6}>
             <TabelaZavrsenihPregledaOperacija />
           </TabPanel>
-          <TabPanel value={value} index={7}>
-            {value === 7 && <PromeniLozinku />}
+          <TabPanel value={value} index={6}>
+            {value === 6 && <PromeniLozinku />}
           </TabPanel>
         </main>
       </div>

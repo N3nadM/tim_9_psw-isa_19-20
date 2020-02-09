@@ -74,8 +74,12 @@ const TabelaPregleda = ({ operacije, getAllOperacije, pacijentId }) => {
     return sviPregledi.concat().sort((a, b) => {
       if (orderBy === "tip") {
         return order === "asc"
-          ? a.tipPregleda.naziv - b.tipPregleda.naziv
-          : b.tipPregleda.naziv - a.tipPregleda.naziv;
+          ? a.tipPregleda.naziv >= b.tipPregleda.naziv
+            ? 1
+            : -1
+          : a.tipPregleda.naziv >= b.tipPregleda.naziv
+          ? -1
+          : 1;
       } else {
         return order === "asc"
           ? new Date(a.datumPocetka) - new Date(b.datumPocetka)

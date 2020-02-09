@@ -98,7 +98,7 @@ export const getZavrseniPregledi = id => async dispatch => {
     );
     dispatch(setZavrseniPregledi(zavrseniPregledi.data));
   } catch (err) {
-    console.log(err);
+    console.log(err.response);
   }
 };
 

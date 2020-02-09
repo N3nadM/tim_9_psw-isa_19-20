@@ -22,7 +22,18 @@ const DodajAKCTab = ({ addNewAdminKC }) => {
   };
 
   const handleSubmit = e => {
+    e.preventDefault();
     addNewAdminKC(state);
+    setState({
+      ime: "",
+      prezime: "",
+      email: "",
+      password: "",
+      drzava: "",
+      grad: "",
+      adresa: "",
+      telefon: ""
+    });
   };
 
   return (

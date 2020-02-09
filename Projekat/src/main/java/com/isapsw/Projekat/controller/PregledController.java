@@ -2,11 +2,13 @@ package com.isapsw.Projekat.controller;
 
 import com.isapsw.Projekat.domain.*;
 import com.isapsw.Projekat.dto.PregledDTO;
+import com.isapsw.Projekat.service.EmailService;
 import com.isapsw.Projekat.service.LekarService;
 import com.isapsw.Projekat.service.MedSestraService;
 import com.isapsw.Projekat.service.PregledService;
 import org.h2.compress.LZFInputStream;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -30,6 +32,9 @@ public class PregledController {
     @Autowired
     private MedSestraService medSestraService;
 
+
+    @Autowired
+    private EmailService emailService;
 
     @Scheduled(cron = "0 0 0 * * *")
     public void AutomatskoBiranjeSalaZaPregled() throws ParseException, InterruptedException, MessagingException {
@@ -87,6 +92,7 @@ public class PregledController {
 
             return new ResponseEntity<>(pregledi, HttpStatus.OK);
         } catch (Exception e) {
+
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
     }
@@ -149,6 +155,8 @@ public class PregledController {
     public ResponseEntity<Boolean> zakaziPredefinisani(@RequestBody Map<String,String> body, Authentication authentication) {
         try {
             Korisnik korisnik = (Korisnik)authentication.getPrincipal();
+            Pregled pregled = pregledService.getPregledById(Long.parseLong(body.get("pregledId").toString()));
+            emailService.sendEmailPacijentuZakazan(korisnik, pregled);
             return new ResponseEntity(pregledService.zakaziPredefinisaniPregled(korisnik.getId(), body.get("pregledId").toString(), body.get("version").toString()), HttpStatus.OK);
         }
         catch(Exception e) {

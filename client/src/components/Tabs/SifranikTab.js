@@ -107,11 +107,22 @@ const SifranikTab = ({ lekovi, getAllLekovi, addNewLek, addNewDijagnoza }) => {
     e.preventDefault();
     state.lekovi = lekName;
     addNewDijagnoza(state);
+    setState({
+      naziv: "",
+      sifra: "",
+      lekovi: [],
+      checked: -1
+    });
   };
 
   const handleSubmitLek = e => {
     e.preventDefault();
     addNewLek(state2);
+    setState2({
+      naziv: "",
+      sifra: "",
+      sadrzaj: ""
+    });
   };
 
   return (
@@ -134,6 +145,7 @@ const SifranikTab = ({ lekovi, getAllLekovi, addNewLek, addNewDijagnoza }) => {
                   margin="normal"
                   required
                   fullWidth
+                  value={state.naziv}
                   onChange={handleChangeDijagnoza}
                   name="naziv"
                   label="Naziv"
@@ -144,6 +156,7 @@ const SifranikTab = ({ lekovi, getAllLekovi, addNewLek, addNewDijagnoza }) => {
               <Grid item sm={4}>
                 <TextField
                   margin="normal"
+                  value={state.sifra}
                   required
                   fullWidth
                   onChange={handleChangeDijagnoza}
@@ -198,6 +211,7 @@ const SifranikTab = ({ lekovi, getAllLekovi, addNewLek, addNewDijagnoza }) => {
               <TextField
                 margin="normal"
                 required
+                value={state2.naziv}
                 fullWidth
                 onChange={handleChangeLek}
                 name="naziv"
@@ -210,6 +224,7 @@ const SifranikTab = ({ lekovi, getAllLekovi, addNewLek, addNewDijagnoza }) => {
               <TextField
                 margin="normal"
                 required
+                value={state2.sifra}
                 fullWidth
                 onChange={handleChangeLek}
                 name="sifra"
@@ -223,6 +238,7 @@ const SifranikTab = ({ lekovi, getAllLekovi, addNewLek, addNewDijagnoza }) => {
                 margin="normal"
                 required
                 fullWidth
+                value={state2.sadrzaj}
                 onChange={handleChangeLek}
                 name="sadrzaj"
                 label="Sadrzaj"

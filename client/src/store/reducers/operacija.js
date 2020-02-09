@@ -8,7 +8,8 @@ import {
   SET_OPERACIJE_SESTRA_ODMOR,
   SET_ZAVRSENE_OPERACIJE,
   SET_ISPRAVI_ZAPOCETA_OPERACIJA,
-  SET_OPERACIJE_PRONALAZENJE_SALE
+  SET_OPERACIJE_PRONALAZENJE_SALE,
+  SET_EDIT_OPERACIJA
 } from "../actionTypes";
 
 const DEFAULT_STATE = {
@@ -79,6 +80,13 @@ export default (state = DEFAULT_STATE, action) => {
       return {
         ...state,
         operacijePronalazenjeSale: action.operacijePronalazenjeSale
+      };
+    case SET_EDIT_OPERACIJA:
+      return {
+        ...state,
+        zavrseneOperacije: state.zavrseneOperacije.map(p =>
+          p.id === action.data.id ? { ...p, izvestaj: action.data.izvestaj } : p
+        )
       };
     default:
       return state;
