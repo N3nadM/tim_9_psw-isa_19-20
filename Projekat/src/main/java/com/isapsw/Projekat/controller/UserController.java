@@ -51,6 +51,7 @@ public class UserController {
     @PostMapping("/login")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest, BindingResult result){
         ResponseEntity<?> error = validationErrorService.validationService(result);
+        System.out.println(result.toString());
         if(error != null) return error;
 
         Authentication authentication = authenticationManager.authenticate(
