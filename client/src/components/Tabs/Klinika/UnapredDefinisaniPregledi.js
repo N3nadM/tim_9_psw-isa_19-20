@@ -139,7 +139,9 @@ const UnapredDefinisaniPregledi = ({
                               {row.datumPocetka}
                             </TableCell>
                             <TableCell align="right">
-                              {row.tipPregleda.cenaPregleda}
+                              {row.tipPregleda.cenaPregleda -
+                                (row.tipPregleda.cenaPregleda * row.popust) /
+                                  100}
                             </TableCell>
                             <TableCell align="right">
                               {row.datumKreiranja}

@@ -52,8 +52,6 @@ const PacijentZdr = ({
 
   const classes = useStyles();
 
-  console.log(korisnik);
-
   return (
     <Paper style={{ padding: 50 }}>
       <Typography

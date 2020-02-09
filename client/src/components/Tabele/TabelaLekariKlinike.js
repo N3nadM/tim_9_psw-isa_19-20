@@ -293,7 +293,8 @@ const TabelaLekariKlinike = ({
                           .includes(state.ime.toUpperCase()) &&
                         l.korisnik.prezime
                           .toUpperCase()
-                          .includes(state.prezime.toUpperCase())
+                          .includes(state.prezime.toUpperCase()) &&
+                        l.ocena >= state.ocena
                     )
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((row, index) => {

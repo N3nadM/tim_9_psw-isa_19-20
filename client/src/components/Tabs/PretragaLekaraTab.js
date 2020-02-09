@@ -272,7 +272,6 @@ const PretragaLekaraTab = ({
                       E-mail
                     </TableSortLabel>
                   </TableCell>
-                  <TableCell align="right"></TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -295,18 +294,6 @@ const PretragaLekaraTab = ({
                           </TableCell>
                           <TableCell align="left">
                             {row.korisnik.email}
-                          </TableCell>
-                          <TableCell align="right">
-                            <Button
-                              variant="outlined"
-                              color="primary"
-                              onClick={() => {
-                                state.zaIzmenu = row;
-                                setIsEdit(true);
-                              }}
-                            >
-                              Izmeni
-                            </Button>
                           </TableCell>
                         </TableRow>
                       );

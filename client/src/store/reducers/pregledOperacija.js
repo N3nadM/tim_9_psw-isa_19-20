@@ -20,6 +20,7 @@ export default (state = DEFAULT_STATE, action) => {
         ...state,
         zapocetPregledOperacija: action.zapocetPregledOperacija
       };
+
     default:
       return state;
   }

@@ -11,7 +11,8 @@ import {
   SET_PREGLEDI_SESTRA_ODMOR,
   SET_ZAVRSENI_PREGLEDI,
   SET_ISPRAVI_ZAPOCET_PREGLED,
-  SET_PREGLEDI_PRONALAZENJE_SALE
+  SET_PREGLEDI_PRONALAZENJE_SALE,
+  SET_EDIT
 } from "../actionTypes";
 
 const DEFAULT_STATE = {
@@ -103,6 +104,13 @@ export default (state = DEFAULT_STATE, action) => {
       return {
         ...state,
         preglediPronalazenjeSale: action.preglediPronalazenjeSale
+      };
+    case SET_EDIT:
+      return {
+        ...state,
+        zavrseniPregledi: state.zavrseniPregledi.map(p =>
+          p.id === action.data.id ? { ...p, izvestaj: action.data.izvestaj } : p
+        )
       };
     default:
       return state;

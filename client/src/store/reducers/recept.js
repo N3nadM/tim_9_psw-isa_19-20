@@ -9,11 +9,14 @@ export default (state = DEFAULT_STATE, action) => {
   switch (action.type) {
     case SET_RECEPTI:
       return {
+        ...state,
         recepti: action.recepti
       };
     case SET_OVEREN_RECEPT:
       return {
-        overenRecept: action.overenRecept
+        ...state,
+        overenRecept: action.overenRecept,
+        recepti: state.recepti.filter(r => r.id !== action.overenRecept.id)
       };
     default:
       return state;

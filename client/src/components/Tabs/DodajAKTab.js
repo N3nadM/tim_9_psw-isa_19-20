@@ -34,7 +34,20 @@ const DodajAKTab = ({
   };
 
   const handleSubmit = e => {
+    e.preventDefault();
+
     addNewAdmin(state);
+    setState({
+      ime: "",
+      prezime: "",
+      email: "",
+      password: "",
+      drzava: "",
+      grad: "",
+      adresa: "",
+      telefon: "",
+      klinikaId: ""
+    });
   };
   useEffect(() => {
     getAllKlinike();

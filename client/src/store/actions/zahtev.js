@@ -31,7 +31,7 @@ export const getZahtevi = id => async dispatch => {
 
 export const confirmZahtev = (id, email) => async dispatch => {
   try {
-    await axios.post(`/api/users/register/${email}`);
+    await axios.post(`/api/users/register`, { email });
     dispatch(deleteZahtev(id));
   } catch (err) {
     console.log(err);

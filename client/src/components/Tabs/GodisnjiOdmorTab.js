@@ -121,11 +121,22 @@ const OdmorOdsustvoTab = ({
   const handleSubmit = e => {
     e.preventDefault();
     addNewZahtevOdmor(selectedDate);
+    setSelectedDate({
+      korisnikId,
+      datumOd: new Date(),
+      datumDo: new Date(),
+      opis: ""
+    });
   };
 
   const handleSubmit2 = e => {
     e.preventDefault();
     addNewZahtevOdsustvo(selectedDate2);
+    setSelectedDate2({
+      korisnikId,
+      datum: new Date(),
+      opis: ""
+    });
   };
 
   return (
@@ -169,6 +180,7 @@ const OdmorOdsustvoTab = ({
             margin="normal"
             required
             fullWidth
+            value={selectedDate.opis}
             onChange={handleChangeOdmorOpis}
             name="opis"
             label="Opis zahteva"
@@ -205,6 +217,7 @@ const OdmorOdsustvoTab = ({
             margin="normal"
             required
             fullWidth
+            value={selectedDate2.opis}
             onChange={handleChangeOdsustvoOpis}
             name="opis"
             label="Opis zahteva"

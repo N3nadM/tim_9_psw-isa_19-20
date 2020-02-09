@@ -59,8 +59,6 @@ const TabelaZavrsenihPregledaOperacija = ({
     getZavrseneOperacije(korisnikId);
   };
 
-  console.log(zavrseniPregledi);
-
   return (
     <div className="Tabela">
       <Typography variant="h5">Pregledi</Typography>
