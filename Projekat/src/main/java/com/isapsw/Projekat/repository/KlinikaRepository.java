@@ -4,10 +4,15 @@ import com.isapsw.Projekat.domain.Klinika;
 import com.isapsw.Projekat.domain.Lekar;
 import com.isapsw.Projekat.domain.Pacijent;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.jpa.repository.QueryHints;
 import org.springframework.data.repository.query.Param;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Repository;
 
+import javax.persistence.LockModeType;
+import javax.persistence.QueryHint;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -31,6 +36,11 @@ public interface KlinikaRepository extends JpaRepository<Klinika, Long> {
     List<Klinika> findKlinikaByAdresaAndOcena(@Param("lokacija") String lokacija, @Param("ocena") Double ocena);
 
     Optional<Klinika> findById(Long id);
+
+    @Lock(LockModeType.PESSIMISTIC_WRITE)
+    @QueryHints({@QueryHint(name = "javax.persistence.lock.timeout", value ="0")})
+    @Query("SELECT k FROM Klinika k WHERE k.id = :id")
+    Klinika findKlinikaByIdTransaction(@Param("id") Long id);
 
     @Query("SELECT p FROM Klinika k LEFT JOIN k.pacijenti p WHERE k.id = :klinikaId AND p.id = :pacijentId")
     Pacijent findPacijentInKlinika(@Param("klinikaId") Long klinikaId, @Param("pacijentId") Long pacijentId);
